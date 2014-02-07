@@ -4,126 +4,126 @@ Project User Stories:
 
 1.	As a user, I want to sort comments by proximity to me.
 
-PRIORITY:
+PRIORITY: 1
 
-TEST CASES:
+TEST CASES: 
 
 2.	As a user, I want to sort comments by proximity to another location.
 
-PRIORITY:
+PRIORITY: 2
 
 TEST CASES:
 
 3.	As a user, I want to make new top-level comments (comments with no parents).
 
-PRIORITY:
+PRIORITY: 1
 
 TEST CASES:
 
 4.	As a user, I want to browse top-level comments.
 
-PRIORITY:
+PRIORITY: 1
 
 TEST CASES:
 
 5.	As a user, I want to browse comment replies.
 
-PRIORITY:
+PRIORITY: 1
 
 TEST CASES:
 
 6.	As a user, I want to reply to comments.
 
-PRIORITY:
+PRIORITY: 1
 
 TEST CASES:
 
 7.	As a user, I want to attach a picture to my comment.
 
-PRIORITY:
+PRIORITY: 2
 
 TEST CASES:
 
 8.	As a user, I want to sort comments by pictures.
 
-PRIORITY:
+PRIORITY: 2
 
 TEST CASES:
 
 9.	As a user, I want to sort comments by date or some scoring system (data + proximity).
 
-PRIORITY:
+PRIORITY: 2
 
 TEST CASES:
 
 10.	As a user, I want comments that I read or comments that I've indicated I want to read, to be locally cached so I can read them when I am not on the internet.
 
-PRIORITY:
+PRIORITY: 2
 
 TEST CASES:
 
 11.	As a user, I want to explicitly save some comments as favorites.
 
-PRIORITY:
+PRIORITY: 2
 
 TEST CASES:
 
 12.	As a user, My favorites and their replies should always be available to me regardless of network connectivity.
 
-PRIORITY:
+PRIORITY: 2
 
 TEST CASES:
 
 13.	As a comment author, I want to edit my comment (because I don't have the grammars).
 
-PRIORITY:
+PRIORITY: 1
 
 TEST CASES:
 
 14.	As a comment author, if I have internet, I want my comments pushed and shared with all other users of the app immediately.
 
-PRIORITY:
+PRIORITY: 2
 
 TEST CASES:
 
 15.	As a user, I want to see the latest greatest comments immediately.
 
-PRIORITY:
+PRIORITY: 1
 
 TEST CASES:
 
 16.	As a user, be default, I should see the most fresh comments.
 
-PRIORITY:
+PRIORITY: 2
 
 TEST CASES:
 
 17.	As a comment author, my geo-location should be the default location of the comment I am authoring.
 
-PRIORITY:
+PRIORITY: 1
 
 TEST CASES:
 
 18.	As a comment author, I want to change the geo-location of my comment.
 
-PRIORITY:
+PRIORITY: 2
 
 TEST CASES:
 
 19.	As a user, if my phone connects to the internet while this app is open it should load all the latest and greatest and most relevant comments. For example imagine you're on the LRT and you get off at Health Sciences and now you have 3G again, you want those comments that are new and near Health Sciences.
 
-PRIORITY:
+PRIORITY: 2
 
 TEST CASES:
 
 20.	As a comment author, I set my username.
 
-PRIORITY:
+PRIORITY: 1
 
 TEST CASES:
 
 21.	As a comment reader I see the commentor's username.
 
-PRIORITY:
+PRIORITY: 1
 
 TEST CASES:
