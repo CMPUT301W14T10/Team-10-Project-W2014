@@ -49,9 +49,9 @@ Exceptions:
 	  not available and the sort by location criteria is unchanged(?)
 
 Use Case Name: AddHeadComment
-Participating Actors: App User
+Participating Actors: App User, other users
 Goal: A new head comment is created based on the information added by the user
-and made available to all users to view.
+and made available to all other users to view.
 Trigger: User chooses the add option from the action bar in the activity that 
 displays head comments
 Pre-condition:
@@ -80,3 +80,22 @@ Exceptions:
         4.1 Display a toast telling the user that the comment will be submitted 
 	when an internet connection is available and return them to the head
 	comment screen.
+
+Use Case Name: BrowseHeadComments
+Participating Actors: App User
+Goal: Display a list of the top comments for the user
+Trigger: User opens the app, or hits back until they end up back at the head 
+comment screen
+Pre-Condition: None(?)
+Post-condition: A list of Head comments are shown, sorted by the user's specific
+criteria.
+Basic Flow:
+      1. User opens app or returns to the head comment screen(back button was
+      pressed)
+Exceptions:
+      1 User opens the app for the first time
+      	1.1 Show the initial set username screen and only show the Head comment
+	scren when they enter a username or hit cancel.
+
+
+Use Case Name: 
