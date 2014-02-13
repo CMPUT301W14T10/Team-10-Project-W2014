@@ -47,3 +47,36 @@ Exceptions:
       the app.
       	  7.1 Application displays a toast stating that the user's location is
 	  not available and the sort by location criteria is unchanged(?)
+
+Use Case Name: AddHeadComment
+Participating Actors: App User
+Goal: A new head comment is created based on the information added by the user
+and made available to all users to view.
+Trigger: User chooses the add option from the action bar in the activity that 
+displays head comments
+Pre-condition:
+Post-condition: User's head comment is pushed to the database and can be viewed
+on all users' devices.
+Basic Flow:
+      1. User touches the add icon on the action bar in the view of head 
+      comments
+      2. New screen appears prompting user for title, username, content(i.e. the
+      text of the comment), picture and location. Location defaults to the
+      user's current location(if available) and the username field defaults to 
+      the username chosen beforehand by the user(unless the user has not entered
+      a username yet, in which case the field is left blank).
+      3. User enters appropriate information and clicks "submit"(?)
+      4. The comment is pushed to the database so that it can be displayed on 
+      all users' devices.
+      5. The user is sent back to the head comments view.
+Exceptions:
+      2 The user hits the back button
+      	2.1 send the user back to the head comment screen
+      3 If one of the necessary fields(username, location, title) is left blank
+      	3.1 display a dialog telling the user that the comment cannot be 
+	submitted because these fields are blank. When the user hits okay, the
+	dialog goes away and they can continue editing their comment.
+      4. The user has no internet connection
+        4.1 Display a toast telling the user that the comment will be submitted 
+	when an internet connection is available and return them to the head
+	comment screen.
