@@ -87,8 +87,8 @@ Goal: Display a list of the top comments for the user
 Trigger: User opens the app, or hits back until they end up back at the head 
 comment screen
 Pre-Condition: None(?)
-Post-condition: A list of Head comments are shown, sorted by the user's specific
-criteria.
+Post-condition: A list of Head comments are shown, sorted by the user's 
+specified criteria.
 Basic Flow:
       1. User opens app or returns to the head comment screen(back button was
       pressed)
@@ -98,4 +98,24 @@ Exceptions:
 	scren when they enter a username or hit cancel.
 
 
-Use Case Name: 
+Use Case Name: BrowseSubComments
+Participating Actors: App User
+Goal: Display a list of replies to a head comment and the repolies to those 
+replies.
+Trigger: User touches a head comment on the head comment list screen.
+Pre-condition: Their must be a head comment to see replies to.
+Post-condition: A list of replies to the head comment is shown, and the replies 
+to those replies, sorted by the user's specified criteria.
+Basic Flow:
+      1. User clicks on a head comment on the head comment screen.
+      2. Another screen is opened, showing the head comment at the top and the
+      list of replies below.
+Exceptions:
+      2 User does not have an internet connection(i.e. the head comment is only
+      in the cache.
+      	2.1 Show screen, but instead of the comment replies, display a message
+	saying that replies are not available due to no internet access.
+
+Use Case Name: ReplyToComment
+Participating Actors: App User, other users
+Goal: The app user can add a reply to 
