@@ -1,0 +1,49 @@
+Use Case Name: SortByProximityToUser
+Participating Actors: App User
+Goal: sort/do not sort by location according to the user's preferences.
+Trigger: User chooses the sort by option in settings
+Pre-condition: The user's location is available to the app.
+Post-condition: Comments are sorted/not sorted in increasing order of 
+distance from the user's current location, depending on the user's selection.
+Basic Flow:
+      1. User selects the settings icon from the action bar.
+      2. A drop-down menu of settings options appears
+      3. User selects the "sort" option.
+      4. Dialog appears with options to adjust sorting by each criterion.
+      5. User selects the sort by location option.
+      6. A drop-down menu of locations appears, two of which are "do not sort by
+      location" and "my location"(?)
+      7. User selects "my location" or some other criterion.
+      8. App does/does not sort comments by proximity to the user's location, 
+      based on the user's selection.
+Exceptions:
+      7 If the user's location is not available to the app, but the user selects
+      "my location"
+      	8.1 Application displays a toast stating that user's location is not
+	available and the sort by location criteria is unchanged(?)
+
+Use Case Name: SortByProximityToLocation
+Participating Actors: App User
+Goal: sort/do not sort by proxiomity to some location
+Trigger: User chooses the sort by option in settings
+Pre-condition: Some other location(besides the user's current location) is
+available.
+Post-condition: Comments are sorted/not sorted by increasing distance from some
+location.
+Basic Flow:
+      1. User selects the settings icon from the action bar.
+      2. Drop down menu of settings options appears.
+      3. User selects "sort" option from drop down menu.
+      4. Dialog appears with options to adjust sorting by each criterion.
+      5. User selects the sort by location option.
+      6. A drop-down menu of location options appears, two of which are "do not 
+      sort by location" and "my location"(?)
+      7. User selects an option.
+      8. The comments are ordered by proximity to the location selected(or not
+      sorted by location if "do not sort by location" is selected), which may
+      be some other location than the user's location.
+Exceptions:
+      7 If the user selects my location, but their location is not available to
+      the app.
+      	  7.1 Application displays a toast stating that the user's location is
+	  not available and the sort by location criteria is unchanged(?)
