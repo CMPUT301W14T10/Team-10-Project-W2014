@@ -1,103 +1,109 @@
+User Story 1:
 Use Case Name: SortByProximityToUser
 Participating Actors: App User
-Goal: sort/do not sort by location according to the user's preferences.
-Trigger: User chooses the sort by option in settings
+Goal: sort by location according to the user's preferences.
+Trigger: User chooses the "sort by" option in settings.
 Pre-condition: The user's location is available to the app.
-Post-condition: Comments are sorted/not sorted in increasing order of 
-distance from the user's current location, depending on the user's selection.
+Post-condition: Comments are sorted in increasing order of 
+distance from the user's current location.
 Basic Flow:
       1. User selects the settings icon from the action bar.
       2. A drop-down menu of settings options appears
-      3. User selects the "sort" option.
+      3. User selects the "sort by" option.
       4. Dialog appears with options to adjust sorting by each criterion.
-      5. User selects the sort by location option.
-      6. A drop-down menu of locations appears, two of which are "do not sort by
-      location" and "my location"(?)
-      7. User selects "my location" or some other criterion.
-      8. App does/does not sort comments by proximity to the user's location, 
-      based on the user's selection.
+      5. User selects the "location" option.
+      6. A drop-down menu of locations appears 
+      7. user selects "my location"
+      8. App sorts comments by proximity to the user's location.
+      9. Display comments in increasing order of distance from user location.
 Exceptions:
-      7 If the user's location is not available to the app, but the user selects
+      6 User exits dialog without choosing location
+      (i.e. user presses back button)
+      	    6.1 Do not change sorting criteria.
+      8 If the user's location is not available to the app, but the user selects
       "my location"
-      	8.1 Application displays a toast stating that user's location is not
-	available and the sort by location criteria is unchanged(?)
+      	8.1 Option "my location" in drop-down menu is greyed out and instead
+	says "Current location unavailable".
 
+User Story 2:
 Use Case Name: SortByProximityToLocation
 Participating Actors: App User
-Goal: sort/do not sort by proxiomity to some location
-Trigger: User chooses the sort by option in settings
+Goal: Sort by proxiomity to some location.
+Trigger: User chooses the "sort by" option in settings.
 Pre-condition: Some other location(besides the user's current location) is
 available.
-Post-condition: Comments are sorted/not sorted by increasing distance from some
+Post-condition: Comments are sorted by increasing distance from some
 location.
 Basic Flow:
       1. User selects the settings icon from the action bar.
       2. Drop down menu of settings options appears.
-      3. User selects "sort" option from drop down menu.
+      3. User selects "sort by" option from drop down menu.
       4. Dialog appears with options to adjust sorting by each criterion.
-      5. User selects the sort by location option.
-      6. A drop-down menu of location options appears, two of which are "do not 
-      sort by location" and "my location"(?)
-      7. User selects an option.
-      8. The comments are ordered by proximity to the location selected(or not
-      sorted by location if "do not sort by location" is selected), which may
-      be some other location than the user's location.
+      5. User selects the "location" option.
+      6. A drop-down menu of location options appears.
+      7. User selects a location.
+      8. The comments are ordered by proximity to the location selected.
 Exceptions:
-      7 If the user selects my location, but their location is not available to
-      the app.
-      	  7.1 Application displays a toast stating that the user's location is
-	  not available and the sort by location criteria is unchanged(?)
+     6 User exits dialog without choosing location
+      (i.e. user presses back button)
+	6.1 Do not change sorting criteria.
 
+User Story 3:
 Use Case Name: AddHeadComment
 Participating Actors: App User, other users
 Goal: A new head comment is created based on the information added by the user
 and made available to all other users to view.
 Trigger: User chooses the add option from the action bar in the activity that 
 displays head comments
-Pre-condition:
+Pre-condition: User wants to create new head comment.
 Post-condition: User's head comment is pushed to the database and can be viewed
 on all users' devices.
 Basic Flow:
       1. User touches the add icon on the action bar in the view of head 
-      comments
-      2. New screen appears prompting user for title, username, content(i.e. the
-      text of the comment), picture and location. Location defaults to the
-      user's current location(if available) and the username field defaults to 
-      the username chosen beforehand by the user(unless the user has not entered
-      a username yet, in which case the field is left blank).
-      3. User enters appropriate information and clicks "submit"(?)
-      4. The comment is pushed to the database so that it can be displayed on 
+      comments.
+      2. App shows New screen appears prompting user for title, username, content
+      (i.e. the text of the comment), picture and location. 
+      3. Application defaults the username entry field to the global username.
+`     4. Application sets the location field to the user's current location.
+      5. User enters appropriate information 
+      6. User clicks "post"
+      7. The comment is pushed to the database so that it can be displayed on 
       all users' devices.
-      5. The user is sent back to the head comments view.
+      8. The user is sent back to the head comments view.
 Exceptions:
-      2 The user hits the back button
-      	2.1 send the user back to the head comment screen
-      3 If one of the necessary fields(username, location, title) is left blank
-      	3.1 display a dialog telling the user that the comment cannot be 
+      3  The user has not entered a global username yet. 
+      	 3.1 The username field defaults to blank.
+      4 the user's location is unavailable
+      	4.1 The location field defaults to blank.
+      5 The user hits the back button
+      	5.1 Send the user back to the head comment screen.
+      6 If one of the necessary fields(username, location, title) is left blank
+      	6.1 display a dialog telling the user that the comment cannot be 
 	submitted because these fields are blank. When the user hits okay, the
 	dialog goes away and they can continue editing their comment.
-      4. The user has no internet connection
-        4.1 Display a toast telling the user that the comment will be submitted 
+      7 The user has no internet connection
+        7.1 Display a toast telling the user that the comment will be submitted 
 	when an internet connection is available and return them to the head
 	comment screen.
 
+User Story 4:
 Use Case Name: BrowseHeadComments
 Participating Actors: App User
 Goal: Display a list of the top comments for the user
 Trigger: User opens the app, or hits back until they end up back at the head 
 comment screen
-Pre-Condition: None(?)
+Pre-Condition: 
 Post-condition: A list of Head comments are shown, sorted by the user's 
 specified criteria.
 Basic Flow:
-      1. User opens app or returns to the head comment screen(back button was
-      pressed)
+      1. User navigates to main list view activity
+      2. A list of the head comments is shown, sorted by the criteria set in  
+      "settings"->"sort by"
 Exceptions:
-      1 User opens the app for the first time
-      	1.1 Show the initial set username screen and only show the Head comment
-	scren when they enter a username or hit cancel.
+      2 User opens application with no internet connection or cached comments
+      	2.1 Could not load comments is shown instead of comment list.
 
-
+User Story 5:
 Use Case Name: BrowseSubComments
 Participating Actors: App User
 Goal: Display a list of replies to a head comment and the repolies to those 
@@ -112,10 +118,51 @@ Basic Flow:
       list of replies below.
 Exceptions:
       2 User does not have an internet connection(i.e. the head comment is only
-      in the cache.
+      in the cache).
       	2.1 Show screen, but instead of the comment replies, display a message
 	saying that replies are not available due to no internet access.
 
+User Story 6:
 Use Case Name: ReplyToComment
 Participating Actors: App User, other users
-Goal: The app user can add a reply to 
+Goal: The app user can add a reply to any head comment or sub comment, and this
+reply is pushed to the database and can be viewed by other users with internet 
+access.
+Trigger: On the screen that shows a head comment and its replies, the user 
+clicks reply on the action bar or the reply button under one of the sub 
+comments.
+Pre-condition: User wants to submit reply.
+Post-condition: User's reply is pushed to the database and can be viewed
+on all users' devices.
+Basic Flow:
+      1. User touches a head comment in the main list view activity.
+      2. User clicks reply in the action bar(to reply to head comment) or reply
+      in some sub comment(to reply to that sub comment).
+      3. App shows New screen appears prompting user for title, username, content
+      (i.e. the text of the comment), picture and location. 
+      4. Application defaults the username entry field to the global username.
+`     5. Application sets the location field to the user's current location if
+      the user's location is available(left blank otherwise).
+      6. User enters appropriate information.
+      7. User clicks "post".
+      8. The comment is pushed to the database so that it can be displayed on 
+      all users' devices.
+      9. The user is sent back to the head comments view.
+Exceptions:
+      4  The user has not entered a global username yet. 
+      	4.1 The username field defaults to blank.
+      5 The user's location is unavailable
+      	5.1 The location field defaults to blank.
+      6 The user hits the back button
+      	6.1 Send the user back to the head comment screen
+      7 One of the necessary fields(username, location, title) is left blank
+      	7.1 Display a dialog telling the user that the comment cannot be 
+	posted because these fields are blank. When the user hits okay, the
+	dialog goes away and they can continue editing their comment.
+      8 The user has no internet connection
+        8.1 Display a toast telling the user that the comment will be submitted 
+	when an internet connection is available and return them to the head
+	comment screen.
+
+User Story 7:
+Use Case Name: 
