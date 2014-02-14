@@ -1,0 +1,20 @@
+CSC 3-26 At 5:00 pm
+
+-dialog boxes:
+	-Discussed how they should look
+	-add new location option at top of sort by(in settings) and 
+	set(in adding comment) location drop-down menus.
+-have location changeable in editing comment
+-Each use case must correspond to storyboard
+-Discussed things to complete in meeting:
+	   -Use cases
+	   -comment/colorize UMl
+	   -Review tests for use cases
+	   -add sort/cache definitions to glossary
+	   -add release planning to glossary
+	   -Add LICENSE to glossary
+-Chose Apache v2 license as a group
+-Set up license file in the repo
+-Added LICENSE to glossary
+-Storyboard and UI mockup are the same for us
+-
