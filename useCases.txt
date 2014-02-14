@@ -165,12 +165,119 @@ Exceptions:
 	comment screen.
 
 User Story 7:
-Use Case Name: AttachPictureToComment
+Use Case Name: AttachPictureToNewHeadComment
 Participating Actors: App User, other users
-Goal: user can attach a picture to a new comment they are authoring. This picture
+Goal: user can attach a picture to a new head comment they are authoring. This picture
 will be pushed with the comment to the database so that it can be viewed by
 other users.
 Trigger: User touches the camera icon on the create comment screen
 Pre-condition: User wants to add a picture to their comment.
-Post-condition: The added picture is pushed to the database and can be viewed
-by other users
+Post-condition: The added picture is pushed to the database and can be viewed by other users
+Basic Flow:
+	1. User clicks add icon on action bar from head comment view.
+    	2. App shows New screen appears prompting user for title, username, content
+      	(i.e. the text of the comment), picture and location. 
+      	3. Application defaults the username entry field to the global username.
+`     	4. Application sets the location field to the user's current location.
+     	5. User enters appropriate information
+	6. User clicks on the camera icon
+	7. The Appropriate dialog appears asking the user which application to use to select/generate a picture to add.(?)
+	8. User selects a picture to add. 
+	9. User is returned to the comment editing screen. 
+	10. The user's picture is shown in place of the "no image" icon
+     	11. User clicks "post"
+     	12. The comment is pushed to the database so that it can be displayed on 
+     	all users' devices.
+     	13. The user is sent back to the head comments view.
+Exceptions:
+      3  The user has not entered a global username yet. 
+      	3.1 The username field defaults to blank.
+      4 The user's location is unavailable
+      	4.1 The location field defaults to blank.
+      5 The user hits the back button
+      	5.1 Send the user back to the head comment screen
+      10 The user did not select an image, but instead hit the back button or cancelled.
+	10.1 The "no image" icon is maintained.
+      11 One of the necessary fields(username, location, title) is left blank
+      	7.1 Display a dialog telling the user that the comment cannot be 
+	posted because these fields are blank. When the user hits okay, the
+	dialog goes away and they can continue editing their comment.
+      12 The user has no internet connection
+        12.1 Display a toast telling the user that the comment will be submitted 
+	when an internet connection is available and return them to the head
+	comment screen.
+
+
+
+User Story 10:
+use case: ReadCommentLater
+Participating Actors: User
+Goal: The user can add comments to a list of comments to read later, which are stored on their phone and can be accessed later even without an internet connection.
+Pre-condition: user wants to add a comment to their "read later" list
+Post-condition: User can view any comment added to this list offline at any point in time until it is removed.
+Basic Flow:
+	1. User navigates to either the head comment list view or the sub comment list       view.
+	2. The user clicks the "read later" button on a comment.
+	3. The application saves the comment and its replies to file.
+	4. The user returns later with or without an internet connection and the comment is available to them.
+Exceptions:
+	3 The reader has no internet connection and only the head comment is stored in cache.(?)
+		3.1
+
+Use Case: CacheReadComments
+Participating Actors: App User
+Goal: Users can continue reading comments that were loaded on their phone if they lose their internet connection.
+Pre-condition: User has an internet connection.
+Post-condition: User can read loaded comments even if they lose internet connection.
+Basic Flow:
+	1. User navigates to head comment view
+	2. Head comments are stored in cache
+    3. User clicks a head comment.
+    4. Replies to this head comment are stored in cache
+    5. User returns later, with or without internet connection
+    6. User can still view head and sub comments
+Exceptions:
+    2 User does not have enough space on phone to cache comments
+        2.1 Display message warning user that the phone has little space(?)
+    4 User does not have enough space on their phone  to cache comments
+         4.1 Display message warning user that the phone has little space(?)
+
+User story 13:
+Use Case: UserEditsComment
+Participating actors: App User, other users
+Goal: User can edit comments they posted previously, and their changes are pushed to the server and can be seen on other users' phones
+Pre-condition: User is on the same device and has the same username as when the comment was posted.
+Post-condition: User's changes are pushed to the server and can be seen on other users' devices that have an internet connection.
+Basic Flow:
+    1. User clicks "more" on a comment(?)
+    2. Dialog menu appears with options, one of which is "edit"(?)
+    3. User clicks "edit".
+    4. A new screen comes up that allows them to enter information about the comment, with each field defaulting to their current values.
+    5. The user enters the new information for the comment.
+    6. The user clicks "post".
+    7. The comment changes are pushed to the server.
+    8. The user is returned to the view of comments.
+Exceptions:
+    3 The user either has a different username or is on a different device and is therefore not allowed to edit the comment.
+        3.1 The "edit" button is greyed out and cannot be clicked
+    7 The user has no internet connection.
+        7.1 A toast tells the user that the message will be sent when an internet connection is available.
+
+User Story 15:
+Use Case:  SeeLatestGreatestComments
+Participating Actors: User
+Goal: When the user first opens the app,  comments are sorted by date and popularity.
+Pre-condition: User wants to see comments.
+Post-condition: Comments are shown, sorted by popularity.
+Basic Flow:
+    1. User opens the app for the first time.
+    2. App shows screen prompting user for global username.
+    3. User enters username and clicks "set" or user clicks"Set username
+later"
+    4. A list of head comments is shown, sorted by date and popularity.
+     5. User clicks head comment.
+     6. The head comment is shown, with the replies beneath, sorted by date and popularity.
+     7. Until the user changes the sorting settings, comments are organized by date and popularity.
+Exceptions:
+    4 No internet connection is available.
+         4.1 Instead of the list of head comments, a message is displayed saying that no internet connection is available.
