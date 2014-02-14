@@ -165,4 +165,12 @@ Exceptions:
 	comment screen.
 
 User Story 7:
-Use Case Name: 
+Use Case Name: AttachPictureToComment
+Participating Actors: App User, other users
+Goal: user can attach a picture to a new comment they are authoring. This picture
+will be pushed with the comment to the database so that it can be viewed by
+other users.
+Trigger: User touches the camera icon on the create comment screen
+Pre-condition: User wants to add a picture to their comment.
+Post-condition: The added picture is pushed to the database and can be viewed
+by other users
