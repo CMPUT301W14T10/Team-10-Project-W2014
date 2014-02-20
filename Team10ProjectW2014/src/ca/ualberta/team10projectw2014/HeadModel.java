@@ -14,25 +14,17 @@
    limitations under the License.
  */
 
-package ca.ualberta.team10projectw2014;
+package ca.ualberta.cmput301.as1.czervos_notes;
 
 import java.util.ArrayList;
+import ca.ualberta.team10projectw2014.CommentModel;
 
 /**
- * This class acts as the model for the sub comments.
+ * This class acts as the model for the head comments.
  * @author Costa Zervos
  */
-public class SubCommentModel extends CommentModel{
+public class HeadModel extends CommentModel {
 	private ArrayList<CommentModel> subComments = new ArrayList<CommentModel>();
-	private CommentModel respondedTo;
-
-	/**
-	 * Constructor method that sets the comment this sub comment is responding to.
-	 * @param text the String to name the counter.
-	 */
-	public SubCommentModel(CommentModel parentComment) {
-		this.respondedTo = parentComment;
-	}
 
 	
 	public ArrayList<CommentModel> getSubComments() {
@@ -43,14 +35,6 @@ public class SubCommentModel extends CommentModel{
 	public void setSubComments(ArrayList<CommentModel> subComments) {
 		this.subComments = subComments;
 	}
-
 	
-	public CommentModel getRespondedTo() {
-		return respondedTo;
-	}
-
 	
-	public void setRespondedTo(CommentModel respondedTo) {
-		this.respondedTo = respondedTo;
-	}
 }
