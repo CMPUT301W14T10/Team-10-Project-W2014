@@ -18,6 +18,10 @@ package ca.ualberta.team10projectw2014;
 
 import java.util.ArrayList;
 
+/**
+ * This class acts as the model for the User.
+ * @author Steven Giang
+ */
 public class UserModel {
 	private int androidID;
 	private ArrayList<CommentModel> favourites;
