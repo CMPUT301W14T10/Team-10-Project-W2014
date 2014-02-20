@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2014 Cole Fudge, Steven Giang, Bradley Poulette, David Yee, and Costa Zervos
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,10 +18,11 @@
 package ca.ualberta.team10projectw2014;
 
 
-/* 
+/**
  * This class takes care of storing each location in the system.
  * Will be used more in Project Part 4 than Part 3.
  * Should not be aware of other locations.
+ * @author Bradley Poulette
  * */
 
 public class LocationModel {
