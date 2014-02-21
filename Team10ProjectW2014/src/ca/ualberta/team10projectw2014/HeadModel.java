@@ -14,7 +14,7 @@
    limitations under the License.
  */
 
-package ca.ualberta.cmput301.as1.czervos_notes;
+package ca.ualberta.team10projectw2014;
 
 import java.util.ArrayList;
 import ca.ualberta.team10projectw2014.CommentModel;
