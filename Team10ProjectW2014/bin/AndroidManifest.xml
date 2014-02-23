@@ -22,6 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="ca.ualberta.team10projectw2014.CreateCommentActivity">
+            
+        </activity>
     </application>
-
 </manifest>
