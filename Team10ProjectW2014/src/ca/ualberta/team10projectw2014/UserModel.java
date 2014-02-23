@@ -36,7 +36,7 @@ public class UserModel {
 		this.favourites = new ArrayList<CommentModel>();
 		this.readComments = new ArrayList<CommentModel>();
 		this.wantToReadComments = new ArrayList<CommentModel>();
-		String Username = "null";
+		this.Username = "null";
 	}
 
 	// Constructor for old user (load from file)
