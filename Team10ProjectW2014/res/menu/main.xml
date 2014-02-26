@@ -1,9 +1,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <item android:id="@+id/sort_comments"
+    	android:icon="@drawable/ic_action_sort_by_size"
+    	android:title="@string/action_sort_counters"
+		android:showAsAction= "ifRoom" />
 
+    <item android:id="@+id/add_comment"
+    	android:icon="@drawable/ic_action_new"
+    	android:title="@string/action_add_counter"
+		android:showAsAction= "ifRoom" />
+    	
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        android:showAsAction="ifRoom"
         android:title="@string/action_settings"/>
 
 </menu>
