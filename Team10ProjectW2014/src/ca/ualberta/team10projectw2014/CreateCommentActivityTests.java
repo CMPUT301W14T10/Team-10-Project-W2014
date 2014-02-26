@@ -35,11 +35,69 @@ public class CreateCommentActivityTests extends
 			public void run(){
 				CreateCommentActivity activity = getActivity();
 				
-				activity.fillContents();
+				activity.fillContents(null, null);
 				
 				assertEquals("contentText should be blank", contentText.getText().toString(), "");
 				assertEquals("titleText should be blank", titleText.getText().toString(), "");
 				assertEquals("usernameText should be blank", usernameText.getText().toString(), "");
+				
+			}
+		});
+		
+	}
+
+	public void testCreateNewHeadCommentWithUsername() throws Throwable{
+		
+		final String username = "Joseph";
+		runTestOnUiThread(new Runnable(){
+			@Override
+			public void run(){
+				CreateCommentActivity activity = getActivity();
+				
+				activity.fillContents(username, null);
+				
+				assertEquals("contentText should be blank", contentText.getText().toString(), "");
+				assertEquals("titleText should be blank", titleText.getText().toString(), "");
+				assertEquals("usernameText should be username", usernameText.getText().toString(), username);
+				
+			}
+		});
+		
+	}
+	
+	public void testCreateNewSubCommentWithoutUsername() throws Throwable{
+		
+		final String title = "TITLE STRING";
+		runTestOnUiThread(new Runnable(){
+			@Override
+			public void run(){
+				CreateCommentActivity activity = getActivity();
+				
+				activity.fillContents(null, title);
+				
+				assertEquals("contentText should be blank", contentText.getText().toString(), "");
+				assertEquals("titleText should be title", titleText.getText().toString(), title);
+				assertEquals("usernameText should be blank", usernameText.getText().toString(), "");
+				
+			}
+		});
+		
+	}
+	
+	public void testCreateNewSubCommentWithUsername() throws Throwable{
+		
+		final String title = "TITLE STRING";
+		final String username = "USERNAME";
+		runTestOnUiThread(new Runnable(){
+			@Override
+			public void run(){
+				CreateCommentActivity activity = getActivity();
+				
+				activity.fillContents(username, title);
+				
+				assertEquals("contentText should be blank", contentText.getText().toString(), "");
+				assertEquals("titleText should be title", titleText.getText().toString(), title);
+				assertEquals("usernameText should be username", usernameText.getText().toString(), username);
 				
 			}
 		});
