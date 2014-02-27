@@ -9,4 +9,11 @@ public class CommentDataController {
 		return null;
 	}
 
+	public void clearCommentList()
+	{
+
+		// TODO Auto-generated method stub
+		
+	}
+
 }

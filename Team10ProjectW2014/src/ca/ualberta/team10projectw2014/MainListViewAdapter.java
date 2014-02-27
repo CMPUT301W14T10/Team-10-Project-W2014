@@ -13,5 +13,12 @@ public class MainListViewAdapter extends ArrayAdapter<HeadModel>{
 		// TODO Auto-generated constructor stub
 	}
 
+	public void clearAdapter()
+	{
+
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }
