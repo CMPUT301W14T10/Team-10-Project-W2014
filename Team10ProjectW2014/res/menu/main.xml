@@ -1,13 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     
     <item android:id="@+id/sort_comments"
-    	android:icon="@drawable/ic_action_sort_by_size"
-    	android:title="@string/action_sort_counters"
+    	android:icon="@drawable/ic_action_sort_by"
+    	android:title="@string/action_sort_by"
 		android:showAsAction= "ifRoom" />
 
     <item android:id="@+id/add_comment"
     	android:icon="@drawable/ic_action_new"
-    	android:title="@string/action_add_counter"
+    	android:title="@string/action_add_head_comment"
 		android:showAsAction= "ifRoom" />
     	
     <item

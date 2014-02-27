@@ -5,5 +5,6 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>    
     <string name="desc">The picture the user posted with this comment.</string>
-    
+    <string name="action_add_head_comment">Add Head Comment</string>
+    <string name="action_sort_by">Sort Comments By..</string>
 </resources>
