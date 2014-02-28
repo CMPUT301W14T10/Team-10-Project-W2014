@@ -18,6 +18,7 @@ package ca.ualberta.team10projectw2014;
 
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,19 @@ public class MainListViewAdapter extends BaseAdapter {
 		TextView textLocation;
 		TextView textTime;
 		ImageView imageView;
+	}
+	
+	/**
+	 * Constructor that sets the layout inflater and retrieves the head comment 
+	 * list.
+	 * @param context the layout of the activity.
+	 * @param commentList the ArrayList<HeadModel> object containing head
+	 * comments.
+	 */
+	public MainListViewAdapter(Context context, 
+			ArrayList<HeadModel> commentList) {
+		inflater = LayoutInflater.from(context);
+		this.HeadCommentList = commentList;
 	}
 	
 	/**
