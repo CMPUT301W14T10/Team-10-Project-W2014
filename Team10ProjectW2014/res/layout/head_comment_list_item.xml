@@ -3,5 +3,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     
+    <TextView
+        android:id="@+id/head_comment_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:textSize="30sp"
+        android:text="Head Comment Title" />
+    
+    <TextView
+        android:id="@+id/head_comment_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/head_comment_title"
+        android:textSize="10sp"
+        android:text="Username" />
+    
+    <TextView
+        android:id="@+id/head_comment_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/head_comment_title"
+        android:layout_toRightOf="@id/head_comment_username"
+        android:textSize="10sp"
+        android:text="Location" />
+    
+    <TextView
+        android:id="@+id/head_comment_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/head_comment_username"
+        android:layout_alignParentLeft="true"
+        android:textSize="10sp"
+        android:text="Time" />
+        
 
 </RelativeLayout>
