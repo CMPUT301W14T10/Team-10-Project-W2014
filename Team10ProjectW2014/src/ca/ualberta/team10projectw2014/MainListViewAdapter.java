@@ -35,6 +35,17 @@ public class MainListViewAdapter extends BaseAdapter {
 	private ArrayList<HeadModel> HeadCommentList;
 	
 	/**
+	 * Initializes textview objects to be added to the ListView.
+	 */
+	private class ViewHolder {
+		TextView textTitle;
+		TextView textUsername;
+		TextView textLocation;
+		TextView textTime;
+		ImageView imageView;
+	}
+	
+	/**
 	 * Gets the number of counters in the array of counter models.
 	 * @return the number of counters in the list as an int.
 	 */
