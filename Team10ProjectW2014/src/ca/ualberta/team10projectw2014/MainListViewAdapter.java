@@ -60,8 +60,8 @@ public class MainListViewAdapter extends BaseAdapter {
 	}
 	
 	/**
-	 * Gets the number of counters in the array of counter models.
-	 * @return the number of counters in the list as an int.
+	 * Gets the number of head comments in the array of head comments.
+	 * @return the number of head comments in the list as an int.
 	 */
 	public int getCount() {
 		return headCommentList.size();
