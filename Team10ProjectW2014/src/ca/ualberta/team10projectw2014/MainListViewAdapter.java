@@ -72,7 +72,36 @@ public class MainListViewAdapter extends BaseAdapter {
 	 * @return view to be displayed. 
 	 */
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// TODO complete method
+		ViewHolder holder = null;
+		if (convertView == null) {
+			// If view is empty, create a new viewholder
+			holder = new ViewHolder();
+			// Add head_comment_list_item data to the view
+			convertView = inflater.inflate(R.layout.head_comment_list_item, 
+					null);
+			// Add the four textviews used in each list entry to the holder
+			holder.textTitle = (TextView) convertView.
+					findViewById(R.id.head_comment_title);
+			holder.textUsername = (TextView) convertView.
+					findViewById(R.id.head_comment_username);
+			holder.textLocation = (TextView) convertView.
+					findViewById(R.id.head_comment_location);
+			holder.textTime = (TextView) convertView.
+					findViewById(R.id.head_comment_time);
+			// Add the holder data to the view
+			convertView.setTag(holder);
+		}
+		else {
+			// If View is not empty, set viewholder to this view via tag
+			holder = (ViewHolder) convertView.getTag();
+		}
+		
+		holder.textTitle.setText(headCommentList.get(position).getTitle());
+		holder.textUsername.setText(headCommentList.get(position).getAuthor());
+		// TODO get Location and convert it to a format that can be displayed
+		// TODO get Date and convert it to a format that can be displayed
+		
+		// TODO implement imageview 
 		return convertView;
 	}
 	
