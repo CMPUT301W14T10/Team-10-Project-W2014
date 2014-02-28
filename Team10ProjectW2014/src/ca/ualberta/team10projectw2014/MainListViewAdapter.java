@@ -33,7 +33,7 @@ import android.widget.TextView;
 public class MainListViewAdapter extends BaseAdapter {
 
 	private LayoutInflater inflater;
-	private ArrayList<HeadModel> HeadCommentList;
+	private ArrayList<HeadModel> headCommentList;
 	
 	/**
 	 * Initializes textview objects to be added to the ListView.
@@ -56,7 +56,7 @@ public class MainListViewAdapter extends BaseAdapter {
 	public MainListViewAdapter(Context context, 
 			ArrayList<HeadModel> commentList) {
 		inflater = LayoutInflater.from(context);
-		this.HeadCommentList = commentList;
+		this.headCommentList = commentList;
 	}
 	
 	/**
@@ -64,7 +64,7 @@ public class MainListViewAdapter extends BaseAdapter {
 	 * @return the number of counters in the list as an int.
 	 */
 	public int getCount() {
-		return HeadCommentList.size();
+		return headCommentList.size();
 	}
 	
 	/**
@@ -81,7 +81,7 @@ public class MainListViewAdapter extends BaseAdapter {
 	 * @return the head comment.
 	 */
 	public HeadModel getItem(int position) {
-		return HeadCommentList.get(position);
+		return headCommentList.get(position);
 		}
 	
 	/**
