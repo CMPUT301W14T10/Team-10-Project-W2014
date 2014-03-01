@@ -96,9 +96,11 @@ public class MainListViewAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		
+		
 		holder.textTitle.setText(headCommentList.get(position).getTitle());
 		holder.textUsername.setText(headCommentList.get(position).getAuthor());
-		// TODO get Location and convert it to a format that can be displayed
+		holder.textLocation.setText(headCommentList.get(position).getLocation().
+				getName());
 		// TODO get Date and convert it to a format that can be displayed
 		
 		// TODO implement imageview 
