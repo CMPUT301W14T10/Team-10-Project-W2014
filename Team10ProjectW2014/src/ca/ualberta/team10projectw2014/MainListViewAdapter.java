@@ -16,7 +16,9 @@
 
 package ca.ualberta.team10projectw2014;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -34,6 +36,8 @@ public class MainListViewAdapter extends BaseAdapter {
 
 	private LayoutInflater inflater;
 	private ArrayList<HeadModel> headCommentList;
+	private SimpleDateFormat sdf;
+	private String timeString;
 	
 	/**
 	 * Initializes textview objects to be added to the ListView.
@@ -96,12 +100,14 @@ public class MainListViewAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		
-		
+		// Grabs strings to be displayed for each head comment in the list
 		holder.textTitle.setText(headCommentList.get(position).getTitle());
 		holder.textUsername.setText(headCommentList.get(position).getAuthor());
 		holder.textLocation.setText(headCommentList.get(position).getLocation().
 				getName());
-		// TODO get Date and convert it to a format that can be displayed
+		// String for time retrieved using private method
+		holder.textTime.setText(this.timeToString(headCommentList.get(position).
+				getTimestamp()));
 		
 		// TODO implement imageview 
 		return convertView;
@@ -123,6 +129,17 @@ public class MainListViewAdapter extends BaseAdapter {
 		return position;
 		}
 	
+	/**
+	 * Takes in the timestamp as a Calendar object and converts it to a string
+	 * that can be used in a textView.
+	 * @param calendar object to retrieve string from
+	 * @return string of the formatted date of the timestamp
+	 */
+	private String timeToString (Calendar calendar) {
+		sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:00 aa");
+		timeString = sdf.format(calendar.getTime());
+		return timeString;
+	}
 	
 	
 }
