@@ -3,6 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/cc_title"
+        android:hint="@string/create_comment_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10" />
     
+    	
+
+    <EditText
+        android:id="@+id/cc_username"
+        android:hint="@string/create_comment_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10" />
+
+        
+    
+    <EditText
+        android:id="@+id/cc_content"
+        android:hint="@string/create_comment_content"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:ems="10" >
+        
+        <requestFocus />
+    </EditText>
 
 </LinearLayout>
