@@ -15,7 +15,11 @@
     <string name="long_title">Long Title</string>
     <string name="written_by">Written By: Username</string>
     <string name="location_time">Location - Time</string>
-    
-    <string name="text_body">Some example text.</string>
+    <string name="text_body">Some example text. Some example text. Some example text. 
+        					 Some example text. Some example text. Some example text. 
+        					 Some example text. Some example text. Some example text. 
+        					 Some example text. Some example text. Some example text. 
+        					 Some example text. Some example text. Some example text. 
+        					 Some example text. Some example text. Some example text. </string>
 
 </resources>
