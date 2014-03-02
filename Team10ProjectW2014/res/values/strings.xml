@@ -11,5 +11,11 @@
     <string name="action_want_to_read">Want to Read</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_sub_comment_view">SubCommentViewActivity</string>
+    <string name="head_comment_image">Head Comment Image</string>
+    <string name="long_title">Long Title</string>
+    <string name="written_by">Written By: Username</string>
+    <string name="location_time">Location - Time</string>
+    
+    <string name="text_body">Some example text.</string>
 
 </resources>

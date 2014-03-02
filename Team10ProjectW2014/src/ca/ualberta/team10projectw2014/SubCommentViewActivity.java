@@ -28,9 +28,13 @@ public class SubCommentViewActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sub_comment_view);
+		
+		//Disable the Home Icon and the title on the Actionbar
 		ActionBar actionbar = getActionBar();
 		actionbar.setDisplayShowHomeEnabled(false);
-		actionbar.setTitle("SubCommentActivity");
+		actionbar.setTitle("");
+		
+		
 	}
 
 	@Override
