@@ -27,7 +27,9 @@
         android:hint="@string/create_comment_content"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:ems="10" >
+        android:ems="10"
+        android:singleLine="false"
+        android:gravity="top" >
         
         <requestFocus />
     </EditText>
