@@ -78,7 +78,7 @@
         android:layout_below="@id/head_comment_text_body"
         android:layout_alignParentRight="true"
         android:background="?android:attr/selectableItemBackground"
-        android:text="@string/more"
+        android:text="@string/more_option"
         android:textSize="14sp"  />
     
     
