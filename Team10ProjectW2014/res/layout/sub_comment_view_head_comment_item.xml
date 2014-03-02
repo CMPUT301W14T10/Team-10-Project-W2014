@@ -5,7 +5,7 @@
     android:orientation="horizontal"
     android:padding="5dip" >
 
-    <!-- ListRow Left sied Thumbnail image -->
+   <!-- ListRow Right sided Thumbnail image -->
 
     <LinearLayout
         android:id="@+id/head_comment_thumbnail"
@@ -20,7 +20,7 @@
             android:layout_width="75dip"
             android:layout_height="75dip"
             android:background="#000000"
-            android:contentDescription="@string/head_comment_image" />
+            android:contentDescription="@string/comment_image" />
     </LinearLayout>
 
     <!-- Long title of head comment -->
