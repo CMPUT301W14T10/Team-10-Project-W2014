@@ -60,7 +60,14 @@ public class MainListViewActivity extends Activity{
 		}
 	};
 	
-	//
+	private static Comparator popularityCompare = new Comparator(){
+		public int compare(Object comment1, Object comment2){
+			int favs1 = ((HeadModel) comment1).getNumFavourites();
+			int favs2 = ((HeadModel) comment2).getNumFavourites();
+			return (favs1 - favs2);
+		}
+	};
+	
 	/**
 	 * Prepares the view to display the activity.
 	 */
@@ -73,9 +80,6 @@ public class MainListViewActivity extends Activity{
 		//Getting the head comment list view defined in the XML file:
 		commentView = (ListView) findViewById(R.id.HeadCommentList);
 		
-		//We're going to need a context menu for each comment, so:
-		registerForContextMenu(commentView);
-		
 		//Use the comment controller to load the head comments from file:
 		commentList = (ArrayList<HeadModel>) commentDataController.loadFromFile();
 		
@@ -83,6 +87,10 @@ public class MainListViewActivity extends Activity{
 		adapter = new MainListViewAdapter(this, commentList);
 	}
 
+	
+	/**
+	 * Sets up action bar options
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu){
 		// Inflate the menu; this adds items to the action bar if present.
@@ -100,7 +108,6 @@ public class MainListViewActivity extends Activity{
 		super.onStart(); 
 		setContentView(R.layout.activity_head_comment_view);
 		commentView = (ListView) findViewById(R.id.HeadCommentList);
-		registerForContextMenu(commentView);
 		
 		//If adapter exists, clear it and reload comments(i.e. refresh)
 		if(adapter != null){
@@ -123,8 +130,6 @@ public class MainListViewActivity extends Activity{
 		super.onResume(); 
 		setContentView(R.layout.activity_head_comment_view);
 		commentView = (ListView) findViewById(R.id.HeadCommentList);
-		registerForContextMenu(commentView);
-		commentDataController.clearCommentList();
 		if(adapter != null){
 			commentList.clear();
 			adapter.notifyDataSetChanged();
@@ -137,6 +142,9 @@ public class MainListViewActivity extends Activity{
 		
 	}	
 	
+	/**
+	 * Responds to selection of options from the action bar:
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		switch(item.getItemId()){
