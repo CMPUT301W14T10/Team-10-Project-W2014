@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#FFFFFF"> 
-    
-     <ListView
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
+
+    <ListView
         android:id="@+id/sub_comment_list_view"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
-     
+        android:layout_height="fill_parent"
+        android:divider="#000000"
+        android:dividerHeight="1px" />
+
 </LinearLayout>
