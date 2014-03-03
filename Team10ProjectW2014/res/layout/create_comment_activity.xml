@@ -41,13 +41,15 @@
             android:id="@+id/cc_photo_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Photo" />
+            android:text="Photo"
+            android:onClick="choosePhoto" />
 
         <Button
             android:id="@+id/cc_location_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Location" />
+            android:text="Location"
+            android:onClick="chooseLocation" />
 
         <Button
             android:id="@+id/cc_post_button"

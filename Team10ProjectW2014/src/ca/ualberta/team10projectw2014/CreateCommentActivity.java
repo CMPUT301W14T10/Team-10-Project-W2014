@@ -6,6 +6,8 @@ import java.util.Calendar;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class CreateCommentActivity extends Activity{
 	
@@ -15,6 +17,9 @@ public class CreateCommentActivity extends Activity{
 	private LocationModel postLocation;
 	private Bitmap postPhoto;
 	private CommentModel parentModel;
+	EditText ueditText = (EditText)findViewById(R.id.cc_username);
+	EditText teditText = (EditText)findViewById(R.id.cc_title);
+	EditText ceditText = (EditText)findViewById(R.id.cc_content);
 
 	public void fillContents(String username, CommentModel parentModel){
 		if(username != null){
@@ -30,6 +35,7 @@ public class CreateCommentActivity extends Activity{
 		if(parentModel != null){
 			this.parentModel = parentModel;
 			this.postTitle = "RE:" + parentModel.getTitle();
+			teditText.setKeyListener(null);
 			setTitle(postTitle);
 			//TODO Make title field "RE: title"
 		}
@@ -44,31 +50,39 @@ public class CreateCommentActivity extends Activity{
 	
 	private void setUsernameView(String name){
 		//TODO Set username field to the given value
+		ueditText.setText(name, TextView.BufferType.EDITABLE);
 	}
 	
 	private void setTitleView(String title){
 		//TODO Set title field to given value
+		teditText.setText(title, TextView.BufferType.EDITABLE);
 	}
 	
-	private void chooseLocation(){
+	@SuppressWarnings("unused")
+	private void chooseLocation(View v){
 		//TODO Carry out what happens when the user presses the "Location" button
 	}
 	
-	private void choosePhoto(){
+	@SuppressWarnings("unused")
+	private void choosePhoto(View v){
 		//TODO Carry out what happens when the user presses the "Photo" button
 	}
 	
 	private void setLocation(){
+		if (this.postLocation == null){
+			this.postLocation = new LocationModel("TITLE", "LAT", "LONG");
+		}
 		//TODO Set location variable 
 	}
 	
-	private void setPhoto(){
-		//TODO Set photo variable
-	}
-	
 	//Called when the user presses "Post" button
+	@SuppressWarnings("unused")
 	private void attemptCommentCreation(View v){
 		CommentModel model;
+		setLocation();
+		this.postContents = ceditText.getText().toString();
+		this.postUsername = ueditText.getText().toString();
+		this.postTitle = teditText.getText().toString();
 		
 		if(this.postContents == null){
 			raiseContentsIncompleteError();
@@ -80,6 +94,7 @@ public class CreateCommentActivity extends Activity{
 			raiseTitleIncompleteError();
 		}
 		else{
+			
 			// This is a regular expression for simplicity
 			// Will change for generalizability later
 			// Checks to see if the postTitle has "RE:" at the start
@@ -100,7 +115,7 @@ public class CreateCommentActivity extends Activity{
 				model.setTimestamp(calendar);
 				model.setNumFavourites(0);
 				
-				//TODO Add this subcomment to its head's list of subcomments
+				//Adds the newly created model to its referrent's list of subcomments
 				this.parentModel.addSubComment(model);
 			}
 			else{
