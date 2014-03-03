@@ -10,7 +10,7 @@
     
     <instrumentation android:name="android.test.InstrumentationTestRunner"
     	android:targetPackage="ca.ualberta.team10projectw2014"
-    	android:label="Tests for Activities" />
+    	android:label="CreateCommentActivityTests" />
 
     <application
         android:allowBackup="true"

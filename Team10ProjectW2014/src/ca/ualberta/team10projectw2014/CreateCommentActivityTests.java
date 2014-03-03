@@ -5,6 +5,7 @@ import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.EditText;
 
+
 public class CreateCommentActivityTests extends
 		ActivityInstrumentationTestCase2<CreateCommentActivity> {
 	
