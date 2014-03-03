@@ -36,7 +36,7 @@ public class CommentModel {
 	private int authorAndroidID;
 	private ArrayList<CommentModel> subComments = new ArrayList<CommentModel>();
 	
-	public void addSubComment(SubCommentModel subComment){
+	public void addSubComment(CommentModel subComment){
 		subComments.add(subComment);
 	}
 	
