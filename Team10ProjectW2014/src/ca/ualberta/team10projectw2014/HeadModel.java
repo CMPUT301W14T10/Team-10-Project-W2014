@@ -25,7 +25,7 @@ import ca.ualberta.team10projectw2014.CommentModel;
  */
 public class HeadModel extends CommentModel {
 	private ArrayList<CommentModel> subComments = new ArrayList<CommentModel>();
-
+	
 	
 	public ArrayList<CommentModel> getSubComments() {
 		return subComments;

@@ -5,6 +5,7 @@ import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.EditText;
 
+
 public class CreateCommentActivityTests extends
 		ActivityInstrumentationTestCase2<CreateCommentActivity> {
 	
@@ -68,12 +69,14 @@ public class CreateCommentActivityTests extends
 	public void testCreateNewSubCommentWithoutUsername() throws Throwable{
 		
 		final String title = "TITLE STRING";
+		final HeadModel sampleHead = new HeadModel();
+		sampleHead.setTitle(title);
 		runTestOnUiThread(new Runnable(){
 			@Override
 			public void run(){
 				CreateCommentActivity activity = getActivity();
 				
-				activity.fillContents(null, title);
+				activity.fillContents(null, sampleHead);
 				
 				assertEquals("contentText should be blank", contentText.getText().toString(), "");
 				assertEquals("titleText should be title", titleText.getText().toString(), title);
@@ -88,12 +91,14 @@ public class CreateCommentActivityTests extends
 		
 		final String title = "TITLE STRING";
 		final String username = "USERNAME";
+		final HeadModel sampleHead = new HeadModel();
+		sampleHead.setTitle(title);
 		runTestOnUiThread(new Runnable(){
 			@Override
 			public void run(){
 				CreateCommentActivity activity = getActivity();
 				
-				activity.fillContents(username, title);
+				activity.fillContents(username, sampleHead);
 				
 				assertEquals("contentText should be blank", contentText.getText().toString(), "");
 				assertEquals("titleText should be title", titleText.getText().toString(), title);
