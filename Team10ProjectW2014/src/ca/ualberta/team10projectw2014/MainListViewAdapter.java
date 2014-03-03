@@ -142,6 +142,4 @@ public class MainListViewAdapter extends BaseAdapter {
 		return timeString;
 	}
 	
-	
->>>>>>> 595f3d3bf8137e7c83f2d8a6c38f773089e5f069
 }
