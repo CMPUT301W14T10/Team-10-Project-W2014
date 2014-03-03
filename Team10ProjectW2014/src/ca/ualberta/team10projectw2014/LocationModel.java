@@ -27,8 +27,8 @@ import java.lang.Math;
 
 public class LocationModel {
 	private String name;
-	private int latitude;
-	private int longitude;
+	private double latitude;
+	private double longitude;
 
 	public LocationModel(String name, int latitude, int longitude) {
 		this.latitude = latitude;
@@ -45,19 +45,19 @@ public class LocationModel {
 		this.name = name;
 	}
 
-	public int getLatitude() {
+	public double getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(int latitude) {
+	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
 
-	public int getLongitude() {
+	public double getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(int longitude) {
+	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
 	
