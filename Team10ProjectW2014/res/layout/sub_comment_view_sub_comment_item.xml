@@ -16,7 +16,7 @@
         android:padding="3dip" >
 
         <ImageView
-            android:id="@+id/head_comment_image"
+            android:id="@+id/sub_comment_image"
             android:layout_width="50dip"
             android:layout_height="50dip"
             android:background="#000000"

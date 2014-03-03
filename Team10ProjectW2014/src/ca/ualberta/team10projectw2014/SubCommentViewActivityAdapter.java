@@ -15,8 +15,8 @@
  */
 package ca.ualberta.team10projectw2014;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -37,7 +37,7 @@ public class SubCommentViewActivityAdapter extends
 	private Context context;
 	private int layoutResourceId;
 	private ArrayList<SubCommentModel> subCommentList;
-
+	private SimpleDateFormat sdf;
 	/**
 	 * Contains the all objects that are in the sub comment layout.
 	 */
@@ -84,7 +84,7 @@ public class SubCommentViewActivityAdapter extends
 					.findViewById(R.id.sub_comment_username);
 			holder.textLocationTime = (TextView) view
 					.findViewById(R.id.sub_comment_location_time);
-			
+			holder.imageView = (ImageView) view.findViewById(R.id.sub_comment_image);
 			// Add the holder data to the view
 			view.setTag(holder);
 
@@ -93,9 +93,54 @@ public class SubCommentViewActivityAdapter extends
 			holder = (ViewHolder) view.getTag();
 		}
 		
+		//Grabs the title of the comment being replied by the getReplyTitle function
+		holder.textReplyTitle.setText(this.getReplyTitle(subCommentList.get(position)));
+		
+		//Grabs the Location and Time of the comment and appends them together
+		//by the getLocationAndTime function
+		holder.textLocationTime.setText(this.getLocationAndTime(subCommentList.get(position)));
+		
+		
 		// Grabs strings to be displayed for each sub comment in the list
+		holder.textSubTitle.setText(subCommentList.get(position).getTitle());
+		holder.textUsername.setText(subCommentList.get(position).getAuthor());
+		
+		// Sets the image attached to the comment
+		if(subCommentList.get(position).getPhoto() != null){
+			holder.imageView.setImageBitmap(subCommentList.get(position).getPhoto());
+		}
+		
 		
 
 		return view;
+	}
+	
+	/**
+	 * Gets the location and time from the current sub Comment and appends them
+	 * together to be displayed in subCommentListView Activity
+	 * @param subCommentModel object to get the title of the comment the current
+	 * 		  comment is replying to.
+	 * @return a string that has the location and time appending together
+	 */
+	private String getLocationAndTime(SubCommentModel subComment) {
+		String Location = subComment.getLocation().getName();
+		sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:00 aa");
+		String timeString = sdf.format(subComment.getTimestamp().getTime());
+		
+		
+		return Location + " - " + timeString;
+	}
+	
+	
+	/**
+	 * Takes the current subComment and gets the title from the comment it is
+	 * replying to and appends it to "Re: ".
+	 * @param subCommentModel object to get the title of the comment the current
+	 * 		  comment is replying to.
+	 * @return a string that contains the title of the comment being replied to.
+	 */
+	private String getReplyTitle(SubCommentModel subComment){
+		return "Re: " + subComment.getRespondedTo().getTitle();
+		
 	}
 }
