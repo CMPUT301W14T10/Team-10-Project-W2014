@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="5dip" >
+
+   <!-- ListRow Right sided Thumbnail image -->
+
+    <LinearLayout
+        android:id="@+id/head_comment_thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dip"
+        android:padding="3dip" >
+
+        <ImageView
+            android:id="@+id/head_comment_image"
+            android:layout_width="75dip"
+            android:layout_height="75dip"
+            android:background="#000000"
+            android:contentDescription="@string/comment_image" />
+    </LinearLayout>
+
+    <!-- Long title of head comment -->
+
+    <TextView
+        android:id="@+id/long_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/head_comment_thumbnail"
+        android:text="@string/long_title"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <!-- Author of head comment -->
+
+    <TextView
+        android:id="@+id/head_comment_author"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/long_title"
+        android:layout_marginTop="1dip"
+        android:text="@string/written_by"
+        android:textSize="12sp" />
+
+    <!-- Location and Time -->
+
+    <TextView
+        android:id="@+id/head_comment_location_time"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/head_comment_author"
+        android:layout_marginTop="1dip"
+        android:text="@string/location_time"
+        android:textSize="12sp" />
+
+    <!-- Head comment text body -->
+
+    <TextView
+        android:id="@+id/head_comment_text_body"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/head_comment_thumbnail"
+        android:layout_marginTop="1dip"
+        android:text="@string/text_body"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/more_option"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/head_comment_text_body"
+        android:layout_alignParentRight="true"
+        android:background="?android:attr/selectableItemBackground"
+        android:text="@string/more_option"
+        android:textSize="14sp"  />
+    
+    
+
+</RelativeLayout>
