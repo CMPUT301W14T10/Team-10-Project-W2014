@@ -16,6 +16,7 @@
 
 package ca.ualberta.team10projectw2014;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.graphics.Bitmap;
@@ -33,6 +34,15 @@ public class CommentModel {
 	private Calendar timestamp;
 	private int numFavourites;
 	private int authorAndroidID;
+	private ArrayList<CommentModel> subComments = new ArrayList<CommentModel>();
+	
+	public void addSubComment(SubCommentModel subComment){
+		subComments.add(subComment);
+	}
+	
+	public ArrayList<CommentModel> getSubComments() {
+		return subComments;
+	}
 	
 	public String getTitle() {
 		return title;
