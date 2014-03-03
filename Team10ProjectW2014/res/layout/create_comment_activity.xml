@@ -20,18 +20,42 @@
         android:layout_height="wrap_content"
         android:ems="10" />
 
-        
-    
     <EditText
         android:id="@+id/cc_content"
-        android:hint="@string/create_comment_content"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="222dp"
         android:ems="10"
-        android:singleLine="false"
-        android:gravity="top" >
+        android:gravity="top"
+        android:hint="@string/create_comment_content"
+        android:singleLine="false" >
         
         <requestFocus />
     </EditText>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" >
+
+        <Button
+            android:id="@+id/cc_photo_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Photo" />
+
+        <Button
+            android:id="@+id/cc_location_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location" />
+
+        <Button
+            android:id="@+id/cc_post_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Post"
+            android:onClick="attemptCommentCreation" />
+
+    </LinearLayout>
 
 </LinearLayout>

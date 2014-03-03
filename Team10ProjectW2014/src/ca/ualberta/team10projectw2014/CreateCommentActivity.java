@@ -1,7 +1,11 @@
 package ca.ualberta.team10projectw2014;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.view.View;
 
 public class CreateCommentActivity extends Activity{
 	
@@ -10,8 +14,9 @@ public class CreateCommentActivity extends Activity{
 	private String postContents;
 	private LocationModel postLocation;
 	private Bitmap postPhoto;
+	private CommentModel parentModel;
 
-	public void fillContents(String username, String title){
+	public void fillContents(String username, CommentModel parentModel){
 		if(username != null){
 			this.postUsername = username;
 			setUsernameView(username);
@@ -22,9 +27,10 @@ public class CreateCommentActivity extends Activity{
 			}
 			setUsernameView("Please set a username");
 		}
-		if(title != null){
-			this.postTitle = title;
-			setTitle(title);
+		if(parentModel != null){
+			this.parentModel = parentModel;
+			this.postTitle = "RE:" + parentModel.getTitle();
+			setTitle(postTitle);
 			//TODO Make title field "RE: title"
 		}
 		else{
@@ -61,7 +67,9 @@ public class CreateCommentActivity extends Activity{
 	}
 	
 	//Called when the user presses "Post" button
-	private void attemptCommentCreation(){
+	private void attemptCommentCreation(View v){
+		CommentModel model;
+		
 		if(this.postContents == null){
 			raiseContentsIncompleteError();
 		}
@@ -69,10 +77,50 @@ public class CreateCommentActivity extends Activity{
 			raiseUsernameIncompleteError();
 		}
 		if(this.postTitle == null){
-			raiseUsernameIncompleteError();
+			raiseTitleIncompleteError();
 		}
 		else{
-			//Create a new head/sub comment model based on if there is a reference to a head
+			// This is a regular expression for simplicity
+			// Will change for generalizability later
+			// Checks to see if the postTitle has "RE:" at the start
+			if(this.postTitle.matches("^RE:[.]{*}")){
+				// This should be edited so that the model handles all the getting and setting
+				model = new SubCommentModel(this.parentModel);
+				model.setAuthor(this.postUsername);
+				model.setContent(this.postContents);
+				model.setLocation(this.postLocation);
+				model.setPhoto(this.postPhoto);
+				model.setTitle(this.postTitle);
+				
+				// Sets the current date and time for the comment
+				// Referenced http://stackoverflow.com/questions/16686298/string-timestamp-to-calendar-in-java on March 2
+				long timestamp = System.currentTimeMillis();
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTimeInMillis(timestamp);
+				model.setTimestamp(calendar);
+				model.setNumFavourites(0);
+				
+				//TODO Add this subcomment to its head's list of subcomments
+				this.parentModel.addSubComment(model);
+			}
+			else{
+				// This should be edited so that the model handles all the getting and setting
+				model = new HeadModel();
+				model.setAuthor(this.postUsername);
+				model.setContent(this.postContents);
+				model.setLocation(this.postLocation);
+				model.setPhoto(this.postPhoto);
+				model.setTitle(this.postTitle);
+				
+				long timestamp = System.currentTimeMillis();
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTimeInMillis(timestamp);
+				model.setTimestamp(calendar);
+				model.setNumFavourites(0);
+				
+				//TODO Add this head comment to the list of head comments on the phone
+			
+			}
 		}
 	}
 	
