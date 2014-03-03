@@ -3,12 +3,12 @@
     <item android:id="@+id/sort_comments"
     	android:icon="@drawable/ic_action_sort_by"
     	android:title="@string/action_sort"
-		android:showAsAction= "always" />
+		android:showAsAction= "never" />
 
     <item android:id="@+id/add_comment"
     	android:icon="@drawable/ic_action_new"
     	android:title="@string/action_add_head_comment"
-		android:showAsAction= "always" />
+		android:showAsAction= "never" />
     	
     <item
         android:id="@+id/action_settings"
