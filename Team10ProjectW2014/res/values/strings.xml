@@ -3,8 +3,31 @@
 
     <string name="app_name">Team10ProjectW2014</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>    
     <string name="desc">The picture the user posted with this comment.</string>
     <string name="action_add_head_comment">Add Head Comment</string>
-    <string name="action_sort_by">Sort Comments By..</string>
+    <string name="action_menu">Menu</string>
+    <string name="action_favourite">Favourite</string>
+    <string name="action_edit_username">Edit Username</string>
+    <string name="action_sort">Sort</string>
+    <string name="action_favourites">Favourites</string>
+    <string name="action_want_to_read">Want to Read</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_sub_comment_view">SubCommentViewActivity</string>
+    <string name="comment_image">Head Comment Image</string>
+    <string name="long_title">Long Title</string>
+    <string name="reply_title">Re:Title</string>
+    <string name="sub_title">Sub-Title</string>
+    <string name="reply_option">Reply</string>
+    <string name="written_by">Written By: Username</string>
+    <string name="location_time">Location - Time</string>
+    <string name="more_option">More...</string>
+    <string name="text_body">Some example text. Some example text. Some example text. 
+        					 Some example text. Some example text. Some example text. 
+        					 Some example text. Some example text. Some example text. 
+        					 Some example text. Some example text. Some example text. 
+        					 Some example text. Some example text. Some example text. 
+        					 Some example text. Some example text. Some example text. </string>
+        					 
+    
+
 </resources>
