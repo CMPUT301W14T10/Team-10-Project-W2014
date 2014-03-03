@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 
 public class SubCommentViewActivity extends Activity {
 
@@ -37,12 +38,56 @@ public class SubCommentViewActivity extends Activity {
 		
 	}
 
+	/**
+	 * Inflate the menu.
+	 * @author dvyee
+	 * @return boolean
+	 * @param Menu menu
+	 * 
+	 * Code adapted from:
+	 * https://developer.android.com/training/basics/actionbar/adding-buttons.html
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    // Inflate the menu items for use in the action bar
 	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.sub_comment_view, menu);
+	    inflater.inflate(R.menu.subcommentview, menu);
 	    return super.onCreateOptionsMenu(menu);
+	}
+	
+	/**
+	 * Capture the cases where the menu items are selected.
+	 * @author dvyee
+	 * @return boolean
+	 * @param MenuItem item
+	 * 
+	 * Code adapted from:
+	 * https://developer.android.com/training/basics/actionbar/adding-buttons.html
+	 */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle presses on the action bar items
+	    switch (item.getItemId()) {
+	        case R.id.action_reply:
+	            openReply();
+	            return true;
+	        case R.id.action_settings:
+	            openSettings();
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}
+	
+	private void openReply(){
+		// TODO: Implement openReply
+		// send an intent to CreateCommentActivity
+		// send info:
+		// - title
+	}
+	
+	private void openSettings(){
+		// TODO: Implement openReply
 	}
 
 }

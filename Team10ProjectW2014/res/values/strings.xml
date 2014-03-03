@@ -9,6 +9,8 @@
     <string name="action_sort">Sort</string>
     <string name="action_favourites">Favourites</string>
     <string name="action_want_to_read">Want to Read</string>
+    <string name="action_reply">Reply</string>
+    <string name="action_title">Title</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_sub_comment_view">SubCommentViewActivity</string>
 	<string name="comment_image">Head Comment Image</string>
