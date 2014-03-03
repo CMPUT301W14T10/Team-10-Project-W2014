@@ -22,6 +22,7 @@ public class CreateCommentActivity extends Activity{
 	EditText ceditText = (EditText)findViewById(R.id.cc_content);
 
 	public void fillContents(String username, CommentModel parentModel){
+		setLocation();
 		if(username != null){
 			this.postUsername = username;
 			setUsernameView(username);
@@ -37,24 +38,20 @@ public class CreateCommentActivity extends Activity{
 			this.postTitle = "RE:" + parentModel.getTitle();
 			teditText.setKeyListener(null);
 			setTitle(postTitle);
-			//TODO Make title field "RE: title"
 		}
 		else{
 			if (this.postTitle == null){
 				this.postTitle = null;
 			}
 			setTitle("Create a Name for Your Post");
-			//TODO Make title field blank
 		}
 	}
 	
 	private void setUsernameView(String name){
-		//TODO Set username field to the given value
 		ueditText.setText(name, TextView.BufferType.EDITABLE);
 	}
 	
 	private void setTitleView(String title){
-		//TODO Set title field to given value
 		teditText.setText(title, TextView.BufferType.EDITABLE);
 	}
 	
@@ -72,14 +69,15 @@ public class CreateCommentActivity extends Activity{
 		if (this.postLocation == null){
 			this.postLocation = new LocationModel("TITLE", "LAT", "LONG");
 		}
-		//TODO Set location variable 
+		//TODO Set location variable to...?
+		// Location should never be null
 	}
 	
 	//Called when the user presses "Post" button
 	@SuppressWarnings("unused")
 	private void attemptCommentCreation(View v){
 		CommentModel model;
-		setLocation();
+		
 		this.postContents = ceditText.getText().toString();
 		this.postUsername = ueditText.getText().toString();
 		this.postTitle = teditText.getText().toString();
@@ -93,7 +91,7 @@ public class CreateCommentActivity extends Activity{
 		if(this.postTitle == null){
 			raiseTitleIncompleteError();
 		}
-		else{
+		if(this.postTitle != null && this.postUsername != null && this.postContents != null){
 			
 			// This is a regular expression for simplicity
 			// Will change for generalizability later
@@ -136,6 +134,9 @@ public class CreateCommentActivity extends Activity{
 				//TODO Add this head comment to the list of head comments on the phone
 			
 			}
+			
+			//Destroy this activity so that we return to the previous one.
+			finish();
 		}
 	}
 	
