@@ -1,14 +1,28 @@
+/**
+ * Copyright 2014 Cole Fudge, Steven Giang, Bradley Poullet, David Yee, and Costa Zervos
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ */
+
 package ca.ualberta.team10projectw2014;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Comparator;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.ListView;
 
 /**
@@ -25,7 +39,31 @@ public class MainListViewActivity extends Activity{
 	
 	private static final CommentDataController commentDataController = new CommentDataController();
 	
-	//preparing the view to display the activity:
+	private static final NetworkConnectionController connectionController = new NetworkConnectionController();
+	
+	//comparator used in sorting comments by date:
+	private static Comparator locCompare = new Comparator(){
+		public int compare(Object comment1, Object comment2){
+			LocationModel userLocation = connectionController.getUserLocation();
+			LocationModel loc1 = ((HeadModel)comment1).getLocation();
+			LocationModel loc2 = ((HeadModel)comment2).getLocation();
+			return loc1.distanceTo(userLocation) - loc2.distanceTo(userLocation);
+		}
+	};
+	
+	//comparator used in sorting comments by location:
+	private static Comparator dateCompare = new Comparator(){
+		public int compare(Object comment1, Object comment2){
+			Calendar time1 = ((HeadModel)comment1).getTimestamp();
+			Calendar time2 = ((HeadModel)comment2).getTimestamp();
+			return time1.compareTo(time2);
+		}
+	};
+	
+	//
+	/**
+	 * Prepares the view to display the activity.
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 
@@ -52,8 +90,11 @@ public class MainListViewActivity extends Activity{
 		return true;
 	}
 	
-	//I do almost the same thing here as in onCreate, but refresh the view
-	//if there has already been data loaded:
+
+	/**
+	 * I do almost the same thing here as in onCreate, but refresh the view
+	 * if there has already been data loaded:
+	 */
 	protected void onStart(){
 		
 		super.onStart(); 
@@ -74,8 +115,10 @@ public class MainListViewActivity extends Activity{
 
 	}
 
-	//I do almost the same thing here as in onCreate, but refresh the view
-	//if there has already been data loaded:
+	/**
+	 * I do almost the same thing here as in onCreate, but refresh the view
+	 * if there has already been data loaded:
+	 */
 	protected void onResume(){
 		super.onResume(); 
 		setContentView(R.layout.activity_head_comment_view);

@@ -16,7 +16,7 @@
    */
 
 package ca.ualberta.team10projectw2014;
-
+import java.lang.Math;
 
 /**
  * This class takes care of storing each location in the system.
@@ -27,10 +27,10 @@ package ca.ualberta.team10projectw2014;
 
 public class LocationModel {
 	private String name;
-	private String latitude;
-	private String longitude;
+	private int latitude;
+	private int longitude;
 
-	public LocationModel(String name, String latitude, String longitude) {
+	public LocationModel(String name, int latitude, int longitude) {
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.name = name;
@@ -45,20 +45,26 @@ public class LocationModel {
 		this.name = name;
 	}
 
-	public String getLatitude() {
+	public int getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(String latitude) {
+	public void setLatitude(int latitude) {
 		this.latitude = latitude;
 	}
 
-	public String getLongitude() {
+	public int getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(String longitude) {
+	public void setLongitude(int longitude) {
 		this.longitude = longitude;
+	}
+	
+	//uses the standard linear  distance equation to compare latitude and
+	//longitude of two locations.
+	public int distanceTo(LocationModel otherLocation){
+		return (int) Math.sqrt(Math.pow((this.longitude - otherLocation.longitude), 2) + Math.pow((this.latitude - otherLocation.latitude), 2));
 	}
 	
 }

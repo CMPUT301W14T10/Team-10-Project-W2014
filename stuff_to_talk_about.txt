@@ -1,6 +1,4 @@
 1) Seperate load/save for head/sub comments?
 2) Change return type of CommentDataController.loadFromFile(or loadHeadsFromFile?) to ArrayList<HeadModel>?
-3) List of head models in MainListViewActivity(or CommentDataController) instead of MainListViewAdapter?
-4) Able to get the "No Image" icon to put into the resources and thus use as the default image for the comment?
-5) Do we need different resolutions for each screen type(i.e. for hdpi, mdpi, xhdpi and xxhdpi?)
-6) 
+3) Making some sort of network connection model?
+4) changing lat/lon in LocationModel to ints?
