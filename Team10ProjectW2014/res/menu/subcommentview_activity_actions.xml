@@ -6,10 +6,11 @@
     <!-- Reply, should appear as action button -->
     <item android:id="@+id/action_reply"
           android:title="@string/action_reply"
-          android:showAsAction="ifRoom" />
+          android:showAsAction="never" />
+    <!-- Title, should appear as action button -->
    	<item android:id="@+id/action_title"
           android:title="@string/action_title"
-          android:showAsAction="ifRoom" />
+          android:showAsAction="never" />
     <!-- Settings, should always be in the overflow -->
     <item android:id="@+id/action_settings"
           android:title="@string/action_settings"

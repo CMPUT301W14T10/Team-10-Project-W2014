@@ -1,5 +1,6 @@
 /**
  * Copyright 2014 Cole Fudge, Steven Giang, Bradley Poullet, David Yee, and Costa Zervos
+ * @author dvyee, sgiang92
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -40,7 +41,7 @@ public class SubCommentViewActivity extends Activity {
 
 	/**
 	 * Inflate the menu.
-	 * @author dvyee
+	 * @author dvyee, sgiang92
 	 * @return boolean
 	 * @param Menu menu
 	 * 
@@ -57,7 +58,7 @@ public class SubCommentViewActivity extends Activity {
 	
 	/**
 	 * Capture the cases where the menu items are selected.
-	 * @author dvyee
+	 * @author dvyee, sgiang92
 	 * @return boolean
 	 * @param MenuItem item
 	 * 
@@ -71,6 +72,9 @@ public class SubCommentViewActivity extends Activity {
 	        case R.id.action_reply:
 	            openReply();
 	            return true;
+	        case R.id.action_favourite:
+	        	addFavourite();
+	        	return true;
 	        case R.id.action_settings:
 	            openSettings();
 	            return true;
@@ -79,6 +83,13 @@ public class SubCommentViewActivity extends Activity {
 	    }
 	}
 	
+	/**
+	 * Sends an intent with the model information so that a reply can be made.
+	 * Can be called via ActionBar or reply buttons in Head or Sub comments.
+	 * @author dvyee, sgiang92
+	 * @return
+	 * @param
+	 */
 	private void openReply(){
 		// TODO: Implement openReply
 		// send an intent to CreateCommentActivity
@@ -86,8 +97,27 @@ public class SubCommentViewActivity extends Activity {
 		// - title
 	}
 	
+	/**
+	 * Opens the drop-down settings for posting.
+	 * Can only be called via ActionBar.
+	 * @author dvyee, sgiang92
+	 * @return
+	 * @param
+	 */
 	private void openSettings(){
 		// TODO: Implement openReply
+	}
+
+	/**
+	 * Adds the post and sub-posts to user's favourites.
+	 * Post will get cached for later review.
+	 * Can only be called via ActionBar.
+	 * @author dvyee, sgiang92
+	 * @return
+	 * @param
+	 */
+	private void addFavourite(){
+		// TODO: Implement addFavourite
 	}
 
 }
