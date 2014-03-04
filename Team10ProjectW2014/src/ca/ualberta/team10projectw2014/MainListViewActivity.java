@@ -20,9 +20,14 @@ import java.util.Calendar;
 import java.util.Comparator;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ListView;
 
 /**
@@ -37,9 +42,13 @@ public class MainListViewActivity extends Activity{
 	
 	private ArrayList<HeadModel> commentList;
 	
+	private UserModel user;
+	
 	private static final CommentDataController commentDataController = new CommentDataController();
 	
 	private static final NetworkConnectionController connectionController = new NetworkConnectionController();
+	
+	private static final UserDataController userController = new UserDataController();
 	
 	//comparator used in sorting comments by date:
 	private static Comparator locCompare = new Comparator(){
@@ -85,6 +94,8 @@ public class MainListViewActivity extends Activity{
 		
 		//Call the constructor to create a new custom Array Adapter of type HeadModel: 
 		adapter = new MainListViewAdapter(this, commentList);
+		
+		user = userController.loadFromFile();
 	}
 
 	
@@ -111,7 +122,7 @@ public class MainListViewActivity extends Activity{
 		
 		//If adapter exists, clear it and reload comments(i.e. refresh)
 		if(adapter != null){
-			commentList.clear();
+			commentList = (ArrayList<HeadModel>) commentDataController.loadFromFile();
 			adapter.notifyDataSetChanged();
 		}
 		//Use the comment controller to load the head comments from file:
@@ -119,6 +130,8 @@ public class MainListViewActivity extends Activity{
 		
 		//Call the constructor to create a new custom Array Adapter of type HeadModel: 
 		adapter = new MainListViewAdapter(this, commentList);
+
+		user = userController.loadFromFile();
 
 	}
 
@@ -131,7 +144,7 @@ public class MainListViewActivity extends Activity{
 		setContentView(R.layout.activity_head_comment_view);
 		commentView = (ListView) findViewById(R.id.HeadCommentList);
 		if(adapter != null){
-			commentList.clear();
+			commentList = (ArrayList<HeadModel>) commentDataController.loadFromFile();
 			adapter.notifyDataSetChanged();
 		}
 		//Use the comment controller to load the head comments from file:
@@ -140,6 +153,7 @@ public class MainListViewActivity extends Activity{
 		//Call the constructor to create a new custom Array Adapter of type HeadModel: 
 		adapter = new MainListViewAdapter(this, commentList);
 		
+		user = userController.loadFromFile();
 	}	
 	
 	/**
@@ -149,24 +163,93 @@ public class MainListViewActivity extends Activity{
 	public boolean onOptionsItemSelected(MenuItem item){
 		switch(item.getItemId()){
 			case R.id.add_comment:
-				//Use the controller to bring up an add counter dialog
-				commentDataController.addComment(this);
-				//save changes:
-				commentDataController.saveInFile();
-				adapter.notifyDataSetChanged();
+				Intent createComment = new Intent(getApplicationContext(), CreateCommentActivity.class);
+				createComment.putExtra("is_new", true);
+				createComment.putExtra("is_head", true);
+				this.startActivity(createComment);
 				return true;
-			case R.id.sort_comments:
-				//call the controller method for sorting the counters from
-				//largest count to lowest count:
-				commentDataController.sort();
-				//save:
-				commentDataController.saveInFile();
-				adapter.notifyDataSetChanged();
+			case R.id.action_edit_username_main:
+				edit_username();
 				return true;
+			case R.id.action_sort_main:
+				sort_comments();
+				return true;
+			case R.id.action_favourites_main:
+			case R.id.action_want_to_read_main:
 			default:
 				return super.onOptionsItemSelected(item);
 		}
 		
 	}
+	/**
+	 * Brings up a dialog box to prompt user for a new username:
+	 */
+	private void edit_username(){
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+		//set the fields of the dialog:
+		alert.setTitle("Edit Username");
+
+		//add an EditText to the dialog for the user to enter
+		//the name in:
+		final EditText usernameText = new EditText(this);
+		alert.setView(usernameText);
+
+		//set the positive button with its text and set up an on click listener
+		//to add the counter with the text provided when it is pressed:
+		alert.setPositiveButton("Set", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				//get the text from the editable:
+				Editable usernameEditable = usernameText.getText();
+				String usernameString = usernameEditable.toString();
+				
+				user.setUsername(usernameString);
+				userController.saveInFile();
+			}
+		});
+
+		//also set a cancel negative button that does nothing but close the 
+		//dialog window:
+		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+			}
+		});
+
+		alert.show();
+		
+	}
 	
+	private void sort_comments(){
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+		//set the fields of the dialog:
+		alert.setTitle("Sort By:");
+
+		//add an EditText to the dialog for the user to enter
+		//the name in:
+		final EditText usernameText = new EditText(this);
+		alert.setView(usernameText);
+
+		//set the positive button with its text and set up an on click listener
+		//to add the counter with the text provided when it is pressed:
+		alert.setPositiveButton("Set", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				//get the text from the editable:
+				Editable usernameEditable = usernameText.getText();
+				String usernameString = usernameEditable.toString();
+				
+				user.setUsername(usernameString);
+				userController.saveInFile();
+			}
+		});
+
+		//also set a cancel negative button that does nothing but close the 
+		//dialog window:
+		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+			}
+		});
+
+		alert.show();
+	}
 }

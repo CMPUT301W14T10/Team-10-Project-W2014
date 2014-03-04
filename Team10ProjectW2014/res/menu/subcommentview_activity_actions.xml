@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <!-- Code adapter from Android Docs at
+    https://developer.android.com/training/basics/actionbar/adding-buttons.html -->
+    <!-- Reply, should appear as action button -->
+    <item android:id="@+id/action_reply"
+          android:title="@string/action_reply"
+          android:showAsAction="never" />
+    <!-- Title, should appear as action button -->
+   	<item android:id="@+id/action_title"
+          android:title="@string/action_title"
+          android:showAsAction="never" />
+    <!-- Settings, should always be in the overflow -->
+    <item android:id="@+id/action_settings"
+          android:title="@string/action_settings"
+          android:showAsAction="never" />
+    
+</menu>

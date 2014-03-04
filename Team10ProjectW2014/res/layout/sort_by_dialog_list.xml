@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This layout is used when the settings->"Sort By" option is chosen. -->
+<!-- The alertdialog that is displayed uses it to display its options. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <RadioButton android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/date"
+        android:onClick="onRadioButtonClicked"/>
+    
+    <RadioButton android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/location"
+        android:onClick="onRadioButtonClicked"/>
+    
+    <RadioButton android:id="@+id/number_of_favourites"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/number_of_favourites"
+        android:onClick="onRadioButtonClicked"/>
+    
+    <TextView
+        android:id="@+id/sort_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:text="@string/sort_subtitle:" />
+    
+    <RadioButton android:id="@+id/pictures"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pictures"
+        android:onClick="onRadioButtonClicked"/>
+
+</LinearLayout>

@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#FFFFFF"> 
-    
-     <ListView
-        android:id="@+id/sub_comment_list_view"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    tools:context=".SubCommentViewActivity" >
+
+    <ListView
+        android:id="@+id/sub_comment_list_view_sub"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
-     
+        android:layout_height="fill_parent"
+        android:divider="#000000"
+        android:dividerHeight="1px"
+        tools:listheader="@layout/sub_comment_view_head_comment_item"
+    	tools:listitem="@layout/sub_comment_view_sub_comment_item" />
+
 </LinearLayout>
