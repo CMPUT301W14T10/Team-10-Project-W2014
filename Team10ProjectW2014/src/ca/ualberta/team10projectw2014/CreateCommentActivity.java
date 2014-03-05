@@ -3,8 +3,10 @@ package ca.ualberta.team10projectw2014;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,10 +23,28 @@ public class CreateCommentActivity extends Activity{
 	EditText teditText;
 	EditText ceditText;
 	
-	public void onCreate(){
-		ueditText = (EditText)findViewById(R.id.cc_username);
+	@SuppressLint("NewApi")
+	@Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.create_comment_activity);
+        
+//        //Receive information from the intent
+//        Bundle bundle = getIntent().getExtras();
+//        String receivedUsername = (String) bundle.getString("username", null);
+//        CommentModel receivedComment = (CommentModel) bundle.getSerializable("comment");
+//        fillContents(receivedUsername, receivedComment);
+        
+	
+        ueditText = (EditText)findViewById(R.id.cc_username);
 		teditText = (EditText)findViewById(R.id.cc_title);
 		ceditText = (EditText)findViewById(R.id.cc_content);
+	}
+	
+	
+	@Override 
+	protected void onResume(){
+		super.onResume();
 	}
 
 	public void fillContents(String username, CommentModel parentModel){
@@ -43,13 +63,13 @@ public class CreateCommentActivity extends Activity{
 			this.parentModel = parentModel;
 			this.postTitle = "RE:" + parentModel.getTitle();
 			teditText.setKeyListener(null);
-			setTitle(postTitle);
+			setTitleView(postTitle);
 		}
 		else{
 			if (this.postTitle == null){
 				this.postTitle = null;
 			}
-			setTitle("Create a Name for Your Post");
+			setTitleView("Create a Name for Your Post");
 		}
 	}
 	
@@ -73,15 +93,14 @@ public class CreateCommentActivity extends Activity{
 	
 	private void setLocation(){
 		if (this.postLocation == null){
-			this.postLocation = new LocationModel("TITLE", 0, 0);
+			this.postLocation = new LocationModel("TITLE", 100.00, 100.00);
 		}
 		//TODO Set location variable to...?
 		// Location should never be null
 	}
 	
 	//Called when the user presses "Post" button
-	@SuppressWarnings("unused")
-	private void attemptCommentCreation(View v){
+	public void attemptCommentCreation(View v){
 		CommentModel model;
 		
 		this.postContents = ceditText.getText().toString();
@@ -102,7 +121,7 @@ public class CreateCommentActivity extends Activity{
 			// This is a regular expression for simplicity
 			// Will change for generalizability later
 			// Checks to see if the postTitle has "RE:" at the start
-			if(this.postTitle.matches("^RE:[.]{*}")){
+			if(this.postTitle.matches("^RE:.*")){
 				// This should be edited so that the model handles all the getting and setting
 				model = new SubCommentModel(this.parentModel);
 				model.setAuthor(this.postUsername);

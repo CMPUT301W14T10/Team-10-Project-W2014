@@ -18,17 +18,10 @@ package ca.ualberta.team10projectw2014;
 
 /**
  * This class handles the user's Internet connection and fetches things
- * such as location and comments from the database.
+ * such as user comments from the database.
  * @author Cole Fudge
  */
 public class NetworkConnectionController {
 	
-	/**
-	 * Returns the current location of the user.
-	 */
-	public LocationModel getUserLocation(){
-		
-		return new LocationModel("Placeholder", 0, 0);
-	}
 	
 }

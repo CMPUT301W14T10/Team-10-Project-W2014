@@ -30,6 +30,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -61,7 +62,7 @@ public class MainListViewActivity extends Activity{
 	//comparator used in sorting comments by date:
 	private static Comparator locCompare = new Comparator(){
 		public int compare(Object comment1, Object comment2){
-			LocationModel userLocation = connectionController.getUserLocation();
+			LocationModel userLocation = new LocationModel("here", 0, 0);
 			LocationModel loc1 = ((HeadModel)comment1).getLocation();
 			LocationModel loc2 = ((HeadModel)comment2).getLocation();
 			return loc1.distanceTo(userLocation) - loc2.distanceTo(userLocation);
@@ -103,7 +104,7 @@ public class MainListViewActivity extends Activity{
 		//Call the constructor to create a new custom Array Adapter of type HeadModel: 
 		adapter = new MainListViewAdapter(this, commentList);
 		
-		user = userController.loadFromFile();
+		user = userController.loadData();
 		layoutInflater = LayoutInflater.from(this);
 	}
 
@@ -140,7 +141,7 @@ public class MainListViewActivity extends Activity{
 		//Call the constructor to create a new custom Array Adapter of type HeadModel: 
 		adapter = new MainListViewAdapter(this, commentList);
 
-		user = userController.loadFromFile();
+		user = userController.loadData();
 
 	}
 
@@ -152,6 +153,7 @@ public class MainListViewActivity extends Activity{
 		super.onResume(); 
 		setContentView(R.layout.activity_head_comment_view);
 		commentView = (ListView) findViewById(R.id.HeadCommentList);
+		
 		if(adapter != null){
 			commentList = (ArrayList<HeadModel>) commentDataController.loadFromFile();
 			adapter.notifyDataSetChanged();
@@ -162,7 +164,19 @@ public class MainListViewActivity extends Activity{
 		//Call the constructor to create a new custom Array Adapter of type HeadModel: 
 		adapter = new MainListViewAdapter(this, commentList);
 		
-		user = userController.loadFromFile();
+		user = userController.loadData();
+		
+		commentView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id){
+				HeadModel headComment = commentList.get(position);
+				Intent subCommentView = new Intent(getApplicationContext(), SubCommentViewActivity.class);
+				subCommentView.putExtra("comment", headComment);
+				view.getContext().startActivity(subCommentView);
+				
+			}});
+
 	}	
 	
 	/**
@@ -173,8 +187,7 @@ public class MainListViewActivity extends Activity{
 		switch(item.getItemId()){
 			case R.id.add_comment:
 				Intent createComment = new Intent(getApplicationContext(), CreateCommentActivity.class);
-				createComment.putExtra("is_new", true);
-				createComment.putExtra("is_head", true);
+				createComment.putExtra("username", user.getUsername());
 				this.startActivity(createComment);
 				return true;
 			case R.id.action_edit_username_main:
@@ -295,13 +308,14 @@ public class MainListViewActivity extends Activity{
 		RadioGroup buttonGroup = (RadioGroup) buttonPressed.getParent();
 	    // Is the button now checked?
 	    boolean checked = ((RadioButton) view).isChecked();
-	    
+	    buttonGroup.clearCheck();
 	    // Check which radio button was clicked
 	    switch(view.getId()) {
 	    	
 	        case R.id.date:
 	            if (checked){
 	            	user.setSortByDate(true);
+	            	buttonPressed.toggle();
 	            }
 	            else
 	        		buttonGroup.clearCheck();
@@ -310,6 +324,7 @@ public class MainListViewActivity extends Activity{
 	        case R.id.location:
 	            if (checked){
 	            	user.setSortByLoc(true);
+	            	buttonPressed.toggle();
 	            }
 	            else
 	        		buttonGroup.clearCheck();
@@ -318,6 +333,7 @@ public class MainListViewActivity extends Activity{
 	        case R.id.number_of_favourites:
 	            if (checked){
 	            	user.setSortByPopularity(true);
+	            	buttonPressed.toggle();
 	            }
 	            else
 	        		buttonGroup.clearCheck();
@@ -326,10 +342,12 @@ public class MainListViewActivity extends Activity{
 	        case R.id.pictures:
 	        	if(checked){
 	        		user.setSortByPic(true);
+	            	buttonPressed.toggle();
 	        	}
 	        	else
 	        		buttonGroup.clearCheck();
 	            break;
 	    }
 	}
+	
 }	

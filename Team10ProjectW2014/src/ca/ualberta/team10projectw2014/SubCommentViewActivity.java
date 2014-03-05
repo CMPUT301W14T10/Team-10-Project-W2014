@@ -87,9 +87,6 @@ public class SubCommentViewActivity extends Activity {
 	        case R.id.action_favourite:
 	        	addFavourite();
 	        	return true;
-	        case R.id.action_settings:
-	            openSettings();
-	            return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }

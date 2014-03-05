@@ -17,7 +17,7 @@ public class UserDataController {
 	/**
 	 * Loads the user's information and preferences from file
 	 */
-	public UserModel loadFromFile(){
+	public UserModel loadData(){
 		
 		return new UserModel(0);
 	}

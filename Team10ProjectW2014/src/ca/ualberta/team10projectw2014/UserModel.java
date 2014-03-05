@@ -16,13 +16,15 @@
 
 package ca.ualberta.team10projectw2014;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * This class acts as the model for the User.
  * @author Steven Giang
  */
-public class UserModel {
+public class UserModel implements Serializable {
+	private static final long serialVersionUID = 87468974;
 	private int androidID;
 	private ArrayList<CommentModel> favourites;
 	private ArrayList<CommentModel> readComments;
