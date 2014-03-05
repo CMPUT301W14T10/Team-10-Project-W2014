@@ -5,6 +5,7 @@ import java.util.Calendar;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.ListView;
 
@@ -33,30 +34,32 @@ public class SubCommentViewActivityTests extends
 
 	public void testShowTitle() throws Throwable {
 		
-		//Activity act = new Activity;
-		//Intent intent = new Intent(act,SubCommentViewActivity.class);
+		Activity act = getActivity();
+		Intent intent = new Intent(act,SubCommentViewActivity.class);
 		HeadModel headComment = new HeadModel();
 		headComment.setTitle("Test Head Comment Title");
 		headComment.setAuthor("TestUsername");
 		headComment.setContent("Test Head Comment Content");
 		headComment.setTimestamp(Calendar.getInstance());
+
+		
+		intent.putExtra("HeadModel", headComment);
+		
+		act.startActivity(intent);
+		
 		runTestOnUiThread(new Runnable(){
 			
 			@Override
 			public void run(){
-				SubCommentViewActivity activity = getActivity();
+				//SubCommentViewActivity activity = getActivity();
 				
-				ActionBar actBar = activity.getActionBar();
-				assertEquals("Actionbar Title should contain ... ","Test Hea...",actBar.getTitle());
+				//ActionBar actBar = activity.getActionBar();
+				//assertEquals("Actionbar Title should contain ... ","Test Hea...",actBar.getTitle());
 				
 				
 				
 			}
 		});
-		
-		//intent.putExtra("HeadComment", headComment);
-		
-		//act.startActivity(intent);
 	
 		
 		

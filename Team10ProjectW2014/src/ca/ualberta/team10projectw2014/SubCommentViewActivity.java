@@ -19,6 +19,7 @@ package ca.ualberta.team10projectw2014;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,18 +28,20 @@ import android.view.MenuItem;
 public class SubCommentViewActivity extends Activity {
 
 	private HeadModel headCommentData;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sub_comment_view);
 
-		//Bundle bundle = getIntent().getExtras();
-		//headCommentData = (HeadModel) bundle.getSerializable("HeadComment");
+		Bundle bundle = getIntent().getExtras();
+		headCommentData = (HeadModel) bundle.getSerializable("HeadModel");
 
 		// Disable the Home Icon and the title on the Actionbar
 		ActionBar actionbar = getActionBar();
 		actionbar.setDisplayShowHomeEnabled(false);
-		/*
+		
 		if (headCommentData.getTitle().length() > 8) {
 			String shortTitle = headCommentData.getTitle().substring(0, 8);
 			shortTitle.concat("...");
@@ -46,7 +49,7 @@ public class SubCommentViewActivity extends Activity {
 
 		} else {
 			actionbar.setTitle(headCommentData.getTitle());
-		}*/
+		}
 		
 		
 	}
