@@ -18,14 +18,15 @@ package ca.ualberta.team10projectw2014;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import ca.ualberta.team10projectw2014.CommentModel;
 
 /**
  * This class acts as the model for the head comments.
  * @author Costa Zervos
  */
-public class HeadModel extends CommentModel implements Serializable{
-	private static final long serialVersionUID = 87462334;
-
+public class HeadModel extends CommentModel implements Serializable {
+	
+	private static final long serialVersionUID = 92834923;
 	private ArrayList<CommentModel> subComments = new ArrayList<CommentModel>();
 	
 	
