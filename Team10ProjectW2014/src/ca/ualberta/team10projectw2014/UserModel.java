@@ -28,6 +28,12 @@ public class UserModel {
 	private ArrayList<CommentModel> readComments;
 	private ArrayList<CommentModel> wantToReadComments;
 	private String Username;
+	
+	//These boolean values dictate which criteria to sort comments by:
+	private boolean sortByPic;
+	private boolean sortByDate;
+	private boolean sortByLoc;
+	private boolean sortByPopularity;
 
 	// Constructor for new user
 	public UserModel(int androidID) {
@@ -91,4 +97,48 @@ public class UserModel {
 		Username = username;
 	}
 
+	public boolean isSortByPic() {
+		return sortByPic;
+	}
+	
+	public void setSortByPic(boolean sortByPic) {
+		this.sortByPic = sortByPic;
+	}
+	
+	public boolean isSortByDate() {
+		return sortByDate;
+	}
+	
+	public void setSortByDate(boolean sortByDate) {
+		this.sortByDate = sortByDate;
+		if(sortByDate){
+			this.sortByLoc = false;
+			this.sortByPopularity = false;
+		}
+	}
+	
+	public boolean isSortByLoc() {
+		return sortByLoc;
+	}
+	
+	public void setSortByLoc(boolean sortByLoc) {
+		this.sortByLoc = sortByLoc;
+		if(sortByDate){
+			this.sortByDate = false;
+			this.sortByPopularity = false;
+		}
+	}
+	
+	public boolean isSortByPopularity() {
+		return sortByPopularity;
+	}
+	
+	public void setSortByPopularity(boolean sortByPopularity) {
+		this.sortByPopularity = sortByPopularity;
+		if(sortByDate){
+			this.sortByLoc = false;
+			this.sortByDate = false;
+		}
+	}
+	
 }

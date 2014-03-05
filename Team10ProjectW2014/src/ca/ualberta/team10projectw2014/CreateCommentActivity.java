@@ -73,7 +73,7 @@ public class CreateCommentActivity extends Activity{
 	
 	private void setLocation(){
 		if (this.postLocation == null){
-			this.postLocation = new LocationModel("TITLE", "LAT", "LONG");
+			this.postLocation = new LocationModel("TITLE", 0, 0);
 		}
 		//TODO Set location variable to...?
 		// Location should never be null

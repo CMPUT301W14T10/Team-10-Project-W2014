@@ -1,3 +1,4 @@
+
 /**
  * Copyright 2014 Cole Fudge, Steven Giang, Bradley Poullet, David Yee, and Costa Zervos
 
@@ -140,6 +141,5 @@ public class MainListViewAdapter extends BaseAdapter {
 		timeString = sdf.format(calendar.getTime());
 		return timeString;
 	}
-	
 	
 }
