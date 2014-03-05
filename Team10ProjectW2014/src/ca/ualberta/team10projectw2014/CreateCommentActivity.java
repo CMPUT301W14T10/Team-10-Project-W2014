@@ -28,12 +28,13 @@ public class CreateCommentActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_comment_activity);
-        /*
+        
         //Receive information from the intent
         Bundle bundle = getIntent().getExtras();
         String receivedUsername = (String) bundle.getString("username", null);
         CommentModel receivedComment = (CommentModel) bundle.getSerializable("comment");
-        fillContents(receivedUsername, receivedComment);*/
+        fillContents(receivedUsername, receivedComment);
+        
 	
         ueditText = (EditText)findViewById(R.id.cc_username);
 		teditText = (EditText)findViewById(R.id.cc_title);
@@ -121,7 +122,7 @@ public class CreateCommentActivity extends Activity{
 			// This is a regular expression for simplicity
 			// Will change for generalizability later
 			// Checks to see if the postTitle has "RE:" at the start
-			if(this.postTitle.matches("^RE:[.]{*}")){
+			if(this.postTitle.matches("^RE:.*")){
 				// This should be edited so that the model handles all the getting and setting
 				model = new SubCommentModel(this.parentModel);
 				model.setAuthor(this.postUsername);
