@@ -1,4 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!-- Reply, should appear as action button -->
+    <item android:id="@+id/action_reply"
+          android:title="@string/action_reply"
+          android:showAsAction="ifRoom" />
     
     <!-- Favourite -->
     <item
