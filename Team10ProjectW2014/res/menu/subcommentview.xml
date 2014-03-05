@@ -1,5 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
+    <!-- Code adapter from Android Docs at
+    https://developer.android.com/training/basics/actionbar/adding-buttons.html -->
+    <!-- Reply, should appear as action button -->
+    <item android:id="@+id/action_reply"
+          android:title="@string/action_reply"
+          android:showAsAction="ifRoom" />
+    
+    
+    
+    
     <!-- Favourite -->
     <item
         android:id="@+id/action_favourite"

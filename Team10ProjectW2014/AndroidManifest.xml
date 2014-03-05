@@ -31,6 +31,7 @@
         </activity>
         <activity android:name="ca.ualberta.team10projectw2014.CreateCommentActivity" >
         </activity>
+        
         <activity
             android:name="ca.ualberta.team10projectw2014.SubCommentViewActivity"
             android:label="@string/title_activity_sub_comment_view" >

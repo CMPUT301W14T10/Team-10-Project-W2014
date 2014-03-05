@@ -33,7 +33,7 @@ public class SubCommentViewActivity extends Activity {
 		//Disable the Home Icon and the title on the Actionbar
 		ActionBar actionbar = getActionBar();
 		actionbar.setDisplayShowHomeEnabled(false);
-		actionbar.setTitle("");
+		actionbar.setTitle("1");
 		
 		
 	}
