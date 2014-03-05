@@ -30,6 +30,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -164,6 +165,18 @@ public class MainListViewActivity extends Activity{
 		adapter = new MainListViewAdapter(this, commentList);
 		
 		user = userController.loadData();
+		
+		commentView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id){
+				HeadModel headComment = commentList.get(position);
+				Intent subCommentView = new Intent(getApplicationContext(), SubCommentViewActivity.class);
+				subCommentView.putExtra("comment", headComment);
+				view.getContext().startActivity(subCommentView);
+				
+			}});
+
 	}	
 	
 	/**
@@ -332,4 +345,5 @@ public class MainListViewActivity extends Activity{
 	            break;
 	    }
 	}
+	
 }	
