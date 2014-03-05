@@ -26,15 +26,27 @@ import android.view.MenuItem;
 
 public class SubCommentViewActivity extends Activity {
 
+	private HeadModel headCommentData;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sub_comment_view);
-		
-		//Disable the Home Icon and the title on the Actionbar
+
+		//Bundle bundle = getIntent().getExtras();
+		//headCommentData = (HeadModel) bundle.getSerializable("HeadComment");
+
+		// Disable the Home Icon and the title on the Actionbar
 		ActionBar actionbar = getActionBar();
 		actionbar.setDisplayShowHomeEnabled(false);
-		actionbar.setTitle("");
+		/*
+		if (headCommentData.getTitle().length() > 8) {
+			String shortTitle = headCommentData.getTitle().substring(0, 8);
+			shortTitle.concat("...");
+			actionbar.setTitle(shortTitle);
+
+		} else {
+			actionbar.setTitle(headCommentData.getTitle());
+		}*/
 		
 		
 	}
