@@ -109,8 +109,10 @@ public class MainListViewAdapter extends BaseAdapter {
 		// String for time retrieved using private method
 		holder.textTime.setText(this.timeToString(headCommentList.get(position).
 				getTimestamp()));
-		
-		// TODO implement imageview 
+		// Sets the image attached to the comment
+		if(headCommentList.get(position).getPhoto() != null){
+			holder.imageView.setImageBitmap(headCommentList.get(position).getPhoto());
+		}
 		return convertView;
 	}
 	
