@@ -174,7 +174,6 @@ public class MainListViewActivity extends Activity{
 		switch(item.getItemId()){
 			case R.id.add_comment:
 				Intent createComment = new Intent(getApplicationContext(), CreateCommentActivity.class);
-				createComment.putExtra("parentComment", null);
 				createComment.putExtra("username", user.getUsername());
 				this.startActivity(createComment);
 				return true;
