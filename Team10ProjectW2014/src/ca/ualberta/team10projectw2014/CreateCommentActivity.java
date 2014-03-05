@@ -5,6 +5,7 @@ import java.util.Calendar;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,10 +22,23 @@ public class CreateCommentActivity extends Activity{
 	EditText teditText;
 	EditText ceditText;
 	
-	public void onCreate(){
+	@Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.create_comment_activity);
+        Bundle bundle = getIntent().getExtras();
+        String receivedUsername = (String) bundle.getSerializable("username");
+        CommentModel receivedComment = (CommentModel) bundle.getSerializable("comment");
+        fillContents(receivedUsername, receivedComment);
+        
 		ueditText = (EditText)findViewById(R.id.cc_username);
 		teditText = (EditText)findViewById(R.id.cc_title);
 		ceditText = (EditText)findViewById(R.id.cc_content);
+	}
+	
+	@Override 
+	protected void onResume(){
+		
 	}
 
 	public void fillContents(String username, CommentModel parentModel){
@@ -43,13 +57,13 @@ public class CreateCommentActivity extends Activity{
 			this.parentModel = parentModel;
 			this.postTitle = "RE:" + parentModel.getTitle();
 			teditText.setKeyListener(null);
-			setTitle(postTitle);
+			setTitleView(postTitle);
 		}
 		else{
 			if (this.postTitle == null){
 				this.postTitle = null;
 			}
-			setTitle("Create a Name for Your Post");
+			setTitleView("Create a Name for Your Post");
 		}
 	}
 	
