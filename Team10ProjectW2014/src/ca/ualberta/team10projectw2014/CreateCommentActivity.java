@@ -3,6 +3,7 @@ package ca.ualberta.team10projectw2014;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -22,23 +23,27 @@ public class CreateCommentActivity extends Activity{
 	EditText teditText;
 	EditText ceditText;
 	
+	@SuppressLint("NewApi")
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_comment_activity);
+        /*
+        //Receive information from the intent
         Bundle bundle = getIntent().getExtras();
-        String receivedUsername = (String) bundle.getSerializable("username");
+        String receivedUsername = (String) bundle.getString("username", null);
         CommentModel receivedComment = (CommentModel) bundle.getSerializable("comment");
-        fillContents(receivedUsername, receivedComment);
-        
-		ueditText = (EditText)findViewById(R.id.cc_username);
+        fillContents(receivedUsername, receivedComment);*/
+	
+        ueditText = (EditText)findViewById(R.id.cc_username);
 		teditText = (EditText)findViewById(R.id.cc_title);
 		ceditText = (EditText)findViewById(R.id.cc_content);
 	}
 	
+	
 	@Override 
 	protected void onResume(){
-		
+		super.onResume();
 	}
 
 	public void fillContents(String username, CommentModel parentModel){

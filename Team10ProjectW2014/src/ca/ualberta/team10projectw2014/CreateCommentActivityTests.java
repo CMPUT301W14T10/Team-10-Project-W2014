@@ -39,8 +39,8 @@ public class CreateCommentActivityTests extends
 				activity.fillContents(null, null);
 				
 				assertEquals("contentText should be blank", "", contentText.getText().toString());
-				assertEquals("titleText should be blank", "Create a Name for Your Post", titleText.getText().toString());
-				assertEquals("usernameText should be blank", "Please set a username", usernameText.getText().toString());
+				assertEquals("titleText should be standard message", "Create a Name for Your Post", titleText.getText().toString());
+				assertEquals("usernameText should be standard message", "Please set a username", usernameText.getText().toString());
 				
 			}
 		});
@@ -58,7 +58,7 @@ public class CreateCommentActivityTests extends
 				activity.fillContents(username, null);
 				
 				assertEquals("contentText should be blank", "", contentText.getText().toString());
-				assertEquals("titleText should be blank", "Create a Name for Your Post", titleText.getText().toString());
+				assertEquals("titleText should be standard message", "Create a Name for Your Post", titleText.getText().toString());
 				assertEquals("usernameText should be username", username, usernameText.getText().toString());
 				
 			}
@@ -79,8 +79,8 @@ public class CreateCommentActivityTests extends
 				activity.fillContents(null, sampleHead);
 				
 				assertEquals("contentText should be blank", "", contentText.getText().toString());
-				assertEquals("titleText should be title", "RE:"+title, titleText.getText().toString());
-				assertEquals("usernameText should be blank", "Please set a username", usernameText.getText().toString());
+				assertEquals("titleText should be RE: title", "RE:"+title, titleText.getText().toString());
+				assertEquals("usernameText should be standard message", "Please set a username", usernameText.getText().toString());
 				
 			}
 		});
@@ -101,7 +101,7 @@ public class CreateCommentActivityTests extends
 				activity.fillContents(username, sampleHead);
 				
 				assertEquals("contentText should be blank", "", contentText.getText().toString());
-				assertEquals("titleText should be title","RE:"+ title, titleText.getText().toString());
+				assertEquals("titleText should be RE: title","RE:"+ title, titleText.getText().toString());
 				assertEquals("usernameText should be username", username, usernameText.getText().toString());
 				
 			}
