@@ -30,7 +30,7 @@ public class LocationModel {
 	private double latitude;
 	private double longitude;
 
-	public LocationModel(String name, int latitude, int longitude) {
+	public LocationModel(String name, double latitude, double longitude) {
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.name = name;

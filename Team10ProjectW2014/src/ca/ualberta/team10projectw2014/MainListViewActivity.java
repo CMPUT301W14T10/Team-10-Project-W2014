@@ -291,8 +291,8 @@ public class MainListViewActivity extends Activity{
 	 * http://developer.android.com/guide/topics/ui/controls/radiobutton.html
 	 */
 	public void onRadioButtonClicked(View view) {
-		RadioGroup buttonGroup = (RadioGroup) buttonPressed.getParent();
 		RadioButton buttonPressed = (RadioButton) view;
+		RadioGroup buttonGroup = (RadioGroup) buttonPressed.getParent();
 	    // Is the button now checked?
 	    boolean checked = ((RadioButton) view).isChecked();
 	    
@@ -327,9 +327,9 @@ public class MainListViewActivity extends Activity{
 	        	if(checked){
 	        		user.setSortByPic(true);
 	        	}
-	        	else{
+	        	else
 	        		buttonGroup.clearCheck();
 	            break;
 	    }
 	}
-}
+}	
