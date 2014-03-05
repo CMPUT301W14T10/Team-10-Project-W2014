@@ -308,13 +308,14 @@ public class MainListViewActivity extends Activity{
 		RadioGroup buttonGroup = (RadioGroup) buttonPressed.getParent();
 	    // Is the button now checked?
 	    boolean checked = ((RadioButton) view).isChecked();
-	    
+	    buttonGroup.clearCheck();
 	    // Check which radio button was clicked
 	    switch(view.getId()) {
 	    	
 	        case R.id.date:
 	            if (checked){
 	            	user.setSortByDate(true);
+	            	buttonPressed.toggle();
 	            }
 	            else
 	        		buttonGroup.clearCheck();
@@ -323,6 +324,7 @@ public class MainListViewActivity extends Activity{
 	        case R.id.location:
 	            if (checked){
 	            	user.setSortByLoc(true);
+	            	buttonPressed.toggle();
 	            }
 	            else
 	        		buttonGroup.clearCheck();
@@ -331,6 +333,7 @@ public class MainListViewActivity extends Activity{
 	        case R.id.number_of_favourites:
 	            if (checked){
 	            	user.setSortByPopularity(true);
+	            	buttonPressed.toggle();
 	            }
 	            else
 	        		buttonGroup.clearCheck();
@@ -339,6 +342,7 @@ public class MainListViewActivity extends Activity{
 	        case R.id.pictures:
 	        	if(checked){
 	        		user.setSortByPic(true);
+	            	buttonPressed.toggle();
 	        	}
 	        	else
 	        		buttonGroup.clearCheck();
