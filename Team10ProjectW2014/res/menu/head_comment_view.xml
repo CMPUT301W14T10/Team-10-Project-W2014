@@ -1,0 +1,32 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item android:id="@+id/add_comment"
+    	android:icon="@drawable/ic_action_new"
+    	android:title="@string/action_add_head_comment"
+		android:showAsAction= "always" />
+    
+    <!-- Edit Username -->
+    <item
+        android:id="@+id/action_edit_username_main"
+        android:showAsAction="never"
+        android:title="@string/action_edit_username"/>
+    
+    <!-- Sort -->
+    <item
+        android:id="@+id/action_sort_main"
+        android:showAsAction="never"
+        android:title="@string/action_sort"/>
+    
+    <!-- Show Favourites list -->
+    <item
+        android:id="@+id/action_favourites_main"
+        android:showAsAction="never"
+        android:title="@string/action_favourites"/>
+    
+    <!-- Show Want to Read list -->
+    <item
+        android:id="@+id/action_want_to_read_main"
+        android:showAsAction="never"
+        android:title="@string/action_want_to_read"/>
+    
+</menu>
