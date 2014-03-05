@@ -29,11 +29,11 @@ public class CreateCommentActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_comment_activity);
         
-        //Receive information from the intent
-        Bundle bundle = getIntent().getExtras();
-        String receivedUsername = (String) bundle.getString("username", null);
-        CommentModel receivedComment = (CommentModel) bundle.getSerializable("comment");
-        fillContents(receivedUsername, receivedComment);
+//        //Receive information from the intent
+//        Bundle bundle = getIntent().getExtras();
+//        String receivedUsername = (String) bundle.getString("username", null);
+//        CommentModel receivedComment = (CommentModel) bundle.getSerializable("comment");
+//        fillContents(receivedUsername, receivedComment);
         
 	
         ueditText = (EditText)findViewById(R.id.cc_username);
@@ -100,8 +100,7 @@ public class CreateCommentActivity extends Activity{
 	}
 	
 	//Called when the user presses "Post" button
-	@SuppressWarnings("unused")
-	private void attemptCommentCreation(View v){
+	public void attemptCommentCreation(View v){
 		CommentModel model;
 		
 		this.postContents = ceditText.getText().toString();
