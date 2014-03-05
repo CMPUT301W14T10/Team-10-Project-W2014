@@ -25,6 +25,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -159,7 +160,7 @@ public class MainListViewActivity extends Activity{
 			adapter.notifyDataSetChanged();
 		}
 		//Use the comment controller to load the head comments from file:
-		commentList = (ArrayList<HeadModel>) commentDataController.loadFromFile();
+		commentList = commentDataController.loadFromFile();
 		
 		//Call the constructor to create a new custom Array Adapter of type HeadModel: 
 		adapter = new MainListViewAdapter(this, commentList);
@@ -176,7 +177,7 @@ public class MainListViewActivity extends Activity{
 				view.getContext().startActivity(subCommentView);
 				
 			}});
-
+		adapter.notifyDataSetChanged();
 	}	
 	
 	/**
