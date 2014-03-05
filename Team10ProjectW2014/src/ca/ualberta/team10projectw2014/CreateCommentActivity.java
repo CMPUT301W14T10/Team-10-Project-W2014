@@ -17,9 +17,15 @@ public class CreateCommentActivity extends Activity{
 	private LocationModel postLocation;
 	private Bitmap postPhoto;
 	private CommentModel parentModel;
-	EditText ueditText = (EditText)findViewById(R.id.cc_username);
-	EditText teditText = (EditText)findViewById(R.id.cc_title);
-	EditText ceditText = (EditText)findViewById(R.id.cc_content);
+	EditText ueditText;
+	EditText teditText;
+	EditText ceditText;
+	
+	public void onCreate(){
+		ueditText = (EditText)findViewById(R.id.cc_username);
+		teditText = (EditText)findViewById(R.id.cc_title);
+		ceditText = (EditText)findViewById(R.id.cc_content);
+	}
 
 	public void fillContents(String username, CommentModel parentModel){
 		setLocation();
@@ -136,7 +142,7 @@ public class CreateCommentActivity extends Activity{
 			}
 			
 			//Destroy this activity so that we return to the previous one.
-			finish();
+			goBack();
 		}
 	}
 	
@@ -150,6 +156,10 @@ public class CreateCommentActivity extends Activity{
 	
 	private void raiseTitleIncompleteError(){
 		//TODO Send user an error telling them that they need more info
+	}
+	
+	private void goBack(){
+		finish();
 	}
 	
 	
