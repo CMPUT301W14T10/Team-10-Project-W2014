@@ -25,10 +25,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 /**
  * This class handles the activity displaying the list view of head comments.
@@ -49,6 +55,8 @@ public class MainListViewActivity extends Activity{
 	private static final NetworkConnectionController connectionController = new NetworkConnectionController();
 	
 	private static final UserDataController userController = new UserDataController();
+	
+	private static LayoutInflater layoutInflater;
 	
 	//comparator used in sorting comments by date:
 	private static Comparator locCompare = new Comparator(){
@@ -96,6 +104,7 @@ public class MainListViewActivity extends Activity{
 		adapter = new MainListViewAdapter(this, commentList);
 		
 		user = userController.loadFromFile();
+		layoutInflater = LayoutInflater.from(this);
 	}
 
 	
@@ -181,6 +190,7 @@ public class MainListViewActivity extends Activity{
 		}
 		
 	}
+	
 	/**
 	 * Brings up a dialog box to prompt user for a new username:
 	 */
@@ -219,26 +229,48 @@ public class MainListViewActivity extends Activity{
 		
 	}
 	
+	/**
+	 * Brings up a dialog box to prompt user for sorting criteria:
+	 */
 	private void sort_comments(){
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
 		//set the fields of the dialog:
 		alert.setTitle("Sort By:");
+	
+		LinearLayout optionsView = (LinearLayout)layoutInflater.inflate(R.layout.sort_by_dialog_list, 
+				null);
+		
+		ViewGroup sortRadioGroup = (ViewGroup) optionsView.getChildAt(0);
+				
+		RadioButton button;
+		
+		if(user.isSortByDate()){
+			button = (RadioButton) sortRadioGroup.getChildAt(0);
+			button.toggle();
+		}
+		else if(user.isSortByLoc()){
+			button = (RadioButton) sortRadioGroup.getChildAt(1);
+			button.toggle();
+		}
+		else if(user.isSortByPopularity()){
+			button = (RadioButton) sortRadioGroup.getChildAt(2);
+			button.toggle();
+		}
 
-		//add an EditText to the dialog for the user to enter
-		//the name in:
-		final EditText usernameText = new EditText(this);
-		alert.setView(usernameText);
+		if(user.isSortByPic()){
+			button = (RadioButton) ((ViewGroup) optionsView.getChildAt(2)).getChildAt(0);
+			button.toggle();
+		}
+		
+		alert.setView(optionsView);
 
 		//set the positive button with its text and set up an on click listener
 		//to add the counter with the text provided when it is pressed:
 		alert.setPositiveButton("Set", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
-				//get the text from the editable:
-				Editable usernameEditable = usernameText.getText();
-				String usernameString = usernameEditable.toString();
+			
 				
-				user.setUsername(usernameString);
 				userController.saveInFile();
 			}
 		});
@@ -251,5 +283,53 @@ public class MainListViewActivity extends Activity{
 		});
 
 		alert.show();
+	}
+	
+	/**
+	 * Responds to clicks on a radio button in the sort by alert
+	 * dialog. Adapted from the android developer website
+	 * http://developer.android.com/guide/topics/ui/controls/radiobutton.html
+	 */
+	public void onRadioButtonClicked(View view) {
+		RadioGroup buttonGroup = (RadioGroup) buttonPressed.getParent();
+		RadioButton buttonPressed = (RadioButton) view;
+	    // Is the button now checked?
+	    boolean checked = ((RadioButton) view).isChecked();
+	    
+	    // Check which radio button was clicked
+	    switch(view.getId()) {
+	    	
+	        case R.id.date:
+	            if (checked){
+	            	user.setSortByDate(true);
+	            }
+	            else
+	        		buttonGroup.clearCheck();
+	            break;
+	            
+	        case R.id.location:
+	            if (checked){
+	            	user.setSortByLoc(true);
+	            }
+	            else
+	        		buttonGroup.clearCheck();
+	            break;
+	            
+	        case R.id.number_of_favourites:
+	            if (checked){
+	            	user.setSortByPopularity(true);
+	            }
+	            else
+	        		buttonGroup.clearCheck();
+	            break;
+	            
+	        case R.id.pictures:
+	        	if(checked){
+	        		user.setSortByPic(true);
+	        	}
+	        	else{
+	        		buttonGroup.clearCheck();
+	            break;
+	    }
 	}
 }

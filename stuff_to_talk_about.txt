@@ -4,3 +4,4 @@
 3) Making some sort of network connection model?
 4) changing lat/lon in LocationModel to ints?
 5) Should we really have one-liner methods(as in Bradley's CreateComment class?)
+6) What does the stuff in styles.xml do?
