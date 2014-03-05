@@ -38,9 +38,9 @@ public class CreateCommentActivityTests extends
 				
 				activity.fillContents(null, null);
 				
-				assertEquals("contentText should be blank", contentText.getText().toString(), "");
-				assertEquals("titleText should be blank", titleText.getText().toString(), "");
-				assertEquals("usernameText should be blank", usernameText.getText().toString(), "");
+				assertEquals("contentText should be blank", "", contentText.getText().toString());
+				assertEquals("titleText should be blank", "Create a Name for Your Post", titleText.getText().toString());
+				assertEquals("usernameText should be blank", "Please set a username", usernameText.getText().toString());
 				
 			}
 		});
@@ -57,9 +57,9 @@ public class CreateCommentActivityTests extends
 				
 				activity.fillContents(username, null);
 				
-				assertEquals("contentText should be blank", contentText.getText().toString(), "");
-				assertEquals("titleText should be blank", titleText.getText().toString(), "");
-				assertEquals("usernameText should be username", usernameText.getText().toString(), username);
+				assertEquals("contentText should be blank", "", contentText.getText().toString());
+				assertEquals("titleText should be blank", "Create a Name for Your Post", titleText.getText().toString());
+				assertEquals("usernameText should be username", username, usernameText.getText().toString());
 				
 			}
 		});
@@ -78,9 +78,9 @@ public class CreateCommentActivityTests extends
 				
 				activity.fillContents(null, sampleHead);
 				
-				assertEquals("contentText should be blank", contentText.getText().toString(), "");
-				assertEquals("titleText should be title", titleText.getText().toString(), title);
-				assertEquals("usernameText should be blank", usernameText.getText().toString(), "");
+				assertEquals("contentText should be blank", "", contentText.getText().toString());
+				assertEquals("titleText should be title", "RE:"+title, titleText.getText().toString());
+				assertEquals("usernameText should be blank", "Please set a username", usernameText.getText().toString());
 				
 			}
 		});
@@ -100,9 +100,9 @@ public class CreateCommentActivityTests extends
 				
 				activity.fillContents(username, sampleHead);
 				
-				assertEquals("contentText should be blank", contentText.getText().toString(), "");
-				assertEquals("titleText should be title", titleText.getText().toString(), title);
-				assertEquals("usernameText should be username", usernameText.getText().toString(), username);
+				assertEquals("contentText should be blank", "", contentText.getText().toString());
+				assertEquals("titleText should be title","RE:"+ title, titleText.getText().toString());
+				assertEquals("usernameText should be username", username, usernameText.getText().toString());
 				
 			}
 		});
