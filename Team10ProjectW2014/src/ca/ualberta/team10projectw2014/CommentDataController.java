@@ -17,7 +17,7 @@ public class CommentDataController {
 		
 	}
 
-	public void saveInFile(ArrayList<HeadModel>) {
+	public void saveInFile(ArrayList<HeadModel> commentList) {
 		// TODO Auto-generated method stub
 		
 	}
