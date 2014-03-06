@@ -23,24 +23,24 @@ import java.util.ArrayList;
  * @author Costa Zervos
  */
 public class SubCommentModel extends CommentModel{
-	private ArrayList<CommentModel> subComments = new ArrayList<CommentModel>();
+	private ArrayList<SubCommentModel> subComments = new ArrayList<SubCommentModel>();
 	private CommentModel respondedTo;
 
 	/**
 	 * Constructor method that sets the comment this sub comment is responding to.
 	 * @param text the String to name the counter.
 	 */
-	public SubCommentModel(CommentModel parentComment) {
+	public SubCommentModel(SubCommentModel parentComment) {
 		this.respondedTo = parentComment;
 	}
 
 	
-	public ArrayList<CommentModel> getSubComments() {
+	public ArrayList<SubCommentModel> getSubComments() {
 		return subComments;
 	}
 
 	
-	public void setSubComments(ArrayList<CommentModel> subComments) {
+	public void setSubComments(ArrayList<SubCommentModel> subComments) {
 		this.subComments = subComments;
 	}
 

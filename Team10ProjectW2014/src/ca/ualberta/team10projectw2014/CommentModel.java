@@ -39,13 +39,13 @@ public class CommentModel implements Serializable {
 	private Calendar timestamp;
 	private int numFavourites;
 	private int authorAndroidID;
-	private ArrayList<CommentModel> subComments = new ArrayList<CommentModel>();
+	private ArrayList<SubCommentModel> subComments = new ArrayList<SubCommentModel>();
 	
-	public void addSubComment(CommentModel subComment){
+	public void addSubComment(SubCommentModel subComment){
 		subComments.add(subComment);
 	}
 	
-	public ArrayList<CommentModel> getSubComments() {
+	public ArrayList<SubCommentModel> getSubComments() {
 		return subComments;
 	}
 	
