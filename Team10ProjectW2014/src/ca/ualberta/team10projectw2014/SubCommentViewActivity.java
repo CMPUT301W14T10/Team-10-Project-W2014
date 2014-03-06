@@ -42,6 +42,7 @@ public class SubCommentViewActivity extends Activity {
 		ActionBar actionbar = getActionBar();
 		actionbar.setDisplayShowHomeEnabled(false);
 		
+		
 		if (headCommentData.getTitle().length() > 8) {
 			String shortTitle = headCommentData.getTitle().substring(0, 8);
 			shortTitle.concat("...");
@@ -50,6 +51,7 @@ public class SubCommentViewActivity extends Activity {
 		} else {
 			actionbar.setTitle(headCommentData.getTitle());
 		}
+		
 		
 		
 	}
