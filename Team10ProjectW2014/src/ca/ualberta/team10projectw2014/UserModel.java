@@ -48,9 +48,11 @@ public class UserModel implements Serializable {
 	}
 
 	// Constructor for old user (load from file)
-	public UserModel(int androidID, ArrayList<CommentModel> favourites,
+	public UserModel(int androidID, 
+			ArrayList<CommentModel> favourites,
 			ArrayList<CommentModel> readComments,
-			ArrayList<CommentModel> wantToReadComments, String username) {
+			ArrayList<CommentModel> wantToReadComments, 
+			String username) {
 		super();
 		this.androidID = androidID;
 		this.favourites = favourites;
