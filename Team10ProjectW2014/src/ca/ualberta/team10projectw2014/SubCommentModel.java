@@ -23,7 +23,7 @@ import java.util.ArrayList;
  * @author Costa Zervos
  */
 public class SubCommentModel extends CommentModel{
-	private ArrayList<CommentModel> subComments = new ArrayList<CommentModel>();
+	private ArrayList<SubCommentModel> subComments = new ArrayList<SubCommentModel>();
 	private CommentModel respondedTo;
 
 	/**
@@ -35,12 +35,12 @@ public class SubCommentModel extends CommentModel{
 	}
 
 	
-	public ArrayList<CommentModel> getSubComments() {
+	public ArrayList<SubCommentModel> getSubComments() {
 		return subComments;
 	}
 
 	
-	public void setSubComments(ArrayList<CommentModel> subComments) {
+	public void setSubComments(ArrayList<SubCommentModel> subComments) {
 		this.subComments = subComments;
 	}
 

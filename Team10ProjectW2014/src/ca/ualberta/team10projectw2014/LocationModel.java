@@ -34,7 +34,6 @@ public class LocationModel {
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.name = name;
-		
 	}
 
 	public String getName() {
