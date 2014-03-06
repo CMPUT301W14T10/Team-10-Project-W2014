@@ -60,12 +60,10 @@ public class SubCommentViewActivityTests extends
         // do not start the activity BEFORE or NullPointerException will occur!
         activity = getActivity();
         
-        /*
         // get the sub list view object from its defined R.id
 		subListView = 
 			(ListView) activity.findViewById(
 					ca.ualberta.team10projectw2014.R.id.sub_comment_list_view_sub);
-		*/
 				
 		ActionBar actBar = activity.getActionBar();
 		assertEquals("Actionbar Title should contain ... ","Test Hea...",actBar.getTitle());

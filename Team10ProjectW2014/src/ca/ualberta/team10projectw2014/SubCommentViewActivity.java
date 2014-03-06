@@ -24,11 +24,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 public class SubCommentViewActivity extends Activity {
 
 	private HeadModel headCommentData;
-	
+	private SubCommentModel subCommentData;
+	private ListView subListView;
+	private SubCommentViewActivityAdapter adapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +44,9 @@ public class SubCommentViewActivity extends Activity {
 		// Disable the Home Icon and the title on the Actionbar
 		ActionBar actionbar = getActionBar();
 		actionbar.setDisplayShowHomeEnabled(false);
+		actionbar.setTitle(headCommentData.getTitle());
 		
-		
+		/*
 		if (headCommentData.getTitle().length() > 8) {
 			String shortTitle = headCommentData.getTitle().substring(0, 8);
 			shortTitle.concat("...");
@@ -51,9 +55,20 @@ public class SubCommentViewActivity extends Activity {
 		} else {
 			actionbar.setTitle(headCommentData.getTitle());
 		}
+		*/
 		
+		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
+	}
+	
+	protected void onResume() {
+		super.onResume();
 		
-		
+		/*
+		this.adapter = new SubCommentViewActivityAdapter(
+				SubCommentViewActivity.this,
+				R.layout.activity_sub_comment_view,
+				this.headCommentData);
+				*/
 	}
 
 	/**
