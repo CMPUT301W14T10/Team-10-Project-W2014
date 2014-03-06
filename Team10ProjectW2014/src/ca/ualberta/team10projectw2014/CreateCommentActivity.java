@@ -139,7 +139,7 @@ public class CreateCommentActivity extends Activity{
 				model.setNumFavourites(0);
 				
 				//Adds the newly created model to its referrent's list of subcomments
-				this.parentModel.addSubComment(model);
+				this.parentModel.addSubComment((SubCommentModel) model);
 			}
 			else{
 				// This should be edited so that the model handles all the getting and setting
