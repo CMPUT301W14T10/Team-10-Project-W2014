@@ -126,7 +126,7 @@ public class SubCommentViewActivityAdapter extends
 	 */
 	private String getLocationAndTime(SubCommentModel subComment) {
 		String Location = subComment.getLocation().getName();
-		sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:00 aa");
+		sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:00 aa",java.util.Locale.getDefault());
 		String timeString = sdf.format(subComment.getTimestamp().getTime());
 		
 		

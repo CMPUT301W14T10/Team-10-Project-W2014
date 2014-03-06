@@ -17,19 +17,22 @@
 
 package ca.ualberta.team10projectw2014;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class SubCommentViewActivity extends Activity {
 
 	private HeadModel headCommentData;
-	private SubCommentModel subCommentData;
 	private ListView subListView;
 	private SubCommentViewActivityAdapter adapter;
 	
@@ -37,27 +40,23 @@ public class SubCommentViewActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sub_comment_view);
-
 		Bundle bundle = getIntent().getExtras();
 		headCommentData = (HeadModel) bundle.getSerializable("HeadModel");
 
-		// Disable the Home Icon and the title on the Actionbar
+
+		// Disable the Home Icon on the Actionbar
 		ActionBar actionbar = getActionBar();
 		actionbar.setDisplayShowHomeEnabled(false);
+		
+		// Set the Title in the Actionbar to the title of the head comment
 		actionbar.setTitle(headCommentData.getTitle());
 		
-		/*
-		if (headCommentData.getTitle().length() > 8) {
-			String shortTitle = headCommentData.getTitle().substring(0, 8);
-			shortTitle.concat("...");
-			actionbar.setTitle(shortTitle);
-
-		} else {
-			actionbar.setTitle(headCommentData.getTitle());
-		}
-		*/
 		
 		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
+		
+		//Set the first item in the list to the header Comment
+		subListView.addHeaderView((View)SetHeader(headCommentData));
+		subListView.setAdapter(adapter);
 	}
 	
 	protected void onResume() {
@@ -147,6 +146,50 @@ public class SubCommentViewActivity extends Activity {
 	 */
 	private void addFavourite(){
 		// TODO: Implement addFavourite
+	}
+	
+	/**
+	 * Sets the items in the head comment item layout to the contents
+	 * of the head comment.
+	 * @author sgiang92, dvyee
+	 * @param headComment
+	 * @return HeadModel headComment
+	 */
+	private View SetHeader(HeadModel headComment){
+		
+		//Get the head comment item layout view
+		View header = (View) getLayoutInflater().inflate(R.layout.sub_comment_view_head_comment_item, null);
+		
+		//assign the proper layout item so it can be set
+		TextView textTitle = (TextView) header.findViewById(R.id.long_title);
+		TextView textAuthor = (TextView) header.findViewById(R.id.head_comment_author);
+		TextView textLocaTime = (TextView) header.findViewById(R.id.head_comment_location_time);
+		TextView textContent = (TextView) header.findViewById(R.id.head_comment_text_body);
+		
+		//Set the items to the contents of the Head Comment
+		textTitle.setText(headComment.getTitle());
+		textAuthor.setText(headComment.getAuthor());
+		textLocaTime.setText(getLocaTimeString(headComment));
+		textContent.setText(headComment.getContent());
+	
+		return header;
+		
+	}
+	
+	/**
+	 * Gets the location and time from the current sub Comment and appends them
+	 * together to be displayed in subCommentListView Activity
+	 * @author sgiang92, dvyee
+	 * @param subCommentModel object to get the title of the comment the current
+	 * 		  comment is replying to.
+	 * @return a string that has the location and time appending together
+	 */
+	private String getLocaTimeString(HeadModel headComment){
+		String Location = headComment.getLocation().getName();
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:00 aa",java.util.Locale.getDefault());
+		String timeString = sdf.format(headComment.getTimestamp().getTime());
+		
+		return Location + " - " + timeString;
 	}
 
 }

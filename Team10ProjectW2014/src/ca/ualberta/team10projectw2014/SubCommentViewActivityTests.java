@@ -24,6 +24,7 @@ public class SubCommentViewActivityTests extends
 	protected void setUp() throws Exception {
 		// must call super setUp before tests
         super.setUp();
+        
 	}
 	
 	/**
@@ -39,7 +40,9 @@ public class SubCommentViewActivityTests extends
 	 * @author dvyee
 	 * @throws Throwable
 	 */
-	public void testShowCondensedTitle() throws Throwable {
+	
+	
+	public void testShowTitle() throws Throwable {
 		// setup the head comment with some data
 		HeadModel headComment = new HeadModel();
 		headComment.setTitle("Test Head Comment Title");
@@ -66,7 +69,8 @@ public class SubCommentViewActivityTests extends
 					ca.ualberta.team10projectw2014.R.id.sub_comment_list_view_sub);
 				
 		ActionBar actBar = activity.getActionBar();
-		assertEquals("Actionbar Title should contain ... ","Test Hea...",actBar.getTitle());
+		assertEquals("Actionbar Title should contain the Title of the head comment",
+					 headComment.getTitle(),actBar.getTitle());
 		
 		// close the activity now that we're done the JUnit test
 		activity.finish();
@@ -76,6 +80,39 @@ public class SubCommentViewActivityTests extends
 	}
 	
 	
+	public void testShowHeadComment() throws Throwable {
+		// setup the head comment with some data
+		HeadModel headComment = new HeadModel();
+		headComment.setTitle("Test Head Comment Title");
+		headComment.setAuthor("TestUsername");
+		headComment.setContent("Test Head Comment Content");
+		headComment.setTimestamp(Calendar.getInstance());
+        
+        // create a new intent
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setClassName("ca.ualberta.team10projectw2014", 
+        		"ca.ualberta.team10projectw2014.SubCommentViewActivity");
+        intent.putExtra("HeadModel", headComment);
+        setActivityIntent(intent);
+        
+        // get the activity and call it when necessary (start the activity)
+        // keep a record of the activity
+        // we have to start the activity AFTER our intent is ready and prepared
+        // do not start the activity BEFORE or NullPointerException will occur!
+        activity = getActivity();
+        
+        // get the sub list view object from its defined R.id
+		subListView = 
+			(ListView) activity.findViewById(
+					ca.ualberta.team10projectw2014.R.id.sub_comment_list_view_sub);
+		
+				
+		// close the activity now that we're done the JUnit test
+		activity.finish();
+		
+		// force the next getActivity to re-open the activity
+		setActivity(null);
+	}	
 	
 	/***
 	 * Use Case 5.1 - BrowseSubComments 
