@@ -29,7 +29,7 @@ public class UserModel implements Serializable {
 	private ArrayList<CommentModel> favourites;
 	private ArrayList<CommentModel> readComments;
 	private ArrayList<CommentModel> wantToReadComments;
-	private String Username;
+	private String userName;
 	
 	//These boolean values dictate which criteria to sort comments by:
 	private boolean sortByPic;
@@ -44,7 +44,7 @@ public class UserModel implements Serializable {
 		this.favourites = new ArrayList<CommentModel>();
 		this.readComments = new ArrayList<CommentModel>();
 		this.wantToReadComments = new ArrayList<CommentModel>();
-		this.Username = "null";
+		this.userName = "null";
 	}
 
 	// Constructor for old user (load from file)
@@ -52,13 +52,13 @@ public class UserModel implements Serializable {
 			ArrayList<CommentModel> favourites,
 			ArrayList<CommentModel> readComments,
 			ArrayList<CommentModel> wantToReadComments, 
-			String username) {
+			String userName) {
 		super();
 		this.androidID = androidID;
 		this.favourites = favourites;
 		this.readComments = readComments;
 		this.wantToReadComments = wantToReadComments;
-		Username = username;
+		this.userName = userName;
 	}
 
 	public int getAndroidID() {
@@ -94,11 +94,11 @@ public class UserModel implements Serializable {
 	}
 
 	public String getUsername() {
-		return Username;
+		return userName;
 	}
 
 	public void setUsername(String username) {
-		Username = username;
+		userName = username;
 	}
 
 	public boolean isSortByPic() {
