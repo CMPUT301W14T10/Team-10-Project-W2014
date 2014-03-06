@@ -49,7 +49,9 @@ public class SubCommentViewActivityAdapter extends
 		ImageView imageView;
 	}
 
-	public SubCommentViewActivityAdapter(Context context, int layoutResourceId,
+	public SubCommentViewActivityAdapter(
+			Context context, 
+			int layoutResourceId,
 			ArrayList<SubCommentModel> subCommentList) {
 
 		super(context, layoutResourceId, subCommentList);
