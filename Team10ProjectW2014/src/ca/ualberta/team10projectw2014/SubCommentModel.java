@@ -30,7 +30,7 @@ public class SubCommentModel extends CommentModel{
 	 * Constructor method that sets the comment this sub comment is responding to.
 	 * @param text the String to name the counter.
 	 */
-	public SubCommentModel(SubCommentModel parentComment) {
+	public SubCommentModel(CommentModel parentComment) {
 		this.respondedTo = parentComment;
 	}
 
