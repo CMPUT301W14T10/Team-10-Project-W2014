@@ -17,6 +17,8 @@ package ca.ualberta.team10projectw2014;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -45,7 +47,8 @@ public class SubCommentViewActivityAdapter extends
 		TextView textReplyTitle;
 		TextView textSubTitle;
 		TextView textUsername;
-		TextView textLocationTime;
+		TextView textLocation;
+		TextView textTime;
 		ImageView imageView;
 	}
 
@@ -83,9 +86,9 @@ public class SubCommentViewActivityAdapter extends
 					.findViewById(R.id.reply_title);
 			holder.textSubTitle = (TextView) view.findViewById(R.id.sub_title);
 			holder.textUsername = (TextView) view
-					.findViewById(R.id.sub_comment_username);
-			holder.textLocationTime = (TextView) view
-					.findViewById(R.id.sub_comment_location_time);
+					.findViewById(R.id.sub_comment_author);
+			holder.textLocation = (TextView) view.findViewById(R.id.sub_comment_location_sub);
+			holder.textTime = (TextView) view.findViewById(R.id.sub_comment_time_sub);
 			holder.imageView = (ImageView) view.findViewById(R.id.sub_comment_image);
 			// Add the holder data to the view
 			view.setTag(holder);
@@ -98,10 +101,11 @@ public class SubCommentViewActivityAdapter extends
 		//Grabs the title of the comment being replied by the getReplyTitle function
 		holder.textReplyTitle.setText(this.getReplyTitle(subCommentList.get(position)));
 		
-		//Grabs the Location and Time of the comment and appends them together
-		//by the getLocationAndTime function
-		holder.textLocationTime.setText(this.getLocationAndTime(subCommentList.get(position)));
+		//Grabs the Time.
+		holder.textTime.setText(this.TimeToString(subCommentList.get(position).getTimestamp()));
 		
+		//Grabs the Location of the model.
+		holder.textLocation.setText(subCommentList.get(position).getLocation().getName());
 		
 		// Grabs strings to be displayed for each sub comment in the list
 		holder.textSubTitle.setText(subCommentList.get(position).getTitle());
@@ -118,20 +122,17 @@ public class SubCommentViewActivityAdapter extends
 	}
 	
 	/**
-	 * Gets the location and time from the current sub Comment and appends them
-	 * together to be displayed in subCommentListView Activity
-	 * @param subCommentModel object to get the title of the comment the current
-	 * 		  comment is replying to.
-	 * @return a string that has the location and time appending together
+	 * Takes in the timestamp as a Calendar object and converts it to a string
+	 * that can be used in a textView.
+	 * @param calendar object to retrieve string from
+	 * @return string of the formatted date of the timestamp
 	 */
-	private String getLocationAndTime(SubCommentModel subComment) {
-		String Location = subComment.getLocation().getName();
-		sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:00 aa",java.util.Locale.getDefault());
-		String timeString = sdf.format(subComment.getTimestamp().getTime());
-		
-		
-		return Location + " - " + timeString;
+	private String TimeToString (Calendar calendar) {
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:00 aa",java.util.Locale.getDefault());
+		String timeString = sdf.format(calendar.getTime());
+		return timeString;
 	}
+
 	
 	
 	/**

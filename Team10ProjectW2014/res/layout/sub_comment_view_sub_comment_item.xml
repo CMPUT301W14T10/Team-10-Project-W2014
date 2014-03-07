@@ -50,7 +50,7 @@
     <!-- Author of sub comment -->
 
     <TextView
-        android:id="@+id/sub_comment_username"
+        android:id="@+id/sub_comment_author"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -59,18 +59,41 @@
         android:text="@string/written_by"
         android:textSize="12sp" />
 
-    <!-- Location and Time -->
+    <!-- Location -->
 
     <TextView
-        android:id="@+id/sub_comment_location_time"
-        android:layout_width="fill_parent"
+        android:id="@+id/sub_comment_location_sub"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/sub_comment_username"
+        android:layout_below="@id/sub_comment_author"
         android:layout_marginTop="1dip"
-        android:text="@string/location_time"
+        android:text="@string/location"
+        android:textSize="12sp" />
+    
+	<!-- dash seperating location and time -->
+    <TextView
+        android:id="@+id/sub_comment_dash_sub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sub_comment_author"
+  		android:layout_toRightOf="@id/sub_comment_location_sub"
+        android:layout_marginTop="1dip"
+        android:layout_marginLeft="1dip"
+        android:text="@string/dash_string"
         android:textSize="12sp" />
 
+    <!-- Time -->
+    <TextView
+        android:id="@+id/sub_comment_time_sub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+  		android:layout_below="@id/sub_comment_author"
+  		android:layout_toRightOf="@id/sub_comment_dash_sub"
+        android:layout_marginTop="1dip"
+        android:text="@string/time_string"
+        android:textSize="12sp" />
+    
     <!-- Head comment text body -->
 
     <TextView
@@ -78,7 +101,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/sub_comment_location_time"
+        android:layout_below="@id/sub_comment_location_sub"
         android:layout_marginTop="1dip"
         android:text="@string/text_body"
         android:textSize="12sp" />

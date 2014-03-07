@@ -163,13 +163,15 @@ public class SubCommentViewActivity extends Activity {
 		//assign the proper layout item so it can be set
 		TextView textTitle = (TextView) header.findViewById(R.id.long_title);
 		TextView textAuthor = (TextView) header.findViewById(R.id.head_comment_author);
-		//TextView textLocaTime = (TextView) header.findViewById(R.id.head_comment_location_time);
-		TextView textContent = (TextView) header.findViewById(R.id.head_comment_text_body);
+		TextView textLocation = (TextView) header.findViewById(R.id.head_comment_location_sub);
+		TextView textTime = (TextView) header.findViewById(R.id.head_comment_time_sub);
+		TextView textContent = (TextView) header.findViewById(R.id.head_comment_text_body_sub);
 		
 		//Set the items to the contents of the Head Comment
 		textTitle.setText(headComment.getTitle());
 		textAuthor.setText(headComment.getAuthor());
-		//textLocaTime.setText(getLocaTimeString(headComment));
+		textLocation.setText(headComment.getLocation().getName());
+		textTime.setText(TimeToString(headComment.getTimestamp()));
 		textContent.setText(headComment.getContent());
 	
 		return header;
@@ -177,19 +179,15 @@ public class SubCommentViewActivity extends Activity {
 	}
 	
 	/**
-	 * Gets the location and time from the current sub Comment and appends them
-	 * together to be displayed in subCommentListView Activity
-	 * @author sgiang92, dvyee
-	 * @param subCommentModel object to get the title of the comment the current
-	 * 		  comment is replying to.
-	 * @return a string that has the location and time appending together
+	 * Takes in the timestamp as a Calendar object and converts it to a string
+	 * that can be used in a textView.
+	 * @param calendar object to retrieve string from
+	 * @return string of the formatted date of the timestamp
 	 */
-	private String getLocaTimeString(HeadModel headComment){
-		String Location = headComment.getLocation().getName();
+	private String TimeToString (Calendar calendar) {
 		SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:00 aa",java.util.Locale.getDefault());
-		String timeString = sdf.format(headComment.getTimestamp().getTime());
-		
-		return Location + " - " + timeString;
+		String timeString = sdf.format(calendar.getTime());
+		return timeString;
 	}
 
 }

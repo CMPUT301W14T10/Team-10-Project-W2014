@@ -31,8 +31,7 @@ public class SubCommentViewActivityTests extends
 
 	/**
 	 * This test checks that an arbitrarily long title gets shortened in the
-	 * ActionBar of the Activity. The title is expected to get truncated as
-	 * indicated by an ellipses (triple dots or "...") at the end of the title.
+	 * ActionBar of the Activity.
 	 * 
 	 * Author Attribution: Adapted from code available on StackOverflow:
 	 * http://stackoverflow.com/q/5708630
@@ -111,9 +110,10 @@ public class SubCommentViewActivityTests extends
 		subListView = (ListView) activity
 				.findViewById(ca.ualberta.team10projectw2014.R.id.sub_comment_list_view_sub);
 		
+		//Get the layout from the activity
 		View headItem = (View) activity.findViewById(ca.ualberta.team10projectw2014.R.id.head_comment_item_layout);
 
-		
+		//Find each element of the layout.
 		TextView textTitle = (TextView) headItem.findViewById(R.id.long_title);
 		TextView textAuthor = (TextView) headItem.findViewById(R.id.head_comment_author);
 		//TextView textLocaTime = (TextView) header.findViewById(R.id.head_comment_location_time);
