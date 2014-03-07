@@ -117,7 +117,7 @@ public class SubCommentViewActivityTests extends
 		TextView textTitle = (TextView) headItem.findViewById(R.id.long_title);
 		TextView textAuthor = (TextView) headItem.findViewById(R.id.head_comment_author);
 		//TextView textLocaTime = (TextView) header.findViewById(R.id.head_comment_location_time);
-		TextView textContent = (TextView) headItem.findViewById(R.id.head_comment_text_body);
+		TextView textContent = (TextView) headItem.findViewById(R.id.head_comment_text_body_sub);
 		
 		assertEquals("Title should be shown on layout", headComment.getTitle(),textTitle.getText());
 		assertEquals("Author should be shown on layout",headComment.getAuthor(),textAuthor.getText());
