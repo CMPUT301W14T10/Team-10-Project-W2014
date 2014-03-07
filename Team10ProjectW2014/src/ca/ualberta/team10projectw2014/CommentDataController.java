@@ -1,12 +1,13 @@
 package ca.ualberta.team10projectw2014;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommentDataController {
 
-	public List<HeadModel> loadFromFile() {
+	public ArrayList<HeadModel> loadFromFile() {
 		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<HeadModel>();
 	}
 
 	public void clearCommentList()
@@ -16,7 +17,7 @@ public class CommentDataController {
 		
 	}
 
-	public void saveInFile() {
+	public void saveInFile(ArrayList<HeadModel> commentList) {
 		// TODO Auto-generated method stub
 		
 	}

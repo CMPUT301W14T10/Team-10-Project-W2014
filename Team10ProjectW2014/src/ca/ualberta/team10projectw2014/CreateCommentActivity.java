@@ -5,7 +5,10 @@ import java.util.Calendar;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -19,9 +22,13 @@ public class CreateCommentActivity extends Activity{
 	private LocationModel postLocation;
 	private Bitmap postPhoto;
 	private CommentModel parentModel;
-	EditText ueditText;
-	EditText teditText;
-	EditText ceditText;
+	private EditText ueditText;
+	private EditText teditText;
+	private EditText ceditText;
+	private LocationListenerController locationListener = new LocationListenerController();
+	// Acquire a reference to the system Location Manager
+    private LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+    private Location bestKnownLoc;
 	
 	@SuppressLint("NewApi")
 	@Override
@@ -35,6 +42,11 @@ public class CreateCommentActivity extends Activity{
 //        CommentModel receivedComment = (CommentModel) bundle.getSerializable("comment");
 //        fillContents(receivedUsername, receivedComment);
         
+        //TODO Start listening for location information
+        
+        
+        // Register the listener with the Location Manager to receive location updates
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
 	
         ueditText = (EditText)findViewById(R.id.cc_username);
 		teditText = (EditText)findViewById(R.id.cc_title);
@@ -80,14 +92,12 @@ public class CreateCommentActivity extends Activity{
 	private void setTitleView(String title){
 		teditText.setText(title, TextView.BufferType.EDITABLE);
 	}
-	
-	@SuppressWarnings("unused")
-	private void chooseLocation(View v){
+
+	public void chooseLocation(View v){
 		//TODO Carry out what happens when the user presses the "Location" button
 	}
 	
-	@SuppressWarnings("unused")
-	private void choosePhoto(View v){
+	public void choosePhoto(View v){
 		//TODO Carry out what happens when the user presses the "Photo" button
 	}
 	
@@ -139,7 +149,7 @@ public class CreateCommentActivity extends Activity{
 				model.setNumFavourites(0);
 				
 				//Adds the newly created model to its referrent's list of subcomments
-				this.parentModel.addSubComment(model);
+				this.parentModel.addSubComment((SubCommentModel) model);
 			}
 			else{
 				// This should be edited so that the model handles all the getting and setting
@@ -160,7 +170,11 @@ public class CreateCommentActivity extends Activity{
 			
 			}
 			
+			//TODO Stop listening for location information
+			locationManager.removeUpdates(locationListener);
+			
 			//Destroy this activity so that we return to the previous one.
+			
 			goBack();
 		}
 	}

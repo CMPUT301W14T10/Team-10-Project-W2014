@@ -16,6 +16,7 @@
 
 package ca.ualberta.team10projectw2014;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -25,7 +26,11 @@ import android.graphics.Bitmap;
  * This class acts as the super class model for comments.
  * @author David Yee
  */
-public class CommentModel {
+public class CommentModel implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9023734;
 	private String title;
 	private String content;
 	private String author;
@@ -34,13 +39,13 @@ public class CommentModel {
 	private Calendar timestamp;
 	private int numFavourites;
 	private int authorAndroidID;
-	private ArrayList<CommentModel> subComments = new ArrayList<CommentModel>();
+	private ArrayList<SubCommentModel> subComments = new ArrayList<SubCommentModel>();
 	
-	public void addSubComment(CommentModel subComment){
+	public void addSubComment(SubCommentModel subComment){
 		subComments.add(subComment);
 	}
 	
-	public ArrayList<CommentModel> getSubComments() {
+	public ArrayList<SubCommentModel> getSubComments() {
 		return subComments;
 	}
 	

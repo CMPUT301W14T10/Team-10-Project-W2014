@@ -49,7 +49,9 @@ public class SubCommentViewActivityAdapter extends
 		ImageView imageView;
 	}
 
-	public SubCommentViewActivityAdapter(Context context, int layoutResourceId,
+	public SubCommentViewActivityAdapter(
+			Context context, 
+			int layoutResourceId,
 			ArrayList<SubCommentModel> subCommentList) {
 
 		super(context, layoutResourceId, subCommentList);
@@ -124,7 +126,7 @@ public class SubCommentViewActivityAdapter extends
 	 */
 	private String getLocationAndTime(SubCommentModel subComment) {
 		String Location = subComment.getLocation().getName();
-		sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:00 aa");
+		sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:00 aa",java.util.Locale.getDefault());
 		String timeString = sdf.format(subComment.getTimestamp().getTime());
 		
 		
