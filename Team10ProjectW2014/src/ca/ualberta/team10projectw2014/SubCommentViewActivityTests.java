@@ -1,5 +1,6 @@
 package ca.ualberta.team10projectw2014;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import android.app.ActionBar;
@@ -116,12 +117,17 @@ public class SubCommentViewActivityTests extends
 		//Find each element of the layout.
 		TextView textTitle = (TextView) headItem.findViewById(R.id.long_title);
 		TextView textAuthor = (TextView) headItem.findViewById(R.id.head_comment_author);
-		//TextView textLocaTime = (TextView) header.findViewById(R.id.head_comment_location_time);
+		TextView textTime = (TextView) headItem.findViewById(R.id.head_comment_time_sub);
 		TextView textContent = (TextView) headItem.findViewById(R.id.head_comment_text_body_sub);
 		
 		assertEquals("Title should be shown on layout", headComment.getTitle(),textTitle.getText());
 		assertEquals("Author should be shown on layout",headComment.getAuthor(),textAuthor.getText());
 		assertEquals("Content should be shown on layout", headComment.getContent(),textContent.getText());
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:00 aa",java.util.Locale.getDefault());
+		String timeString = sdf.format(headComment.getTimestamp().getTime());
+		
+		assertEquals("Time should be shown on layout",timeString,textTime.getText());
 
 		// close the activity now that we're done the JUnit test
 		activity.finish();
@@ -132,14 +138,6 @@ public class SubCommentViewActivityTests extends
 
 
 
-	/***
-	 * Use Case 5.1 - BrowseSubComments - Create a head comment - Create a sub
-	 * comment that refers to this head comment - Add these comments to a list
-	 * called testList - Use mainListViewActivityAdapter's "createHeadComment()"
-	 * method to create the head comment in the system - Use
-	 * subCommentViewActivityAdapter's "createSubComment()" method to create the
-	 * sub comment for the head comment - Assert that the subComment is on the
-	 * screen beneath the head comment.
-	 */
+
 
 }

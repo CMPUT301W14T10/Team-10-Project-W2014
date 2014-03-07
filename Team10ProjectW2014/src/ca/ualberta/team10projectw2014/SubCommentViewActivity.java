@@ -170,7 +170,7 @@ public class SubCommentViewActivity extends Activity {
 		//Set the items to the contents of the Head Comment
 		textTitle.setText(headComment.getTitle());
 		textAuthor.setText(headComment.getAuthor());
-		textLocation.setText(headComment.getLocation().getName());
+		//textLocation.setText(headComment.getLocation().getName());
 		textTime.setText(TimeToString(headComment.getTimestamp()));
 		textContent.setText(headComment.getContent());
 	
