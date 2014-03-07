@@ -163,13 +163,13 @@ public class SubCommentViewActivity extends Activity {
 		//assign the proper layout item so it can be set
 		TextView textTitle = (TextView) header.findViewById(R.id.long_title);
 		TextView textAuthor = (TextView) header.findViewById(R.id.head_comment_author);
-		TextView textLocaTime = (TextView) header.findViewById(R.id.head_comment_location_time);
+		//TextView textLocaTime = (TextView) header.findViewById(R.id.head_comment_location_time);
 		TextView textContent = (TextView) header.findViewById(R.id.head_comment_text_body);
 		
 		//Set the items to the contents of the Head Comment
 		textTitle.setText(headComment.getTitle());
 		textAuthor.setText(headComment.getAuthor());
-		textLocaTime.setText(getLocaTimeString(headComment));
+		//textLocaTime.setText(getLocaTimeString(headComment));
 		textContent.setText(headComment.getContent());
 	
 		return header;
