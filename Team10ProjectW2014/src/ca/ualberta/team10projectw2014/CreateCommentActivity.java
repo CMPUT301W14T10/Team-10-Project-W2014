@@ -25,7 +25,7 @@ public class CreateCommentActivity extends Activity{
 	private EditText ueditText;
 	private EditText teditText;
 	private EditText ceditText;
-	private LocationListenerController locationListener = new LocationListenerController();
+	private LocationListenerController locationListener = new LocationListenerController(this);
 	// Acquire a reference to the system Location Manager
     private LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
     private Location bestKnownLoc;
