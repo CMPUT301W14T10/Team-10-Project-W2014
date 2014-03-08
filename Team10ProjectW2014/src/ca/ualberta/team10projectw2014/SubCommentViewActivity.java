@@ -23,11 +23,15 @@ import java.util.Calendar;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -35,6 +39,7 @@ public class SubCommentViewActivity extends Activity {
 
 	private HeadModel headCommentData;
 	private ListView subListView;
+	private UserModel userData;
 	private SubCommentViewActivityAdapter adapter;
 	private ArrayList<SubCommentModel> subCommentsList = new ArrayList<SubCommentModel>();
 
@@ -44,6 +49,8 @@ public class SubCommentViewActivity extends Activity {
 		setContentView(R.layout.activity_sub_comment_view);
 		Bundle bundle = getIntent().getExtras();
 		headCommentData = (HeadModel) bundle.getSerializable("HeadModel");
+		userData = (UserModel) bundle.getSerializable("UserModel");
+		
 
 		// Disable the Home Icon on the Actionbar
 		ActionBar actionbar = getActionBar();
@@ -119,7 +126,21 @@ public class SubCommentViewActivity extends Activity {
 			openReply();
 			return true;
 		case R.id.action_favourite:
-			addFavourite();
+			//Add the head comment to the users favourite list
+			addFavourite(headCommentData);
+			return true;
+		case R.id.action_edit_username:
+			//Bring up dialog box for the user to edit username
+			editUserName();
+			return true;
+		case R.id.action_sort:
+			//Bring up the dialog box for the user to sort comments by
+			return true;
+		case R.id.action_favourites:
+			//Bring up the user's favourite list
+			return true;
+		case R.id.action_want_to_read:
+			//Bring up the user's want to read list
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -141,17 +162,7 @@ public class SubCommentViewActivity extends Activity {
 		// - title
 	}
 
-	/**
-	 * Opens the drop-down settings for posting. Can only be called via
-	 * ActionBar.
-	 * 
-	 * @author dvyee, sgiang92
-	 * @return
-	 * @param
-	 */
-	private void openSettings() {
-		// TODO: Implement openReply
-	}
+
 
 	/**
 	 * Adds the post and sub-posts to user's favourites. Post will get cached
@@ -161,8 +172,43 @@ public class SubCommentViewActivity extends Activity {
 	 * @return
 	 * @param
 	 */
-	private void addFavourite() {
+	private void addFavourite(CommentModel comment) {
 		// TODO: Implement addFavourite
+		userData.getFavourites().add(comment);
+	}
+	
+	private void editUserName(){
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+		//set the fields of the dialog:
+		alert.setTitle("Edit Username");
+
+		//add an EditText to the dialog for the user to enter
+		//the name in:
+		final EditText usernameText = new EditText(this);
+		alert.setView(usernameText);
+
+		//set the positive button with its text and set up an on click listener
+		//to add the counter with the text provided when it is pressed:
+		alert.setPositiveButton("Set", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				//get the text from the editable:
+				Editable usernameEditable = usernameText.getText();
+				String usernameString = usernameEditable.toString();
+				
+				userData.setUsername(usernameString);
+		
+			}
+		});
+
+		//also set a cancel negative button that does nothing but close the 
+		//dialog window:
+		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+			}
+		});
+
+		alert.show();
 	}
 
 	/**
@@ -235,5 +281,7 @@ public class SubCommentViewActivity extends Activity {
 			}
 		}
 	}
+	
+	
 
 }

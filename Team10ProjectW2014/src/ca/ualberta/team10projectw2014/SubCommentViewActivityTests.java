@@ -156,6 +156,7 @@ public class SubCommentViewActivityTests extends
 		subComment1.setTitle("TestSubTitle1");
 		subComment1.setContent("Reply to head comment1");
 		subComment1.setTimestamp(Calendar.getInstance());
+		headComment.getSubComments().add(subComment1);
 		
 		//responds to head comment
 		SubCommentModel subComment2 = new SubCommentModel(headComment);
@@ -163,6 +164,7 @@ public class SubCommentViewActivityTests extends
 		subComment2.setTitle("TestSubTitle2");
 		subComment2.setContent("Reply to head comment2");
 		subComment2.setTimestamp(Calendar.getInstance());
+		headComment.getSubComments().add(subComment2);
 		
 		//responds to subComment1
 		SubCommentModel subComment3 = new SubCommentModel(subComment1);
@@ -170,6 +172,7 @@ public class SubCommentViewActivityTests extends
 		subComment3.setTitle("TestSubTitle1");
 		subComment3.setContent("Reply to head comment1");
 		subComment3.setTimestamp(Calendar.getInstance());
+		subComment1.getSubComments().add(subComment3);
 		
 		//responds to head comment
 		SubCommentModel subComment4 = new SubCommentModel(headComment);
@@ -177,6 +180,7 @@ public class SubCommentViewActivityTests extends
 		subComment4.setTitle("TestSubTitle1");
 		subComment4.setContent("Reply to head comment1");
 		subComment4.setTimestamp(Calendar.getInstance());
+		headComment.getSubComments().add(subComment4);
 		
 
 
@@ -199,6 +203,9 @@ public class SubCommentViewActivityTests extends
 				.findViewById(ca.ualberta.team10projectw2014.R.id.sub_comment_list_view_sub);
 		
 
+
+		
+		
 		// close the activity now that we're done the JUnit test
 		activity.finish();
 
