@@ -37,6 +37,7 @@ public class HeadModel extends CommentModel implements Serializable {
 	public void setSubComments(ArrayList<SubCommentModel> subComments) {
 		this.subComments = subComments;
 	}
+
 	
 	
 }

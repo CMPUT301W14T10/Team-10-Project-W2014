@@ -36,6 +36,7 @@ public class SubCommentViewActivity extends Activity {
 	private HeadModel headCommentData;
 	private ListView subListView;
 	private SubCommentViewActivityAdapter adapter;
+	private ArrayList<SubCommentModel> subCommentsList = new ArrayList<SubCommentModel>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,19 +54,19 @@ public class SubCommentViewActivity extends Activity {
 
 		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
 
+		// Gets all the SubComments and all its subComments 
+		AddCommentToList(headCommentData.getSubComments());
+
 		adapter = new SubCommentViewActivityAdapter(this,
-				R.layout.sub_comment_view_sub_comment_item,
-				headCommentData.getSubComments());
+				R.layout.sub_comment_view_sub_comment_item, subCommentsList);
 
 		// Set the first item in the list to the header Comment
 		subListView.addHeaderView((View) SetHeader(headCommentData));
+		
 		subListView.setAdapter(adapter);
 
-		// Gets all the SubComments and all its subComments through the
-		// AddCommentToAdapter function
-		AddCommentToAdapter(headCommentData.getSubComments());
-		subListView.setAdapter(adapter);
-			
+
+
 	}
 
 	protected void onResume() {
@@ -182,8 +183,8 @@ public class SubCommentViewActivity extends Activity {
 		TextView textTitle = (TextView) header.findViewById(R.id.long_title);
 		TextView textAuthor = (TextView) header
 				.findViewById(R.id.head_comment_author);
-		TextView textLocation = (TextView) header
-				.findViewById(R.id.head_comment_location_sub);
+		// TextView textLocation = (TextView) header
+		// .findViewById(R.id.head_comment_location_sub);
 		TextView textTime = (TextView) header
 				.findViewById(R.id.head_comment_time_sub);
 		TextView textContent = (TextView) header
@@ -214,23 +215,23 @@ public class SubCommentViewActivity extends Activity {
 		String timeString = sdf.format(calendar.getTime());
 		return timeString;
 	}
-	
+
 	/***
 	 * Takes in a subComment array list to be added to the adapter to be shown
 	 * in the listView. Uses recursion to get all the subComment's subcomments
+	 * 
+	 * @author sgiang92
 	 * @param subCommentList
 	 */
-	private void AddCommentToAdapter(ArrayList<SubCommentModel> subCommentList){
-		if (subCommentList.size() == 0){
+	private void AddCommentToList(ArrayList<SubCommentModel> subCommentList) {
+		if (subCommentList.size() == 0) {
 			return;
-		}else{
-			for(SubCommentModel subComment: subCommentList){
-				adapter.add(subComment);
-				if(subComment.getSubComments().size() > 0 ){
-					AddCommentToAdapter(subComment.getSubComments());
+		} else {
+			for (SubCommentModel subComment : subCommentList) {
+				this.subCommentsList.add(subComment);
+				if (subComment.getSubComments().size() > 0) {
+					AddCommentToList(subComment.getSubComments());
 				}
-				
-
 			}
 		}
 	}

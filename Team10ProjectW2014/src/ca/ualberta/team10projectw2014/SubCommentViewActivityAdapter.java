@@ -52,6 +52,7 @@ public class SubCommentViewActivityAdapter extends
 		ImageView imageView;
 	}
 
+
 	public SubCommentViewActivityAdapter(
 			Context context, 
 			int layoutResourceId,
@@ -105,11 +106,12 @@ public class SubCommentViewActivityAdapter extends
 		holder.textTime.setText(this.TimeToString(subCommentList.get(position).getTimestamp()));
 		
 		//Grabs the Location of the model.
-		holder.textLocation.setText(subCommentList.get(position).getLocation().getName());
+		//holder.textLocation.setText(subCommentList.get(position).getLocation().getName());
 		
 		// Grabs strings to be displayed for each sub comment in the list
 		holder.textSubTitle.setText(subCommentList.get(position).getTitle());
 		holder.textUsername.setText(subCommentList.get(position).getAuthor());
+		
 		
 		// Sets the image attached to the comment
 		if(subCommentList.get(position).getPhoto() != null){

@@ -178,7 +178,6 @@ public class SubCommentViewActivityTests extends
 		subComment4.setContent("Reply to head comment1");
 		subComment4.setTimestamp(Calendar.getInstance());
 		
-		
 
 
 		// create a new intent
