@@ -146,4 +146,6 @@ public class SubCommentViewActivityAdapter extends
 		return "Re: " + subComment.getRespondedTo().getTitle();
 		
 	}
+	
+
 }

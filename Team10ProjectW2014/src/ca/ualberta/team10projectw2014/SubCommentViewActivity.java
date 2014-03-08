@@ -18,6 +18,7 @@
 package ca.ualberta.team10projectw2014;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.ActionBar;
@@ -59,6 +60,12 @@ public class SubCommentViewActivity extends Activity {
 		// Set the first item in the list to the header Comment
 		subListView.addHeaderView((View) SetHeader(headCommentData));
 		subListView.setAdapter(adapter);
+
+		// Gets all the SubComments and all its subComments through the
+		// AddCommentToAdapter function
+		AddCommentToAdapter(headCommentData.getSubComments());
+		subListView.setAdapter(adapter);
+			
 	}
 
 	protected void onResume() {
@@ -206,6 +213,26 @@ public class SubCommentViewActivity extends Activity {
 				java.util.Locale.getDefault());
 		String timeString = sdf.format(calendar.getTime());
 		return timeString;
+	}
+	
+	/***
+	 * Takes in a subComment array list to be added to the adapter to be shown
+	 * in the listView. Uses recursion to get all the subComment's subcomments
+	 * @param subCommentList
+	 */
+	private void AddCommentToAdapter(ArrayList<SubCommentModel> subCommentList){
+		if (subCommentList.size() == 0){
+			return;
+		}else{
+			for(SubCommentModel subComment: subCommentList){
+				adapter.add(subComment);
+				if(subComment.getSubComments().size() > 0 ){
+					AddCommentToAdapter(subComment.getSubComments());
+				}
+				
+
+			}
+		}
 	}
 
 }
