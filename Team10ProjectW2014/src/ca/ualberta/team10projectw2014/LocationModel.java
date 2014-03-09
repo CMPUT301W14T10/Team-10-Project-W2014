@@ -18,6 +18,8 @@
 package ca.ualberta.team10projectw2014;
 import java.lang.Math;
 
+import android.location.Location;
+
 /**
  * This class takes care of storing each location in the system.
  * Will be used more in Project Part 4 than Part 3.
@@ -29,10 +31,12 @@ public class LocationModel {
 	private String name;
 	private double latitude;
 	private double longitude;
+	private Location location;
+	
+	//TODO Be sure to use the lat and lng from location, not latitude and longitude.
 
-	public LocationModel(String name, double latitude, double longitude) {
-		this.latitude = latitude;
-		this.longitude = longitude;
+	public LocationModel(String name, Location location) {
+		this.location = location;
 		this.name = name;
 	}
 

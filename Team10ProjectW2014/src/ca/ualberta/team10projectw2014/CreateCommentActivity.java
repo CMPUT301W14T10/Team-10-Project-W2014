@@ -31,7 +31,7 @@ public class CreateCommentActivity extends Activity{
 	private EditText ceditText;
 	protected double longitude;
 	protected double latitude;
- 	private Location bestKnownLoc;
+ 	protected Location bestKnownLoc = null;
  	protected CommentModel model;
  	protected LocationListenerController locationListener;
  	protected LocationManager mLocationManager;
@@ -173,10 +173,10 @@ public class CreateCommentActivity extends Activity{
 	
 	private void setLocation(){
 		if (this.postLocation != null){
-			this.postLocation = new LocationModel("TITLE", this.latitude, this.longitude);
+			this.postLocation = new LocationModel("TITLE", bestKnownLoc);
 		}
 		if (this.postLocation == null){
-			this.postLocation = new LocationModel("TITLE", 145.00, 23.00);
+			this.postLocation = new LocationModel("TITLE", bestKnownLoc);
 		}
 		//TODO Set location variable to...?
 		// Location should never be null
@@ -200,9 +200,6 @@ public class CreateCommentActivity extends Activity{
 		}
 		if(this.postTitle != null && this.postUsername != null && this.postContents != null){
 			
-			// This is a regular expression for simplicity
-			// Will change for generalizability later
-			// Checks to see if the postTitle has "RE:" at the start
 			if(this.parentModel != null){
 				// This should be edited so that the model handles all the getting and setting
 				model = new SubCommentModel(this.parentModel);
@@ -243,14 +240,9 @@ public class CreateCommentActivity extends Activity{
 			}
 			
 			//TODO Stop listening for location information
-			if (gpsEnabled){
-				stopListeningLocation();
-			}
-			else{
-				this.latitude = 140.00;
-				this.longitude = 30.00;
-			}
-			
+
+			stopListeningLocation();
+
 			
 			
 			//Destroy this activity so that we return to the previous one.
@@ -259,23 +251,29 @@ public class CreateCommentActivity extends Activity{
 	}
 	
 	private void stopListeningLocation(){
-		Toast.makeText(getBaseContext(), "Getting location...", Toast.LENGTH_LONG).show();
-		Location location = locationListener.getCurrentBestLocation();
-		this.latitude = location.getLatitude();
-		this.longitude = location.getLongitude();
-		mLocationManager.removeUpdates(locationListener);
+		bestKnownLoc = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		if (bestKnownLoc == null){
+			Toast.makeText(getBaseContext(), "Ain't no location here", Toast.LENGTH_LONG).show();
+		}
+		else{
+			Toast.makeText(getBaseContext(), "Getting location...", Toast.LENGTH_LONG).show();
+			Location location = locationListener.getCurrentBestLocation();
+			bestKnownLoc.setLatitude(location.getLatitude());
+			bestKnownLoc.setLongitude(location.getLongitude());
+			mLocationManager.removeUpdates(locationListener);
+		}
 	}
 	
 	private void raiseContentsIncompleteError(){
-		//TODO Send user an error telling them that they need more info
+		Toast.makeText(getBaseContext(), "Please Add Contents to Your Post", Toast.LENGTH_LONG).show();
 	}
 	
 	private void raiseUsernameIncompleteError(){
-		//TODO Send user an error telling them that they need more info
+		Toast.makeText(getBaseContext(), "Please Add a Username", Toast.LENGTH_LONG).show();
 	}
 	
 	private void raiseTitleIncompleteError(){
-		//TODO Send user an error telling them that they need more info
+		Toast.makeText(getBaseContext(), "Please Create a Title", Toast.LENGTH_LONG).show();
 	}
 	
 	private void goBack(){

@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
@@ -60,10 +61,12 @@ public class MainListViewActivity extends Activity{
 	
 	private static LayoutInflater layoutInflater;
 	
+	private static Location location = null;
+	
 	//comparator used in sorting comments by date:
 	private static Comparator locCompare = new Comparator(){
 		public int compare(Object comment1, Object comment2){
-			LocationModel userLocation = new LocationModel("here", 0, 0);
+			LocationModel userLocation = new LocationModel("here", location);
 			LocationModel loc1 = ((CommentModel)comment1).getLocation();
 			LocationModel loc2 = ((CommentModel)comment2).getLocation();
 			return loc1.distanceTo(userLocation) - loc2.distanceTo(userLocation);
