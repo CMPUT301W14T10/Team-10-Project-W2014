@@ -36,6 +36,7 @@ public class CreateCommentActivity extends Activity{
  	protected LocationListenerController locationListener;
  	protected LocationManager mLocationManager;
  	protected Boolean gpsEnabled;
+ 	protected Boolean netEnabled;
 	
 	@SuppressLint("NewApi")
 	@Override
@@ -95,18 +96,30 @@ public class CreateCommentActivity extends Activity{
 	    	gpsEnabled = false;
 	        noGPSError();
 	    }
-
+	    
 	    else{
 	    	gpsEnabled = true;
-	    	LocationListenerController locationListener = new LocationListenerController(this);  
-	    	mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5 * 60 * 1000 , 10, locationListener);
-	    	//Location bestKnownLocation = getLastBestLocation();
 	    }
+	    
+	    if ( !mLocationManager.isProviderEnabled( LocationManager.NETWORK_PROVIDER ) ) {
+	    	netEnabled = false;
+	    }
+	    else{
+	    	netEnabled = true;
+	    }
+
+    	LocationListenerController locationListener = new LocationListenerController(this);  
+    	if (gpsEnabled){
+    		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5 * 60 * 1000 , 10, locationListener);
+    	}
+    	if (netEnabled){
+    		mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5 * 60 * 1000 , 10, locationListener);
+    	}
 	}
 
 	// Retrieved from http://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android on March 6 at 5:00
 	
-	/*private Location getLastBestLocation() {
+	private Location getLastBestLocation() {
 
 	    Location locationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 	    Location locationNet = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -127,7 +140,7 @@ public class CreateCommentActivity extends Activity{
 	        return locationNet;
 	    }
 
-	}*/
+	}
 
 	public void fillContents(String username, CommentModel parentModel){
 		setLocation();
@@ -139,7 +152,7 @@ public class CreateCommentActivity extends Activity{
 			if (this.postUsername == null){
 				this.postUsername = null;
 			}
-			setUsernameView("Please set a username");
+			//setUsernameView("Please set a username");
 		}
 		if(parentModel != null){
 			this.parentModel = parentModel;
@@ -151,7 +164,7 @@ public class CreateCommentActivity extends Activity{
 			if (this.postTitle == null){
 				this.postTitle = null;
 			}
-			setTitleView("Create a Name for Your Post");
+			//setTitleView("Create a Name for Your Post");
 		}
 	}
 	
@@ -172,12 +185,7 @@ public class CreateCommentActivity extends Activity{
 	}
 	
 	private void setLocation(){
-		if (this.postLocation != null){
-			this.postLocation = new LocationModel("TITLE", bestKnownLoc);
-		}
-		if (this.postLocation == null){
-			this.postLocation = new LocationModel("TITLE", bestKnownLoc);
-		}
+		this.postLocation = new LocationModel("TITLE", bestKnownLoc);
 		//TODO Set location variable to...?
 		// Location should never be null
 	}
@@ -241,7 +249,9 @@ public class CreateCommentActivity extends Activity{
 			
 			//TODO Stop listening for location information
 
-			stopListeningLocation();
+			//stopListeningLocation();
+			setLocation();
+			model.setLocation(this.postLocation);
 
 			
 			
@@ -251,7 +261,7 @@ public class CreateCommentActivity extends Activity{
 	}
 	
 	private void stopListeningLocation(){
-		bestKnownLoc = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		bestKnownLoc = getLastBestLocation();
 		if (bestKnownLoc == null){
 			Toast.makeText(getBaseContext(), "Ain't no location here", Toast.LENGTH_LONG).show();
 		}
