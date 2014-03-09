@@ -100,19 +100,6 @@ public class MainListViewActivity extends Activity{
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_head_comment_view);
-		
-		CommentDataController commentDataController = new CommentDataController(this, this.getString(R.string.file_name_string));
-		
-		//Getting the head comment list view defined in the XML file:
-		commentView = (ListView) findViewById(R.id.HeadCommentList);
-		
-		//Use the comment controller to load the head comments from file:
-		commentList = (ArrayList<CommentModel>) commentDataController.loadFromFile();
-		
-		//Call the constructor to create a new custom Array Adapter of type CommentModel: 
-		adapter = new MainListViewAdapter(this, commentList);
-		
-		user = userController.loadData();
 		layoutInflater = LayoutInflater.from(this);
 	}
 
@@ -127,32 +114,6 @@ public class MainListViewActivity extends Activity{
 		return true;
 	}
 	
-
-	/**
-	 * I do almost the same thing here as in onCreate, but refresh the view
-	 * if there has already been data loaded:
-	 */
-	protected void onStart(){
-		
-		super.onStart(); 
-		setContentView(R.layout.activity_head_comment_view);
-		commentView = (ListView) findViewById(R.id.HeadCommentList);
-		
-		//If adapter exists, clear it and reload comments(i.e. refresh)
-		if(adapter != null){
-			commentList = (ArrayList<CommentModel>) commentDataController.loadFromFile();
-			adapter.notifyDataSetChanged();
-		}
-		//Use the comment controller to load the head comments from file:
-		commentList = (ArrayList<CommentModel>) commentDataController.loadFromFile();
-		
-		//Call the constructor to create a new custom Array Adapter of type CommentModel: 
-		adapter = new MainListViewAdapter(this, commentList);
-
-		user = userController.loadData();
-
-	}
-
 	/**
 	 * I do almost the same thing here as in onCreate, but refresh the view
 	 * if there has already been data loaded:
@@ -161,18 +122,20 @@ public class MainListViewActivity extends Activity{
 		super.onResume(); 
 		setContentView(R.layout.activity_head_comment_view);
 		commentView = (ListView) findViewById(R.id.HeadCommentList);
+		CommentDataController commentDataController = new CommentDataController(this, this.getString(R.string.file_name_string));
+		user = userController.loadData();
 		
 		if(adapter != null){
-			commentList = (ArrayList<CommentModel>) commentDataController.loadFromFile();
+			//Use the comment controller to load the head comments from file:
+			commentList = commentDataController.loadFromFile();
 			adapter.notifyDataSetChanged();
 		}
-		//Use the comment controller to load the head comments from file:
-		commentList = commentDataController.loadFromFile();
-		
-		//Call the constructor to create a new custom Array Adapter of type HeadModel: 
-		adapter = new MainListViewAdapter(this, commentList);
-		
-		user = userController.loadData();
+		else {
+			//Call the constructor to create a new custom Array Adapter of type HeadModel: 
+			adapter = new MainListViewAdapter(this, commentList);
+			commentList = commentDataController.loadFromFile();
+			adapter.notifyDataSetChanged();
+		}
 		
 		commentView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 			@Override
