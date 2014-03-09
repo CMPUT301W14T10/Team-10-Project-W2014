@@ -36,7 +36,7 @@ import android.widget.TextView;
 public class MainListViewAdapter extends BaseAdapter {
 
 	private LayoutInflater inflater;
-	private ArrayList<HeadModel> headCommentList;
+	private ArrayList<CommentModel> headCommentList;
 	private SimpleDateFormat sdf;
 	private String timeString;
 	
@@ -59,7 +59,7 @@ public class MainListViewAdapter extends BaseAdapter {
 	 * comments.
 	 */
 	public MainListViewAdapter(Context context, 
-			ArrayList<HeadModel> commentList) {
+			ArrayList<CommentModel> commentList) {
 		inflater = LayoutInflater.from(context);
 		this.headCommentList = commentList;
 	}
@@ -120,7 +120,7 @@ public class MainListViewAdapter extends BaseAdapter {
 	 * Gets the head comment at a specific position.
 	 * @return the head comment.
 	 */
-	public HeadModel getItem(int position) {
+	public CommentModel getItem(int position) {
 		return headCommentList.get(position);
 		}
 	

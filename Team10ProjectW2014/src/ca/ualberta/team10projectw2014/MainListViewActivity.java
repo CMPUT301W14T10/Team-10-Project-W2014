@@ -48,7 +48,7 @@ public class MainListViewActivity extends Activity{
 	
 	private MainListViewAdapter adapter;
 	
-	private ArrayList<HeadModel> commentList;
+	private ArrayList<CommentModel> commentList;
 	
 	private UserModel user;
 	
@@ -100,7 +100,7 @@ public class MainListViewActivity extends Activity{
 		commentView = (ListView) findViewById(R.id.HeadCommentList);
 		
 		//Use the comment controller to load the head comments from file:
-		commentList = (ArrayList<HeadModel>) commentDataController.loadFromFile();
+		commentList = (ArrayList<CommentModel>) commentDataController.loadFromFile();
 		
 		//Call the constructor to create a new custom Array Adapter of type HeadModel: 
 		adapter = new MainListViewAdapter(this, commentList);
@@ -133,11 +133,11 @@ public class MainListViewActivity extends Activity{
 		
 		//If adapter exists, clear it and reload comments(i.e. refresh)
 		if(adapter != null){
-			commentList = (ArrayList<HeadModel>) commentDataController.loadFromFile();
+			commentList = (ArrayList<CommentModel>) commentDataController.loadFromFile();
 			adapter.notifyDataSetChanged();
 		}
 		//Use the comment controller to load the head comments from file:
-		commentList = (ArrayList<HeadModel>) commentDataController.loadFromFile();
+		commentList = (ArrayList<CommentModel>) commentDataController.loadFromFile();
 		
 		//Call the constructor to create a new custom Array Adapter of type HeadModel: 
 		adapter = new MainListViewAdapter(this, commentList);
@@ -156,7 +156,7 @@ public class MainListViewActivity extends Activity{
 		commentView = (ListView) findViewById(R.id.HeadCommentList);
 		
 		if(adapter != null){
-			commentList = (ArrayList<HeadModel>) commentDataController.loadFromFile();
+			commentList = (ArrayList<CommentModel>) commentDataController.loadFromFile();
 			adapter.notifyDataSetChanged();
 		}
 		//Use the comment controller to load the head comments from file:
@@ -171,7 +171,7 @@ public class MainListViewActivity extends Activity{
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id){
-				HeadModel headComment = commentList.get(position);
+				CommentModel headComment = commentList.get(position);
 				Intent subCommentView = new Intent(getApplicationContext(), SubCommentViewActivity.class);
 				subCommentView.putExtra("comment", headComment);
 				view.getContext().startActivity(subCommentView);
