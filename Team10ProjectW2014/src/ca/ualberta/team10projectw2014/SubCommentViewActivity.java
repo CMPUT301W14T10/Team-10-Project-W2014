@@ -81,7 +81,7 @@ public class SubCommentViewActivity extends Activity {
 		subListView.setAdapter(adapter);
 
 	}
-
+	
 	/**
 	 * Inflate the menu.
 	 * 

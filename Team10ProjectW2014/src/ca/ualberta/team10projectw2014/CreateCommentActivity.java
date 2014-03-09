@@ -3,6 +3,8 @@ package ca.ualberta.team10projectw2014;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import ca.ualberta.team10projectw2014.controller.CommentDataController;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -37,12 +39,14 @@ public class CreateCommentActivity extends Activity{
  	protected LocationManager mLocationManager;
  	protected Boolean gpsEnabled;
  	protected Boolean netEnabled;
+ 	private CommentDataController CDC;
 	
 	@SuppressLint("NewApi")
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_comment_activity);
+        CDC = new CommentDataController(this, this.getString(R.string.file_name_string));
         
 //        //Receive information from the intent
 //        Bundle bundle = getIntent().getExtras();
@@ -250,9 +254,15 @@ public class CreateCommentActivity extends Activity{
 			//TODO Stop listening for location information
 
 			//stopListeningLocation();
-			setLocation();
-			model.setLocation(this.postLocation);
+			//setLocation();
+			//model.setLocation(this.postLocation);
 
+
+			ArrayList<CommentModel> tempList = CDC.loadFromFile();
+
+			tempList.add(model);
+			//TODO Save the new list
+			CDC.saveToFile(tempList);
 			
 			
 			//Destroy this activity so that we return to the previous one.
