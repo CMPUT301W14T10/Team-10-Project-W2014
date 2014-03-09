@@ -34,7 +34,7 @@ public class MainListViewActivityTests extends
 	 */
 	public void testDisplayCommentInList() throws Throwable {
 		// Create a test head comment
-		HeadModel headComment = new HeadModel();
+		CommentModel headComment = new CommentModel();
 		headComment.setTitle("Test Title");
 		headComment.setAuthor("TestUsername");
 		headComment.setContent("Test Head Comment Content");

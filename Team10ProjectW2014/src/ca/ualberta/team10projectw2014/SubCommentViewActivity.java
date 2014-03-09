@@ -38,7 +38,7 @@ import android.widget.TextView;
 
 public class SubCommentViewActivity extends Activity {
 
-	private HeadModel headCommentData;
+	private CommentModel headCommentData;
 	private ListView subListView;
 	private UserModel userData;
 	private SubCommentViewActivityAdapter adapter;
@@ -49,7 +49,7 @@ public class SubCommentViewActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sub_comment_view);
 		Bundle bundle = getIntent().getExtras();
-		headCommentData = (HeadModel) bundle.getSerializable("HeadModel");
+		headCommentData = (CommentModel) bundle.getSerializable("HeadModel");
 		userData = (UserModel) bundle.getSerializable("UserModel");
 		
 
@@ -216,7 +216,7 @@ public class SubCommentViewActivity extends Activity {
 	 * @param headComment
 	 * @return HeadModel headComment
 	 */
-	private View SetHeader(HeadModel headComment) {
+	private View SetHeader(CommentModel headComment) {
 
 		// Get the head comment item layout view
 		View header = (View) getLayoutInflater().inflate(

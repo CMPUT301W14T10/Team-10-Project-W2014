@@ -193,7 +193,7 @@ public class CreateCommentActivity extends Activity{
 			}
 			else{
 				// This should be edited so that the model handles all the getting and setting
-				model = new HeadModel();
+				model = new CommentModel();
 				model.setAuthor(this.postUsername);
 				model.setContent(this.postContents);
 				model.setLocation(this.postLocation);
