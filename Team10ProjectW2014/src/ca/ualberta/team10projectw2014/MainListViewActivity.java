@@ -133,6 +133,9 @@ public class MainListViewActivity extends Activity{
 		else {
 			//Call the constructor to create a new custom Array Adapter of type HeadModel: 
 			adapter = new MainListViewAdapter(this, commentList);
+			if (commentList != null) {
+				commentView.setAdapter(adapter);
+			}
 			commentList = commentDataController.loadFromFile();
 			adapter.notifyDataSetChanged();
 		}
@@ -158,7 +161,7 @@ public class MainListViewActivity extends Activity{
 		switch(item.getItemId()){
 			case R.id.add_comment:
 				Intent createComment = new Intent(getApplicationContext(), CreateCommentActivity.class);
-				createComment.putExtra("username", "USERNAME");//user.getUsername());
+				createComment.putExtra("username", "test"); // createComment.putExtra("username", user.getUsername());
 				this.startActivity(createComment);
 				return true;
 			case R.id.action_edit_username_main:
