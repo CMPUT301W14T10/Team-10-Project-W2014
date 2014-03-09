@@ -214,7 +214,7 @@ public class SubCommentViewActivity extends Activity {
 	 * 
 	 * @author sgiang92, dvyee
 	 * @param headComment
-	 * @return HeadModel headComment
+	 * @return CommentModel headComment
 	 */
 	private View SetHeader(CommentModel headComment) {
 
