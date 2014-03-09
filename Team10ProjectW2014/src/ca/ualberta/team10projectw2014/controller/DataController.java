@@ -4,6 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface DataController<T> {
-	ArrayList<T> loadFromFile(String file);
-	ArrayList<T> saveToFile(String file, ArrayList<T> list);
+	ArrayList<T> loadFromFile();
+	void saveToFile(ArrayList<T> list);
 }
