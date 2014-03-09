@@ -19,13 +19,16 @@ package ca.ualberta.team10projectw2014;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import android.content.Context;
+import android.provider.Settings.Secure;
+
 /**
  * This class acts as the model for the User.
- * @author Steven Giang
+ * @author Steven Giang, David Yee
  */
 public class UserModel implements Serializable {
 	private static final long serialVersionUID = 87468974;
-	private int androidID;
+	private String androidID;
 	private ArrayList<CommentModel> favourites;
 	private ArrayList<CommentModel> readComments;
 	private ArrayList<CommentModel> wantToReadComments;
@@ -38,17 +41,23 @@ public class UserModel implements Serializable {
 	private boolean sortByPopularity;
 
 	// Constructor for new user
-	public UserModel(int androidID) {
+	public UserModel(Context context) {
 		super();
-		this.androidID = androidID;
+		
+		// get the unique android ID
+		// code for getting unique android ID is from:
+		// http://blog.vogella.com/2011/04/11/android-unique-identifier/
+		this.androidID = Secure.getString(context.getContentResolver(),
+                Secure.ANDROID_ID);
 		this.favourites = new ArrayList<CommentModel>();
 		this.readComments = new ArrayList<CommentModel>();
 		this.wantToReadComments = new ArrayList<CommentModel>();
 		this.userName = "null";
 	}
 
+
 	// Constructor for old user (load from file)
-	public UserModel(int androidID, 
+	public UserModel(String androidID, 
 			ArrayList<CommentModel> favourites,
 			ArrayList<CommentModel> readComments,
 			ArrayList<CommentModel> wantToReadComments, 
@@ -61,11 +70,11 @@ public class UserModel implements Serializable {
 		this.userName = userName;
 	}
 
-	public int getAndroidID() {
+	public String getAndroidID() {
 		return androidID;
 	}
 
-	public void setAndroidID(int androidID) {
+	public void setAndroidID(String androidID) {
 		this.androidID = androidID;
 	}
 
