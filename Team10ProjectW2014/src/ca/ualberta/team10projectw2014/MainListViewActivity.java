@@ -47,24 +47,14 @@ import android.widget.RadioGroup;
  * @author Cole Fudge
  */
 public class MainListViewActivity extends Activity{
-
 	private ListView commentView;
-	
 	private MainListViewAdapter adapter;
-	
 	private ArrayList<CommentModel> commentList;
-	
 	private UserModel user;
-	
 	private static final NetworkConnectionController connectionController = new NetworkConnectionController();
-	
-	private static final UserDataController userController = new UserDataController(user);
-	
 	private UserDataController userDataController;
 	private static LayoutInflater layoutInflater;
-	
 	private static Location location = null;
-	
 	private CommentDataController commentDataController;
 	
 	//comparator used in sorting comments by date:
@@ -99,10 +89,12 @@ public class MainListViewActivity extends Activity{
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
-
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_head_comment_view);
 		layoutInflater = LayoutInflater.from(this);
+		
+		userDataController = new UserDataController(this, this.getString(R.string.user_sav));
+		commentDataController = new CommentDataController(this, this.getString(R.string.file_name_string));
 	}
 
 	
@@ -124,8 +116,6 @@ public class MainListViewActivity extends Activity{
 		super.onResume(); 
 		setContentView(R.layout.activity_head_comment_view);
 		commentView = (ListView) findViewById(R.id.HeadCommentList);
-		CommentDataController commentDataController = new CommentDataController(this, this.getString(R.string.file_name_string));
-		user = userController.loadData();
 		
 		user = userDataController.loadFromFile();
 		commentList = commentDataController.loadFromFile();
@@ -195,7 +185,7 @@ public class MainListViewActivity extends Activity{
 				String usernameString = usernameEditable.toString();
 				
 				user.setUsername(usernameString);
-				userController.saveInFile();
+				userDataController.saveToFile(user);
 			}
 		});
 
@@ -252,7 +242,7 @@ public class MainListViewActivity extends Activity{
 			public void onClick(DialogInterface dialog, int whichButton) {
 			
 				
-				userController.saveInFile();
+				userDataController.saveToFile(user);
 			}
 		});
 
