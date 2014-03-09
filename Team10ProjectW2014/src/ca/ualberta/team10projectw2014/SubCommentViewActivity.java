@@ -25,15 +25,20 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 public class SubCommentViewActivity extends Activity {
@@ -126,6 +131,7 @@ public class SubCommentViewActivity extends Activity {
 			return true;
 		case R.id.action_sort:
 			// Bring up the dialog box for the user to sort comments by
+			SortComments();
 			return true;
 		case R.id.action_favourites:
 			// Bring up the user's favourite list
@@ -151,6 +157,9 @@ public class SubCommentViewActivity extends Activity {
 		// send an intent to CreateCommentActivity
 		// send info:
 		// - title
+		Intent createComment = new Intent(getApplicationContext(), CreateCommentActivity.class);
+		createComment.putExtra("Comment Title",headCommentData.getTitle());
+		this.startActivity(createComment);
 		
 	}
 
@@ -331,7 +340,70 @@ public class SubCommentViewActivity extends Activity {
 		}
 		
 		moreDialog.setNegativeButton("Cancel", null);
+		
+		moreDialog.show();
 
 	}
+	
+	/**
+	 * Brings up a dialog box to prompt user for sorting criteria:
+	 * @see sort_comments() in MainListViewActivity
+	 * 
+	 */
+	private void SortComments(){
+		LayoutInflater layoutInflater = LayoutInflater.from(this);
+		
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+		//set the fields of the dialog:
+		alert.setTitle("Sort By:");
+	
+		LinearLayout optionsView = (LinearLayout)layoutInflater.inflate(R.layout.sort_by_dialog_list, 
+				null);
+		
+		ViewGroup sortRadioGroup = (ViewGroup) optionsView.getChildAt(0);
+				
+		RadioButton button;
+		
+		if(userData.isSortByDate()){
+			button = (RadioButton) sortRadioGroup.getChildAt(0);
+			button.toggle();
+		}
+		else if(userData.isSortByLoc()){
+			button = (RadioButton) sortRadioGroup.getChildAt(1);
+			button.toggle();
+		}
+		else if(userData.isSortByPopularity()){
+			button = (RadioButton) sortRadioGroup.getChildAt(2);
+			button.toggle();
+		}
+
+		if(userData.isSortByPic()){
+			button = (RadioButton) ((ViewGroup) optionsView.getChildAt(2)).getChildAt(0);
+			button.toggle();
+		}
+		
+		alert.setView(optionsView);
+
+		//set the positive button with its text and set up an on click listener
+		//to add the counter with the text provided when it is pressed:
+		alert.setPositiveButton("Set", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+			
+				
+				//userController.saveInFile();
+			}
+		});
+
+		//also set a cancel negative button that does nothing but close the 
+		//dialog window:
+		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+			}
+		});
+
+		alert.show();
+	}
+	
 
 }
