@@ -21,6 +21,7 @@ import java.util.Calendar;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,8 +127,11 @@ public class SubCommentViewActivityAdapter extends
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					//Open up Create comment activity
-					//will send:
-					//subCommentList.get(position);
+					//will send the title of the comment the user wants to reply to. 
+					Intent createComment = new Intent(context.getApplicationContext(), CreateCommentActivity.class);
+					createComment.putExtra("Comment Title",subCommentList.get(pos).getTitle());
+					context.startActivity(createComment);
+				
 					
 				}
 			});
