@@ -20,6 +20,7 @@ import java.util.Calendar;
 import java.util.Comparator;
 
 import ca.ualberta.team10projectw2014.controller.CommentDataController;
+import ca.ualberta.team10projectw2014.controller.UserDataController;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -57,7 +58,7 @@ public class MainListViewActivity extends Activity{
 	
 	private static final NetworkConnectionController connectionController = new NetworkConnectionController();
 	
-	private static final UserDataController userController = new UserDataController();
+	private static final UserDataController userController = new UserDataController(user);
 	
 	private UserDataController userDataController;
 	private static LayoutInflater layoutInflater;
