@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CreateCommentActivity extends Activity{
 	
@@ -134,16 +135,19 @@ public class CreateCommentActivity extends Activity{
 	}
 
 	public void chooseLocation(View v){
-		//TODO Carry out what happens when the user presses the "Location" button
+		Toast.makeText(getBaseContext(), "You Want to Choose a Location, Eh?", Toast.LENGTH_LONG).show();
 	}
 	
 	public void choosePhoto(View v){
-		//TODO Carry out what happens when the user presses the "Photo" button
+		Toast.makeText(getBaseContext(), "I Don't Remember Asking You To Take a Picture", Toast.LENGTH_LONG).show();
 	}
 	
 	private void setLocation(){
+		if (this.postLocation != null){
+			this.postLocation = new LocationModel("TITLE", this.latitude, this.longitude);
+		}
 		if (this.postLocation == null){
-			this.postLocation = new LocationModel("TITLE", 100.00, 100.00);
+			this.postLocation = new LocationModel("TITLE", 145.00, 23.00);
 		}
 		//TODO Set location variable to...?
 		// Location should never be null
