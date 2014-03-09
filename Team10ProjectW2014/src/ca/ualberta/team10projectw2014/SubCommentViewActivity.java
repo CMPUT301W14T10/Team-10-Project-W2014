@@ -54,39 +54,40 @@ public class SubCommentViewActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sub_comment_view);
 
+	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		/*
+		 * Get data being passed to this activity
+		 */
+		Bundle bundle = getIntent().getExtras();
+		headCommentData = (CommentModel) bundle.getSerializable("HeadModel");
+		userData = (UserModel) bundle.getSerializable("UserModel");
+
+		// Disable the Home Icon on the Actionbar
+		ActionBar actionbar = getActionBar();
+		actionbar.setDisplayShowHomeEnabled(false);
+
+		// Set the Title in the Actionbar to the title of the head comment
+		actionbar.setTitle(headCommentData.getTitle());
+
+		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
+
+		// Gets all the SubComments and all its subComments
+		AddCommentToList(headCommentData.getSubComments());
+
+		adapter = new SubCommentViewActivityAdapter(this,
+				R.layout.sub_comment_view_sub_comment_item, subCommentsList,
+				userData);
+
+		// Set the first item in the list to the header Comment
+		subListView.addHeaderView((View) SetHeader(headCommentData));
+
+		subListView.setAdapter(adapter);
 
 	}
-	 @Override
-	 protected void onResume(){
-		 
-			Bundle bundle = getIntent().getExtras();
-			headCommentData = (CommentModel) bundle.getSerializable("HeadModel");
-			userData = (UserModel) bundle.getSerializable("UserModel");
-
-			
-			// Disable the Home Icon on the Actionbar
-			ActionBar actionbar = getActionBar();
-			actionbar.setDisplayShowHomeEnabled(false);
-
-			// Set the Title in the Actionbar to the title of the head comment
-			actionbar.setTitle(headCommentData.getTitle());
-
-			subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
-
-			// Gets all the SubComments and all its subComments
-			AddCommentToList(headCommentData.getSubComments());
-
-			adapter = new SubCommentViewActivityAdapter(this,
-					R.layout.sub_comment_view_sub_comment_item, subCommentsList,
-					userData);
-
-			// Set the first item in the list to the header Comment
-			subListView.addHeaderView((View) SetHeader(headCommentData));
-
-			subListView.setAdapter(adapter);
-		 
-	 }
 
 	/**
 	 * Inflate the menu.
@@ -163,10 +164,11 @@ public class SubCommentViewActivity extends Activity {
 		// send an intent to CreateCommentActivity
 		// send info:
 		// - title
-		Intent createComment = new Intent(getApplicationContext(), CreateCommentActivity.class);
-		createComment.putExtra("Comment Title",headCommentData.getTitle());
+		Intent createComment = new Intent(getApplicationContext(),
+				CreateCommentActivity.class);
+		createComment.putExtra("Comment Title", headCommentData.getTitle());
 		this.startActivity(createComment);
-		
+
 	}
 
 	/**
@@ -254,11 +256,10 @@ public class SubCommentViewActivity extends Activity {
 		textContent.setText(headComment.getContent());
 
 		moreButton.setOnClickListener(new View.OnClickListener() {
-			
 
 			@Override
 			public void onClick(View v) {
-				
+
 				// TODO Auto-generated method stub
 				openMoreDialog(headCommentData);
 
@@ -303,11 +304,12 @@ public class SubCommentViewActivity extends Activity {
 			}
 		}
 	}
-	
+
 	/***
-	 * Open the More... dialog box for the user to add the comment
-	 * to a read later list, or if the user is the author of that
-	 * comment, they can edit the comment. 
+	 * Open the More... dialog box for the user to add the comment to a read
+	 * later list, or if the user is the author of that comment, they can edit
+	 * the comment.
+	 * 
 	 * @param comment
 	 */
 	public void openMoreDialog(CommentModel comment) {
@@ -329,9 +331,8 @@ public class SubCommentViewActivity extends Activity {
 
 					}
 				});
-		
-		
-		//User will only have the option if the
+
+		// User will only have the option if the
 		if (userData.getAndroidID().equals(comment.getAuthorAndroidID())) {
 			moreDialog.setNeutralButton("Edit Comment",
 					new DialogInterface.OnClickListener() {
@@ -339,77 +340,76 @@ public class SubCommentViewActivity extends Activity {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub
-							//Open CreateComment Activity 
+							// Open CreateComment Activity
 
 						}
 					});
 		}
-		
+
 		moreDialog.setNegativeButton("Cancel", null);
-		
+
 		moreDialog.show();
 
 	}
-	
+
 	/**
 	 * Brings up a dialog box to prompt user for sorting criteria:
+	 * 
 	 * @see sort_comments() in MainListViewActivity
 	 * 
 	 */
-	private void SortComments(){
+	private void SortComments() {
 		LayoutInflater layoutInflater = LayoutInflater.from(this);
-		
+
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-		//set the fields of the dialog:
+		// set the fields of the dialog:
 		alert.setTitle("Sort By:");
-	
-		LinearLayout optionsView = (LinearLayout)layoutInflater.inflate(R.layout.sort_by_dialog_list, 
-				null);
-		
+
+		LinearLayout optionsView = (LinearLayout) layoutInflater.inflate(
+				R.layout.sort_by_dialog_list, null);
+
 		ViewGroup sortRadioGroup = (ViewGroup) optionsView.getChildAt(0);
-				
+
 		RadioButton button;
-		
-		if(userData.isSortByDate()){
+
+		if (userData.isSortByDate()) {
 			button = (RadioButton) sortRadioGroup.getChildAt(0);
 			button.toggle();
-		}
-		else if(userData.isSortByLoc()){
+		} else if (userData.isSortByLoc()) {
 			button = (RadioButton) sortRadioGroup.getChildAt(1);
 			button.toggle();
-		}
-		else if(userData.isSortByPopularity()){
+		} else if (userData.isSortByPopularity()) {
 			button = (RadioButton) sortRadioGroup.getChildAt(2);
 			button.toggle();
 		}
 
-		if(userData.isSortByPic()){
-			button = (RadioButton) ((ViewGroup) optionsView.getChildAt(2)).getChildAt(0);
+		if (userData.isSortByPic()) {
+			button = (RadioButton) ((ViewGroup) optionsView.getChildAt(2))
+					.getChildAt(0);
 			button.toggle();
 		}
-		
+
 		alert.setView(optionsView);
 
-		//set the positive button with its text and set up an on click listener
-		//to add the counter with the text provided when it is pressed:
+		// set the positive button with its text and set up an on click listener
+		// to add the counter with the text provided when it is pressed:
 		alert.setPositiveButton("Set", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
-			
-				
-				//userController.saveInFile();
+
+				// userController.saveInFile();
 			}
 		});
 
-		//also set a cancel negative button that does nothing but close the 
-		//dialog window:
-		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-			}
-		});
+		// also set a cancel negative button that does nothing but close the
+		// dialog window:
+		alert.setNegativeButton("Cancel",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+					}
+				});
 
 		alert.show();
 	}
-	
 
 }
