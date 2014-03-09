@@ -45,7 +45,7 @@ public class UserDataController implements DataController<UserModel> {
 
 	public UserModel loadFromFile(){
 	    FileInputStream fis;
-	    UserModel list = new UserModel();
+	    UserModel list = new UserModel(fileContext);
 	        try
 	        {
 	            fis = fileContext.openFileInput(FILE_NAME);
