@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -206,10 +207,7 @@ public class SubCommentViewActivityAdapter extends
 		
 	}
 	
-	public void openMoreDialog(String userName, String commentAuthor){
-		
-		
-	}
+
 	
 
 }

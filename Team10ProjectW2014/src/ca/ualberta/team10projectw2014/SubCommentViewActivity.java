@@ -48,84 +48,33 @@ public class SubCommentViewActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sub_comment_view);
-		
-		
-		//Bundle bundle = getIntent().getExtras();
-		//headCommentData = (HeadModel) bundle.getSerializable("HeadModel");
-		//userData = (UserModel) bundle.getSerializable("UserModel");
-		
-		// setup the head comment with some data
-		HeadModel headComment = new HeadModel();
-		headComment.setTitle("Test Head Comment Title");
-		headComment.setAuthor("TestUsername");
-		headComment.setContent("Test Head Comment Content");
-		headComment.setTimestamp(Calendar.getInstance());
-		
-		
-		//setup sub comments with data
-		
-		//responds to head comment
-		SubCommentModel subComment1 = new SubCommentModel(headComment);
-		subComment1.setAuthor("TestUser1");
-		subComment1.setTitle("TestSubTitle1");
-		subComment1.setContent("Reply to head comment1");
-		subComment1.setTimestamp(Calendar.getInstance());
-		headComment.getSubComments().add(subComment1);
-		
-		//responds to head comment
-		SubCommentModel subComment2 = new SubCommentModel(headComment);
-		subComment2.setAuthor("TestUser2");
-		subComment2.setTitle("TestSubTitle2");
-		subComment2.setContent("Reply to head comment2");
-		subComment2.setTimestamp(Calendar.getInstance());
-		headComment.getSubComments().add(subComment2);
-		
-		//responds to subComment1
-		SubCommentModel subComment3 = new SubCommentModel(subComment1);
-		subComment3.setAuthor("TestUser1");
-		subComment3.setTitle("TestSubTitle1");
-		subComment3.setContent("Reply to head comment1");
-		subComment3.setTimestamp(Calendar.getInstance());
-		subComment1.getSubComments().add(subComment3);
-		
-		//responds to head comment
-		SubCommentModel subComment4 = new SubCommentModel(headComment);
-		subComment4.setAuthor("TestUser1");
-		subComment4.setTitle("TestSubTitle1");
-		subComment4.setContent("Reply to head comment1");
-		subComment4.setTimestamp(Calendar.getInstance());
-		headComment.getSubComments().add(subComment4);
-		
-		
 
+		Bundle bundle = getIntent().getExtras();
+		headCommentData = (HeadModel) bundle.getSerializable("HeadModel");
+		userData = (UserModel) bundle.getSerializable("UserModel");
+
+		
 		// Disable the Home Icon on the Actionbar
 		ActionBar actionbar = getActionBar();
 		actionbar.setDisplayShowHomeEnabled(false);
 
 		// Set the Title in the Actionbar to the title of the head comment
-		actionbar.setTitle(headComment.getTitle());
+		actionbar.setTitle(headCommentData.getTitle());
 
 		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
 
-		// Gets all the SubComments and all its subComments 
-		AddCommentToList(headComment.getSubComments());
+		// Gets all the SubComments and all its subComments
+		AddCommentToList(headCommentData.getSubComments());
 
 		adapter = new SubCommentViewActivityAdapter(this,
-				R.layout.sub_comment_view_sub_comment_item, subCommentsList, userData);
+				R.layout.sub_comment_view_sub_comment_item, subCommentsList,
+				userData);
 
 		// Set the first item in the list to the header Comment
-		subListView.addHeaderView((View) SetHeader(headComment));
-		
+		subListView.addHeaderView((View) SetHeader(headCommentData));
+
 		subListView.setAdapter(adapter);
 
-
-
-	}
-
-	protected void onResume() {
-		super.onResume();
-		
-	
 	}
 
 	/**
@@ -168,21 +117,21 @@ public class SubCommentViewActivity extends Activity {
 			openReply();
 			return true;
 		case R.id.action_favourite:
-			//Add the head comment to the users favourite list
+			// Add the head comment to the users favourite list
 			addFavourite(headCommentData);
 			return true;
 		case R.id.action_edit_username:
-			//Bring up dialog box for the user to edit username
+			// Bring up dialog box for the user to edit username
 			editUserName();
 			return true;
 		case R.id.action_sort:
-			//Bring up the dialog box for the user to sort comments by
+			// Bring up the dialog box for the user to sort comments by
 			return true;
 		case R.id.action_favourites:
-			//Bring up the user's favourite list
+			// Bring up the user's favourite list
 			return true;
 		case R.id.action_want_to_read:
-			//Bring up the user's want to read list
+			// Bring up the user's want to read list
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -202,9 +151,8 @@ public class SubCommentViewActivity extends Activity {
 		// send an intent to CreateCommentActivity
 		// send info:
 		// - title
+		
 	}
-
-
 
 	/**
 	 * Adds the post and sub-posts to user's favourites. Post will get cached
@@ -218,37 +166,38 @@ public class SubCommentViewActivity extends Activity {
 		// TODO: Implement addFavourite
 		userData.getFavourites().add(comment);
 	}
-	
-	private void editUserName(){
+
+	private void editUserName() {
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-		//set the fields of the dialog:
+		// set the fields of the dialog:
 		alert.setTitle("Edit Username");
 
-		//add an EditText to the dialog for the user to enter
-		//the name in:
+		// add an EditText to the dialog for the user to enter
+		// the name in:
 		final EditText usernameText = new EditText(this);
 		alert.setView(usernameText);
 
-		//set the positive button with its text and set up an on click listener
-		//to add the counter with the text provided when it is pressed:
+		// set the positive button with its text and set up an on click listener
+		// to add the counter with the text provided when it is pressed:
 		alert.setPositiveButton("Set", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
-				//get the text from the editable:
+				// get the text from the editable:
 				Editable usernameEditable = usernameText.getText();
 				String usernameString = usernameEditable.toString();
-				
+
 				userData.setUsername(usernameString);
-		
+
 			}
 		});
 
-		//also set a cancel negative button that does nothing but close the 
-		//dialog window:
-		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-			}
-		});
+		// also set a cancel negative button that does nothing but close the
+		// dialog window:
+		alert.setNegativeButton("Cancel",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+					}
+				});
 
 		alert.show();
 	}
@@ -285,13 +234,16 @@ public class SubCommentViewActivity extends Activity {
 		// textLocation.setText(headComment.getLocation().getName());
 		textTime.setText(TimeToString(headComment.getTimestamp()));
 		textContent.setText(headComment.getContent());
-		
+
 		moreButton.setOnClickListener(new View.OnClickListener() {
 			
+
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				
+				// TODO Auto-generated method stub
+				openMoreDialog(headCommentData);
+
 			}
 		});
 
@@ -333,7 +285,44 @@ public class SubCommentViewActivity extends Activity {
 			}
 		}
 	}
-	
-	
+
+	public void openMoreDialog(CommentModel comment) {
+
+		final CommentModel commentData = comment;
+		AlertDialog.Builder moreDialog = new AlertDialog.Builder(this);
+
+		// set dialog title
+		moreDialog.setTitle("More...");
+
+		// set Add to Read later
+		moreDialog.setNeutralButton("Add to Read Later",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						userData.getFavourites().add(commentData);
+
+					}
+				});
+		
+		
+		//User will only have the option if the
+		if (userData.getAndroidID() == comment.getAuthorAndroidID()) {
+			moreDialog.setNeutralButton("Edit Comment",
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							//Open CreateComment Activity 
+
+						}
+					});
+		}
+		
+		moreDialog.setNegativeButton("Cancel", null);
+
+	}
 
 }
