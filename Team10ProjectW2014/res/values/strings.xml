@@ -39,4 +39,5 @@
     <string name="sort_subtitle">sort by:</string>
     <string name="dash_string">  -  </string>
     <string name="file_name_string">commentListFile.sav</string>
+    <string name="user_sav">user.sav</string>
 </resources>

@@ -104,8 +104,8 @@ public class MainListViewAdapter extends BaseAdapter {
 		// Grabs strings to be displayed for each head comment in the list
 		holder.textTitle.setText(headCommentList.get(position).getTitle());
 		holder.textUsername.setText(headCommentList.get(position).getAuthor());
-		holder.textLocation.setText(headCommentList.get(position).getLocation().
-				getName());
+		//holder.textLocation.setText(headCommentList.get(position).getLocation().
+				//getName());
 		// String for time retrieved using private method
 		holder.textTime.setText(this.timeToString(headCommentList.get(position).
 				getTimestamp()));

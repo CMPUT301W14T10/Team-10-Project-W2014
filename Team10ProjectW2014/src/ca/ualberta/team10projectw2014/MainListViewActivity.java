@@ -59,6 +59,7 @@ public class MainListViewActivity extends Activity{
 	
 	private static final UserDataController userController = new UserDataController();
 	
+	private UserDataController userDataController;
 	private static LayoutInflater layoutInflater;
 	
 	private static Location location = null;
@@ -125,17 +126,12 @@ public class MainListViewActivity extends Activity{
 		CommentDataController commentDataController = new CommentDataController(this, this.getString(R.string.file_name_string));
 		user = userController.loadData();
 		
-		if(adapter != null){
-			//Use the comment controller to load the head comments from file:
-			commentList = commentDataController.loadFromFile();
-			adapter.notifyDataSetChanged();
-		}
-		else {
-			//Call the constructor to create a new custom Array Adapter of type HeadModel: 
-			adapter = new MainListViewAdapter(this, commentList);
-			commentList = commentDataController.loadFromFile();
-			adapter.notifyDataSetChanged();
-		}
+		user = userDataController.loadFromFile();
+		commentList = commentDataController.loadFromFile();
+		adapter = new MainListViewAdapter(this, commentList);
+		
+		commentView.setAdapter(adapter);
+		adapter.notifyDataSetChanged();
 		
 		commentView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 			@Override
@@ -158,11 +154,7 @@ public class MainListViewActivity extends Activity{
 		switch(item.getItemId()){
 			case R.id.add_comment:
 				Intent createComment = new Intent(getApplicationContext(), CreateCommentActivity.class);
-				
-				
-				createComment.putExtra("username", "USERNAME");//user.getUsername()); // TESTING PURPOSES ONLY
-				
-				
+				createComment.putExtra("username", user.getUsername());
 				this.startActivity(createComment);
 				return true;
 			case R.id.action_edit_username_main:
