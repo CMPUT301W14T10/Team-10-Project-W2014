@@ -7,53 +7,19 @@ import android.location.LocationManager;
 import android.os.Bundle;
 
 public class LocationListenerController implements LocationListener {
-	
-	private double latitude;
-	private double longitude;
+
 	private Location currentBestLocation = null;
-	LocationManager mLocationManager;
 
-	public LocationListenerController(Context context) {
-		mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-	}
+	public LocationListenerController(Context context) {}
 
-	// Retrieved from http://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android on March 6 at 5:00
-	private Location getLastBestLocation() {
-	    Location locationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-	    Location locationNet = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-	    long GPSLocationTime = 0;
-	    if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
-
-	    long NetLocationTime = 0;
-
-	    if (null != locationNet) {
-	        NetLocationTime = locationNet.getTime();
-	    }
-
-	    if ( 0 < GPSLocationTime - NetLocationTime ) {
-	        return locationGPS;
-	    }
-	    else{
-	        return locationNet;
-	    }
-
-	}
-	
 	private void makeUseOfNewLocation(Location location){
 		if ( isBetterLocation(location, currentBestLocation) ) {
 	        currentBestLocation = location;
-	        latitude = location.getLatitude();
-	        longitude = location.getLongitude();
 	    }
 	}
 	
-	public double getLatitude(){
-		return this.latitude;
-	}
-	
-	public double getLongitude(){
-		return this.longitude;
+	public Location getCurrentBestLocation(){
+		return currentBestLocation;
 	}
 	
 	@Override

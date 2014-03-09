@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/head_comment_item_layout"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="5dip" >
 
-   <!-- ListRow Right sided Thumbnail image -->
+    <!-- ListRow Right sided Thumbnail image -->
 
     <LinearLayout
         android:id="@+id/head_comment_thumbnail"
@@ -47,22 +48,45 @@
         android:text="@string/written_by"
         android:textSize="12sp" />
 
-    <!-- Location and Time -->
+    <!-- Location -->
 
     <TextView
-        android:id="@+id/head_comment_location_time"
-        android:layout_width="fill_parent"
+        android:id="@+id/head_comment_location_sub"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/head_comment_author"
         android:layout_marginTop="1dip"
-        android:text="@string/location_time"
+        android:text="@string/location"
+        android:textSize="12sp" />
+    
+	<!-- dash seperating location and time -->
+    <TextView
+        android:id="@+id/head_comment_dash_sub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/head_comment_author"
+  		android:layout_toRightOf="@id/head_comment_location_sub"
+        android:layout_marginTop="1dip"
+        android:layout_marginLeft="1dip"
+        android:text="@string/dash_string"
+        android:textSize="12sp" />
+
+    <!-- Time -->
+    <TextView
+        android:id="@+id/head_comment_time_sub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+  		android:layout_below="@id/head_comment_author"
+  		android:layout_toRightOf="@id/head_comment_dash_sub"
+        android:layout_marginTop="1dip"
+        android:text="@string/time_string"
         android:textSize="12sp" />
 
     <!-- Head comment text body -->
 
     <TextView
-        android:id="@+id/head_comment_text_body"
+        android:id="@+id/head_comment_text_body_sub"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -75,12 +99,10 @@
         android:id="@+id/more_option"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/head_comment_text_body"
         android:layout_alignParentRight="true"
+        android:layout_below="@id/head_comment_text_body_sub"
         android:background="?android:attr/selectableItemBackground"
         android:text="@string/more_option"
-        android:textSize="14sp"  />
-    
-    
+        android:textSize="14sp" />
 
 </RelativeLayout>
