@@ -48,9 +48,54 @@ public class SubCommentViewActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sub_comment_view);
-		Bundle bundle = getIntent().getExtras();
-		headCommentData = (HeadModel) bundle.getSerializable("HeadModel");
-		userData = (UserModel) bundle.getSerializable("UserModel");
+		
+		
+		//Bundle bundle = getIntent().getExtras();
+		//headCommentData = (HeadModel) bundle.getSerializable("HeadModel");
+		//userData = (UserModel) bundle.getSerializable("UserModel");
+		
+		// setup the head comment with some data
+		HeadModel headComment = new HeadModel();
+		headComment.setTitle("Test Head Comment Title");
+		headComment.setAuthor("TestUsername");
+		headComment.setContent("Test Head Comment Content");
+		headComment.setTimestamp(Calendar.getInstance());
+		
+		
+		//setup sub comments with data
+		
+		//responds to head comment
+		SubCommentModel subComment1 = new SubCommentModel(headComment);
+		subComment1.setAuthor("TestUser1");
+		subComment1.setTitle("TestSubTitle1");
+		subComment1.setContent("Reply to head comment1");
+		subComment1.setTimestamp(Calendar.getInstance());
+		headComment.getSubComments().add(subComment1);
+		
+		//responds to head comment
+		SubCommentModel subComment2 = new SubCommentModel(headComment);
+		subComment2.setAuthor("TestUser2");
+		subComment2.setTitle("TestSubTitle2");
+		subComment2.setContent("Reply to head comment2");
+		subComment2.setTimestamp(Calendar.getInstance());
+		headComment.getSubComments().add(subComment2);
+		
+		//responds to subComment1
+		SubCommentModel subComment3 = new SubCommentModel(subComment1);
+		subComment3.setAuthor("TestUser1");
+		subComment3.setTitle("TestSubTitle1");
+		subComment3.setContent("Reply to head comment1");
+		subComment3.setTimestamp(Calendar.getInstance());
+		subComment1.getSubComments().add(subComment3);
+		
+		//responds to head comment
+		SubCommentModel subComment4 = new SubCommentModel(headComment);
+		subComment4.setAuthor("TestUser1");
+		subComment4.setTitle("TestSubTitle1");
+		subComment4.setContent("Reply to head comment1");
+		subComment4.setTimestamp(Calendar.getInstance());
+		headComment.getSubComments().add(subComment4);
+		
 		
 
 		// Disable the Home Icon on the Actionbar
@@ -58,18 +103,18 @@ public class SubCommentViewActivity extends Activity {
 		actionbar.setDisplayShowHomeEnabled(false);
 
 		// Set the Title in the Actionbar to the title of the head comment
-		actionbar.setTitle(headCommentData.getTitle());
+		actionbar.setTitle(headComment.getTitle());
 
 		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
 
 		// Gets all the SubComments and all its subComments 
-		AddCommentToList(headCommentData.getSubComments());
+		AddCommentToList(headComment.getSubComments());
 
 		adapter = new SubCommentViewActivityAdapter(this,
-				R.layout.sub_comment_view_sub_comment_item, subCommentsList);
+				R.layout.sub_comment_view_sub_comment_item, subCommentsList, userData);
 
 		// Set the first item in the list to the header Comment
-		subListView.addHeaderView((View) SetHeader(headCommentData));
+		subListView.addHeaderView((View) SetHeader(headComment));
 		
 		subListView.setAdapter(adapter);
 

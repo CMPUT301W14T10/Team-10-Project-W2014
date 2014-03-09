@@ -41,6 +41,7 @@ public class SubCommentViewActivityAdapter extends
 	private int layoutResourceId;
 	private ArrayList<SubCommentModel> subCommentList;
 	private SimpleDateFormat sdf;
+	private UserModel userData;
 	
 
 	/**
@@ -63,12 +64,13 @@ public class SubCommentViewActivityAdapter extends
 	public SubCommentViewActivityAdapter(
 			Context context, 
 			int layoutResourceId,
-			ArrayList<SubCommentModel> subCommentList) {
+			ArrayList<SubCommentModel> subCommentList,UserModel userData) {
 
 		super(context, layoutResourceId, subCommentList);
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
 		this.subCommentList = subCommentList;
+		this.userData = userData;
 
 	}
 	/**
@@ -201,6 +203,11 @@ public class SubCommentViewActivityAdapter extends
 	 */
 	private String getReplyTitle(SubCommentModel subComment){
 		return "Re: " + subComment.getRespondedTo().getTitle();
+		
+	}
+	
+	public void openMoreDialog(String userName, String commentAuthor){
+		
 		
 	}
 	
