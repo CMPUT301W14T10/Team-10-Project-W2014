@@ -167,6 +167,9 @@ public class SubCommentViewActivity extends Activity {
 		userData.getFavourites().add(comment);
 	}
 
+	/***
+	 * Will bring up the dialog box for the user to edit username
+	 */
 	private void editUserName() {
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -208,7 +211,7 @@ public class SubCommentViewActivity extends Activity {
 	 * 
 	 * @author sgiang92, dvyee
 	 * @param headComment
-	 * @return CommentModel headComment
+	 * @return HeadModel headComment
 	 */
 	private View SetHeader(CommentModel headComment) {
 
@@ -285,7 +288,13 @@ public class SubCommentViewActivity extends Activity {
 			}
 		}
 	}
-
+	
+	/***
+	 * Open the More... dialog box for the user to add the comment
+	 * to a read later list, or if the user is the author of that
+	 * comment, they can edit the comment. 
+	 * @param comment
+	 */
 	public void openMoreDialog(CommentModel comment) {
 
 		final CommentModel commentData = comment;

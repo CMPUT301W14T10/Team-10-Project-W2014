@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,8 +40,8 @@ public class SubCommentViewActivityAdapter extends
 	private Context context;
 	private int layoutResourceId;
 	private ArrayList<SubCommentModel> subCommentList;
-	private SimpleDateFormat sdf;
 	private UserModel userData;
+
 	
 
 	/**
@@ -61,7 +60,8 @@ public class SubCommentViewActivityAdapter extends
 		Button moreButton;
 	}
 
-
+	
+	//SubCommentViewActivityAdapter Contructor
 	public SubCommentViewActivityAdapter(
 			Context context, 
 			int layoutResourceId,
@@ -85,7 +85,6 @@ public class SubCommentViewActivityAdapter extends
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-
 		View view = convertView;
 		ViewHolder holder = null;
 
@@ -118,12 +117,17 @@ public class SubCommentViewActivityAdapter extends
 			
 			// Add the holder data to the view
 						view.setTag(holder);
+			//Required to be used in an inner method
+			final int pos = position;
 			
 			holder.replyButton.setOnClickListener(new View.OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
+					//Open up Create comment activity
+					//will send:
+					//subCommentList.get(position);
 					
 				}
 			});
@@ -133,23 +137,24 @@ public class SubCommentViewActivityAdapter extends
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
+					//Add a Comment the user's favourite list
+					userData.getFavourites().add(subCommentList.get(pos));
 					
 				}
 			});
 			
+			
+			
+			
+			//Open the More... dialog box for the selected comment 
 			holder.moreButton.setOnClickListener(new View.OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					
+					((SubCommentViewActivity)context).openMoreDialog(subCommentList.get(pos));
 					
 				}
 			});
-			
-			
-			
-			
 			
 
 		} else {
