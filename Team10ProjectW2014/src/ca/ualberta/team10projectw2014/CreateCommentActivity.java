@@ -57,8 +57,6 @@ public class CreateCommentActivity extends Activity{
 	@Override 
 	protected void onResume(){
 		super.onResume();
-		//TODO Check to see if GPS is enabled
-        //TODO Start listening for location information
 		
 		//Receive information from the intent
 		Bundle bundle = getIntent().getExtras();
@@ -66,10 +64,13 @@ public class CreateCommentActivity extends Activity{
 		CommentModel receivedComment = (CommentModel) bundle.getSerializable("comment");
 		fillContents(receivedUsername, receivedComment);
 		
-        startListeningLocation();
+		
+		//TODO Check to see if GPS is enabled
+        //TODO Start listening for location information
+        //startListeningLocation();
 	}
 	
-	// The following class is a direct copy from http://stackoverflow.com/questions/843675/how-do-i-find-out-if-the-gps-of-an-android-device-is-enabled received on March 9 at 2:00PM
+	// The following method is a direct copy from http://stackoverflow.com/questions/843675/how-do-i-find-out-if-the-gps-of-an-android-device-is-enabled received on March 9 at 2:00PM
 	protected void noGPSError(){
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
@@ -258,7 +259,6 @@ public class CreateCommentActivity extends Activity{
 			ArrayList<CommentModel> tempList = CDC.loadFromFile();
 			tempList.add(model);
 			CDC.saveToFile(tempList);
-			
 			
 			//Destroy this activity so that we return to the previous one.
 			goBack();

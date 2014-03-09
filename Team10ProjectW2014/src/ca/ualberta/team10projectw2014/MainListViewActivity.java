@@ -158,7 +158,11 @@ public class MainListViewActivity extends Activity{
 		switch(item.getItemId()){
 			case R.id.add_comment:
 				Intent createComment = new Intent(getApplicationContext(), CreateCommentActivity.class);
-				createComment.putExtra("username", "USERNAME");//user.getUsername());
+				
+				
+				createComment.putExtra("username", "USERNAME");//user.getUsername()); // TESTING PURPOSES ONLY
+				
+				
 				this.startActivity(createComment);
 				return true;
 			case R.id.action_edit_username_main:

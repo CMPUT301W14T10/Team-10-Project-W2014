@@ -52,7 +52,7 @@ public class UserModel implements Serializable {
 		this.favourites = new ArrayList<CommentModel>();
 		this.readComments = new ArrayList<CommentModel>();
 		this.wantToReadComments = new ArrayList<CommentModel>();
-		this.userName = "null";
+		this.userName = null;
 	}
 
 
