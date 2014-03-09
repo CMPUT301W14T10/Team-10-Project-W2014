@@ -77,7 +77,7 @@ public class CreateCommentActivityTests extends
 	public void testCreateNewSubCommentWithoutUsername() throws Throwable{
 		
 		final String title = "TITLE STRING";
-		final HeadModel sampleHead = new HeadModel();
+		final CommentModel sampleHead = new CommentModel();
 		sampleHead.setTitle(title);
 		runTestOnUiThread(new Runnable(){
 			@Override
@@ -99,7 +99,7 @@ public class CreateCommentActivityTests extends
 		
 		final String title = "TITLE STRING";
 		final String username = "USERNAME";
-		final HeadModel sampleHead = new HeadModel();
+		final CommentModel sampleHead = new CommentModel();
 		sampleHead.setTitle(title);
 		runTestOnUiThread(new Runnable(){
 			@Override

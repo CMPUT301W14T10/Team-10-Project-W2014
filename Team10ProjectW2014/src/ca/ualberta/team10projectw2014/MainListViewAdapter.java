@@ -55,7 +55,7 @@ public class MainListViewAdapter extends BaseAdapter {
 	 * Constructor that sets the layout inflater and retrieves the head comment 
 	 * list.
 	 * @param context the layout of the activity.
-	 * @param commentList the ArrayList<HeadModel> object containing head
+	 * @param commentList the ArrayList<CommentModel> object containing head
 	 * comments.
 	 */
 	public MainListViewAdapter(Context context, 

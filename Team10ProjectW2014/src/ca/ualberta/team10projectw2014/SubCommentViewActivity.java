@@ -31,13 +31,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class SubCommentViewActivity extends Activity {
 
-	private HeadModel headCommentData;
+	private CommentModel headCommentData;
 	private ListView subListView;
 	private UserModel userData;
 	private SubCommentViewActivityAdapter adapter;
@@ -48,7 +49,7 @@ public class SubCommentViewActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sub_comment_view);
 		Bundle bundle = getIntent().getExtras();
-		headCommentData = (HeadModel) bundle.getSerializable("HeadModel");
+		headCommentData = (CommentModel) bundle.getSerializable("HeadModel");
 		userData = (UserModel) bundle.getSerializable("UserModel");
 		
 
@@ -78,12 +79,8 @@ public class SubCommentViewActivity extends Activity {
 
 	protected void onResume() {
 		super.onResume();
-
-		/*
-		 * this.adapter = new SubCommentViewActivityAdapter(
-		 * SubCommentViewActivity.this, R.layout.activity_sub_comment_view,
-		 * this.headCommentData);
-		 */
+		
+	
 	}
 
 	/**
@@ -217,9 +214,9 @@ public class SubCommentViewActivity extends Activity {
 	 * 
 	 * @author sgiang92, dvyee
 	 * @param headComment
-	 * @return HeadModel headComment
+	 * @return CommentModel headComment
 	 */
-	private View SetHeader(HeadModel headComment) {
+	private View SetHeader(CommentModel headComment) {
 
 		// Get the head comment item layout view
 		View header = (View) getLayoutInflater().inflate(
@@ -235,6 +232,7 @@ public class SubCommentViewActivity extends Activity {
 				.findViewById(R.id.head_comment_time_sub);
 		TextView textContent = (TextView) header
 				.findViewById(R.id.head_comment_text_body_sub);
+		Button moreButton = (Button) header.findViewById(R.id.head_more_option);
 
 		// Set the items to the contents of the Head Comment
 		textTitle.setText(headComment.getTitle());
@@ -242,6 +240,15 @@ public class SubCommentViewActivity extends Activity {
 		// textLocation.setText(headComment.getLocation().getName());
 		textTime.setText(TimeToString(headComment.getTimestamp()));
 		textContent.setText(headComment.getContent());
+		
+		moreButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
 		return header;
 
