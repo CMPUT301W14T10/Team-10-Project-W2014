@@ -5,7 +5,10 @@ import java.util.Calendar;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
@@ -26,11 +29,13 @@ public class CreateCommentActivity extends Activity{
 	private EditText ueditText;
 	private EditText teditText;
 	private EditText ceditText;
-	private LocationListenerController locationListener = new LocationListenerController(this);
-	private LocationManager mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	protected double longitude;
 	protected double latitude;
  	private Location bestKnownLoc;
+ 	protected CommentModel model;
+ 	protected LocationListenerController locationListener;
+ 	protected LocationManager mLocationManager;
+ 	protected Boolean gpsEnabled;
 	
 	@SuppressLint("NewApi")
 	@Override
@@ -44,9 +49,6 @@ public class CreateCommentActivity extends Activity{
 //        CommentModel receivedComment = (CommentModel) bundle.getSerializable("comment");
 //        fillContents(receivedUsername, receivedComment);
         
- 		//TODO Check to see if GPS is enabled
-        //TODO Start listening for location information
-        startListeningLocation();
 
         
         
@@ -60,19 +62,46 @@ public class CreateCommentActivity extends Activity{
 	@Override 
 	protected void onResume(){
 		super.onResume();
+		//TODO Check to see if GPS is enabled
+        //TODO Start listening for location information
+        startListeningLocation();
+	}
+	
+	// The following class is a direct copy from http://stackoverflow.com/questions/843675/how-do-i-find-out-if-the-gps-of-an-android-device-is-enabled received on March 9 at 2:00PM
+	protected void noGPSError(){
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+	           .setCancelable(false)
+	           .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+	               public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+	                   startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+	               }
+	           })
+	           .setNegativeButton("No", new DialogInterface.OnClickListener() {
+	               public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+	                    dialog.cancel();
+	               }
+	           });
+	    final AlertDialog alert = builder.create();
+	    alert.show();
 	}
 	
 	private void startListeningLocation(){
-		LocationListenerController locationListener = new LocationListenerController(this);  
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5 * 60 * 1000 , 10, locationListener);
-        //Location bestKnownLocation = getLastBestLocation();
-	}
-	
-	private void stopListeningLocation(){
-		Location location = locationListener.getCurrentBestLocation();
-		this.latitude = location.getLatitude();
-		this.longitude = location.getLongitude();
-		mLocationManager.removeUpdates(locationListener);
+		Toast.makeText(getBaseContext(), "Starting to listen for location...", Toast.LENGTH_LONG).show();
+		LocationManager mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		
+
+	    if ( !mLocationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+	    	gpsEnabled = false;
+	        noGPSError();
+	    }
+
+	    else{
+	    	gpsEnabled = true;
+	    	LocationListenerController locationListener = new LocationListenerController(this);  
+	    	mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5 * 60 * 1000 , 10, locationListener);
+	    	//Location bestKnownLocation = getLastBestLocation();
+	    }
 	}
 
 	// Retrieved from http://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android on March 6 at 5:00
@@ -155,7 +184,6 @@ public class CreateCommentActivity extends Activity{
 	
 	//Called when the user presses "Post" button
 	public void attemptCommentCreation(View v){
-		CommentModel model;
 		
 		this.postContents = ceditText.getText().toString();
 		this.postUsername = ueditText.getText().toString();
@@ -175,7 +203,7 @@ public class CreateCommentActivity extends Activity{
 			// This is a regular expression for simplicity
 			// Will change for generalizability later
 			// Checks to see if the postTitle has "RE:" at the start
-			if(this.postTitle.matches("^RE:.*")){
+			if(this.parentModel != null){
 				// This should be edited so that the model handles all the getting and setting
 				model = new SubCommentModel(this.parentModel);
 				model.setAuthor(this.postUsername);
@@ -197,7 +225,7 @@ public class CreateCommentActivity extends Activity{
 			}
 			else{
 				// This should be edited so that the model handles all the getting and setting
-				model = new HeadModel();
+				model = new CommentModel();
 				model.setAuthor(this.postUsername);
 				model.setContent(this.postContents);
 				model.setLocation(this.postLocation);
@@ -215,12 +243,27 @@ public class CreateCommentActivity extends Activity{
 			}
 			
 			//TODO Stop listening for location information
-			stopListeningLocation();
+			if (gpsEnabled){
+				stopListeningLocation();
+			}
+			else{
+				this.latitude = 140.00;
+				this.longitude = 30.00;
+			}
+			
 			
 			
 			//Destroy this activity so that we return to the previous one.
 			goBack();
 		}
+	}
+	
+	private void stopListeningLocation(){
+		Toast.makeText(getBaseContext(), "Getting location...", Toast.LENGTH_LONG).show();
+		Location location = locationListener.getCurrentBestLocation();
+		this.latitude = location.getLatitude();
+		this.longitude = location.getLongitude();
+		mLocationManager.removeUpdates(locationListener);
 	}
 	
 	private void raiseContentsIncompleteError(){

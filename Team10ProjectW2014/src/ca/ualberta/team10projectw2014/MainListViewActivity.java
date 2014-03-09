@@ -64,8 +64,8 @@ public class MainListViewActivity extends Activity{
 	private static Comparator locCompare = new Comparator(){
 		public int compare(Object comment1, Object comment2){
 			LocationModel userLocation = new LocationModel("here", 0, 0);
-			LocationModel loc1 = ((HeadModel)comment1).getLocation();
-			LocationModel loc2 = ((HeadModel)comment2).getLocation();
+			LocationModel loc1 = ((CommentModel)comment1).getLocation();
+			LocationModel loc2 = ((CommentModel)comment2).getLocation();
 			return loc1.distanceTo(userLocation) - loc2.distanceTo(userLocation);
 		}
 	};
@@ -73,16 +73,16 @@ public class MainListViewActivity extends Activity{
 	//comparator used in sorting comments by location:
 	private static Comparator dateCompare = new Comparator(){
 		public int compare(Object comment1, Object comment2){
-			Calendar time1 = ((HeadModel)comment1).getTimestamp();
-			Calendar time2 = ((HeadModel)comment2).getTimestamp();
+			Calendar time1 = ((CommentModel)comment1).getTimestamp();
+			Calendar time2 = ((CommentModel)comment2).getTimestamp();
 			return time1.compareTo(time2);
 		}
 	};
 	
 	private static Comparator popularityCompare = new Comparator(){
 		public int compare(Object comment1, Object comment2){
-			int favs1 = ((HeadModel) comment1).getNumFavourites();
-			int favs2 = ((HeadModel) comment2).getNumFavourites();
+			int favs1 = ((CommentModel) comment1).getNumFavourites();
+			int favs2 = ((CommentModel) comment2).getNumFavourites();
 			return (favs1 - favs2);
 		}
 	};
@@ -102,7 +102,7 @@ public class MainListViewActivity extends Activity{
 		//Use the comment controller to load the head comments from file:
 		commentList = (ArrayList<CommentModel>) commentDataController.loadFromFile();
 		
-		//Call the constructor to create a new custom Array Adapter of type HeadModel: 
+		//Call the constructor to create a new custom Array Adapter of type CommentModel: 
 		adapter = new MainListViewAdapter(this, commentList);
 		
 		user = userController.loadData();
@@ -139,7 +139,7 @@ public class MainListViewActivity extends Activity{
 		//Use the comment controller to load the head comments from file:
 		commentList = (ArrayList<CommentModel>) commentDataController.loadFromFile();
 		
-		//Call the constructor to create a new custom Array Adapter of type HeadModel: 
+		//Call the constructor to create a new custom Array Adapter of type CommentModel: 
 		adapter = new MainListViewAdapter(this, commentList);
 
 		user = userController.loadData();

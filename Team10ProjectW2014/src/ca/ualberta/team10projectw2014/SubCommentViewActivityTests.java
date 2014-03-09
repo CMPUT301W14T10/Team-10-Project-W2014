@@ -43,7 +43,7 @@ public class SubCommentViewActivityTests extends
 
 	public void testShowTitle() throws Throwable {
 		// setup the head comment with some data
-		HeadModel headComment = new HeadModel();
+		CommentModel headComment = new CommentModel();
 		headComment.setTitle("Test Head Comment Title");
 		headComment.setAuthor("TestUsername");
 		headComment.setContent("Test Head Comment Content");
@@ -88,7 +88,7 @@ public class SubCommentViewActivityTests extends
 	public void testShowHeadComment() throws Throwable {
 		
 		// setup the head comment with some data
-		HeadModel headComment = new HeadModel();
+		CommentModel headComment = new CommentModel();
 		headComment.setTitle("Test Head Comment Title");
 		headComment.setAuthor("TestUsername");
 		headComment.setContent("Test Head Comment Content");
@@ -141,7 +141,7 @@ public class SubCommentViewActivityTests extends
 	public void testShowSubComments() throws Throwable {
 		
 		// setup the head comment with some data
-		HeadModel headComment = new HeadModel();
+		CommentModel headComment = new CommentModel();
 		headComment.setTitle("Test Head Comment Title");
 		headComment.setAuthor("TestUsername");
 		headComment.setContent("Test Head Comment Content");
