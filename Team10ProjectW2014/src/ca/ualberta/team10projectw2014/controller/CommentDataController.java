@@ -15,6 +15,10 @@ import ca.ualberta.team10projectw2014.CommentModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+/**
+ * This class handles the saving and loading for comment data.
+ * @author David Yee
+ */
 public class CommentDataController implements DataController<ArrayList<CommentModel>> {
 	private Context fileContext;
     private String FILE_NAME;

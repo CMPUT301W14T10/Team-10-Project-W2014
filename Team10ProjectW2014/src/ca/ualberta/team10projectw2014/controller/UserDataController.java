@@ -14,6 +14,10 @@ import ca.ualberta.team10projectw2014.UserModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+/**
+ * This class handles the saving and loading for user data.
+ * @author David Yee
+ */
 public class UserDataController implements DataController<UserModel> {
 	private Context fileContext;
     private String FILE_NAME;
