@@ -7,9 +7,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 
 public class LocationListenerController implements LocationListener {
-	
-	private double latitude;
-	private double longitude;
+
 	private Location currentBestLocation = null;
 
 	public LocationListenerController(Context context) {}
@@ -17,21 +15,11 @@ public class LocationListenerController implements LocationListener {
 	private void makeUseOfNewLocation(Location location){
 		if ( isBetterLocation(location, currentBestLocation) ) {
 	        currentBestLocation = location;
-	        latitude = location.getLatitude();
-	        longitude = location.getLongitude();
 	    }
 	}
 	
 	public Location getCurrentBestLocation(){
 		return currentBestLocation;
-	}
-	
-	public double getLatitude(){
-		return this.latitude;
-	}
-	
-	public double getLongitude(){
-		return this.longitude;
 	}
 	
 	@Override

@@ -215,7 +215,6 @@ public class CreateCommentActivity extends Activity{
 			
 			
 			//Destroy this activity so that we return to the previous one.
-			
 			goBack();
 		}
 	}

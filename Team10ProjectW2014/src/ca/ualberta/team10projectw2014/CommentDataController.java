@@ -5,19 +5,17 @@ import java.util.List;
 
 public class CommentDataController {
 
-	public ArrayList<HeadModel> loadFromFile() {
+	public ArrayList<CommentModel> loadFromFile() {
 		// TODO Auto-generated method stub
-		return new ArrayList<HeadModel>();
+		return new ArrayList<CommentModel>();
 	}
 
 	public void clearCommentList()
 	{
-
 		// TODO Auto-generated method stub
-		
 	}
 
-	public void saveInFile(ArrayList<HeadModel> commentList) {
+	public void saveInFile(ArrayList<CommentModel> commentList) {
 		// TODO Auto-generated method stub
 		
 	}
