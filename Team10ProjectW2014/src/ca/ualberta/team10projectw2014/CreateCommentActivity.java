@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
@@ -25,10 +26,10 @@ public class CreateCommentActivity extends Activity{
 	private EditText ueditText;
 	private EditText teditText;
 	private EditText ceditText;
-	private LocationListenerController locationListener = new LocationListenerController();
-	// Acquire a reference to the system Location Manager
-    private LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-    private Location bestKnownLoc;
+	private LocationListenerController locationListener = new LocationListenerController(this);
+	private LocationManager mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+	protected double longitude;
+	protected double latitude;
 	
 	@SuppressLint("NewApi")
 	@Override
@@ -42,12 +43,10 @@ public class CreateCommentActivity extends Activity{
 //        CommentModel receivedComment = (CommentModel) bundle.getSerializable("comment");
 //        fillContents(receivedUsername, receivedComment);
         
+        //TODO Check to see if GPS is enabled
         //TODO Start listening for location information
-        
-        
-        // Register the listener with the Location Manager to receive location updates
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
-	
+        startListeningLocation();
+
         ueditText = (EditText)findViewById(R.id.cc_username);
 		teditText = (EditText)findViewById(R.id.cc_title);
 		ceditText = (EditText)findViewById(R.id.cc_content);
@@ -58,6 +57,44 @@ public class CreateCommentActivity extends Activity{
 	protected void onResume(){
 		super.onResume();
 	}
+	
+	private void startListeningLocation(){
+		LocationListenerController locationListener = new LocationListenerController(this);  
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5 * 60 * 1000 , 10, locationListener);
+        //Location bestKnownLocation = getLastBestLocation();
+	}
+	
+	private void stopListeningLocation(){
+		Location location = locationListener.getCurrentBestLocation();
+		this.latitude = location.getLatitude();
+		this.longitude = location.getLongitude();
+		mLocationManager.removeUpdates(locationListener);
+	}
+
+	// Retrieved from http://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android on March 6 at 5:00
+	
+	/*private Location getLastBestLocation() {
+
+	    Location locationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+	    Location locationNet = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+	    long GPSLocationTime = 0;
+	    if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
+
+	    long NetLocationTime = 0;
+
+	    if (null != locationNet) {
+	        NetLocationTime = locationNet.getTime();
+	    }
+
+	    if ( 0 < GPSLocationTime - NetLocationTime ) {
+	        return locationGPS;
+	    }
+	    else{
+	        return locationNet;
+	    }
+
+	}*/
 
 	public void fillContents(String username, CommentModel parentModel){
 		setLocation();
@@ -171,7 +208,7 @@ public class CreateCommentActivity extends Activity{
 			}
 			
 			//TODO Stop listening for location information
-			locationManager.removeUpdates(locationListener);
+			stopListeningLocation();
 			
 			//Destroy this activity so that we return to the previous one.
 			
