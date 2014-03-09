@@ -54,34 +54,40 @@ public class SubCommentViewActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sub_comment_view);
 
-		Bundle bundle = getIntent().getExtras();
-		headCommentData = (CommentModel) bundle.getSerializable("HeadModel");
-		userData = (UserModel) bundle.getSerializable("UserModel");
 
-		
-		// Disable the Home Icon on the Actionbar
-		ActionBar actionbar = getActionBar();
-		actionbar.setDisplayShowHomeEnabled(false);
-
-		// Set the Title in the Actionbar to the title of the head comment
-		actionbar.setTitle(headCommentData.getTitle());
-
-		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
-
-		// Gets all the SubComments and all its subComments
-		AddCommentToList(headCommentData.getSubComments());
-
-		adapter = new SubCommentViewActivityAdapter(this,
-				R.layout.sub_comment_view_sub_comment_item, subCommentsList,
-				userData);
-
-		// Set the first item in the list to the header Comment
-		subListView.addHeaderView((View) SetHeader(headCommentData));
-
-		subListView.setAdapter(adapter);
 
 	}
-	
+	 @Override
+	 protected void onResume(){
+		 
+			Bundle bundle = getIntent().getExtras();
+			headCommentData = (CommentModel) bundle.getSerializable("HeadModel");
+			userData = (UserModel) bundle.getSerializable("UserModel");
+
+			
+			// Disable the Home Icon on the Actionbar
+			ActionBar actionbar = getActionBar();
+			actionbar.setDisplayShowHomeEnabled(false);
+
+			// Set the Title in the Actionbar to the title of the head comment
+			actionbar.setTitle(headCommentData.getTitle());
+
+			subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
+
+			// Gets all the SubComments and all its subComments
+			AddCommentToList(headCommentData.getSubComments());
+
+			adapter = new SubCommentViewActivityAdapter(this,
+					R.layout.sub_comment_view_sub_comment_item, subCommentsList,
+					userData);
+
+			// Set the first item in the list to the header Comment
+			subListView.addHeaderView((View) SetHeader(headCommentData));
+
+			subListView.setAdapter(adapter);
+		 
+	 }
+
 	/**
 	 * Inflate the menu.
 	 * 
