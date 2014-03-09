@@ -96,7 +96,7 @@
         android:textSize="12sp" />
 
     <Button
-        android:id="@+id/more_option"
+        android:id="@+id/head_more_option"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
