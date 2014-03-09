@@ -326,7 +326,7 @@ public class SubCommentViewActivity extends Activity {
 		
 		
 		//User will only have the option if the
-		if (userData.getAndroidID() == comment.getAuthorAndroidID()) {
+		if (userData.getAndroidID().equals(comment.getAuthorAndroidID())) {
 			moreDialog.setNeutralButton("Edit Comment",
 					new DialogInterface.OnClickListener() {
 
