@@ -48,16 +48,6 @@ public class CreateCommentActivity extends Activity{
         setContentView(R.layout.create_comment_activity);
         CDC = new CommentDataController(this, this.getString(R.string.file_name_string));
         
-//        //Receive information from the intent
-//        Bundle bundle = getIntent().getExtras();
-//        String receivedUsername = (String) bundle.getString("username", null);
-//        CommentModel receivedComment = (CommentModel) bundle.getSerializable("comment");
-//        fillContents(receivedUsername, receivedComment);
-        
-
-        
-        
-      
         ueditText = (EditText)findViewById(R.id.cc_username);
 		teditText = (EditText)findViewById(R.id.cc_title);
 		ceditText = (EditText)findViewById(R.id.cc_content);
@@ -69,6 +59,13 @@ public class CreateCommentActivity extends Activity{
 		super.onResume();
 		//TODO Check to see if GPS is enabled
         //TODO Start listening for location information
+		
+		//Receive information from the intent
+		Bundle bundle = getIntent().getExtras();
+		String receivedUsername = (String) bundle.getSerializable("username");
+		CommentModel receivedComment = (CommentModel) bundle.getSerializable("comment");
+		fillContents(receivedUsername, receivedComment);
+		
         startListeningLocation();
 	}
 	
@@ -259,9 +256,7 @@ public class CreateCommentActivity extends Activity{
 
 
 			ArrayList<CommentModel> tempList = CDC.loadFromFile();
-
 			tempList.add(model);
-			//TODO Save the new list
 			CDC.saveToFile(tempList);
 			
 			
