@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 
+import ca.ualberta.team10projectw2014.controller.CommentDataController;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -53,8 +55,6 @@ public class MainListViewActivity extends Activity{
 	
 	private UserModel user;
 	
-	private static final CommentDataController commentDataController = new CommentDataController();
-	
 	private static final NetworkConnectionController connectionController = new NetworkConnectionController();
 	
 	private static final UserDataController userController = new UserDataController();
@@ -62,6 +62,8 @@ public class MainListViewActivity extends Activity{
 	private static LayoutInflater layoutInflater;
 	
 	private static Location location = null;
+	
+	private CommentDataController commentDataController;
 	
 	//comparator used in sorting comments by date:
 	private static Comparator locCompare = new Comparator(){
@@ -98,6 +100,8 @@ public class MainListViewActivity extends Activity{
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_head_comment_view);
+		
+		CommentDataController commentDataController = new CommentDataController(this, this.getString(R.string.file_name_string));
 		
 		//Getting the head comment list view defined in the XML file:
 		commentView = (ListView) findViewById(R.id.HeadCommentList);
