@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,6 +41,8 @@ public class SubCommentViewActivityAdapter extends
 	private int layoutResourceId;
 	private ArrayList<SubCommentModel> subCommentList;
 	private SimpleDateFormat sdf;
+	
+
 	/**
 	 * Contains the all objects that are in the sub comment layout.
 	 */
@@ -50,6 +53,10 @@ public class SubCommentViewActivityAdapter extends
 		TextView textLocation;
 		TextView textTime;
 		ImageView imageView;
+		
+		Button replyButton;
+		Button favouriteButton;
+		Button moreButton;
 	}
 
 
@@ -66,6 +73,11 @@ public class SubCommentViewActivityAdapter extends
 	}
 	/**
 	 * Gets the view to be displayed by the listView.
+	 * 
+	 * Code Adapted from:
+	 * http://stackoverflow.com/questions/8121476
+	 * /how-to-setonclicklistener-on-the-button-inside-the-listview
+	 * 
 	 * @return view to be displayed. 
 	 */
 	@Override
@@ -91,8 +103,51 @@ public class SubCommentViewActivityAdapter extends
 			holder.textLocation = (TextView) view.findViewById(R.id.sub_comment_location_sub);
 			holder.textTime = (TextView) view.findViewById(R.id.sub_comment_time_sub);
 			holder.imageView = (ImageView) view.findViewById(R.id.sub_comment_image);
+			
+			
+			// Add buttons used in each list entry to the holder
+			holder.replyButton = (Button) view.findViewById(R.id.reply_option);
+			holder.favouriteButton = (Button) view.findViewById(R.id.favourite_option);
+			holder.moreButton = (Button) view.findViewById(R.id.more_option);
+			holder.replyButton.setTag(position);
+			holder.favouriteButton.setTag(position);
+			holder.moreButton.setTag(position);
+			
 			// Add the holder data to the view
-			view.setTag(holder);
+						view.setTag(holder);
+			
+			holder.replyButton.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			
+			holder.favouriteButton.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			
+			holder.moreButton.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					
+					
+				}
+			});
+			
+			
+			
+			
+			
 
 		} else {
 			// If View is not empty, set viewholder to this view via tag
