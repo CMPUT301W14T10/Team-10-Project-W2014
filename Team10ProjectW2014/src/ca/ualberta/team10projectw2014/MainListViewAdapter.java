@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Creates a custom adapter for displaying three textviews and an imageview for 
@@ -139,6 +140,7 @@ public class MainListViewAdapter extends BaseAdapter {
 
 			    Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
 			    holder.imageView.setImageBitmap(bitmap);
+			   
 		}
 		return convertView;
 	}

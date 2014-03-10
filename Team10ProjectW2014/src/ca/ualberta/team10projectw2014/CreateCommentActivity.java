@@ -1,7 +1,9 @@
 package ca.ualberta.team10projectw2014;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,6 +19,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -25,6 +28,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +43,7 @@ public class CreateCommentActivity extends Activity{
 	private EditText ueditText;
 	private EditText teditText;
 	private EditText ceditText;
+	private ImageView imageView;
 	protected double longitude;
 	protected double latitude;
  	protected Location bestKnownLoc = null;
@@ -49,6 +54,7 @@ public class CreateCommentActivity extends Activity{
  	protected Boolean netEnabled;
  	private CommentDataController CDC;
  	private String photoPath = null;
+ 	private Uri imageUri = null;
 	
 	@SuppressLint("NewApi")
 	@Override
@@ -60,6 +66,7 @@ public class CreateCommentActivity extends Activity{
         ueditText = (EditText)findViewById(R.id.cc_username);
 		teditText = (EditText)findViewById(R.id.cc_title);
 		ceditText = (EditText)findViewById(R.id.cc_content);
+		imageView = (ImageView)findViewById(R.id.cc_image_view);
 	}
 	
 	
@@ -73,6 +80,8 @@ public class CreateCommentActivity extends Activity{
 		CommentModel receivedComment = (CommentModel) bundle.getSerializable("comment");
 		fillContents(receivedUsername, receivedComment);
 		
+		//Set imageView to either "No Image" or the picture returned from camera
+		//setPic();
 		
 		//TODO Check to see if GPS is enabled
         //TODO Start listening for location information
@@ -207,7 +216,7 @@ public class CreateCommentActivity extends Activity{
 		    // Ensure that there's a camera activity to handle the intent
 		    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 		        // Create the File where the photo should go
-		        File photoFile = null;
+		    	File photoFile = null;
 		        try {
 		            photoFile = createImageFile();
 		        } catch (IOException ex) {
@@ -216,8 +225,9 @@ public class CreateCommentActivity extends Activity{
 		        }
 		        // Continue only if the File was successfully created
 		        if (photoFile != null) {
+		        	imageUri = Uri.fromFile(photoFile);
 		            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-		                    Uri.fromFile(photoFile));
+		                    imageUri);
 		            startActivityForResult(takePictureIntent, 1);
 		        }
 		    }
@@ -229,24 +239,47 @@ public class CreateCommentActivity extends Activity{
 		}
 	}
 	
-	/*//Takes thumbnail from the camera activity and puts it into postPhoto.
+	//Takes thumbnail from the camera activity and puts it into postPhoto.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1 && resultCode == RESULT_OK) {
+       /* if (requestCode == 1 && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             this.postPhoto = imageBitmap;
-        }
-    }*/
+            imageView.setImageBitmap(imageBitmap);
+    	
+
+        }*/ // Taken from http://www.androidhive.info/2013/09/android-working-with-camera-api/
+    	if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                // successfully captured the image
+                // display it in image view
+                setPic();
+            } else if (resultCode == RESULT_CANCELED) {
+                // user cancelled Image capture
+                Toast.makeText(getApplicationContext(),
+                        "User cancelled image capture", Toast.LENGTH_SHORT)
+                        .show();
+            } else {
+                // failed to capture image
+                Toast.makeText(getApplicationContext(),
+                        "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }	
+    }
     
     //Sends the image taken from the camera to file.
     
     private File createImageFile() throws IOException {
+ 
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES);
+        if(!storageDir.exists())
+            storageDir.mkdirs();
         File image = File.createTempFile(
             imageFileName,  /* prefix */
             ".jpg",         /* suffix */
@@ -254,9 +287,55 @@ public class CreateCommentActivity extends Activity{
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-        photoPath = "file:" + image.getAbsolutePath();
+        photoPath = "file:" + image.getAbsolutePath(); 
+
         return image;
     }
+    
+    private void setPic() {
+            try {
+     
+               
+                BitmapFactory.Options options = new BitmapFactory.Options();
+
+                options.inSampleSize = 8;
+     
+                final Bitmap bitmap = BitmapFactory.decodeFile(imageUri.getPath(),
+                        options);
+     
+                imageView.setImageBitmap(bitmap);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        }
+    	/*
+    	if (photoPath == null){
+    		//Placeholder
+    		photoPath = null;
+    	}
+    	else{
+	        // Get the dimensions of the View
+	        int targetW = imageView.getWidth();
+	        int targetH = imageView.getHeight();
+	
+	        // Get the dimensions of the bitmap
+	        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+	        bmOptions.inJustDecodeBounds = true;
+	        BitmapFactory.decodeFile(photoPath, bmOptions);
+	        int photoW = bmOptions.outWidth;
+	        int photoH = bmOptions.outHeight;
+	
+	        // Determine how much to scale down the image
+	        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+	
+	        // Decode the image file into a Bitmap sized to fill the View
+	        bmOptions.inJustDecodeBounds = false;
+	        bmOptions.inSampleSize = scaleFactor;
+	        bmOptions.inPurgeable = true;
+	
+	        Bitmap bitmap = BitmapFactory.decodeFile(photoPath, bmOptions);
+	        imageView.setImageBitmap(bitmap);
+    	}*/
 		
 	
 	//A currently redundant method which creates a location with a title (not used yet)
