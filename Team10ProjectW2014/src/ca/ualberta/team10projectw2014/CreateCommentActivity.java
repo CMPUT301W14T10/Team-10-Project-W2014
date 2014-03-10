@@ -217,7 +217,7 @@ public class CreateCommentActivity extends Activity{
 			if(this.parentModel != null){
 				
 				if(checkStringIsAllWhiteSpace(this.postUsername)){
-					this.postUsername = "Anonymous";
+					raiseUsernameIncompleteError();
 				}
 				// This should be edited so that the model handles all the getting and setting
 				model = new SubCommentModel(this.parentModel);
@@ -240,7 +240,7 @@ public class CreateCommentActivity extends Activity{
 			}
 			else{
 				if(checkStringIsAllWhiteSpace(this.postUsername)){
-					this.postUsername = "Anonymous";
+					raiseUsernameIncompleteError();
 				}
 				
 				// This should be edited so that the model handles all the getting and setting
@@ -292,11 +292,12 @@ public class CreateCommentActivity extends Activity{
 	}
 	
 	private void raiseContentsIncompleteError(){
-		Toast.makeText(getBaseContext(), "Please Add Contents to Your Post", Toast.LENGTH_LONG).show();
+		Toast.makeText(getBaseContext(), "Please Add Some Content", Toast.LENGTH_LONG).show();
 	}
 	
 	private void raiseUsernameIncompleteError(){
-		Toast.makeText(getBaseContext(), "Please Add a Username", Toast.LENGTH_LONG).show();
+		//TODO Make it so that the user is prompted to post as anonymous
+	    postUsername = "Anonymous";
 	}
 	
 	private void raiseTitleIncompleteError(){
