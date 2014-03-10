@@ -104,6 +104,7 @@ public class MainListViewAdapter extends BaseAdapter {
 		// Grabs strings to be displayed for each head comment in the list
 		holder.textTitle.setText(headCommentList.get(position).getTitle());
 		holder.textUsername.setText(headCommentList.get(position).getAuthor());
+		// TODO implement location when its working and doesn't crash everything
 		//holder.textLocation.setText(headCommentList.get(position).getLocation().
 				//getName());
 		// String for time retrieved using private method
@@ -139,7 +140,7 @@ public class MainListViewAdapter extends BaseAdapter {
 	 * @return string of the formatted date of the timestamp
 	 */
 	private String timeToString (Calendar calendar) {
-		sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:00 aa");
+		sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:mm aa");
 		timeString = sdf.format(calendar.getTime());
 		return timeString;
 	}
