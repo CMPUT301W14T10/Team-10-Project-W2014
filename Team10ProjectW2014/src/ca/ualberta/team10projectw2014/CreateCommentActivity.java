@@ -229,7 +229,7 @@ public class CreateCommentActivity extends Activity{
 		}
 	}
 	
-	//Takes thumbnail from the camera activity and puts it into postPhoto.
+	/*//Takes thumbnail from the camera activity and puts it into postPhoto.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1 && resultCode == RESULT_OK) {
@@ -237,7 +237,7 @@ public class CreateCommentActivity extends Activity{
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             this.postPhoto = imageBitmap;
         }
-    }
+    }*/
     
     //Sends the image taken from the camera to file.
     
