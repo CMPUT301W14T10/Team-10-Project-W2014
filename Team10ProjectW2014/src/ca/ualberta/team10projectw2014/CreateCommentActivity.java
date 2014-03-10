@@ -146,16 +146,17 @@ public class CreateCommentActivity extends Activity{
 
 	public void fillContents(String username, CommentModel parentModel){
 		setLocation();
-		if(username != null){
+		if(!checkStringIsAllWhiteSpace(username)){
 			this.postUsername = username;
 			setUsernameView(username);
 		}
-		else{
-			if (this.postUsername == null){
-				this.postUsername = null;
+		/*else{
+			if(checkStringIsAllWhiteSpace(username)){
+				this.postUsername = "Anonymous";
+				setUsernameView(this.postUsername);
 			}
 			//setUsernameView("Please set a username");
-		}
+		}*/
 		if(parentModel != null){
 			this.parentModel = parentModel;
 			this.postTitle = "RE:" + parentModel.getTitle();
@@ -168,6 +169,12 @@ public class CreateCommentActivity extends Activity{
 			}
 			//setTitleView("Create a Name for Your Post");
 		}
+	}
+	
+	public boolean checkStringIsAllWhiteSpace(String string){
+		boolean isWhitespace = string.matches("^\\s*$");
+		boolean longerThan0 = (string.trim().length() > 0);
+		return isWhitespace && !longerThan0;
 	}
 	
 	private void setUsernameView(String name){
@@ -199,18 +206,19 @@ public class CreateCommentActivity extends Activity{
 		this.postUsername = ueditText.getText().toString();
 		this.postTitle = teditText.getText().toString();
 		
-		if(this.postContents == null){
+		if(checkStringIsAllWhiteSpace(this.postContents)){
 			raiseContentsIncompleteError();
 		}
-		if(this.postUsername == null){
-			raiseUsernameIncompleteError();
-		}
-		if(this.postTitle == null){
+		else if(checkStringIsAllWhiteSpace(this.postTitle)){
 			raiseTitleIncompleteError();
 		}
-		if(this.postTitle != null && this.postUsername != null && this.postContents != null){
+		else{
 			
 			if(this.parentModel != null){
+				
+				if(checkStringIsAllWhiteSpace(this.postUsername)){
+					this.postUsername = "Anonymous";
+				}
 				// This should be edited so that the model handles all the getting and setting
 				model = new SubCommentModel(this.parentModel);
 				model.setAuthor(this.postUsername);
@@ -231,6 +239,10 @@ public class CreateCommentActivity extends Activity{
 				this.parentModel.addSubComment((SubCommentModel) model);
 			}
 			else{
+				if(checkStringIsAllWhiteSpace(this.postUsername)){
+					this.postUsername = "Anonymous";
+				}
+				
 				// This should be edited so that the model handles all the getting and setting
 				model = new CommentModel();
 				model.setAuthor(this.postUsername);
