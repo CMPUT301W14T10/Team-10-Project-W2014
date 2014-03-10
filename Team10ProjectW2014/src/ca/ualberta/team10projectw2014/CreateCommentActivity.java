@@ -293,6 +293,7 @@ public class CreateCommentActivity extends Activity{
 				model.setLocation(this.postLocation);
 				model.setPhoto(this.postPhoto);
 				model.setTitle(this.postTitle);
+				model.setPhotoPath(photoPath);
 				
 				// Sets the current date and time for the comment
 				// Referenced http://stackoverflow.com/questions/16686298/string-timestamp-to-calendar-in-java on March 2
@@ -317,6 +318,7 @@ public class CreateCommentActivity extends Activity{
 				model.setLocation(this.postLocation);
 				model.setPhoto(this.postPhoto);
 				model.setTitle(this.postTitle);
+				model.setPhotoPath(photoPath);
 				
 				long timestamp = System.currentTimeMillis();
 				Calendar calendar = Calendar.getInstance();

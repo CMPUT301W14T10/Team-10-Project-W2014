@@ -40,7 +40,16 @@ public class CommentModel implements Serializable {
 	private int numFavourites;
 	private int authorAndroidID;
 	private ArrayList<SubCommentModel> subComments = new ArrayList<SubCommentModel>();
+	private String photoPath;
 	
+	public String getPhotoPath() {
+		return photoPath;
+	}
+
+	public void setPhotoPath(String photoPath) {
+		this.photoPath = photoPath;
+	}
+
 	public void addSubComment(SubCommentModel subComment){
 		subComments.add(subComment);
 	}
