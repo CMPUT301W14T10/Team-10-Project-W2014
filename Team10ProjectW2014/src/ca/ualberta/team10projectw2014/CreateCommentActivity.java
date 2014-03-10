@@ -11,10 +11,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -188,18 +190,40 @@ public class CreateCommentActivity extends Activity{
 	public void chooseLocation(View v){
 		Toast.makeText(getBaseContext(), "You Want to Choose a Location, Eh?", Toast.LENGTH_LONG).show();
 	}
-	
+	//Starts camera activity
 	public void choosePhoto(View v){
-		Toast.makeText(getBaseContext(), "I Don't Remember Asking You To Take a Picture", Toast.LENGTH_LONG).show();
+		PackageManager packageManager = this.getPackageManager();
+		if (packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+		    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+		        startActivityForResult(takePictureIntent, 1);
+		    }
+	    }
+		else{
+			Toast.makeText(getBaseContext(), "ISorry, you don't have a camera!", Toast.LENGTH_LONG).show();
+
+		}
 	}
 	
+	//Takes thumbnail from the camera activity and puts it into postPhoto.
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            this.postPhoto = imageBitmap;
+        }
+    }
+		
+	
+	//A currently redundant method which creates a location with a title (not used yet)
 	private void setLocation(){
 		this.postLocation = new LocationModel("TITLE", bestKnownLoc);
 		//TODO Set location variable to...?
 		// Location should never be null
 	}
 	
-	//Called when the user presses "Post" button
+	//Called when the user presses "Post" button to create and store a new comment
 	public void attemptCommentCreation(View v){
 		
 		this.postContents = ceditText.getText().toString();
@@ -276,6 +300,7 @@ public class CreateCommentActivity extends Activity{
 			goBack();
 		}
 	}
+	
 	
 	private void stopListeningLocation(){
 		bestKnownLoc = getLastBestLocation();
