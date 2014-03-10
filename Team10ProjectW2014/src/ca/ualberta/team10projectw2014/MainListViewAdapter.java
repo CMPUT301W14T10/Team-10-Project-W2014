@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,14 +106,39 @@ public class MainListViewAdapter extends BaseAdapter {
 		// Grabs strings to be displayed for each head comment in the list
 		holder.textTitle.setText(headCommentList.get(position).getTitle());
 		holder.textUsername.setText(headCommentList.get(position).getAuthor());
-		holder.textLocation.setText(headCommentList.get(position).getLocation().
-				getName());
+		
+		// TODO implement location when its working and doesn't crash everything
+		//holder.textLocation.setText(headCommentList.get(position).getLocation().
+				//getName());
+		
 		// String for time retrieved using private method
 		holder.textTime.setText(this.timeToString(headCommentList.get(position).
 				getTimestamp()));
+		
 		// Sets the image attached to the comment
-		if(headCommentList.get(position).getPhoto() != null){
-			holder.imageView.setImageBitmap(headCommentList.get(position).getPhoto());
+		if(headCommentList.get(position).getPhotoPath() != null){
+				String imagePath = headCommentList.get(position).getPhotoPath();
+			    // Get the dimensions of the View
+			    int targetW = holder.imageView.getWidth();
+			    int targetH = holder.imageView.getHeight();
+
+			    // Get the dimensions of the bitmap
+			    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+			    bmOptions.inJustDecodeBounds = true;
+			    BitmapFactory.decodeFile(imagePath, bmOptions);
+			    int photoW = bmOptions.outWidth;
+			    int photoH = bmOptions.outHeight;
+
+			    // Determine how much to scale down the image
+			    int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+			    // Decode the image file into a Bitmap sized to fill the View
+			    bmOptions.inJustDecodeBounds = false;
+			    bmOptions.inSampleSize = scaleFactor;
+			    bmOptions.inPurgeable = true;
+
+			    Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
+			    holder.imageView.setImageBitmap(bitmap);
 		}
 		return convertView;
 	}
@@ -139,7 +166,7 @@ public class MainListViewAdapter extends BaseAdapter {
 	 * @return string of the formatted date of the timestamp
 	 */
 	private String timeToString (Calendar calendar) {
-		sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:00 aa");
+		sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:mm aa");
 		timeString = sdf.format(calendar.getTime());
 		return timeString;
 	}

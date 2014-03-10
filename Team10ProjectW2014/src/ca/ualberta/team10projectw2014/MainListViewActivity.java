@@ -20,6 +20,7 @@ import java.util.Calendar;
 import java.util.Comparator;
 
 import ca.ualberta.team10projectw2014.controller.CommentDataController;
+import ca.ualberta.team10projectw2014.controller.UserDataController;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -46,23 +47,14 @@ import android.widget.RadioGroup;
  * @author Cole Fudge
  */
 public class MainListViewActivity extends Activity{
-
 	private ListView commentView;
-	
 	private MainListViewAdapter adapter;
-	
 	private ArrayList<CommentModel> commentList;
-	
 	private UserModel user;
-	
 	private static final NetworkConnectionController connectionController = new NetworkConnectionController();
-	
-	private static final UserDataController userController = new UserDataController();
-	
+	private UserDataController userDataController;
 	private static LayoutInflater layoutInflater;
-	
 	private static Location location = null;
-	
 	private CommentDataController commentDataController;
 	
 	//comparator used in sorting comments by date:
@@ -97,23 +89,12 @@ public class MainListViewActivity extends Activity{
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
-
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_head_comment_view);
-		
-		CommentDataController commentDataController = new CommentDataController(this, this.getString(R.string.file_name_string));
-		
-		//Getting the head comment list view defined in the XML file:
-		commentView = (ListView) findViewById(R.id.HeadCommentList);
-		
-		//Use the comment controller to load the head comments from file:
-		commentList = (ArrayList<CommentModel>) commentDataController.loadFromFile();
-		
-		//Call the constructor to create a new custom Array Adapter of type CommentModel: 
-		adapter = new MainListViewAdapter(this, commentList);
-		
-		user = userController.loadData();
 		layoutInflater = LayoutInflater.from(this);
+		
+		userDataController = new UserDataController(this, this.getString(R.string.user_sav));
+		commentDataController = new CommentDataController(this, this.getString(R.string.file_name_string));
 	}
 
 	
@@ -127,32 +108,6 @@ public class MainListViewActivity extends Activity{
 		return true;
 	}
 	
-
-	/**
-	 * I do almost the same thing here as in onCreate, but refresh the view
-	 * if there has already been data loaded:
-	 */
-	protected void onStart(){
-		
-		super.onStart(); 
-		setContentView(R.layout.activity_head_comment_view);
-		commentView = (ListView) findViewById(R.id.HeadCommentList);
-		
-		//If adapter exists, clear it and reload comments(i.e. refresh)
-		if(adapter != null){
-			commentList = (ArrayList<CommentModel>) commentDataController.loadFromFile();
-			adapter.notifyDataSetChanged();
-		}
-		//Use the comment controller to load the head comments from file:
-		commentList = (ArrayList<CommentModel>) commentDataController.loadFromFile();
-		
-		//Call the constructor to create a new custom Array Adapter of type CommentModel: 
-		adapter = new MainListViewAdapter(this, commentList);
-
-		user = userController.loadData();
-
-	}
-
 	/**
 	 * I do almost the same thing here as in onCreate, but refresh the view
 	 * if there has already been data loaded:
@@ -162,17 +117,12 @@ public class MainListViewActivity extends Activity{
 		setContentView(R.layout.activity_head_comment_view);
 		commentView = (ListView) findViewById(R.id.HeadCommentList);
 		
-		if(adapter != null){
-			commentList = (ArrayList<CommentModel>) commentDataController.loadFromFile();
-			adapter.notifyDataSetChanged();
-		}
-		//Use the comment controller to load the head comments from file:
+		user = userDataController.loadFromFile();
 		commentList = commentDataController.loadFromFile();
-		
-		//Call the constructor to create a new custom Array Adapter of type HeadModel: 
 		adapter = new MainListViewAdapter(this, commentList);
 		
-		user = userController.loadData();
+		commentView.setAdapter(adapter);
+		adapter.notifyDataSetChanged();
 		
 		commentView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 			@Override
@@ -235,7 +185,7 @@ public class MainListViewActivity extends Activity{
 				String usernameString = usernameEditable.toString();
 				
 				user.setUsername(usernameString);
-				userController.saveInFile();
+				userDataController.saveToFile(user);
 			}
 		});
 
@@ -292,7 +242,7 @@ public class MainListViewActivity extends Activity{
 			public void onClick(DialogInterface dialog, int whichButton) {
 			
 				
-				userController.saveInFile();
+				userDataController.saveToFile(user);
 			}
 		});
 

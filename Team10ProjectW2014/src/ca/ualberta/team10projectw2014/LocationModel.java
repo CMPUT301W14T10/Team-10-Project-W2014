@@ -16,6 +16,7 @@
    */
 
 package ca.ualberta.team10projectw2014;
+import java.io.Serializable;
 import java.lang.Math;
 
 import android.location.Location;
@@ -27,7 +28,8 @@ import android.location.Location;
  * @author Bradley Poulette
  * */
 
-public class LocationModel {
+public class LocationModel implements Serializable {
+	private static final long serialVersionUID = 64843154;
 	private String name;
 	private double latitude;
 	private double longitude;

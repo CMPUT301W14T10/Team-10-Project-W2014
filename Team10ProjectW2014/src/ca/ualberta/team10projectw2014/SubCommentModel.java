@@ -16,15 +16,16 @@
 
 package ca.ualberta.team10projectw2014;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * This class acts as the model for the sub comments.
  * @author Costa Zervos
  */
-public class SubCommentModel extends CommentModel{
-	private ArrayList<SubCommentModel> subComments = new ArrayList<SubCommentModel>();
+public class SubCommentModel extends CommentModel implements Serializable{
 	private CommentModel respondedTo;
+	private static final long serialVersionUID = 8643154;
 
 	/**
 	 * Constructor method that sets the comment this sub comment is responding to.
@@ -33,17 +34,6 @@ public class SubCommentModel extends CommentModel{
 	public SubCommentModel(CommentModel parentComment) {
 		this.respondedTo = parentComment;
 	}
-
-	
-	public ArrayList<SubCommentModel> getSubComments() {
-		return subComments;
-	}
-
-	
-	public void setSubComments(ArrayList<SubCommentModel> subComments) {
-		this.subComments = subComments;
-	}
-
 	
 	public CommentModel getRespondedTo() {
 		return respondedTo;

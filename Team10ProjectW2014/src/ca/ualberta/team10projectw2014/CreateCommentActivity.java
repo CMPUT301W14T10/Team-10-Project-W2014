@@ -1,7 +1,11 @@
 package ca.ualberta.team10projectw2014;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import ca.ualberta.team10projectw2014.controller.CommentDataController;
 
@@ -11,10 +15,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -40,6 +48,7 @@ public class CreateCommentActivity extends Activity{
  	protected Boolean gpsEnabled;
  	protected Boolean netEnabled;
  	private CommentDataController CDC;
+ 	private String photoPath = null;
 	
 	@SuppressLint("NewApi")
 	@Override
@@ -48,16 +57,6 @@ public class CreateCommentActivity extends Activity{
         setContentView(R.layout.create_comment_activity);
         CDC = new CommentDataController(this, this.getString(R.string.file_name_string));
         
-//        //Receive information from the intent
-//        Bundle bundle = getIntent().getExtras();
-//        String receivedUsername = (String) bundle.getString("username", null);
-//        CommentModel receivedComment = (CommentModel) bundle.getSerializable("comment");
-//        fillContents(receivedUsername, receivedComment);
-        
-
-        
-        
-      
         ueditText = (EditText)findViewById(R.id.cc_username);
 		teditText = (EditText)findViewById(R.id.cc_title);
 		ceditText = (EditText)findViewById(R.id.cc_content);
@@ -67,12 +66,20 @@ public class CreateCommentActivity extends Activity{
 	@Override 
 	protected void onResume(){
 		super.onResume();
+		
+		//Receive information from the intent
+		Bundle bundle = getIntent().getExtras();
+		String receivedUsername = (String) bundle.getSerializable("username");
+		CommentModel receivedComment = (CommentModel) bundle.getSerializable("comment");
+		fillContents(receivedUsername, receivedComment);
+		
+		
 		//TODO Check to see if GPS is enabled
         //TODO Start listening for location information
-        startListeningLocation();
+        //startListeningLocation();
 	}
 	
-	// The following class is a direct copy from http://stackoverflow.com/questions/843675/how-do-i-find-out-if-the-gps-of-an-android-device-is-enabled received on March 9 at 2:00PM
+	// The following method is a direct copy from http://stackoverflow.com/questions/843675/how-do-i-find-out-if-the-gps-of-an-android-device-is-enabled received on March 9 at 2:00PM
 	protected void noGPSError(){
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
@@ -148,16 +155,17 @@ public class CreateCommentActivity extends Activity{
 
 	public void fillContents(String username, CommentModel parentModel){
 		setLocation();
-		if(username != null){
+		if(!checkStringIsAllWhiteSpace(username)){
 			this.postUsername = username;
 			setUsernameView(username);
 		}
-		else{
-			if (this.postUsername == null){
-				this.postUsername = null;
+		/*else{
+			if(checkStringIsAllWhiteSpace(username)){
+				this.postUsername = "Anonymous";
+				setUsernameView(this.postUsername);
 			}
 			//setUsernameView("Please set a username");
-		}
+		}*/
 		if(parentModel != null){
 			this.parentModel = parentModel;
 			this.postTitle = "RE:" + parentModel.getTitle();
@@ -172,6 +180,12 @@ public class CreateCommentActivity extends Activity{
 		}
 	}
 	
+	public boolean checkStringIsAllWhiteSpace(String string){
+		boolean isWhitespace = string.matches("^\\s*$");
+		boolean longerThan0 = (string.trim().length() > 0);
+		return isWhitespace && !longerThan0;
+	}
+	
 	private void setUsernameView(String name){
 		ueditText.setText(name, TextView.BufferType.EDITABLE);
 	}
@@ -184,35 +198,94 @@ public class CreateCommentActivity extends Activity{
 		Toast.makeText(getBaseContext(), "You Want to Choose a Location, Eh?", Toast.LENGTH_LONG).show();
 	}
 	
+	//Starts camera activity
 	public void choosePhoto(View v){
-		Toast.makeText(getBaseContext(), "I Don't Remember Asking You To Take a Picture", Toast.LENGTH_LONG).show();
+		PackageManager packageManager = this.getPackageManager();
+		if (packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+			
+			Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		    // Ensure that there's a camera activity to handle the intent
+		    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+		        // Create the File where the photo should go
+		        File photoFile = null;
+		        try {
+		            photoFile = createImageFile();
+		        } catch (IOException ex) {
+		        	Toast.makeText(getBaseContext(), "Could not write to file", Toast.LENGTH_LONG).show();
+
+		        }
+		        // Continue only if the File was successfully created
+		        if (photoFile != null) {
+		            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+		                    Uri.fromFile(photoFile));
+		            startActivityForResult(takePictureIntent, 1);
+		        }
+		    }
+
+	    }
+		else{
+			Toast.makeText(getBaseContext(), "Sorry, you don't have a camera!", Toast.LENGTH_LONG).show();
+
+		}
 	}
 	
+	/*//Takes thumbnail from the camera activity and puts it into postPhoto.
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            this.postPhoto = imageBitmap;
+        }
+    }*/
+    
+    //Sends the image taken from the camera to file.
+    
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+            imageFileName,  /* prefix */
+            ".jpg",         /* suffix */
+            storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        photoPath = "file:" + image.getAbsolutePath();
+        return image;
+    }
+		
+	
+	//A currently redundant method which creates a location with a title (not used yet)
 	private void setLocation(){
 		this.postLocation = new LocationModel("TITLE", bestKnownLoc);
 		//TODO Set location variable to...?
 		// Location should never be null
 	}
 	
-	//Called when the user presses "Post" button
+	//Called when the user presses "Post" button to create and store a new comment
 	public void attemptCommentCreation(View v){
 		
 		this.postContents = ceditText.getText().toString();
 		this.postUsername = ueditText.getText().toString();
 		this.postTitle = teditText.getText().toString();
 		
-		if(this.postContents == null){
+		if(checkStringIsAllWhiteSpace(this.postContents)){
 			raiseContentsIncompleteError();
 		}
-		if(this.postUsername == null){
-			raiseUsernameIncompleteError();
-		}
-		if(this.postTitle == null){
+		else if(checkStringIsAllWhiteSpace(this.postTitle)){
 			raiseTitleIncompleteError();
 		}
-		if(this.postTitle != null && this.postUsername != null && this.postContents != null){
+		else{
 			
 			if(this.parentModel != null){
+				
+				if(checkStringIsAllWhiteSpace(this.postUsername)){
+					raiseUsernameIncompleteError();
+				}
 				// This should be edited so that the model handles all the getting and setting
 				model = new SubCommentModel(this.parentModel);
 				model.setAuthor(this.postUsername);
@@ -220,6 +293,7 @@ public class CreateCommentActivity extends Activity{
 				model.setLocation(this.postLocation);
 				model.setPhoto(this.postPhoto);
 				model.setTitle(this.postTitle);
+				model.setPhotoPath(photoPath);
 				
 				// Sets the current date and time for the comment
 				// Referenced http://stackoverflow.com/questions/16686298/string-timestamp-to-calendar-in-java on March 2
@@ -233,6 +307,10 @@ public class CreateCommentActivity extends Activity{
 				this.parentModel.addSubComment((SubCommentModel) model);
 			}
 			else{
+				if(checkStringIsAllWhiteSpace(this.postUsername)){
+					raiseUsernameIncompleteError();
+				}
+				
 				// This should be edited so that the model handles all the getting and setting
 				model = new CommentModel();
 				model.setAuthor(this.postUsername);
@@ -240,6 +318,7 @@ public class CreateCommentActivity extends Activity{
 				model.setLocation(this.postLocation);
 				model.setPhoto(this.postPhoto);
 				model.setTitle(this.postTitle);
+				model.setPhotoPath(photoPath);
 				
 				long timestamp = System.currentTimeMillis();
 				Calendar calendar = Calendar.getInstance();
@@ -259,16 +338,14 @@ public class CreateCommentActivity extends Activity{
 
 
 			ArrayList<CommentModel> tempList = CDC.loadFromFile();
-
 			tempList.add(model);
-			//TODO Save the new list
 			CDC.saveToFile(tempList);
-			
 			
 			//Destroy this activity so that we return to the previous one.
 			goBack();
 		}
 	}
+	
 	
 	private void stopListeningLocation(){
 		bestKnownLoc = getLastBestLocation();
@@ -285,11 +362,12 @@ public class CreateCommentActivity extends Activity{
 	}
 	
 	private void raiseContentsIncompleteError(){
-		Toast.makeText(getBaseContext(), "Please Add Contents to Your Post", Toast.LENGTH_LONG).show();
+		Toast.makeText(getBaseContext(), "Please Add Some Content", Toast.LENGTH_LONG).show();
 	}
 	
 	private void raiseUsernameIncompleteError(){
-		Toast.makeText(getBaseContext(), "Please Add a Username", Toast.LENGTH_LONG).show();
+		//TODO Make it so that the user is prompted to post as anonymous
+	    postUsername = "Anonymous";
 	}
 	
 	private void raiseTitleIncompleteError(){
