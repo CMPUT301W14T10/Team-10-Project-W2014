@@ -1,7 +1,11 @@
 package ca.ualberta.team10projectw2014;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import ca.ualberta.team10projectw2014.controller.CommentDataController;
 
@@ -15,7 +19,9 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
@@ -42,6 +48,7 @@ public class CreateCommentActivity extends Activity{
  	protected Boolean gpsEnabled;
  	protected Boolean netEnabled;
  	private CommentDataController CDC;
+ 	private String photoPath;
 	
 	@SuppressLint("NewApi")
 	@Override
@@ -190,17 +197,34 @@ public class CreateCommentActivity extends Activity{
 	public void chooseLocation(View v){
 		Toast.makeText(getBaseContext(), "You Want to Choose a Location, Eh?", Toast.LENGTH_LONG).show();
 	}
+	
 	//Starts camera activity
 	public void choosePhoto(View v){
 		PackageManager packageManager = this.getPackageManager();
 		if (packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA)){
-		    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			
+			Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		    // Ensure that there's a camera activity to handle the intent
 		    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-		        startActivityForResult(takePictureIntent, 1);
+		        // Create the File where the photo should go
+		        File photoFile = null;
+		        try {
+		            photoFile = createImageFile();
+		        } catch (IOException ex) {
+		        	Toast.makeText(getBaseContext(), "Could not write to file", Toast.LENGTH_LONG).show();
+
+		        }
+		        // Continue only if the File was successfully created
+		        if (photoFile != null) {
+		            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+		                    Uri.fromFile(photoFile));
+		            startActivityForResult(takePictureIntent, 1);
+		        }
 		    }
+
 	    }
 		else{
-			Toast.makeText(getBaseContext(), "ISorry, you don't have a camera!", Toast.LENGTH_LONG).show();
+			Toast.makeText(getBaseContext(), "Sorry, you don't have a camera!", Toast.LENGTH_LONG).show();
 
 		}
 	}
@@ -213,6 +237,25 @@ public class CreateCommentActivity extends Activity{
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             this.postPhoto = imageBitmap;
         }
+    }
+    
+    //Sends the image taken from the camera to file.
+    
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+            imageFileName,  /* prefix */
+            ".jpg",         /* suffix */
+            storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        photoPath = "file:" + image.getAbsolutePath();
+        return image;
     }
 		
 	
