@@ -48,7 +48,7 @@ public class CreateCommentActivity extends Activity{
  	protected Boolean gpsEnabled;
  	protected Boolean netEnabled;
  	private CommentDataController CDC;
- 	private String photoPath;
+ 	private String photoPath = null;
 	
 	@SuppressLint("NewApi")
 	@Override
