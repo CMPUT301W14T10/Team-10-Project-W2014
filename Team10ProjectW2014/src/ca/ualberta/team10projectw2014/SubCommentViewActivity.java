@@ -63,8 +63,8 @@ public class SubCommentViewActivity extends Activity {
 		 * Get data being passed to this activity
 		 */
 		Bundle bundle = getIntent().getExtras();
-		headCommentData = (CommentModel) bundle.getSerializable("HeadModel");
-		userData = (UserModel) bundle.getSerializable("UserModel");
+		headCommentData = (CommentModel) bundle.getSerializable("comment");
+		//userData = (UserModel) bundle.getSerializable("UserModel");
 
 		// Disable the Home Icon on the Actionbar
 		ActionBar actionbar = getActionBar();
