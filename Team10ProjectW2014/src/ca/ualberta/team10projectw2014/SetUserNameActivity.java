@@ -1,29 +1,48 @@
 package ca.ualberta.team10projectw2014;
 
-import android.os.Bundle;
 import android.app.ActionBar;
 import android.app.Activity;
-import android.view.Menu;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class SetUserNameActivity extends Activity {
+	
+	private UserModel userData;
+	private EditText userNameField;
+	private Button setButton;
+	private Button skipButton;
+	private SetUserNameActivity setUsernameActivity = this;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_set_user_name);
 		
+		//Disable Actionbar Icon and set title
 		ActionBar actionbar = getActionBar();
 		actionbar.setDisplayShowHomeEnabled(false);
+		actionbar.setTitle("Set Username");		
 		
-		// Set the Title in the Actionbar to the title of the head comment
-		actionbar.setTitle("Set Username");
-	}
+		userNameField = (EditText)findViewById(R.id.set_username_field);
+		setButton = (Button)findViewById(R.id.button_set);
+		skipButton = (Button)findViewById(R.id.button_skip);
+		
+		setButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if(userNameField.getText().length() == 0){
+					Toast.makeText(setUsernameActivity, "Enter username in text field", Toast.LENGTH_SHORT).show();
+				}
+				
+			}
+		});
+		
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.set_user_name, menu);
-		return true;
+		
 	}
-
 }
