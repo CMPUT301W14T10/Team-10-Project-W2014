@@ -29,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Creates a custom adapter for displaying a comment's infomation in
@@ -36,11 +37,11 @@ import android.widget.TextView;
  */
 
 public class SubCommentViewActivityAdapter extends
-		ArrayAdapter<SubCommentModel> {
+		ArrayAdapter<CommentModel> {
 
 	private Context context;
 	private int layoutResourceId;
-	private ArrayList<SubCommentModel> subCommentList;
+	private ArrayList<CommentModel> commentList;
 	private UserModel userData;
 
 	
@@ -66,12 +67,12 @@ public class SubCommentViewActivityAdapter extends
 	public SubCommentViewActivityAdapter(
 			Context context, 
 			int layoutResourceId,
-			ArrayList<SubCommentModel> subCommentList,UserModel userData) {
+			ArrayList<CommentModel> commentList,UserModel userData) {
 
-		super(context, layoutResourceId, subCommentList);
+		super(context, layoutResourceId, commentList);
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
-		this.subCommentList = subCommentList;
+		this.commentList = commentList;
 		this.userData = userData;
 
 	}
@@ -129,7 +130,7 @@ public class SubCommentViewActivityAdapter extends
 					//Open up Create comment activity
 					//will send the title of the comment the user wants to reply to. 
 					Intent createComment = new Intent(context.getApplicationContext(), CreateCommentActivity.class);
-					createComment.putExtra("Comment Title",subCommentList.get(pos).getTitle());
+					createComment.putExtra("Comment Title",commentList.get(pos).getTitle());
 					context.startActivity(createComment);
 				
 					
@@ -141,13 +142,17 @@ public class SubCommentViewActivityAdapter extends
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					//Add a Comment the user's favourite list
-					userData.getFavourites().add(subCommentList.get(pos));
+					//Add a Comment the user's favourite list if comment is not
+					//already in the user's favourite
+					if(!userData.getFavourites().contains(commentList.get(pos))){
+						userData.getFavourites().add(commentList.get(pos));
+					}else {
+						Toast.makeText(context, "Comment already in Favourite List", Toast.LENGTH_LONG).show();
+					}
+					
 					
 				}
 			});
-			
-			
 			
 			
 			//Open the More... dialog box for the selected comment 
@@ -155,7 +160,7 @@ public class SubCommentViewActivityAdapter extends
 				
 				@Override
 				public void onClick(View v) {
-					((SubCommentViewActivity)context).openMoreDialog(subCommentList.get(pos));
+					((SubCommentViewActivity)context).openMoreDialog(commentList.get(pos));
 					
 				}
 			});
@@ -167,23 +172,22 @@ public class SubCommentViewActivityAdapter extends
 		}
 		
 		//Grabs the title of the comment being replied by the getReplyTitle function
-		holder.textReplyTitle.setText(this.getReplyTitle(subCommentList.get(position)));
+		if(commentList.get(position).getClass() == SubCommentModel.class){
+			holder.textReplyTitle.setText(this.getReplyTitle((SubCommentModel)commentList.get(position)));
+		}else{
+			holder.textReplyTitle.setText("");
+		}
 		
 		//Grabs the Time.
-		holder.textTime.setText(this.TimeToString(subCommentList.get(position).getTimestamp()));
+		holder.textTime.setText(this.TimeToString(commentList.get(position).getTimestamp()));
 		
 		//Grabs the Location of the model.
 		//holder.textLocation.setText(subCommentList.get(position).getLocation().getName());
 		
 		// Grabs strings to be displayed for each sub comment in the list
-		holder.textSubTitle.setText(subCommentList.get(position).getTitle());
-		holder.textUsername.setText(subCommentList.get(position).getAuthor());
-		
-		
-		// Sets the image attached to the comment
-		if(subCommentList.get(position).getPhoto() != null){
-			holder.imageView.setImageBitmap(subCommentList.get(position).getPhoto());
-		}
+		holder.textSubTitle.setText(commentList.get(position).getTitle());
+		holder.textUsername.setText(commentList.get(position).getAuthor());
+	
 		
 		
 

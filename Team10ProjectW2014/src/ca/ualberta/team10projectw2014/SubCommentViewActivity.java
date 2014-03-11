@@ -47,7 +47,7 @@ public class SubCommentViewActivity extends Activity {
 	private ListView subListView;
 	private UserModel userData;
 	private SubCommentViewActivityAdapter adapter;
-	private ArrayList<SubCommentModel> subCommentsList = new ArrayList<SubCommentModel>();
+	private ArrayList<CommentModel> commentsList = new ArrayList<CommentModel>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,22 +82,35 @@ public class SubCommentViewActivity extends Activity {
 
 			// Gets all the SubComments and all its subComments
 			AddCommentToList(headCommentData.getSubComments());
+			
+			adapter = new SubCommentViewActivityAdapter(this,
+					R.layout.sub_comment_view_sub_comment_item, commentsList,
+					userData);
 
 		} else if(bundle.containsKey("favourite")) {
 			// Set the Title in the Actionbar to the title to favourites
 			actionbar.setTitle("Favourites");
 			
-		} else if(bundle.containsKey("favourite")) {
-			// Set the Title in the Actionbar to the title to Want to read
+			adapter = new SubCommentViewActivityAdapter(this,
+					R.layout.sub_comment_view_sub_comment_item, userData.getFavourites(),
+					userData);
+			
+			
+			
+			
+		} else if(bundle.containsKey("wantToRead")) {
+			
+			// Set the Title in the Actionbar to the title to Want to read 
 			actionbar.setTitle("Want to Read");
+			
+			adapter = new SubCommentViewActivityAdapter(this,
+					R.layout.sub_comment_view_sub_comment_item, userData.getWantToReadComments(),
+					userData);
 		}
-		
 
 		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
 
-		adapter = new SubCommentViewActivityAdapter(this,
-				R.layout.sub_comment_view_sub_comment_item, subCommentsList,
-				userData);
+
 
 		// Set the first item in the list to the header Comment
 		subListView.addHeaderView((View) SetHeader(headCommentData));
@@ -314,7 +327,7 @@ public class SubCommentViewActivity extends Activity {
 			return;
 		} else {
 			for (SubCommentModel subComment : subCommentList) {
-				this.subCommentsList.add(subComment);
+				this.commentsList.add(subComment);
 				if (subComment.getSubComments().size() > 0) {
 					AddCommentToList(subComment.getSubComments());
 				}
