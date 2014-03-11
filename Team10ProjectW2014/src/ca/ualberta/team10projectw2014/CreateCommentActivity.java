@@ -242,14 +242,9 @@ public class CreateCommentActivity extends Activity{
 	//Takes thumbnail from the camera activity and puts it into postPhoto.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-       /* if (requestCode == 1 && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            this.postPhoto = imageBitmap;
-            imageView.setImageBitmap(imageBitmap);
-    	
 
-        }*/ // Taken from http://www.androidhive.info/2013/09/android-working-with-camera-api/
+
+         // Taken from http://www.androidhive.info/2013/09/android-working-with-camera-api/
     	if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 // successfully captured the image
@@ -287,7 +282,7 @@ public class CreateCommentActivity extends Activity{
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-        photoPath = "file:" + image.getAbsolutePath(); 
+        photoPath = image.getAbsolutePath(); //"file:" + 
 
         return image;
     }

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 
 /**
  * This class acts as the super class model for comments.
@@ -41,7 +42,16 @@ public class CommentModel implements Serializable {
 	private int authorAndroidID;
 	private ArrayList<SubCommentModel> subComments = new ArrayList<SubCommentModel>();
 	private String photoPath;
+	private Uri imageUri;
 	
+	public Uri getImageUri() {
+		return imageUri;
+	}
+
+	public void setImageUri(Uri imageUri) {
+		this.imageUri = imageUri;
+	}
+
 	public String getPhotoPath() {
 		return photoPath;
 	}

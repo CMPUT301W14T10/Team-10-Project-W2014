@@ -11,7 +11,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:scrollbars="vertical" >
+        android:scrollbars="vertical"
+        tools:listitem="@layout/head_comment_list_item" >
 
     </ListView>
 
