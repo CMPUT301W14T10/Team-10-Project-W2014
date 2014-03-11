@@ -22,6 +22,8 @@ import java.util.Calendar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -187,6 +189,35 @@ public class SubCommentViewActivityAdapter extends
 		// Grabs strings to be displayed for each sub comment in the list
 		holder.textSubTitle.setText(commentList.get(position).getTitle());
 		holder.textUsername.setText(commentList.get(position).getAuthor());
+		
+		// Sets the image attached to the comment
+		if(commentList.get(position).getPhotoPath() != null){
+
+				String imagePath = commentList.get(position).getPhotoPath();
+			    // Get the dimensions of the View
+			    //int targetW = holder.imageView.getWidth();
+			    //int targetH = holder.imageView.getHeight();
+
+			    // Get the dimensions of the bitmap
+			    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+			    bmOptions.inJustDecodeBounds = true;
+			    BitmapFactory.decodeFile(imagePath, bmOptions);
+			    int photoW = bmOptions.outWidth;
+			    int photoH = bmOptions.outHeight;
+			    
+			    // Determine how much to scale down the image
+			    int scaleFactor = Math.min(photoW/75, photoH/75);
+
+			    // Decode the image file into a Bitmap sized to fill the View
+			    bmOptions.inJustDecodeBounds = false;
+			    bmOptions.inSampleSize = scaleFactor;
+			    bmOptions.inPurgeable = true;
+				
+
+			    Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
+			    holder.imageView.setImageBitmap(bitmap);
+			   
+		}
 	
 		
 		

@@ -26,6 +26,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.LayoutInflater;
@@ -36,6 +38,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -277,6 +280,7 @@ public class SubCommentViewActivity extends Activity {
 		TextView textContent = (TextView) header
 				.findViewById(R.id.head_comment_text_body_sub);
 		Button moreButton = (Button) header.findViewById(R.id.head_more_option);
+		ImageView imageView = (ImageView) header.findViewById(R.id.head_comment_image);
 
 		// Set the items to the contents of the Head Comment
 		textTitle.setText(headComment.getTitle());
@@ -284,6 +288,36 @@ public class SubCommentViewActivity extends Activity {
 		// textLocation.setText(headComment.getLocation().getName());
 		textTime.setText(TimeToString(headComment.getTimestamp()));
 		textContent.setText(headComment.getContent());
+		
+		// Sets the image attached to the comment
+		if(headComment.getPhotoPath() != null){
+
+				String imagePath = headComment.getPhotoPath();
+			    // Get the dimensions of the View
+			    //int targetW = holder.imageView.getWidth();
+			    //int targetH = holder.imageView.getHeight();
+
+			    // Get the dimensions of the bitmap
+			    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+			    bmOptions.inJustDecodeBounds = true;
+			    BitmapFactory.decodeFile(imagePath, bmOptions);
+			    int photoW = bmOptions.outWidth;
+			    int photoH = bmOptions.outHeight;
+			    
+			    // Determine how much to scale down the image
+			    int scaleFactor = Math.min(photoW/50, photoH/50);
+
+			    // Decode the image file into a Bitmap sized to fill the View
+			    bmOptions.inJustDecodeBounds = false;
+			    bmOptions.inSampleSize = scaleFactor;
+			    bmOptions.inPurgeable = true;
+				
+
+			    Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
+			    imageView.setImageBitmap(bitmap);
+			   
+		}
+	
 
 		moreButton.setOnClickListener(new View.OnClickListener() {
 
