@@ -131,6 +131,7 @@ public class MainListViewActivity extends Activity{
 				CommentModel headComment = commentList.get(position);
 				Intent subCommentView = new Intent(getApplicationContext(), SubCommentViewActivity.class);
 				subCommentView.putExtra("comment", headComment);
+				subCommentView.putExtra("userData", user);
 				view.getContext().startActivity(subCommentView);
 				
 			}});

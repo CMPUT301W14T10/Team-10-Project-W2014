@@ -59,24 +59,41 @@ public class SubCommentViewActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+
 		/*
 		 * Get data being passed to this activity
 		 */
 		Bundle bundle = getIntent().getExtras();
-		headCommentData = (CommentModel) bundle.getSerializable("comment");
-		//userData = (UserModel) bundle.getSerializable("UserModel");
-
+		
 		// Disable the Home Icon on the Actionbar
 		ActionBar actionbar = getActionBar();
 		actionbar.setDisplayShowHomeEnabled(false);
+		
+		userData = (UserModel) bundle.getSerializable("UserModel");
 
-		// Set the Title in the Actionbar to the title of the head comment
-		actionbar.setTitle(headCommentData.getTitle());
+
+		if (bundle.containsKey("comment")) {
+
+			headCommentData = (CommentModel) bundle.getSerializable("comment");
+			
+
+			// Set the Title in the Actionbar to the title of the head comment
+			actionbar.setTitle(headCommentData.getTitle());
+
+			// Gets all the SubComments and all its subComments
+			AddCommentToList(headCommentData.getSubComments());
+
+		} else if(bundle.containsKey("favourite")) {
+			// Set the Title in the Actionbar to the title to favourites
+			actionbar.setTitle("Favourites");
+			
+		} else if(bundle.containsKey("favourite")) {
+			// Set the Title in the Actionbar to the title to Want to read
+			actionbar.setTitle("Want to Read");
+		}
+		
 
 		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
-
-		// Gets all the SubComments and all its subComments
-		AddCommentToList(headCommentData.getSubComments());
 
 		adapter = new SubCommentViewActivityAdapter(this,
 				R.layout.sub_comment_view_sub_comment_item, subCommentsList,
