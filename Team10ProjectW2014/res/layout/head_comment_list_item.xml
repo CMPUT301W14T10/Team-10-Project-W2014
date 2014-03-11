@@ -3,13 +3,14 @@
     android:id="@+id/head_comment_list_item_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <TextView
         android:id="@+id/head_comment_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:textSize="30sp"
-        android:text="Head Comment Title" />
+        android:text="Head Comment Title"
+        android:textSize="30sp" />
     
     <TextView
         android:id="@+id/head_comment_username"
@@ -41,9 +42,10 @@
     
     <ImageView
         android:id="@+id/head_comment_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true" />
+        android:layout_width="50dip"
+        android:layout_height="50dip"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_action_camera" />
         
 
 </RelativeLayout>

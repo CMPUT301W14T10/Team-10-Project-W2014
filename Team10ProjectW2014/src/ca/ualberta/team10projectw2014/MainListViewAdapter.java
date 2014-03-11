@@ -27,7 +27,10 @@ import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -96,6 +99,7 @@ public class MainListViewAdapter extends BaseAdapter {
 					findViewById(R.id.head_comment_location);
 			holder.textTime = (TextView) convertView.
 					findViewById(R.id.head_comment_time);
+			holder.imageView = (ImageView) convertView.findViewById(R.id.head_comment_image);
 			// Add the holder data to the view
 			convertView.setTag(holder);
 		}
@@ -118,10 +122,11 @@ public class MainListViewAdapter extends BaseAdapter {
 		
 		// Sets the image attached to the comment
 		if(headCommentList.get(position).getPhotoPath() != null){
+
 				String imagePath = headCommentList.get(position).getPhotoPath();
 			    // Get the dimensions of the View
-			    int targetW = holder.imageView.getWidth();
-			    int targetH = holder.imageView.getHeight();
+			    //int targetW = holder.imageView.getWidth();
+			    //int targetH = holder.imageView.getHeight();
 
 			    // Get the dimensions of the bitmap
 			    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -129,14 +134,15 @@ public class MainListViewAdapter extends BaseAdapter {
 			    BitmapFactory.decodeFile(imagePath, bmOptions);
 			    int photoW = bmOptions.outWidth;
 			    int photoH = bmOptions.outHeight;
-
+			    
 			    // Determine how much to scale down the image
-			    int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+			    int scaleFactor = Math.min(photoW/50, photoH/50);
 
 			    // Decode the image file into a Bitmap sized to fill the View
 			    bmOptions.inJustDecodeBounds = false;
 			    bmOptions.inSampleSize = scaleFactor;
 			    bmOptions.inPurgeable = true;
+				
 
 			    Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
 			    holder.imageView.setImageBitmap(bitmap);
