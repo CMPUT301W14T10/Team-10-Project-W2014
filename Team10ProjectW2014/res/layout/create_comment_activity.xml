@@ -27,10 +27,14 @@
         android:ems="10"
         android:gravity="top"
         android:hint="@string/create_comment_content"
-        android:singleLine="false" >
-        
-        <requestFocus />
-    </EditText>
+        android:singleLine="false" />
+    
+    <ImageView
+        android:id="@+id/cc_image_view"
+        android:layout_width="100dip"
+        android:layout_height="100dip"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/ic_action_camera" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,23 +45,24 @@
             android:id="@+id/cc_photo_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Photo"
-            android:onClick="choosePhoto" />
+            android:onClick="choosePhoto"
+            android:text="Photo" />
 
         <Button
             android:id="@+id/cc_location_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Location"
-            android:onClick="chooseLocation" />
+            android:onClick="chooseLocation"
+            android:text="Location" />
 
         <Button
             android:id="@+id/cc_post_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Post"
-            android:onClick="attemptCommentCreation" />
-
+            android:onClick="attemptCommentCreation"
+            android:text="Post" />
     </LinearLayout>
+    
+
 
 </LinearLayout>
