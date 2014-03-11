@@ -15,7 +15,7 @@
     <string name="action_title">Title</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_sub_comment_view">SubCommentViewActivity</string>
-	<string name="comment_image">Head Comment Image</string>
+    <string name="comment_image">Head Comment Image</string>
     <string name="long_title">Long Title</string>
     <string name="reply_title">Re:Title</string>
     <string name="sub_title">Sub-Title</string>
@@ -40,4 +40,9 @@
     <string name="dash_string">  -  </string>
     <string name="file_name_string">commentListFile.sav</string>
     <string name="user_sav">user.sav</string>
+    <string name="title_activity_set_user_name">SetUserNameActivity</string>
+    <string name="set_username">Enter Username</string>
+    <string name="set_button">Set</string>
+    <string name="skip_button">Skip this Step</string>
+
 </resources>

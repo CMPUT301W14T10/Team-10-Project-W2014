@@ -51,6 +51,7 @@ public class SubCommentViewActivity extends Activity {
 	private UserModel userData;
 	private SubCommentViewActivityAdapter adapter;
 	private ArrayList<CommentModel> commentsList = new ArrayList<CommentModel>();
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -199,7 +200,8 @@ public class SubCommentViewActivity extends Activity {
 		// - title
 		Intent createComment = new Intent(getApplicationContext(),
 				CreateCommentActivity.class);
-		createComment.putExtra("Comment Title", headCommentData.getTitle());
+		createComment.putExtra("comment",headCommentData);
+		createComment.putExtra("username",userData.getUsername());
 		this.startActivity(createComment);
 
 	}
