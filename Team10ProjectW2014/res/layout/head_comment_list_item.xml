@@ -28,7 +28,7 @@
         android:layout_toRightOf="@id/head_comment_username"
         android:textSize="10sp"
         android:layout_marginRight="5px"
-        android:text="at" />
+        android:text="@string/head_comment_list_at" />
     
     <TextView
         android:id="@+id/head_comment_location"
@@ -37,7 +37,7 @@
         android:layout_below="@id/head_comment_title"
         android:layout_toRightOf="@id/head_comment_at"
         android:textSize="10sp"
-        android:text="Location" />
+        android:text="@string/head_comment_list_location" />
     
     <TextView
         android:id="@+id/head_comment_time"
