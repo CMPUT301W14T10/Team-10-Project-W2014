@@ -19,15 +19,25 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@id/head_comment_title"
         android:textSize="10sp"
-        android:layout_marginRight="10px"
+        android:layout_marginRight="5px"
         android:text="Username" />
+    
+    <TextView
+        android:id="@+id/head_comment_at"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/head_comment_title"
+        android:layout_toRightOf="@id/head_comment_username"
+        android:textSize="10sp"
+        android:layout_marginRight="5px"
+        android:text="at" />
     
     <TextView
         android:id="@+id/head_comment_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/head_comment_title"
-        android:layout_toRightOf="@id/head_comment_username"
+        android:layout_toRightOf="@id/head_comment_at"
         android:textSize="10sp"
         android:text="Location" />
     
