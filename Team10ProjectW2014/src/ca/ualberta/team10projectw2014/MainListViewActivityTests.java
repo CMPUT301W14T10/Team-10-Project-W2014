@@ -4,7 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import ca.ualberta.team10projectw2014.controller.CommentDataController;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
@@ -16,6 +19,7 @@ public class MainListViewActivityTests extends
 	
 	Activity activity;
 	ListView headListView;
+	CommentDataController CDC;
 	
 	public MainListViewActivityTests() {
 		super(MainListViewActivity.class);
@@ -33,19 +37,26 @@ public class MainListViewActivityTests extends
 	 * @throws Throwable
 	 */
 	public void testDisplayCommentInList() throws Throwable {
+		ArrayList<CommentModel> commentList = new ArrayList<CommentModel>();
 		// Create a test head comment
 		CommentModel headComment = new CommentModel();
+		// Creates CDC with the context of activity you are testing
+		CDC = new CommentDataController(getInstrumentation().getContext(), 
+				getInstrumentation().getContext().
+				getString(R.string.file_name_string));
 		headComment.setTitle("Test Title");
 		headComment.setAuthor("TestUsername");
 		headComment.setContent("Test Head Comment Content");
 		headComment.setTimestamp(Calendar.getInstance());
 		
+		// Saves test head comment to file
+		commentList.add(headComment);
+		CDC.saveToFile(commentList);
+		
 		// Creates intent to launch MainListViewActivity
 		Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setClassName("ca.ualberta.team10projectw2014", 
         		"ca.ualberta.team10projectw2014.MainListViewActivity");
-        // Puts test head comment in intent
-        intent.putExtra("HeadComment", headComment);
         setActivityIntent(intent);
         
         // Launches MainListviewActivity
@@ -61,7 +72,8 @@ public class MainListViewActivityTests extends
         // Identifies list item objects required for the test
         TextView title = (TextView) commentLayout.findViewById(R.id.head_comment_title);
         TextView userName = (TextView) commentLayout.findViewById(R.id.head_comment_username);
-        TextView location = (TextView) commentLayout.findViewById(R.id.head_comment_location);
+        // TODO re-add in location when location implemented
+        //TextView location = (TextView) commentLayout.findViewById(R.id.head_comment_location);
         TextView date = (TextView) commentLayout.findViewById(R.id.head_comment_time);
         
         // Test comment title is correct
@@ -69,11 +81,12 @@ public class MainListViewActivityTests extends
         // Test comment username is correct
         assertEquals("Head comment username should appear in list", headComment.getAuthor(), userName.getText());
         // Test comment location is correct
-        assertEquals("Head comment location should appear in list", headComment.getLocation(), location.getText());
+        // TODO re-add in location when location implemented
+        //assertEquals("Head comment location should appear in list", headComment.getLocation(), location.getText());
         
         // Converts headcomment's timestamp calendar object to a testable string
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:00 aa");
-        String timeString = sdf.format(headComment.getTimestamp());
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:mm aa");
+        String timeString = sdf.format(headComment.getTimestamp().getTime());
         
         // Test comment date is correct
         assertEquals("Head comment date should appear in list", timeString, date.getText());
