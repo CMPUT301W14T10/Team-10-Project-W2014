@@ -342,4 +342,18 @@ public class MainListViewActivity extends Activity{
 		}
 		return commentList;
 	}
+	
+	public ArrayList<CommentModel> pictureSort(ArrayList<CommentModel> commentList, Comparator cmp) {
+		ArrayList<CommentModel> noPicArray = new ArrayList<CommentModel>();
+		for (int i=0; i < commentList.size(); i++) {
+			if (commentList.get(i).getPhoto() == null) {
+				noPicArray.add(commentList.get(i));
+				commentList.remove(i);
+			}
+		}
+		commentList = sort(commentList, cmp);
+		noPicArray = sort(noPicArray, cmp);
+		commentList.addAll(noPicArray);
+		return commentList;
+	}
 }	
