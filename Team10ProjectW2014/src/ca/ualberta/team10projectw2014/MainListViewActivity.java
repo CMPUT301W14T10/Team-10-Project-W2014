@@ -122,8 +122,17 @@ public class MainListViewActivity extends Activity{
 		adapter = new MainListViewAdapter(this, commentList);
 		
 		// Checks which selection method is active and sorts the list accordingly
-		if (user.isSortByDate() == true) {
-			commentList = sort(commentList, dateCompare);
+		if (user.isSortByPic() == true) {
+			if (user.isSortByDate() == true) {
+				commentList = pictureSort(commentList, dateCompare);
+			}
+			
+		}
+		else {
+			if (user.isSortByDate() == true) {
+				commentList = sort(commentList, dateCompare);
+			}
+			
 		}
 		
 		commentView.setAdapter(adapter);
@@ -346,7 +355,7 @@ public class MainListViewActivity extends Activity{
 	public ArrayList<CommentModel> pictureSort(ArrayList<CommentModel> commentList, Comparator cmp) {
 		ArrayList<CommentModel> noPicArray = new ArrayList<CommentModel>();
 		for (int i=0; i < commentList.size(); i++) {
-			if (commentList.get(i).getPhoto() == null) {
+			if (commentList.get(i).getPhotoPath() == null) {
 				noPicArray.add(commentList.get(i));
 				commentList.remove(i);
 			}
