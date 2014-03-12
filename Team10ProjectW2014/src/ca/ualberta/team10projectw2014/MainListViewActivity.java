@@ -57,7 +57,7 @@ public class MainListViewActivity extends Activity{
 	private static Location location = null;
 	private CommentDataController commentDataController;
 	
-	//comparator used in sorting comments by date:
+	//comparator used in sorting comments by location:
 	private static Comparator locCompare = new Comparator(){
 		public int compare(Object comment1, Object comment2){
 			LocationModel userLocation = new LocationModel("here", location);
@@ -67,7 +67,7 @@ public class MainListViewActivity extends Activity{
 		}
 	};
 	
-	//comparator used in sorting comments by location:
+	//comparator used in sorting comments by date:
 	private static Comparator dateCompare = new Comparator(){
 		public int compare(Object comment1, Object comment2){
 			Calendar time1 = ((CommentModel)comment1).getTimestamp();
@@ -121,6 +121,7 @@ public class MainListViewActivity extends Activity{
 		commentList = commentDataController.loadFromFile();
 		adapter = new MainListViewAdapter(this, commentList);
 		
+		// Checks which selection method is active and sorts the list accordingly
 		if (user.isSortByDate() == true) {
 			commentList = sort(commentList, dateCompare);
 		}
@@ -313,16 +314,27 @@ public class MainListViewActivity extends Activity{
 	    }
 	}
 	
+	/**
+	 * Selection sort algorithm to sort an array of comments by a given comparator
+	 * 
+	 * @param commentList array of CommentModels to sort
+	 * @param cmp comparator to compare CommentModels when sorting
+	 * @return the array of head comments
+	 */
 	public ArrayList<CommentModel> sort(ArrayList<CommentModel> commentList, Comparator cmp) {
 		for (int i=0; i < commentList.size()-1; i++) {
+			// Sets current comment as the one that should appear first
 			CommentModel maxComment = commentList.get(i);
 			int maxIndex = i;
+			// Iterates through remaining comments in the list
 			for (int j=i+1; j < commentList.size(); j++) {
+				// If i compared to j = -1, j should be max value
 				if (cmp.compare(commentList.get(i), commentList.get(j)) < 0) {
 					maxComment = commentList.get(j);
 					maxIndex = j;
 				}
 			}
+			// Swap current comment with the maxComment
 			CommentModel tempComment;
 			tempComment = commentList.get(i);
 			commentList.set(i, maxComment);
@@ -330,5 +342,4 @@ public class MainListViewActivity extends Activity{
 		}
 		return commentList;
 	}
-	
 }	
