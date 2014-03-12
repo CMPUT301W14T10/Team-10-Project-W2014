@@ -17,8 +17,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/head_comment_title"
-        android:textSize="10sp"
-        android:layout_marginRight="5px" />
+        android:textSize="12sp"
+        android:layout_marginRight="5dp" />
     
     <TextView
         android:id="@+id/head_comment_at"
@@ -26,8 +26,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/head_comment_title"
         android:layout_toRightOf="@id/head_comment_username"
-        android:textSize="10sp"
-        android:layout_marginRight="5px"
+        android:textSize="12sp"
+        android:layout_marginRight="5dp"
         android:text="@string/head_comment_list_at" />
     
     <TextView
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/head_comment_title"
         android:layout_toRightOf="@id/head_comment_at"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:text="@string/head_comment_list_location" />
     
     <TextView
@@ -45,14 +45,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/head_comment_username"
         android:layout_alignParentLeft="true"
-        android:textSize="10sp" />
+        android:textSize="12sp" />
     
     <ImageView
         android:id="@+id/head_comment_image"
         android:layout_width="50dip"
         android:layout_height="50dip"
         android:layout_alignParentRight="true"
-        android:src="@drawable/ic_action_camera" />
+        android:src="@drawable/ic_action_camera"
+        android:contentDescription="@string/comment_image" />
         
 
 </RelativeLayout>
