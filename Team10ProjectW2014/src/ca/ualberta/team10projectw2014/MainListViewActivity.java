@@ -264,6 +264,7 @@ public class MainListViewActivity extends Activity{
 			
 				
 				userDataController.saveToFile(user);
+				onResume();
 			}
 		});
 
