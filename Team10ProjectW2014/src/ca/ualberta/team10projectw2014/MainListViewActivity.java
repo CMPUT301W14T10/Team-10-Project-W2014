@@ -121,14 +121,20 @@ public class MainListViewActivity extends Activity{
 		commentList = commentDataController.loadFromFile();
 		adapter = new MainListViewAdapter(this, commentList);
 		
-		// Checks which selection method is active and sorts the list accordingly
+		/**
+		 * Head Comment Sorting:
+		 * Checks which selection method is active and sorts the list accordingly
+		 */
+		// Sort by picture
 		if (user.isSortByPic() == true) {
+			// Sort by date
 			if (user.isSortByDate() == true) {
 				commentList = pictureSort(commentList, dateCompare);
 			}
 			
 		}
 		else {
+			// Sort by date
 			if (user.isSortByDate() == true) {
 				commentList = sort(commentList, dateCompare);
 			}
@@ -352,16 +358,30 @@ public class MainListViewActivity extends Activity{
 		return commentList;
 	}
 	
+	/**
+	 * Separates given array into two arrays with one containing comments with
+	 * pictures, and the other without. Sorts each array by given comparator,
+	 * then combines them.
+	 * 
+	 * @param commentList array of CommentModels to sort
+	 * @param cmp comparator to compare CommentModels when sorting
+	 * @return the array of head comments
+	 */
 	public ArrayList<CommentModel> pictureSort(ArrayList<CommentModel> commentList, Comparator cmp) {
 		ArrayList<CommentModel> noPicArray = new ArrayList<CommentModel>();
 		for (int i=0; i < commentList.size(); i++) {
+			// If comment does not have a photo
 			if (commentList.get(i).getPhotoPath() == null) {
+				// Add it to the array containing comments without pictures
 				noPicArray.add(commentList.get(i));
+				// Remove it from the array containing comments with pictures
 				commentList.remove(i);
 			}
 		}
+		// Sort each array
 		commentList = sort(commentList, cmp);
 		noPicArray = sort(noPicArray, cmp);
+		// Combine both arrays
 		commentList.addAll(noPicArray);
 		return commentList;
 	}
