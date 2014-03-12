@@ -121,6 +121,10 @@ public class MainListViewActivity extends Activity{
 		commentList = commentDataController.loadFromFile();
 		adapter = new MainListViewAdapter(this, commentList);
 		
+		if (user.isSortByDate() == true) {
+			commentList = sort(commentList, dateCompare);
+		}
+		
 		commentView.setAdapter(adapter);
 		adapter.notifyDataSetChanged();
 		
@@ -307,6 +311,24 @@ public class MainListViewActivity extends Activity{
 	        		buttonGroup.clearCheck();
 	            break;
 	    }
+	}
+	
+	public ArrayList<CommentModel> sort(ArrayList<CommentModel> commentList, Comparator cmp) {
+		for (int i=0; i < commentList.size()-1; i++) {
+			CommentModel maxComment = commentList.get(i);
+			int maxIndex = i;
+			for (int j=i+1; j < commentList.size(); j++) {
+				if (cmp.compare(commentList.get(i), commentList.get(j)) < 0) {
+					maxComment = commentList.get(j);
+					maxIndex = j;
+				}
+			}
+			CommentModel tempComment;
+			tempComment = commentList.get(i);
+			commentList.set(i, maxComment);
+			commentList.set(maxIndex, tempComment);
+		}
+		return commentList;
 	}
 	
 }	
