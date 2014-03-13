@@ -49,8 +49,9 @@ public class LocationListenerController implements LocationListener {
     	}
     	
     	currentBestLocation = getLastBestLocation();
-    	Toast.makeText(context, "Current Best Location on create: " + currentBestLocation.getLatitude() + " " + currentBestLocation.getLongitude(), Toast.LENGTH_LONG).show();
-    	
+    	if (currentBestLocation != null){
+    		Toast.makeText(context, "Current Best Location on create: " + currentBestLocation.getLatitude() + " " + currentBestLocation.getLongitude(), Toast.LENGTH_LONG).show();
+    	}
 	}
 	
 	// The following method is a direct copy from http://stackoverflow.com/questions/843675/how-do-i-find-out-if-the-gps-of-an-android-device-is-enabled received on March 9 at 2:00PM
@@ -103,7 +104,9 @@ public class LocationListenerController implements LocationListener {
 		    	makeUseOfNewLocation(locationNet);
 		    }
 		}
-		Toast.makeText(context, "Current Best Location on search: " + currentBestLocation.getLatitude() + " " + currentBestLocation.getLongitude(), Toast.LENGTH_LONG).show();
+		if (currentBestLocation != null){
+			Toast.makeText(context, "Current Best Location on search: " + currentBestLocation.getLatitude() + " " + currentBestLocation.getLongitude(), Toast.LENGTH_LONG).show();
+		}
 		return currentBestLocation;
 	}
 
