@@ -386,6 +386,7 @@ public class MainListViewActivity extends Activity{
 				noPicArray.add(list.get(i));
 				// Remove it from the array containing comments with pictures
 				list.remove(i);
+				i--;
 			}
 		}
 		// Sort each array
