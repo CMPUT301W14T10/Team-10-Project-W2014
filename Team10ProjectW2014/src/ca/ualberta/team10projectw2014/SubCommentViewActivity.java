@@ -53,80 +53,87 @@ public class SubCommentViewActivity extends Activity {
 	private UserModel userData;
 	private SubCommentViewActivityAdapter adapter;
 	private ArrayList<CommentModel> commentsList;
-	
+	private ActionBar actionbar;
+	private Bundle bundle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sub_comment_view);
-
+		
+			
+		// Disable the Home Icon on the Actionbar
+		actionbar = getActionBar();
+		actionbar.setDisplayShowHomeEnabled(false);
+		
 		/*
 		 * Get data being passed to this activity
 		 */
-		Bundle bundle = getIntent().getExtras();
+		bundle = getIntent().getExtras();
+
 		
-		// Disable the Home Icon on the Actionbar
-		ActionBar actionbar = getActionBar();
-		actionbar.setDisplayShowHomeEnabled(false);
-		
-		//userData = (UserModel) bundle.getSerializable("UserModel");
 		
 		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
 		
-
 		if (bundle.containsKey("comment")) {
+			
+			//userData = (UserModel) bundle.getSerializable("UserModel");
 			userData = new UserModel(this);
-			userData.setUsername("test username");
-
+			userData.setUsername("user");
 
 			headCommentData = (CommentModel) bundle.getSerializable("comment");
 			
-
 			// Set the Title in the Actionbar to the title of the head comment
 			actionbar.setTitle(headCommentData.getTitle());
 
-			// Gets all the SubComments and all its subComments
-			commentsList = new ArrayList<CommentModel>();
-			AddCommentToList(headCommentData.getSubComments());
-			
-			adapter = new SubCommentViewActivityAdapter(this,
-					R.layout.sub_comment_view_sub_comment_item, commentsList,
-					userData);
-			
 			// Set the first item in the list to the header Comment
 			subListView.addHeaderView((View) SetHeader(headCommentData));
-
+			
 		} else if(bundle.containsKey("favourite")) {
 			// Set the Title in the Actionbar to the title to favourites
 			actionbar.setTitle("Favourites");
+			userData = (UserModel) bundle.getSerializable("favourite");
+
 			
-			adapter = new SubCommentViewActivityAdapter(this,
-					R.layout.sub_comment_view_sub_comment_item, userData.getFavourites(),
-					userData);
-			
+			commentsList = new ArrayList<CommentModel>();
+			commentsList = userData.getFavourites();
 			
 			
 			
 		} else if(bundle.containsKey("wantToRead")) {
 			
+			
 			// Set the Title in the Actionbar to the title to Want to read 
 			actionbar.setTitle("Want to Read");
+		
 			
-			adapter = new SubCommentViewActivityAdapter(this,
-					R.layout.sub_comment_view_sub_comment_item, userData.getWantToReadComments(),
-					userData);
+			userData = (UserModel) bundle.getSerializable("wantToRead");
+			commentsList = new ArrayList<CommentModel>();
+			commentsList = userData.getWantToReadComments();
+			
 		}
 		
-		
-		subListView.setAdapter(adapter);
 
+		
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		
-
+		if (bundle.containsKey("comment")) {
+			commentsList = new ArrayList<CommentModel>();
+			AddCommentToList(headCommentData.getSubComments());
+			
+		}
+		adapter = new SubCommentViewActivityAdapter(this,
+				R.layout.sub_comment_view_sub_comment_item, commentsList,
+				userData);
+		
+		subListView.setAdapter(adapter);
+		
+		
+		
 	}
 
 	/**
@@ -183,13 +190,13 @@ public class SubCommentViewActivity extends Activity {
 		case R.id.action_favourites:
 			// Bring up the user's favourite list
 			Intent favouriteList = new Intent(this,SubCommentViewActivity.class);
-			favouriteList.putExtra("favourite", userData.getFavourites());
+			favouriteList.putExtra("favourite", userData);
 			this.startActivity(favouriteList);
 			return true;
 		case R.id.action_want_to_read:
 			// Bring up the user's want to read list
 			Intent wantToReadList = new Intent(this,SubCommentViewActivity.class);
-			wantToReadList.putExtra("wantToRead", userData.getWantToReadComments());
+			wantToReadList.putExtra("wantToRead", userData);
 			this.startActivity(wantToReadList);
 			return true;
 		default:
@@ -210,13 +217,37 @@ public class SubCommentViewActivity extends Activity {
 		// send an intent to CreateCommentActivity
 		// send info:
 		// - title
+		
+		/*//responds to head comment
+		SubCommentModel subComment1 = new SubCommentModel(headCommentData);
+		subComment1.setAuthor("TestUser1");
+		subComment1.setTitle("SubComment1");
+		subComment1.setContent("Replies to head comment");
+		subComment1.setTimestamp(Calendar.getInstance());
+		headCommentData.addSubComment(subComment1);
+		
+		SubCommentModel subComment2 = new SubCommentModel(headCommentData);
+		subComment2.setAuthor("TestUser2");
+		subComment2.setTitle("SubComment2");
+		subComment2.setContent("replies to head comment");
+		subComment2.setTimestamp(Calendar.getInstance());
+		headCommentData.addSubComment(subComment2);
+		
+		SubCommentModel subComment3 = new SubCommentModel(subComment1);
+		subComment3.setAuthor("TestUser2");
+		subComment3.setTitle("SubComment3");
+		subComment3.setContent("Reply to SubComment1");
+		subComment3.setTimestamp(Calendar.getInstance());
+		subComment1.addSubComment(subComment3);
+		
+		*/
 
 		Intent createComment = new Intent(getApplicationContext(),
 				CreateCommentActivity.class);
 		createComment.putExtra("comment",headCommentData);
 		createComment.putExtra("username",userData.getUsername());
 		this.startActivity(createComment);
-	
+		
 	}
 
 	/**
