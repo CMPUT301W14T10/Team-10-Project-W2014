@@ -153,35 +153,24 @@ public class SubCommentViewActivityTests extends
 		//responds to head comment
 		SubCommentModel subComment1 = new SubCommentModel(headComment);
 		subComment1.setAuthor("TestUser1");
-		subComment1.setTitle("TestSubTitle1");
-		subComment1.setContent("Reply to head comment1");
+		subComment1.setTitle("SubComment1");
+		subComment1.setContent("Replies to head comment");
 		subComment1.setTimestamp(Calendar.getInstance());
-		headComment.getSubComments().add(subComment1);
-
-		//responds to head comment
+		headComment.addSubComment(subComment1);
+		
 		SubCommentModel subComment2 = new SubCommentModel(headComment);
 		subComment2.setAuthor("TestUser2");
-		subComment2.setTitle("TestSubTitle2");
-		subComment2.setContent("Reply to head comment2");
+		subComment2.setTitle("SubComment2");
+		subComment2.setContent("replies to head comment");
 		subComment2.setTimestamp(Calendar.getInstance());
-		headComment.getSubComments().add(subComment2);
-
-		//responds to subComment1
+		headComment.addSubComment(subComment2);
+		
 		SubCommentModel subComment3 = new SubCommentModel(subComment1);
-		subComment3.setAuthor("TestUser1");
-		subComment3.setTitle("TestSubTitle1");
-		subComment3.setContent("Reply to head comment1");
+		subComment3.setAuthor("TestUser2");
+		subComment3.setTitle("SubComment3");
+		subComment3.setContent("Reply to SubComment1");
 		subComment3.setTimestamp(Calendar.getInstance());
-		subComment1.getSubComments().add(subComment3);
-
-		//responds to head comment
-		SubCommentModel subComment4 = new SubCommentModel(headComment);
-		subComment4.setAuthor("TestUser1");
-		subComment4.setTitle("TestSubTitle1");
-		subComment4.setContent("Reply to head comment1");
-		subComment4.setTimestamp(Calendar.getInstance());
-		headComment.getSubComments().add(subComment4);
-
+		subComment1.addSubComment(subComment3);
 
 
 		// create a new intent

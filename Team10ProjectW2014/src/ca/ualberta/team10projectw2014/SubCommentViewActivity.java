@@ -44,6 +44,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SubCommentViewActivity extends Activity {
 
@@ -51,19 +52,13 @@ public class SubCommentViewActivity extends Activity {
 	private ListView subListView;
 	private UserModel userData;
 	private SubCommentViewActivityAdapter adapter;
-	private ArrayList<CommentModel> commentsList = new ArrayList<CommentModel>();
+	private ArrayList<CommentModel> commentsList;
 	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sub_comment_view);
-
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
 
 		/*
 		 * Get data being passed to this activity
@@ -75,10 +70,14 @@ public class SubCommentViewActivity extends Activity {
 		actionbar.setDisplayShowHomeEnabled(false);
 		
 		//userData = (UserModel) bundle.getSerializable("UserModel");
-		userData = new UserModel(this);
-		userData.setUsername("test username");
+		
+		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
+		
 
 		if (bundle.containsKey("comment")) {
+			userData = new UserModel(this);
+			userData.setUsername("test username");
+
 
 			headCommentData = (CommentModel) bundle.getSerializable("comment");
 			
@@ -87,11 +86,15 @@ public class SubCommentViewActivity extends Activity {
 			actionbar.setTitle(headCommentData.getTitle());
 
 			// Gets all the SubComments and all its subComments
+			commentsList = new ArrayList<CommentModel>();
 			AddCommentToList(headCommentData.getSubComments());
 			
 			adapter = new SubCommentViewActivityAdapter(this,
 					R.layout.sub_comment_view_sub_comment_item, commentsList,
 					userData);
+			
+			// Set the first item in the list to the header Comment
+			subListView.addHeaderView((View) SetHeader(headCommentData));
 
 		} else if(bundle.containsKey("favourite")) {
 			// Set the Title in the Actionbar to the title to favourites
@@ -113,15 +116,16 @@ public class SubCommentViewActivity extends Activity {
 					R.layout.sub_comment_view_sub_comment_item, userData.getWantToReadComments(),
 					userData);
 		}
-
-		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
-
-
-
-		// Set the first item in the list to the header Comment
-		subListView.addHeaderView((View) SetHeader(headCommentData));
-
+		
+		
 		subListView.setAdapter(adapter);
+
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
 
 	}
 
@@ -178,9 +182,15 @@ public class SubCommentViewActivity extends Activity {
 			return true;
 		case R.id.action_favourites:
 			// Bring up the user's favourite list
+			Intent favouriteList = new Intent(this,SubCommentViewActivity.class);
+			favouriteList.putExtra("favourite", userData.getFavourites());
+			this.startActivity(favouriteList);
 			return true;
 		case R.id.action_want_to_read:
 			// Bring up the user's want to read list
+			Intent wantToReadList = new Intent(this,SubCommentViewActivity.class);
+			wantToReadList.putExtra("wantToRead", userData.getWantToReadComments());
+			this.startActivity(wantToReadList);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -200,12 +210,13 @@ public class SubCommentViewActivity extends Activity {
 		// send an intent to CreateCommentActivity
 		// send info:
 		// - title
+
 		Intent createComment = new Intent(getApplicationContext(),
 				CreateCommentActivity.class);
 		createComment.putExtra("comment",headCommentData);
 		createComment.putExtra("username",userData.getUsername());
 		this.startActivity(createComment);
-
+	
 	}
 
 	/**
@@ -218,6 +229,7 @@ public class SubCommentViewActivity extends Activity {
 	 */
 	private void addFavourite(CommentModel comment) {
 		// TODO: Implement addFavourite
+		Toast.makeText(this,"Comment added to favourites!", Toast.LENGTH_SHORT).show();
 		userData.getFavourites().add(comment);
 	}
 

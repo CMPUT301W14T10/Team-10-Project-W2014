@@ -56,6 +56,7 @@ public class SubCommentViewActivityAdapter extends
 		TextView textSubTitle;
 		TextView textUsername;
 		TextView textLocation;
+		TextView textContent;
 		TextView textTime;
 		ImageView imageView;
 		
@@ -109,6 +110,7 @@ public class SubCommentViewActivityAdapter extends
 			holder.textLocation = (TextView) view.findViewById(R.id.sub_comment_location_sub);
 			holder.textTime = (TextView) view.findViewById(R.id.sub_comment_time_sub);
 			holder.imageView = (ImageView) view.findViewById(R.id.sub_comment_image);
+			holder.textContent = (TextView) view.findViewById(R.id.sub_comment_text_body);
 			
 			
 			// Add buttons used in each list entry to the holder
@@ -189,6 +191,8 @@ public class SubCommentViewActivityAdapter extends
 		// Grabs strings to be displayed for each sub comment in the list
 		holder.textSubTitle.setText(commentList.get(position).getTitle());
 		holder.textUsername.setText(commentList.get(position).getAuthor());
+		holder.textContent.setText(commentList.get(position).getContent());
+	
 		
 		// Sets the image attached to the comment
 		if(commentList.get(position).getPhotoPath() != null){
