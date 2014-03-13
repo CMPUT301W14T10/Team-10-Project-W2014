@@ -1,16 +1,110 @@
 package ca.ualberta.team10projectw2014;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.widget.Toast;
 
 public class LocationListenerController implements LocationListener {
 
 	private Location currentBestLocation = null;
+	private boolean gpsEnabled;
+	private boolean netEnabled;
+	private Context context;
+	protected LocationManager mLocationManager;
+	private Location locationGPS;
+ 	private Location locationNet;
 
-	public LocationListenerController(Context context) {}
+	public LocationListenerController(Context context) {
+		this.context = context;
+		mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+		
+		if ( !mLocationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+	    	gpsEnabled = false;
+	        noGPSError();
+	    }
+	    
+	    else{
+	    	gpsEnabled = true;
+	    }
+	    
+	    if ( !mLocationManager.isProviderEnabled( LocationManager.NETWORK_PROVIDER ) ) {
+	    	netEnabled = false;
+	    }
+	    else{
+	    	netEnabled = true;
+	    }
+
+    	if (gpsEnabled){
+    		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 400 , 1, this);
+    	}
+    	if (netEnabled){
+    		mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 400 , 1, this);
+    	}
+    	
+    	Toast.makeText(context, "Current Best Location on create: " + currentBestLocation, Toast.LENGTH_LONG).show();
+    	
+	}
+	
+	// The following method is a direct copy from http://stackoverflow.com/questions/843675/how-do-i-find-out-if-the-gps-of-an-android-device-is-enabled received on March 9 at 2:00PM
+		protected void noGPSError(){
+			final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		    builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+		           .setCancelable(false)
+		           .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+		               public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+		                   context.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+		               }
+		           })
+		           .setNegativeButton("No", new DialogInterface.OnClickListener() {
+		               public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+		                    dialog.cancel();
+		               }
+		           });
+		    final AlertDialog alert = builder.create();
+		    alert.show();
+		}
+	
+	public Location getLastBestLocation() {
+		if (!netEnabled && gpsEnabled){
+			locationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+			makeUseOfNewLocation(locationGPS);
+		}
+		
+		if (!gpsEnabled && netEnabled){
+			locationNet = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+			makeUseOfNewLocation(locationNet);
+		}
+		else if (gpsEnabled && netEnabled){
+		
+		    Location locationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		    Location locationNet = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+	
+		    long GPSLocationTime = 0;
+		    if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
+	
+		    long NetLocationTime = 0;
+	
+		    if (null != locationNet) {
+		        NetLocationTime = locationNet.getTime();
+		    }
+	
+		    if ( 0 < GPSLocationTime - NetLocationTime ) {
+		    	makeUseOfNewLocation(locationGPS);
+		    }
+		    else{
+		    	makeUseOfNewLocation(locationNet);
+		    }
+		}
+		Toast.makeText(context, "Current Best Location on search: " + currentBestLocation, Toast.LENGTH_LONG).show();
+		return currentBestLocation;
+	}
 
 	private void makeUseOfNewLocation(Location location){
 		if ( isBetterLocation(location, currentBestLocation) ) {

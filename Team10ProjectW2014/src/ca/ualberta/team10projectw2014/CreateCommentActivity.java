@@ -55,6 +55,8 @@ public class CreateCommentActivity extends Activity{
  	private CommentDataController CDC;
  	private String photoPath = null;
  	private Uri imageUri = null;
+ 	private Location locationGPS;
+ 	private Location locationNet;
 	
 	@SuppressLint("NewApi")
 	@Override
@@ -85,85 +87,24 @@ public class CreateCommentActivity extends Activity{
 		
 		//TODO Check to see if GPS is enabled
         //TODO Start listening for location information
-        //startListeningLocation();
-	}
-	
-	// The following method is a direct copy from http://stackoverflow.com/questions/843675/how-do-i-find-out-if-the-gps-of-an-android-device-is-enabled received on March 9 at 2:00PM
-	protected void noGPSError(){
-		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	    builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
-	           .setCancelable(false)
-	           .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-	               public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-	                   startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-	               }
-	           })
-	           .setNegativeButton("No", new DialogInterface.OnClickListener() {
-	               public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-	                    dialog.cancel();
-	               }
-	           });
-	    final AlertDialog alert = builder.create();
-	    alert.show();
+        startListeningLocation();
 	}
 	
 	private void startListeningLocation(){
 		Toast.makeText(getBaseContext(), "Starting to listen for location...", Toast.LENGTH_LONG).show();
-		LocationManager mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		
-
-	    if ( !mLocationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
-	    	gpsEnabled = false;
-	        noGPSError();
-	    }
-	    
-	    else{
-	    	gpsEnabled = true;
-	    }
-	    
-	    if ( !mLocationManager.isProviderEnabled( LocationManager.NETWORK_PROVIDER ) ) {
-	    	netEnabled = false;
-	    }
-	    else{
-	    	netEnabled = true;
-	    }
-
-    	LocationListenerController locationListener = new LocationListenerController(this);  
-    	if (gpsEnabled){
-    		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5 * 60 * 1000 , 10, locationListener);
-    	}
-    	if (netEnabled){
-    		mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5 * 60 * 1000 , 10, locationListener);
-    	}
+		this.locationListener = new LocationListenerController(this);
 	}
-
+	
 	// Retrieved from http://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android on March 6 at 5:00
 	
-	private Location getLastBestLocation() {
-
-	    Location locationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-	    Location locationNet = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-	    long GPSLocationTime = 0;
-	    if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
-
-	    long NetLocationTime = 0;
-
-	    if (null != locationNet) {
-	        NetLocationTime = locationNet.getTime();
-	    }
-
-	    if ( 0 < GPSLocationTime - NetLocationTime ) {
-	        return locationGPS;
-	    }
-	    else{
-	        return locationNet;
-	    }
+	private void getLastBestLocation() {
+		
+		bestKnownLoc = locationListener.getLastBestLocation();
 
 	}
 
 	public void fillContents(String username, CommentModel parentModel){
-		setLocation();
+		
 		if(!checkStringIsAllWhiteSpace(username)){
 			this.postUsername = username;
 			setUsernameView(username);
@@ -406,9 +347,10 @@ public class CreateCommentActivity extends Activity{
 			
 			//TODO Stop listening for location information
 
-			//stopListeningLocation();
-			//setLocation();
-			//model.setLocation(this.postLocation);
+			stopListeningLocation();
+			setLocation();
+			
+			model.setLocation(this.postLocation);
 
 
 			ArrayList<CommentModel> tempList = CDC.loadFromFile();
@@ -422,7 +364,7 @@ public class CreateCommentActivity extends Activity{
 	
 	
 	private void stopListeningLocation(){
-		bestKnownLoc = getLastBestLocation();
+		getLastBestLocation();
 		if (bestKnownLoc == null){
 			Toast.makeText(getBaseContext(), "Ain't no location here", Toast.LENGTH_LONG).show();
 		}
