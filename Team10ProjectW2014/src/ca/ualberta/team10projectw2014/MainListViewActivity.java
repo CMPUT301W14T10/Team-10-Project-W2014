@@ -22,6 +22,7 @@ import java.util.Comparator;
 import ca.ualberta.team10projectw2014.controller.CommentDataController;
 import ca.ualberta.team10projectw2014.controller.UserDataController;
 
+import android.R.integer;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -272,6 +273,7 @@ public class MainListViewActivity extends Activity{
 			
 				
 				userDataController.saveToFile(user);
+				onResume();
 			}
 		});
 
@@ -344,26 +346,26 @@ public class MainListViewActivity extends Activity{
 	 * @param cmp comparator to compare CommentModels when sorting
 	 * @return the array of head comments
 	 */
-	public ArrayList<CommentModel> sort(ArrayList<CommentModel> commentList, Comparator cmp) {
-		for (int i=0; i < commentList.size()-1; i++) {
+	public ArrayList<CommentModel> sort(ArrayList<CommentModel> list, Comparator cmp) {
+		for (int i=0; i < list.size()-1; i++) {
 			// Sets current comment as the one that should appear first
-			CommentModel maxComment = commentList.get(i);
+			CommentModel maxComment = list.get(i);
 			int maxIndex = i;
 			// Iterates through remaining comments in the list
-			for (int j=i+1; j < commentList.size(); j++) {
+			for (int j=i+1; j < list.size(); j++) {
 				// If i compared to j = -1, j should be max value
-				if (cmp.compare(commentList.get(i), commentList.get(j)) < 0) {
-					maxComment = commentList.get(j);
+				if (cmp.compare(list.get(i), list.get(j)) < 0) {
+					maxComment = list.get(j);
 					maxIndex = j;
 				}
 			}
 			// Swap current comment with the maxComment
 			CommentModel tempComment;
-			tempComment = commentList.get(i);
-			commentList.set(i, maxComment);
-			commentList.set(maxIndex, tempComment);
+			tempComment = list.get(i);
+			list.set(i, maxComment);
+			list.set(maxIndex, tempComment);
 		}
-		return commentList;
+		return list;
 	}
 	
 	/**
@@ -375,22 +377,22 @@ public class MainListViewActivity extends Activity{
 	 * @param cmp comparator to compare CommentModels when sorting
 	 * @return the array of head comments
 	 */
-	public ArrayList<CommentModel> pictureSort(ArrayList<CommentModel> commentList, Comparator cmp) {
+	public ArrayList<CommentModel> pictureSort(ArrayList<CommentModel> list, Comparator cmp) {
 		ArrayList<CommentModel> noPicArray = new ArrayList<CommentModel>();
-		for (int i=0; i < commentList.size(); i++) {
+		for (int i=0; i < list.size(); i++) {
 			// If comment does not have a photo
-			if (commentList.get(i).getPhotoPath() == null) {
+			if (list.get(i).getPhotoPath() == null) {
 				// Add it to the array containing comments without pictures
-				noPicArray.add(commentList.get(i));
+				noPicArray.add(list.get(i));
 				// Remove it from the array containing comments with pictures
-				commentList.remove(i);
+				list.remove(i);
 			}
 		}
 		// Sort each array
-		commentList = sort(commentList, cmp);
+		list = sort(list, cmp);
 		noPicArray = sort(noPicArray, cmp);
 		// Combine both arrays
-		commentList.addAll(noPicArray);
-		return commentList;
+		list.addAll(noPicArray);
+		return list;
 	}
 }	
