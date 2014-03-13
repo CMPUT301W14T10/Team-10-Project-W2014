@@ -49,7 +49,7 @@ public class UserDataController implements DataController<UserModel> {
 
 	public UserModel loadFromFile(){
 	    FileInputStream fis;
-	    UserModel list = new UserModel(fileContext);
+	    UserModel user = new UserModel(fileContext);
 	        try
 	        {
 	            fis = fileContext.openFileInput(FILE_NAME);
@@ -59,7 +59,7 @@ public class UserDataController implements DataController<UserModel> {
 	            Type fooType = new TypeToken<UserModel>() {}.getType();
 	            UserModel list_temp = gson.fromJson(isr, fooType);
 	            if(list_temp != null)
-	            	list = list_temp;
+	            	user = list_temp;
 	            isr.close();
 	            fis.close();
 	        } catch (FileNotFoundException e)
@@ -70,6 +70,6 @@ public class UserDataController implements DataController<UserModel> {
 	                e.printStackTrace();
 	            }
 	    
-	    return list;
+	    return user;
 	}
 }

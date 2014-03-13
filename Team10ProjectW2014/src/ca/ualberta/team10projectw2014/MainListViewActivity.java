@@ -76,6 +76,7 @@ public class MainListViewActivity extends Activity{
 		}
 	};
 	
+	//comparator used in sorting comments by number of likes:
 	private static Comparator popularityCompare = new Comparator(){
 		public int compare(Object comment1, Object comment2){
 			int favs1 = ((CommentModel) comment1).getNumFavourites();
@@ -110,7 +111,8 @@ public class MainListViewActivity extends Activity{
 	
 	/**
 	 * I do almost the same thing here as in onCreate, but refresh the view
-	 * if there has already been data loaded:
+	 * if there has already been data loaded and sort comments
+	 * according to the options selected:
 	 */
 	protected void onResume(){
 		super.onResume(); 
@@ -151,7 +153,7 @@ public class MainListViewActivity extends Activity{
 				CommentModel headComment = commentList.get(position);
 				Intent subCommentView = new Intent(getApplicationContext(), SubCommentViewActivity.class);
 				subCommentView.putExtra("comment", headComment);
-				subCommentView.putExtra("userData", user);
+				subCommentView.putExtra("UserModel", user);
 				view.getContext().startActivity(subCommentView);
 				
 			}});
@@ -176,7 +178,13 @@ public class MainListViewActivity extends Activity{
 				sort_comments();
 				return true;
 			case R.id.action_favourites_main:
+				commentList = user.getFavourites();
+				adapter.notifyDataSetChanged();
+				return true;
 			case R.id.action_want_to_read_main:
+				commentList = user.getFavourites();
+				adapter.notifyDataSetChanged();
+				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
