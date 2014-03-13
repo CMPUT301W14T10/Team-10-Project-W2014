@@ -113,8 +113,8 @@ public class MainListViewAdapter extends BaseAdapter {
 		holder.textUsername.setText(headCommentList.get(position).getAuthor());
 		
 		// TODO implement location when its working and doesn't crash everything
-		//holder.textLocation.setText(headCommentList.get(position).getLocation().
-				//getName());
+		holder.textLocation.setText("at: " + headCommentList.get(position).getLocation().
+				getName());
 		
 		// String for time retrieved using private method
 		holder.textTime.setText(this.timeToString(headCommentList.get(position).
