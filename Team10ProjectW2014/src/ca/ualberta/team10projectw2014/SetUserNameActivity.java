@@ -16,14 +16,14 @@ public class SetUserNameActivity extends Activity {
 	private EditText userNameField;
 	private Button setButton;
 	private Button skipButton;
-	private UserDataController userDataController;
+	//private UserDataController userDataController;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_set_user_name);
 		
-		userDataController = new UserDataController(this, this.getString(R.string.user_sav));
+		//userDataController = new UserDataController(this, this.getString(R.string.user_sav));
 		
 		//Disable Actionbar Icon and set title
 		ActionBar actionbar = getActionBar();
@@ -38,23 +38,50 @@ public class SetUserNameActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				
 				if(userNameField.getText().length() == 0) {
 					Toast.makeText(getApplicationContext(), "Enter username in text field", Toast.LENGTH_SHORT).show();
 				}else{
+					//create a new user model and set the username to the one provided by the user.
 					userData = new UserModel(getApplicationContext());
 					userData.setUsername(userNameField.getText().toString());
 					
-					//userDataController.saveToFile(userData);
-					Intent mainListViewActivity = new Intent(getApplicationContext(),MainListViewActivity.class);
-					mainListViewActivity.putExtra("userData", userData);
-					getApplicationContext().startActivity(mainListViewActivity);
-					finish();
+					startNewActivity(userData);
+		
 				}
 			}
 		});
 		
+		skipButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				Toast.makeText(getApplicationContext(), "This can be set later", Toast.LENGTH_LONG).show();
+				//Create a new user with an anonymous username. This can be edited later
+				userData  = new UserModel(getApplicationContext());
+				startNewActivity(userData);
+				
+			}
+		});
+		
 
+		
+	}
+	
+	/***
+	 * Function takes the userModel created with or without a provided username from
+	 * the user and sends it to the mainListView activity
+	 * @author sgiang92
+	 * 
+	 * @param UserModel user
+	 */
+	private void startNewActivity(UserModel user){
+		//userDataController.saveToFile(user);
+		Intent mainListViewActivity = new Intent(getApplicationContext(),MainListViewActivity.class);
+		mainListViewActivity.putExtra("userData", user);
+		getApplicationContext().startActivity(mainListViewActivity);
+		finish();
 		
 	}
 }
