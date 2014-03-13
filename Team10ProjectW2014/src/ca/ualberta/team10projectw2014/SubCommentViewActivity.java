@@ -155,7 +155,7 @@ public class SubCommentViewActivity extends Activity {
 		inflater.inflate(R.menu.subcommentview, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-
+	
 	/**
 	 * Capture the cases where the menu items are selected.
 	 * 
@@ -171,6 +171,8 @@ public class SubCommentViewActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
+		
+		
 		switch (item.getItemId()) {
 		case R.id.action_reply:
 			openReply();
