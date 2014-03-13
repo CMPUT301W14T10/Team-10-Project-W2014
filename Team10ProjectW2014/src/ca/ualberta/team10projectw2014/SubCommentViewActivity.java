@@ -73,8 +73,9 @@ public class SubCommentViewActivity extends Activity {
 		ActionBar actionbar = getActionBar();
 		actionbar.setDisplayShowHomeEnabled(false);
 		
-		userData = (UserModel) bundle.getSerializable("UserModel");
-
+		//userData = (UserModel) bundle.getSerializable("UserModel");
+		userData = new UserModel(this);
+		userData.setUsername("test username");
 
 		if (bundle.containsKey("comment")) {
 
