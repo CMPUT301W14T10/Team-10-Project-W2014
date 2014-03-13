@@ -369,11 +369,10 @@ public class CreateCommentActivity extends Activity{
 			Toast.makeText(getBaseContext(), "Ain't no location here", Toast.LENGTH_LONG).show();
 		}
 		else{
-			Toast.makeText(getBaseContext(), "Getting location...", Toast.LENGTH_LONG).show();
 			Location location = locationListener.getCurrentBestLocation();
 			bestKnownLoc.setLatitude(location.getLatitude());
 			bestKnownLoc.setLongitude(location.getLongitude());
-			mLocationManager.removeUpdates(locationListener);
+			locationListener.removeUpdates();
 		}
 	}
 	

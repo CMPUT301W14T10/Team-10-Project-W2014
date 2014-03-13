@@ -48,7 +48,8 @@ public class LocationListenerController implements LocationListener {
     		mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 400 , 1, this);
     	}
     	
-    	Toast.makeText(context, "Current Best Location on create: " + currentBestLocation, Toast.LENGTH_LONG).show();
+    	currentBestLocation = getLastBestLocation();
+    	Toast.makeText(context, "Current Best Location on create: " + currentBestLocation.getLatitude() + " " + currentBestLocation.getLongitude(), Toast.LENGTH_LONG).show();
     	
 	}
 	
@@ -102,7 +103,7 @@ public class LocationListenerController implements LocationListener {
 		    	makeUseOfNewLocation(locationNet);
 		    }
 		}
-		Toast.makeText(context, "Current Best Location on search: " + currentBestLocation, Toast.LENGTH_LONG).show();
+		Toast.makeText(context, "Current Best Location on search: " + currentBestLocation.getLatitude() + " " + currentBestLocation.getLongitude(), Toast.LENGTH_LONG).show();
 		return currentBestLocation;
 	}
 
@@ -110,6 +111,10 @@ public class LocationListenerController implements LocationListener {
 		if ( isBetterLocation(location, currentBestLocation) ) {
 	        currentBestLocation = location;
 	    }
+	}
+	
+	public void removeUpdates(){
+		mLocationManager.removeUpdates(this);
 	}
 	
 	public Location getCurrentBestLocation(){
