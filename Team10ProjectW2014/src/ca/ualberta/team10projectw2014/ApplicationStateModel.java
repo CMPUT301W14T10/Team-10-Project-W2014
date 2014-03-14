@@ -24,7 +24,7 @@ public class ApplicationStateModel {
 	private static ApplicationStateModel instance = null;
 
 	protected ApplicationStateModel() {
-		// Exists only to defeat instantiation.
+		// Exists only to defeat instantiation.		
 	}
 	public static ApplicationStateModel getInstance() {
 		if(instance == null) {
@@ -126,7 +126,14 @@ public class ApplicationStateModel {
 	}
 
 	public void updateMainAdapter(){
+		if(commentList.isEmpty())
+				Log.e("The list is empty...", "empty list");
 		MLVAdapter.notifyDataSetChanged();
+	}
+	
+	public void updateSubAdapter()
+	{
+		SCVAdapter.notifyDataSetChanged();
 	}
 
 	public void saveComments(){
@@ -150,6 +157,7 @@ public class ApplicationStateModel {
 
 	public void loadComments(){
 		FileInputStream fis;
+		commentList = new ArrayList<CommentModel>();
 		try
 		{
 			fis = COMMENT_fileContext.openFileInput(COMMENT_FILE_NAME);
@@ -274,6 +282,7 @@ public class ApplicationStateModel {
 		 list.addAll(noPicArray);
 		 return list;
 	 }
+
 }	
 
 

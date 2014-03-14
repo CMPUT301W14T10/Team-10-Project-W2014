@@ -1,19 +1,13 @@
 package ca.ualberta.team10projectw2014;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -24,7 +18,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -38,7 +31,6 @@ public class CreateCommentActivity extends Activity{
 	private String postContents;
 	private LocationModel postLocation;
 	private Bitmap postPhoto;
-	private CommentModel parentModel;
 	private EditText ueditText;
 	private EditText teditText;
 	private EditText ceditText;
@@ -111,16 +103,15 @@ public class CreateCommentActivity extends Activity{
 			this.postUsername = username;
 			setUsernameView(username);
 		}
-		/*else{
+		else{
 			if(checkStringIsAllWhiteSpace(username)){
 				this.postUsername = "Anonymous";
 				setUsernameView(this.postUsername);
 			}
 			//setUsernameView("Please set a username");
-		}*/
-		if(parentModel != null){
-			this.parentModel = parentModel;
-			this.postTitle = "RE:" + parentModel.getTitle();
+		}
+		if(appState.getCreateCommentParent() != null){
+			this.postTitle = "RE:" + appState.getCreateCommentParent().getTitle();
 			teditText.setKeyListener(null);
 			setTitleView(postTitle);
 		}
@@ -297,13 +288,13 @@ public class CreateCommentActivity extends Activity{
 		}
 		else{
 			
-			if(this.parentModel != null){
+			if(appState.getCreateCommentParent() != null){
 				
 				if(checkStringIsAllWhiteSpace(this.postUsername)){
 					raiseUsernameIncompleteError();
 				}
 				// This should be edited so that the model handles all the getting and setting
-				model = new SubCommentModel(this.parentModel);
+				model = new SubCommentModel(appState.getCreateCommentParent());
 				model.setAuthor(this.postUsername);
 				model.setContent(this.postContents);
 				model.setLocation(this.postLocation);
@@ -320,7 +311,8 @@ public class CreateCommentActivity extends Activity{
 				model.setNumFavourites(0);
 				
 				//Adds the newly created model to its referrent's list of subcomments
-				this.parentModel.addSubComment((SubCommentModel) model);
+				appState.getCreateCommentParent().addSubComment((SubCommentModel) model);
+				appState.updateSubAdapter();
 			}
 			else{
 				if(checkStringIsAllWhiteSpace(this.postUsername)){
@@ -342,6 +334,7 @@ public class CreateCommentActivity extends Activity{
 				model.setTimestamp(calendar);
 				model.setNumFavourites(0);
 				
+				appState.getCommentList().add(model);
 				//TODO Add this head comment to the list of head comments on the phone
 			}
 			
@@ -354,6 +347,7 @@ public class CreateCommentActivity extends Activity{
 
 			appState.saveComments();
 			appState.loadComments();
+			appState.updateMainAdapter();
 			//Destroy this activity so that we return to the previous one.
 			goBack();
 		}

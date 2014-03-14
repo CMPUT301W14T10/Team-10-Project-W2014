@@ -46,12 +46,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 public class SubCommentViewActivity extends Activity {
-
-	private CommentModel headCommentData;
 	private ListView subListView;
-	private UserModel userData;
-	private SubCommentViewActivityAdapter adapter;
-	private ArrayList<CommentModel> commentsList = new ArrayList<CommentModel>();
 	private ApplicationStateModel appState;
 	
 
@@ -60,9 +55,6 @@ public class SubCommentViewActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sub_comment_view);
 		appState = ApplicationStateModel.getInstance();
-		appState.loadComments();
-		appState.loadUser();
-		userData = appState.getUserModel();
 		appState.setFileContext(this);
 	}
 
@@ -84,28 +76,25 @@ public class SubCommentViewActivity extends Activity {
 		//userData = new UserModel(this);
 		//userData.setUsername("test username");
 
-		if (bundle.containsKey("comment")) {
-
-			headCommentData = (CommentModel) bundle.getSerializable("comment");
-			
+		//if (bundle.containsKey("comment")) {			
 
 			// Set the Title in the Actionbar to the title of the head comment
-			actionbar.setTitle(headCommentData.getTitle());
+			actionbar.setTitle(appState.getSubCommentViewHead().getTitle());
 
 			// Gets all the SubComments and all its subComments
-			AddCommentToList(headCommentData.getSubComments());
+			AddCommentToList(appState.getSubCommentViewHead().getSubComments());
 			
-			adapter = new SubCommentViewActivityAdapter(this,
-					R.layout.sub_comment_view_sub_comment_item, commentsList,
-					userData);
+			appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
+					R.layout.sub_comment_view_sub_comment_item, appState.getSubCommentViewHead().getSubComments(),
+					appState.getUserModel()));
 
-		} else if(bundle.containsKey("favourite")) {
+		/*} else if(bundle.containsKey("favourite")) {
 			// Set the Title in the Actionbar to the title to favourites
 			actionbar.setTitle("Favourites");
 			
-			adapter = new SubCommentViewActivityAdapter(this,
-					R.layout.sub_comment_view_sub_comment_item, userData.getFavourites(),
-					userData);
+			appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
+					R.layout.sub_comment_view_sub_comment_item, appState.getUserModel().getFavourites(),
+					appState.getUserModel()));
 			
 			
 			
@@ -115,19 +104,19 @@ public class SubCommentViewActivity extends Activity {
 			// Set the Title in the Actionbar to the title to Want to read 
 			actionbar.setTitle("Want to Read");
 			
-			adapter = new SubCommentViewActivityAdapter(this,
-					R.layout.sub_comment_view_sub_comment_item, userData.getWantToReadComments(),
-					userData);
-		}
+			appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
+					R.layout.sub_comment_view_sub_comment_item, appState.getUserModel().getWantToReadComments(),
+					appState.getUserModel()));
+		}*/
 
 		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
 
 
 
 		// Set the first item in the list to the header Comment
-		subListView.addHeaderView((View) SetHeader(headCommentData));
+		subListView.addHeaderView((View) SetHeader(appState.getSubCommentViewHead()));
 
-		subListView.setAdapter(adapter);
+		subListView.setAdapter(appState.getSCVAdapter());
 
 	}
 
@@ -172,7 +161,7 @@ public class SubCommentViewActivity extends Activity {
 			return true;
 		case R.id.action_favourite:
 			// Add the head comment to the users favourite list
-			addFavourite(headCommentData);
+			addFavourite(appState.getSubCommentViewHead());
 			return true;
 		case R.id.action_edit_username:
 			// Bring up dialog box for the user to edit username
@@ -207,9 +196,9 @@ public class SubCommentViewActivity extends Activity {
 		// - title
 		Intent createComment = new Intent(getApplicationContext(),
 				CreateCommentActivity.class);
-		appState.setCreateCommentParent(headCommentData);
+		appState.setCreateCommentParent(appState.getSubCommentViewHead());
 		//createComment.putExtra("comment",headCommentData);
-		createComment.putExtra("username",userData.getUsername());
+		createComment.putExtra("username",appState.getUserModel().getUsername());
 		this.startActivity(createComment);
 
 	}
@@ -224,7 +213,7 @@ public class SubCommentViewActivity extends Activity {
 	 */
 	private void addFavourite(CommentModel comment) {
 		// TODO: Implement addFavourite
-		userData.getFavourites().add(comment);
+		appState.getUserModel().getFavourites().add(comment);
 	}
 
 	/***
@@ -249,7 +238,7 @@ public class SubCommentViewActivity extends Activity {
 				Editable usernameEditable = usernameText.getText();
 				String usernameString = usernameEditable.toString();
 
-				userData.setUsername(usernameString);
+				appState.getUserModel().setUsername(usernameString);
 
 			}
 		});
@@ -335,7 +324,7 @@ public class SubCommentViewActivity extends Activity {
 			public void onClick(View v) {
 
 				// TODO Auto-generated method stub
-				openMoreDialog(headCommentData);
+				openMoreDialog(appState.getSubCommentViewHead());
 
 			}
 		});
@@ -371,7 +360,7 @@ public class SubCommentViewActivity extends Activity {
 			return;
 		} else {
 			for (SubCommentModel subComment : subCommentList) {
-				this.commentsList.add(subComment);
+				appState.getSubCommentViewHead().getSubComments().add(subComment);
 				if (subComment.getSubComments().size() > 0) {
 					AddCommentToList(subComment.getSubComments());
 				}
@@ -401,13 +390,13 @@ public class SubCommentViewActivity extends Activity {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
-						userData.getFavourites().add(commentData);
+						appState.getUserModel().getFavourites().add(commentData);
 
 					}
 				});
 
 		// User will only have the option if the
-		if (userData.getAndroidID().equals(comment.getAuthorAndroidID())) {
+		if (appState.getUserModel().getAndroidID().equals(comment.getAuthorAndroidID())) {
 			moreDialog.setNeutralButton("Edit Comment",
 					new DialogInterface.OnClickListener() {
 
@@ -447,18 +436,18 @@ public class SubCommentViewActivity extends Activity {
 
 		RadioButton button;
 
-		if (userData.isSortByDate()) {
+		if (appState.getUserModel().isSortByDate()) {
 			button = (RadioButton) sortRadioGroup.getChildAt(0);
 			button.toggle();
-		} else if (userData.isSortByLoc()) {
+		} else if (appState.getUserModel().isSortByLoc()) {
 			button = (RadioButton) sortRadioGroup.getChildAt(1);
 			button.toggle();
-		} else if (userData.isSortByPopularity()) {
+		} else if (appState.getUserModel().isSortByPopularity()) {
 			button = (RadioButton) sortRadioGroup.getChildAt(2);
 			button.toggle();
 		}
 
-		if (userData.isSortByPic()) {
+		if (appState.getUserModel().isSortByPic()) {
 			button = (RadioButton) ((ViewGroup) optionsView.getChildAt(2))
 					.getChildAt(0);
 			button.toggle();

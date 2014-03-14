@@ -86,6 +86,7 @@ public class MainListViewActivity extends Activity{
 		appState.setFileContext(this);
 		appState.loadComments();
 		appState.loadUser();		
+		
 		/**
 		 * Head Comment Sorting:
 		 * Checks which selection method is active and sorts the list accordingly
@@ -242,6 +243,7 @@ public class MainListViewActivity extends Activity{
 
 		//also set a cancel negative button that does nothing but close the 
 		//dialog window:
+		
 		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 			}

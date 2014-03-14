@@ -39,11 +39,11 @@ import android.widget.Toast;
  */
 
 public class SubCommentViewActivityAdapter extends
-		ArrayAdapter<CommentModel> {
+		ArrayAdapter<SubCommentModel> {
 
 	private Context context;
 	private int layoutResourceId;
-	private ArrayList<CommentModel> commentList;
+	private ArrayList<SubCommentModel> commentList;
 	private UserModel userData;
 
 	
@@ -69,7 +69,7 @@ public class SubCommentViewActivityAdapter extends
 	public SubCommentViewActivityAdapter(
 			Context context, 
 			int layoutResourceId,
-			ArrayList<CommentModel> commentList,UserModel userData) {
+			ArrayList<SubCommentModel> commentList,UserModel userData) {
 
 		super(context, layoutResourceId, commentList);
 		this.context = context;
