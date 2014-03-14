@@ -26,8 +26,7 @@ import android.provider.Settings.Secure;
  * This class acts as the model for the User.
  * @author Steven Giang, David Yee
  */
-public class UserModel implements Serializable {
-	private static final long serialVersionUID = 87468974;
+public class UserModel{
 	private String androidID;
 	private ArrayList<CommentModel> favourites;
 	private ArrayList<CommentModel> readComments;

@@ -23,9 +23,8 @@ import java.util.ArrayList;
  * This class acts as the model for the sub comments.
  * @author Costa Zervos
  */
-public class SubCommentModel extends CommentModel implements Serializable{
+public class SubCommentModel extends CommentModel{
 	private CommentModel respondedTo;
-	private static final long serialVersionUID = 8643154;
 
 	/**
 	 * Constructor method that sets the comment this sub comment is responding to.

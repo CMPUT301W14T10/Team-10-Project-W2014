@@ -52,19 +52,25 @@ public class SubCommentViewActivity extends Activity {
 	private UserModel userData;
 	private SubCommentViewActivityAdapter adapter;
 	private ArrayList<CommentModel> commentsList = new ArrayList<CommentModel>();
+	private ApplicationStateModel appState;
 	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sub_comment_view);
-
+		appState = ApplicationStateModel.getInstance();
+		appState.loadComments();
+		appState.loadUser();
+		userData = appState.getUserModel();
+		appState.setFileContext(this);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 
+		appState.setFileContext(this);
 		/*
 		 * Get data being passed to this activity
 		 */
@@ -75,8 +81,8 @@ public class SubCommentViewActivity extends Activity {
 		actionbar.setDisplayShowHomeEnabled(false);
 		
 		//userData = (UserModel) bundle.getSerializable("UserModel");
-		userData = new UserModel(this);
-		userData.setUsername("test username");
+		//userData = new UserModel(this);
+		//userData.setUsername("test username");
 
 		if (bundle.containsKey("comment")) {
 
@@ -196,13 +202,13 @@ public class SubCommentViewActivity extends Activity {
 	 * @param
 	 */
 	private void openReply() {
-		// TODO: Implement openReply
 		// send an intent to CreateCommentActivity
 		// send info:
 		// - title
 		Intent createComment = new Intent(getApplicationContext(),
 				CreateCommentActivity.class);
-		createComment.putExtra("comment",headCommentData);
+		appState.setCreateCommentParent(headCommentData);
+		//createComment.putExtra("comment",headCommentData);
 		createComment.putExtra("username",userData.getUsername());
 		this.startActivity(createComment);
 

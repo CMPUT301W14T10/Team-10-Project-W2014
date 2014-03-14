@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import ca.ualberta.team10projectw2014.controller.CommentDataController;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -52,7 +50,7 @@ public class CreateCommentActivity extends Activity{
  	protected LocationManager mLocationManager;
  	protected Boolean gpsEnabled;
  	protected Boolean netEnabled;
- 	private CommentDataController CDC;
+ 	private ApplicationStateModel appState;
  	private String photoPath = null;
  	private Uri imageUri = null;
  	private Location locationGPS;
@@ -63,8 +61,9 @@ public class CreateCommentActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_comment_activity);
-        CDC = new CommentDataController(this, this.getString(R.string.file_name_string));
-        
+        appState = ApplicationStateModel.getInstance();
+		appState.setFileContext(this);
+
         ueditText = (EditText)findViewById(R.id.cc_username);
 		teditText = (EditText)findViewById(R.id.cc_title);
 		ceditText = (EditText)findViewById(R.id.cc_content);
@@ -75,11 +74,13 @@ public class CreateCommentActivity extends Activity{
 	@Override 
 	protected void onResume(){
 		super.onResume();
-		
+		appState.setFileContext(this);
+
 		//Receive information from the intent
 		Bundle bundle = getIntent().getExtras();
 		String receivedUsername = (String) bundle.getSerializable("username");
-		CommentModel receivedComment = (CommentModel) bundle.getSerializable("comment");
+		//CommentModel receivedComment = (CommentModel) bundle.getSerializable("comment"); //TODO CHANGE FROM SERIALIZABLE TO SIMPLE OBJECT
+		CommentModel receivedComment = appState.getCreateCommentParent();
 		fillContents(receivedUsername, receivedComment);
 		
 		//Set imageView to either "No Image" or the picture returned from camera
@@ -358,9 +359,7 @@ public class CreateCommentActivity extends Activity{
 			model.setLocation(this.postLocation);
 
 
-			ArrayList<CommentModel> tempList = CDC.loadFromFile();
-			tempList.add(model);
-			CDC.saveToFile(tempList);
+			appState.saveComments();
 			
 			//Destroy this activity so that we return to the previous one.
 			goBack();

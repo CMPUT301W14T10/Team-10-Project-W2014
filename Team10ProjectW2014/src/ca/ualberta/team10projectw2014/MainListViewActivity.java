@@ -19,9 +19,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 
-import ca.ualberta.team10projectw2014.controller.CommentDataController;
-import ca.ualberta.team10projectw2014.controller.UserDataController;
-
 import android.R.integer;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -53,10 +50,9 @@ public class MainListViewActivity extends Activity{
 	private ArrayList<CommentModel> commentList;
 	private UserModel user;
 	private static final NetworkConnectionController connectionController = new NetworkConnectionController();
-	private UserDataController userDataController;
 	private static LayoutInflater layoutInflater;
 	private static Location location = null;
-	private CommentDataController commentDataController;
+	private ApplicationStateModel appState;
 	
 	//comparator used in sorting comments by location:
 	private static Comparator locCompare = new Comparator(){
@@ -94,9 +90,15 @@ public class MainListViewActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_head_comment_view);
 		layoutInflater = LayoutInflater.from(this);
-		
-		userDataController = new UserDataController(this, this.getString(R.string.user_sav));
-		commentDataController = new CommentDataController(this, this.getString(R.string.file_name_string));
+		commentList = new ArrayList<CommentModel>();
+		appState = ApplicationStateModel.getInstance();
+		appState.setFileContext(this);
+		appState.loadUser();
+		adapter = new MainListViewAdapter(this, commentList);
+		appState.setMLVAdapter(adapter);
+		appState.loadComments();
+		commentList = appState.getCommentList();
+		user = appState.getUserModel();
 	}
 
 	
@@ -119,10 +121,11 @@ public class MainListViewActivity extends Activity{
 		super.onResume(); 
 		setContentView(R.layout.activity_head_comment_view);
 		commentView = (ListView) findViewById(R.id.HeadCommentList);
-		
-		user = userDataController.loadFromFile();
-		commentList = commentDataController.loadFromFile();
-		adapter = new MainListViewAdapter(this, commentList);
+		appState.setFileContext(this);
+
+		appState.loadComments();
+		appState.loadUser();
+		commentList = appState.getCommentList();
 		
 		/**
 		 * Head Comment Sorting:
@@ -153,8 +156,8 @@ public class MainListViewActivity extends Activity{
 					long id){
 				CommentModel headComment = commentList.get(position);
 				Intent subCommentView = new Intent(getApplicationContext(), SubCommentViewActivity.class);
-				subCommentView.putExtra("comment", headComment);
-				subCommentView.putExtra("UserModel", user);
+				//subCommentView.putExtra("comment", (Object) headComment);
+				appState.setSubCommentViewHead(headComment);
 				view.getContext().startActivity(subCommentView);
 				
 			}});
@@ -170,6 +173,7 @@ public class MainListViewActivity extends Activity{
 			case R.id.add_comment:
 				Intent createComment = new Intent(getApplicationContext(), CreateCommentActivity.class);
 				createComment.putExtra("username", user.getUsername());
+				appState.setCreateCommentParent(null);
 				this.startActivity(createComment);
 				return true;
 			case R.id.action_edit_username_main:
@@ -215,7 +219,7 @@ public class MainListViewActivity extends Activity{
 				String usernameString = usernameEditable.toString();
 				
 				user.setUsername(usernameString);
-				userDataController.saveToFile(user);
+				appState.saveUser();
 			}
 		});
 
@@ -272,7 +276,7 @@ public class MainListViewActivity extends Activity{
 			public void onClick(DialogInterface dialog, int whichButton) {
 			
 				
-				userDataController.saveToFile(user);
+				appState.saveUser();
 				onResume();
 			}
 		});

@@ -27,11 +27,10 @@ import android.net.Uri;
  * This class acts as the super class model for comments.
  * @author David Yee
  */
-public class CommentModel implements Serializable {
+public class CommentModel{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 9023734;
 	private String title;
 	private String content;
 	private String author;

@@ -53,7 +53,8 @@ public class SubCommentViewActivityTests extends
 		Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.setClassName("ca.ualberta.team10projectw2014",
 				"ca.ualberta.team10projectw2014.SubCommentViewActivity");
-		intent.putExtra("HeadModel", headComment);
+		//TODO change this from putExtra:
+		//intent.putExtra("HeadModel", headComment);
 		setActivityIntent(intent);
 
 		// get the activity and call it when necessary (start the activity)
@@ -98,7 +99,8 @@ public class SubCommentViewActivityTests extends
 		Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.setClassName("ca.ualberta.team10projectw2014",
 				"ca.ualberta.team10projectw2014.SubCommentViewActivity");
-		intent.putExtra("HeadModel", headComment);
+		//TODO change this from putExtra:
+		//intent.putExtra("HeadModel", headComment);
 		setActivityIntent(intent);
 
 		// get the activity and call it when necessary (start the activity)
@@ -188,7 +190,8 @@ public class SubCommentViewActivityTests extends
 		Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.setClassName("ca.ualberta.team10projectw2014",
 				"ca.ualberta.team10projectw2014.SubCommentViewActivity");
-		intent.putExtra("HeadModel", headComment);
+		//TODO change this from putExtra:
+		//intent.putExtra("HeadModel", headComment);
 		setActivityIntent(intent);
 
 		// get the activity and call it when necessary (start the activity)
