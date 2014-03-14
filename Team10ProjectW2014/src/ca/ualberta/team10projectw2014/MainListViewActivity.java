@@ -49,7 +49,6 @@ public class MainListViewActivity extends Activity{
 	private MainListViewAdapter adapter;
 	private ArrayList<CommentModel> commentList;
 	private UserModel user;
-	private static final NetworkConnectionController connectionController = new NetworkConnectionController();
 	private static LayoutInflater layoutInflater;
 	private static Location location = null;
 	private ApplicationStateModel appState;
@@ -90,14 +89,15 @@ public class MainListViewActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_head_comment_view);
 		layoutInflater = LayoutInflater.from(this);
-		commentList = new ArrayList<CommentModel>();
 		appState = ApplicationStateModel.getInstance();
 		appState.setFileContext(this);
+		appState.loadComments();
+		appState.setCommentList(commentList);
 		appState.loadUser();
+		commentList = appState.getCommentList();
 		adapter = new MainListViewAdapter(this, commentList);
 		appState.setMLVAdapter(adapter);
-		appState.loadComments();
-		commentList = appState.getCommentList();
+		appState.updateMainAdapter();
 		user = appState.getUserModel();
 	}
 
@@ -122,17 +122,15 @@ public class MainListViewActivity extends Activity{
 		setContentView(R.layout.activity_head_comment_view);
 		commentView = (ListView) findViewById(R.id.HeadCommentList);
 		appState.setFileContext(this);
-
 		appState.loadComments();
 		appState.loadUser();
-		commentList = appState.getCommentList();
 		
 		/**
 		 * Head Comment Sorting:
 		 * Checks which selection method is active and sorts the list accordingly
 		 */
 		// Sort by picture
-		if (user.isSortByPic() == true) {
+		/*if (user.isSortByPic() == true) {
 			// Sort by date
 			if (user.isSortByDate() == true) {
 				commentList = pictureSort(commentList, dateCompare);
@@ -145,7 +143,7 @@ public class MainListViewActivity extends Activity{
 				commentList = sort(commentList, dateCompare);
 			}
 			
-		}
+		}*/
 		
 		commentView.setAdapter(adapter);
 		adapter.notifyDataSetChanged();

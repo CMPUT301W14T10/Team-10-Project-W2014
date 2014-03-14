@@ -98,22 +98,20 @@ protected ApplicationStateModel() {
    
    public void loadComments(){
 	    FileInputStream fis;
-	    commentList = new ArrayList<CommentModel>();
 	        try
 	        {
-	        	if(COMMENT_fileContext == null)
-	        			Log.e("No file Context", "Context is null");
 	            fis = COMMENT_fileContext.openFileInput(COMMENT_FILE_NAME);
 	            InputStreamReader isr = new InputStreamReader(fis);
 	            Gson gson = new Gson();
 	            
 	            Type fooType = new TypeToken<ArrayList<CommentModel>>() {}.getType();
 	            ArrayList<CommentModel> list_temp = gson.fromJson(isr, fooType);
-	            if(list_temp != null)
-	            	commentList = list_temp;
+	            if(list_temp != null){
+	            	for(int i = 0; i < list_temp.size(); i++)
+	            	commentList.add(list_temp.get(i));
+	            }
 	            isr.close();
 	            fis.close();
-	            MLVAdapter.notifyDataSetChanged();
 	        } catch (FileNotFoundException e)
 	            {
 	                e.printStackTrace();
@@ -171,9 +169,16 @@ protected ApplicationStateModel() {
 		return commentList;
 	}
 
+	public void setCommentList(ArrayList<CommentModel> commentList) {
+	this.commentList = commentList;
+}
+
 	public UserModel getUserModel() {
 		return userModel;
 	}
 
+	public void updateMainAdapter(){
+		MLVAdapter.notifyDataSetChanged();
+	}
    
 }

@@ -24,6 +24,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -284,7 +285,6 @@ public class CreateCommentActivity extends Activity{
 	
 	//Called when the user presses "Post" button to create and store a new comment
 	public void attemptCommentCreation(View v){
-		
 		this.postContents = ceditText.getText().toString();
 		this.postUsername = ueditText.getText().toString();
 		this.postTitle = teditText.getText().toString();
@@ -343,19 +343,17 @@ public class CreateCommentActivity extends Activity{
 				model.setNumFavourites(0);
 				
 				//TODO Add this head comment to the list of head comments on the phone
-			
 			}
 			
 			//TODO Stop listening for location information
 
-			stopListeningLocation();
-			setLocation();
+			//stopListeningLocation();
+			//setLocation();
 			
 			model.setLocation(this.postLocation);
 
-
 			appState.saveComments();
-			
+			appState.loadComments();
 			//Destroy this activity so that we return to the previous one.
 			goBack();
 		}
