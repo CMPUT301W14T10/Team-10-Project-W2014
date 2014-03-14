@@ -16,18 +16,13 @@
 
 package ca.ualberta.team10projectw2014;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Comparator;
 
-import android.R.integer;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.text.Editable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,40 +41,10 @@ import android.widget.RadioGroup;
  */
 public class MainListViewActivity extends Activity{
 	private ListView commentView;
-	private MainListViewAdapter adapter;
-	private ArrayList<CommentModel> commentList;
-	private UserModel user;
 	private static LayoutInflater layoutInflater;
-	private static Location location = null;
 	private ApplicationStateModel appState;
 	
-	//comparator used in sorting comments by location:
-	private static Comparator locCompare = new Comparator(){
-		public int compare(Object comment1, Object comment2){
-			LocationModel userLocation = new LocationModel("here", location);
-			LocationModel loc1 = ((CommentModel)comment1).getLocation();
-			LocationModel loc2 = ((CommentModel)comment2).getLocation();
-			return loc1.distanceTo(userLocation) - loc2.distanceTo(userLocation);
-		}
-	};
-	
-	//comparator used in sorting comments by date:
-	private static Comparator dateCompare = new Comparator(){
-		public int compare(Object comment1, Object comment2){
-			Calendar time1 = ((CommentModel)comment1).getTimestamp();
-			Calendar time2 = ((CommentModel)comment2).getTimestamp();
-			return time1.compareTo(time2);
-		}
-	};
-	
-	//comparator used in sorting comments by number of likes:
-	private static Comparator popularityCompare = new Comparator(){
-		public int compare(Object comment1, Object comment2){
-			int favs1 = ((CommentModel) comment1).getNumFavourites();
-			int favs2 = ((CommentModel) comment2).getNumFavourites();
-			return (favs1 - favs2);
-		}
-	};
+
 	
 	/**
 	 * Prepares the view to display the activity.
@@ -90,15 +55,12 @@ public class MainListViewActivity extends Activity{
 		setContentView(R.layout.activity_head_comment_view);
 		layoutInflater = LayoutInflater.from(this);
 		appState = ApplicationStateModel.getInstance();
+		appState.setCommentList(new ArrayList<CommentModel>());
 		appState.setFileContext(this);
 		appState.loadComments();
-		appState.setCommentList(commentList);
 		appState.loadUser();
-		commentList = appState.getCommentList();
-		adapter = new MainListViewAdapter(this, commentList);
-		appState.setMLVAdapter(adapter);
+		appState.setMLVAdapter(new MainListViewAdapter(this, appState.getCommentList()));
 		appState.updateMainAdapter();
-		user = appState.getUserModel();
 	}
 
 	
@@ -123,8 +85,7 @@ public class MainListViewActivity extends Activity{
 		commentView = (ListView) findViewById(R.id.HeadCommentList);
 		appState.setFileContext(this);
 		appState.loadComments();
-		appState.loadUser();
-		
+		appState.loadUser();		
 		/**
 		 * Head Comment Sorting:
 		 * Checks which selection method is active and sorts the list accordingly
@@ -145,21 +106,21 @@ public class MainListViewActivity extends Activity{
 			
 		}*/
 		
-		commentView.setAdapter(adapter);
-		adapter.notifyDataSetChanged();
-		
+		commentView.setAdapter(appState.getMLVAdapter());
+		appState.updateMainAdapter();
+
 		commentView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id){
-				CommentModel headComment = commentList.get(position);
+				CommentModel headComment = appState.getCommentList().get(position);
 				Intent subCommentView = new Intent(getApplicationContext(), SubCommentViewActivity.class);
 				//subCommentView.putExtra("comment", (Object) headComment);
 				appState.setSubCommentViewHead(headComment);
 				view.getContext().startActivity(subCommentView);
 				
 			}});
-		adapter.notifyDataSetChanged();
+		appState.updateMainAdapter();
 	}	
 	
 	/**
@@ -170,7 +131,7 @@ public class MainListViewActivity extends Activity{
 		switch(item.getItemId()){
 			case R.id.add_comment:
 				Intent createComment = new Intent(getApplicationContext(), CreateCommentActivity.class);
-				createComment.putExtra("username", user.getUsername());
+				createComment.putExtra("username", appState.getUserModel().getUsername());
 				appState.setCreateCommentParent(null);
 				this.startActivity(createComment);
 				return true;
@@ -181,12 +142,12 @@ public class MainListViewActivity extends Activity{
 				sort_comments();
 				return true;
 			case R.id.action_favourites_main:
-				commentList = user.getFavourites();
-				adapter.notifyDataSetChanged();
+				appState.setCommentList(appState.getUserModel().getFavourites());
+				appState.updateMainAdapter();
 				return true;
 			case R.id.action_want_to_read_main:
-				commentList = user.getFavourites();
-				adapter.notifyDataSetChanged();
+				appState.setCommentList(appState.getUserModel().getWantToReadComments());
+				appState.updateMainAdapter();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -216,7 +177,7 @@ public class MainListViewActivity extends Activity{
 				Editable usernameEditable = usernameText.getText();
 				String usernameString = usernameEditable.toString();
 				
-				user.setUsername(usernameString);
+				appState.getUserModel().setUsername(usernameString);
 				appState.saveUser();
 			}
 		});
@@ -248,20 +209,20 @@ public class MainListViewActivity extends Activity{
 				
 		RadioButton button;
 		
-		if(user.isSortByDate()){
+		if(appState.getUserModel().isSortByDate()){
 			button = (RadioButton) sortRadioGroup.getChildAt(0);
 			button.toggle();
 		}
-		else if(user.isSortByLoc()){
+		else if(appState.getUserModel().isSortByLoc()){
 			button = (RadioButton) sortRadioGroup.getChildAt(1);
 			button.toggle();
 		}
-		else if(user.isSortByPopularity()){
+		else if(appState.getUserModel().isSortByPopularity()){
 			button = (RadioButton) sortRadioGroup.getChildAt(2);
 			button.toggle();
 		}
 
-		if(user.isSortByPic()){
+		if(appState.getUserModel().isSortByPic()){
 			button = (RadioButton) ((ViewGroup) optionsView.getChildAt(2)).getChildAt(0);
 			button.toggle();
 		}
@@ -305,7 +266,7 @@ public class MainListViewActivity extends Activity{
 	    	
 	        case R.id.date:
 	            if (checked){
-	            	user.setSortByDate(true);
+	            	appState.getUserModel().setSortByDate(true);
 	            	buttonPressed.toggle();
 	            }
 	            else
@@ -314,7 +275,7 @@ public class MainListViewActivity extends Activity{
 	            
 	        case R.id.location:
 	            if (checked){
-	            	user.setSortByLoc(true);
+	            	appState.getUserModel().setSortByLoc(true);
 	            	buttonPressed.toggle();
 	            }
 	            else
@@ -323,7 +284,7 @@ public class MainListViewActivity extends Activity{
 	            
 	        case R.id.number_of_favourites:
 	            if (checked){
-	            	user.setSortByPopularity(true);
+	            	appState.getUserModel().setSortByPopularity(true);
 	            	buttonPressed.toggle();
 	            }
 	            else
@@ -332,7 +293,7 @@ public class MainListViewActivity extends Activity{
 	            
 	        case R.id.pictures:
 	        	if(checked){
-	        		user.setSortByPic(true);
+	        		appState.getUserModel().setSortByPic(true);
 	            	buttonPressed.toggle();
 	        	}
 	        	else
@@ -341,61 +302,5 @@ public class MainListViewActivity extends Activity{
 	    }
 	}
 	
-	/**
-	 * Selection sort algorithm to sort an array of comments by a given comparator
-	 * 
-	 * @param commentList array of CommentModels to sort
-	 * @param cmp comparator to compare CommentModels when sorting
-	 * @return the array of head comments
-	 */
-	public ArrayList<CommentModel> sort(ArrayList<CommentModel> list, Comparator cmp) {
-		for (int i=0; i < list.size()-1; i++) {
-			// Sets current comment as the one that should appear first
-			CommentModel maxComment = list.get(i);
-			int maxIndex = i;
-			// Iterates through remaining comments in the list
-			for (int j=i+1; j < list.size(); j++) {
-				// If i compared to j = -1, j should be max value
-				if (cmp.compare(list.get(i), list.get(j)) < 0) {
-					maxComment = list.get(j);
-					maxIndex = j;
-				}
-			}
-			// Swap current comment with the maxComment
-			CommentModel tempComment;
-			tempComment = list.get(i);
-			list.set(i, maxComment);
-			list.set(maxIndex, tempComment);
-		}
-		return list;
-	}
 	
-	/**
-	 * Separates given array into two arrays with one containing comments with
-	 * pictures, and the other without. Sorts each array by given comparator,
-	 * then combines them.
-	 * 
-	 * @param commentList array of CommentModels to sort
-	 * @param cmp comparator to compare CommentModels when sorting
-	 * @return the array of head comments
-	 */
-	public ArrayList<CommentModel> pictureSort(ArrayList<CommentModel> list, Comparator cmp) {
-		ArrayList<CommentModel> noPicArray = new ArrayList<CommentModel>();
-		for (int i=0; i < list.size(); i++) {
-			// If comment does not have a photo
-			if (list.get(i).getPhotoPath() == null) {
-				// Add it to the array containing comments without pictures
-				noPicArray.add(list.get(i));
-				// Remove it from the array containing comments with pictures
-				list.remove(i);
-				i--;
-			}
-		}
-		// Sort each array
-		list = sort(list, cmp);
-		noPicArray = sort(noPicArray, cmp);
-		// Combine both arrays
-		list.addAll(noPicArray);
-		return list;
-	}
 }	
