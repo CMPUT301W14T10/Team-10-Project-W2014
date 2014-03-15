@@ -1,6 +1,5 @@
 package ca.ualberta.team10projectw2014;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -57,7 +56,7 @@ public class LocationListenerController implements LocationListener {
     	if (currentBestLocation != null){
     		Toast.makeText(
     				context, 
-    				"Current Best Location on create: " + 
+    				R.string.current_best_loc_on_create + 
     				currentBestLocation.getLatitude() + 
     				" " + 
     				currentBestLocation.getLongitude(), 
@@ -70,15 +69,13 @@ public class LocationListenerController implements LocationListener {
 	protected void noGPSError(){
 		final AlertDialog.Builder builder = 
 				new AlertDialog.Builder(context);
-	    builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+	    builder.setMessage(R.string.gps_appears_disabled)
 	           .setCancelable(false)
 	           .setPositiveButton(
-	        		   "Yes", 
+	        		   R.string.yes, 
 	        		   new DialogInterface.OnClickListener() {
 	        			   public void onClick(
-	        					   @SuppressWarnings("unused") 
 	        					   final DialogInterface dialog, 
-	        					   @SuppressWarnings("unused") 
 	        					   final int id) {
 	        				   			context.startActivity(
 		   						new Intent(android.provider.Settings.
@@ -86,11 +83,10 @@ public class LocationListenerController implements LocationListener {
 	        			   }
 	           })
 	           .setNegativeButton(
-	        		   "No", 
+	        		   R.string.no, 
 	        		   new DialogInterface.OnClickListener() {
 			               public void onClick(
 			            		   final DialogInterface dialog, 
-			            		   @SuppressWarnings("unused") 
 			            		   final int id) {
 			                    dialog.cancel();
 			               }
@@ -135,7 +131,7 @@ public class LocationListenerController implements LocationListener {
 		if (currentBestLocation != null){
 			Toast.makeText(
 					context, 
-					"Current Best Location on search: " + 
+					R.string.current_best_loc_on_search + 
 					currentBestLocation.getLatitude() + 
 					" " + 
 					currentBestLocation.getLongitude(), 
