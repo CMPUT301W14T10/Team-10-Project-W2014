@@ -49,6 +49,7 @@ public class SubCommentViewActivity extends Activity {
 	private ListView subListView;
 	private ApplicationStateModel appState;
 	private ArrayList<CommentModel> commentList;
+	private ArrayList<CommentModel> sortedArrayList;
 	private ActionBar actionbar;
 	private Bundle bundle;
 
@@ -63,9 +64,9 @@ public class SubCommentViewActivity extends Activity {
 		commentList = new ArrayList<CommentModel>();
 		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
 
+	
 		// Set the first item in the list to the header Comment
 		subListView.addHeaderView((View) SetHeader(appState.getSubCommentViewHead()));
-		
 
 	}
 
@@ -381,7 +382,7 @@ public class SubCommentViewActivity extends Activity {
 		moreDialog.setTitle("More...");
 
 		// set Add to Read later
-		moreDialog.setNeutralButton("Add to Read Later",
+		moreDialog.setPositiveButton("Add to Read Later",
 				new DialogInterface.OnClickListener() {
 
 					@Override
@@ -408,6 +409,7 @@ public class SubCommentViewActivity extends Activity {
 					});
 		}
 
+		
 		moreDialog.setNegativeButton("Cancel", null);
 
 		moreDialog.show();
@@ -472,6 +474,13 @@ public class SubCommentViewActivity extends Activity {
 				});
 
 		alert.show();
+	}
+	
+	private void sortList (ArrayList<CommentModel> commentsToSort){
+		for(int i )
+		
+		
+		
 	}
 
 }
