@@ -23,9 +23,11 @@ public class LocationListenerController implements LocationListener {
 
 	public LocationListenerController(Context context) {
 		this.context = context;
-		mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+		mLocationManager = (LocationManager)
+				context.getSystemService(Context.LOCATION_SERVICE);
 		
-		if ( !mLocationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+		if (!mLocationManager.isProviderEnabled(
+				LocationManager.GPS_PROVIDER)) {
 	    	gpsEnabled = false;
 	        noGPSError();
 	    }
@@ -34,7 +36,8 @@ public class LocationListenerController implements LocationListener {
 	    	gpsEnabled = true;
 	    }
 	    
-	    if ( !mLocationManager.isProviderEnabled( LocationManager.NETWORK_PROVIDER ) ) {
+	    if (!mLocationManager.isProviderEnabled(
+	    		LocationManager.NETWORK_PROVIDER)) {
 	    	netEnabled = false;
 	    }
 	    else{
@@ -42,62 +45,87 @@ public class LocationListenerController implements LocationListener {
 	    }
 
     	if (gpsEnabled){
-    		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 400 , 1, this);
+    		mLocationManager.requestLocationUpdates(
+    				LocationManager.GPS_PROVIDER, 400 , 1, this);
     	}
     	if (netEnabled){
-    		mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 400 , 1, this);
+    		mLocationManager.requestLocationUpdates(
+    				LocationManager.NETWORK_PROVIDER, 400 , 1, this);
     	}
     	
     	currentBestLocation = getLastBestLocation();
     	if (currentBestLocation != null){
-    		Toast.makeText(context, "Current Best Location on create: " + currentBestLocation.getLatitude() + " " + currentBestLocation.getLongitude(), Toast.LENGTH_LONG).show();
+    		Toast.makeText(
+    				context, 
+    				"Current Best Location on create: " + 
+    				currentBestLocation.getLatitude() + 
+    				" " + 
+    				currentBestLocation.getLongitude(), 
+    				Toast.LENGTH_LONG).show();
     	}
 	}
 	
-	// The following method is a direct copy from http://stackoverflow.com/questions/843675/how-do-i-find-out-if-the-gps-of-an-android-device-is-enabled received on March 9 at 2:00PM
-		protected void noGPSError(){
-			final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		    builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
-		           .setCancelable(false)
-		           .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-		               public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-		                   context.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-		               }
-		           })
-		           .setNegativeButton("No", new DialogInterface.OnClickListener() {
-		               public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-		                    dialog.cancel();
-		               }
-		           });
-		    final AlertDialog alert = builder.create();
-		    alert.show();
-		}
+	// The following method is a direct copy from 
+	// http://stackoverflow.com/a/843716/2557554 accessed on March 9 at 2:00PM
+	protected void noGPSError(){
+		final AlertDialog.Builder builder = 
+				new AlertDialog.Builder(context);
+	    builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+	           .setCancelable(false)
+	           .setPositiveButton(
+	        		   "Yes", 
+	        		   new DialogInterface.OnClickListener() {
+	        			   public void onClick(
+	        					   @SuppressWarnings("unused") 
+	        					   final DialogInterface dialog, 
+	        					   @SuppressWarnings("unused") 
+	        					   final int id) {
+	        				   			context.startActivity(
+		   						new Intent(android.provider.Settings.
+		   								ACTION_LOCATION_SOURCE_SETTINGS));
+	        			   }
+	           })
+	           .setNegativeButton(
+	        		   "No", 
+	        		   new DialogInterface.OnClickListener() {
+			               public void onClick(
+			            		   final DialogInterface dialog, 
+			            		   @SuppressWarnings("unused") 
+			            		   final int id) {
+			                    dialog.cancel();
+			               }
+	           });
+	    final AlertDialog alert = builder.create();
+	    alert.show();
+	}
 	
 	public Location getLastBestLocation() {
 		if (!netEnabled && gpsEnabled){
-			locationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+			locationGPS = mLocationManager.getLastKnownLocation(
+					LocationManager.GPS_PROVIDER);
 			makeUseOfNewLocation(locationGPS);
 		}
 		
 		if (!gpsEnabled && netEnabled){
-			locationNet = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+			locationNet = mLocationManager.getLastKnownLocation(
+					LocationManager.NETWORK_PROVIDER);
 			makeUseOfNewLocation(locationNet);
 		}
 		else if (gpsEnabled && netEnabled){
 		
-		    Location locationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		    Location locationNet = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		    Location locationGPS = mLocationManager.getLastKnownLocation(
+		    		LocationManager.GPS_PROVIDER);
+		    Location locationNet = mLocationManager.getLastKnownLocation(
+		    		LocationManager.NETWORK_PROVIDER);
 	
 		    long GPSLocationTime = 0;
-		    if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
+		    if (null != locationGPS) {GPSLocationTime = locationGPS.getTime();}
 	
 		    long NetLocationTime = 0;
 	
-		    if (null != locationNet) {
-		        NetLocationTime = locationNet.getTime();
-		    }
+		    if (null != locationNet) {NetLocationTime = locationNet.getTime();}
 	
-		    if ( 0 < GPSLocationTime - NetLocationTime ) {
+		    if (0<GPSLocationTime - NetLocationTime) {
 		    	makeUseOfNewLocation(locationGPS);
 		    }
 		    else{
@@ -105,7 +133,13 @@ public class LocationListenerController implements LocationListener {
 		    }
 		}
 		if (currentBestLocation != null){
-			Toast.makeText(context, "Current Best Location on search: " + currentBestLocation.getLatitude() + " " + currentBestLocation.getLongitude(), Toast.LENGTH_LONG).show();
+			Toast.makeText(
+					context, 
+					"Current Best Location on search: " + 
+					currentBestLocation.getLatitude() + 
+					" " + 
+					currentBestLocation.getLongitude(), 
+					Toast.LENGTH_LONG).show();
 		}
 		return currentBestLocation;
 	}
@@ -138,7 +172,8 @@ public class LocationListenerController implements LocationListener {
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {}
 
-	// Taken from http://developer.android.com/guide/topics/location/strategies.html on March 6th at 4:00PM
+	// From http://developer.android.com/guide/topics/location/strategies.html 
+	// Accessed on March 6th at 4:00PM
 	// Methods used to determine the most accurate location possible
 	
 	private static final int TWO_MINUTES = 1000 * 60 * 2;
@@ -147,7 +182,9 @@ public class LocationListenerController implements LocationListener {
 	  * @param location  The new Location that you want to evaluate
 	  * @param currentBestLocation  The current Location fix, to which you want to compare the new one
 	  */
-	protected boolean isBetterLocation(Location location, Location currentBestLocation) {
+	protected boolean isBetterLocation(
+			Location location, 
+			Location currentBestLocation) {
 	    if (currentBestLocation == null) {
 	        // A new location is always better than no location
 	        return true;
@@ -159,8 +196,8 @@ public class LocationListenerController implements LocationListener {
 	    boolean isSignificantlyOlder = timeDelta < -TWO_MINUTES;
 	    boolean isNewer = timeDelta > 0;
 
-	    // If it's been more than two minutes since the current location, use the new location
-	    // because the user has likely moved
+	    // If it's been more than two minutes since the current location, 
+	    // use the new location because the user has likely moved
 	    if (isSignificantlyNewer) {
 	        return true;
 	    // If the new location is more than two minutes older, it must be worse
@@ -169,7 +206,8 @@ public class LocationListenerController implements LocationListener {
 	    }
 
 	    // Check whether the new location fix is more or less accurate
-	    int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
+	    int accuracyDelta = (int) 
+	    		(location.getAccuracy() - currentBestLocation.getAccuracy());
 	    boolean isLessAccurate = accuracyDelta > 0;
 	    boolean isMoreAccurate = accuracyDelta < 0;
 	    boolean isSignificantlyLessAccurate = accuracyDelta > 200;
@@ -178,12 +216,15 @@ public class LocationListenerController implements LocationListener {
 	    boolean isFromSameProvider = isSameProvider(location.getProvider(),
 	            currentBestLocation.getProvider());
 
-	    // Determine location quality using a combination of timeliness and accuracy
+	    // Determine location quality using a combination of timeliness 
+	    // and accuracy
 	    if (isMoreAccurate) {
 	        return true;
 	    } else if (isNewer && !isLessAccurate) {
 	        return true;
-	    } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
+	    } else if (isNewer && 
+	    		!isSignificantlyLessAccurate && 
+	    		isFromSameProvider) {
 	        return true;
 	    }
 	    return false;
