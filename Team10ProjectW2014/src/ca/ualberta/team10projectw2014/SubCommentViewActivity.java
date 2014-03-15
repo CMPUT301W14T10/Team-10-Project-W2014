@@ -60,6 +60,7 @@ public class SubCommentViewActivity extends Activity {
 		appState = ApplicationStateModel.getInstance();
 		appState.setFileContext(this);
 
+		commentList = new ArrayList<CommentModel>();
 		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
 
 		// Set the first item in the list to the header Comment
@@ -82,7 +83,7 @@ public class SubCommentViewActivity extends Activity {
 		actionbar.setTitle(appState.getSubCommentViewHead().getTitle());
 
 		// Gets all the SubComments and all its subComments
-		commentList = new ArrayList<CommentModel>();
+		commentList.clear();
 		AddCommentToList(appState.getSubCommentViewHead().getSubComments());
 
 		appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
