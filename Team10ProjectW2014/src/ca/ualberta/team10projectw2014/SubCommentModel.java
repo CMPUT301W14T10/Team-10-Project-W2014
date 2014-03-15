@@ -24,12 +24,21 @@ import java.util.ArrayList;
  * @author Costa Zervos
  */
 public class SubCommentModel extends CommentModel{
-	//private CommentModel respondedTo;
+	private String parentTitle;
+
+	public String getParentTitle() {
+		return parentTitle;
+	}
+
+	public void setParentTitle(String parentTitle) {
+		this.parentTitle = parentTitle;
+	}
 
 	/**
 	 * Constructor method that sets the comment this sub comment is responding to.
 	 * @param text the String to name the counter.
 	 */
+	
 	public SubCommentModel(CommentModel parentComment) {
 		//this.respondedTo = parentComment;
 	}
