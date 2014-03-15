@@ -36,17 +36,12 @@
         android:layout_height="wrap_content"
         android:textSize="30sp"
         android:text="@string/sort_subtitle" />
+ 
     
-    <RadioGroup 
-   		android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:orientation="vertical">
-    	
-    	<RadioButton android:id="@+id/pictures"
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:text="@string/pictures"
-        	android:onClick="onRadioButtonClicked"/>
-    </RadioGroup>
+        <CheckBox android:id="@+id/pictures"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pictures"
+        android:onClick="onCheckboxClicked"/>
     	
 </LinearLayout>

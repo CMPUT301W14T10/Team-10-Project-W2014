@@ -34,10 +34,10 @@ public class UserModel{
 	private String userName;
 	
 	//These boolean values dictate which criteria to sort comments by:
-	private boolean sortByPic;
-	private boolean sortByDate;
-	private boolean sortByLoc;
-	private boolean sortByPopularity;
+	private boolean sortByPic = false;
+	private boolean sortByDate = false;
+	private boolean sortByLoc = false;
+	private boolean sortByPopularity = false;
 
 	// Constructor for new user
 	public UserModel(Context context) {
