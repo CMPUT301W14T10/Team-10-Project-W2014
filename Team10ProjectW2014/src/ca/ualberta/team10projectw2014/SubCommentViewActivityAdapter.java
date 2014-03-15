@@ -39,11 +39,11 @@ import android.widget.Toast;
  */
 
 public class SubCommentViewActivityAdapter extends
-		ArrayAdapter<SubCommentModel> {
+		ArrayAdapter<CommentModel> {
 
 	private Context context;
 	private int layoutResourceId;
-	private ArrayList<SubCommentModel> commentList;
+	private ArrayList<CommentModel> commentList;
 	private UserModel userData;
 
 	
@@ -69,7 +69,7 @@ public class SubCommentViewActivityAdapter extends
 	public SubCommentViewActivityAdapter(
 			Context context, 
 			int layoutResourceId,
-			ArrayList<SubCommentModel> commentList,UserModel userData) {
+			ArrayList<CommentModel> commentList,UserModel userData) {
 
 		super(context, layoutResourceId, commentList);
 		this.context = context;
@@ -247,7 +247,7 @@ public class SubCommentViewActivityAdapter extends
 	 * @return a string that contains the title of the comment being replied to.
 	 */
 	private String getReplyTitle(SubCommentModel subComment){
-		return "Re: " + subComment.getRespondedTo().getTitle();
+		return "Re: "; //+ subComment.getRespondedTo().getTitle();
 		
 	}
 	

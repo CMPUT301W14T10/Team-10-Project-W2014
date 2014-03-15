@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -70,8 +71,8 @@ public class CreateCommentActivity extends Activity{
 		appState.setFileContext(this);
 
 		//Receive information from the intent
-		Bundle bundle = getIntent().getExtras();
-		String receivedUsername = (String) bundle.getSerializable("username");
+		//Bundle bundle = getIntent().getExtras();
+		String receivedUsername = appState.getUserModel().getUsername();
 		//CommentModel receivedComment = (CommentModel) bundle.getSerializable("comment"); //TODO CHANGE FROM SERIALIZABLE TO SIMPLE OBJECT
 		CommentModel receivedComment = appState.getCreateCommentParent();
 		fillContents(receivedUsername, receivedComment);
@@ -98,7 +99,7 @@ public class CreateCommentActivity extends Activity{
 	}
 
 	public void fillContents(String username, CommentModel parentModel){
-		
+		Log.e("username", username);
 		if(!checkStringIsAllWhiteSpace(username)){
 			this.postUsername = username;
 			setUsernameView(username);
