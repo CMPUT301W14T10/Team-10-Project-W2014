@@ -91,20 +91,22 @@ public class MainListViewActivity extends Activity{
 		 * Checks which selection method is active and sorts the list accordingly
 		 */
 		// Sort by picture
-		/*if (user.isSortByPic() == true) {
+		if (appState.getUserModel().isSortByPic() == true) {
 			// Sort by date
-			if (user.isSortByDate() == true) {
-				commentList = pictureSort(commentList, dateCompare);
+			if (appState.getUserModel().isSortByDate() == true) {
+				appState.setCommentList(appState.pictureSort(appState.getCommentList(), ApplicationStateModel.dateCompare));
 			}
-			
+//			if(appState.getUserModel().isSortByLoc() == true) {
+//				appState.getCommentList(pictureSort(appState.getCommentList(), locCompare));
+//			}
 		}
 		else {
 			// Sort by date
-			if (user.isSortByDate() == true) {
-				commentList = sort(commentList, dateCompare);
+			if (appState.getUserModel().isSortByDate() == true) {
+				appState.setCommentList(appState.sort(appState.getCommentList(), ApplicationStateModel.dateCompare));
 			}
 			
-		}*/
+		}
 		
 		commentView.setAdapter(appState.getMLVAdapter());
 		appState.updateMainAdapter();
