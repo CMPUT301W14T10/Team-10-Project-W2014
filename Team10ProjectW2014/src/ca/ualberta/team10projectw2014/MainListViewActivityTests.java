@@ -4,8 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import ca.ualberta.team10projectw2014.controller.CommentDataController;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -19,10 +17,11 @@ public class MainListViewActivityTests extends
 	
 	Activity activity;
 	ListView headListView;
-	CommentDataController CDC;
+	ApplicationStateModel appState;
 	
 	public MainListViewActivityTests() {
 		super(MainListViewActivity.class);
+		appState = ApplicationStateModel.getInstance();
 	}
 	
 	protected void setUp() throws Exception {
@@ -41,9 +40,6 @@ public class MainListViewActivityTests extends
 		// Create a test head comment
 		CommentModel headComment = new CommentModel();
 		// Creates CDC with the context of activity you are testing
-		CDC = new CommentDataController(getInstrumentation().getContext(), 
-				getInstrumentation().getContext().
-				getString(R.string.file_name_string));
 		headComment.setTitle("Test Title");
 		headComment.setAuthor("TestUsername");
 		headComment.setContent("Test Head Comment Content");
@@ -51,7 +47,7 @@ public class MainListViewActivityTests extends
 		
 		// Saves test head comment to file
 		commentList.add(headComment);
-		CDC.saveToFile(commentList);
+		appState.saveComments();
 		
 		// Creates intent to launch MainListViewActivity
 		Intent intent = new Intent(Intent.ACTION_VIEW);

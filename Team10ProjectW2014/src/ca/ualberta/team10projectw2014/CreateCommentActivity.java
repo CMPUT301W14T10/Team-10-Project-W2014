@@ -1,21 +1,13 @@
 package ca.ualberta.team10projectw2014;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import ca.ualberta.team10projectw2014.controller.CommentDataController;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -26,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -39,7 +32,6 @@ public class CreateCommentActivity extends Activity{
 	private String postContents;
 	private LocationModel postLocation;
 	private Bitmap postPhoto;
-	private CommentModel parentModel;
 	private EditText ueditText;
 	private EditText teditText;
 	private EditText ceditText;
@@ -52,17 +44,20 @@ public class CreateCommentActivity extends Activity{
  	protected LocationManager mLocationManager;
  	protected Boolean gpsEnabled;
  	protected Boolean netEnabled;
- 	private CommentDataController CDC;
+ 	private ApplicationStateModel appState;
  	private String photoPath = null;
  	private Uri imageUri = null;
+ 	private Location locationGPS;
+ 	private Location locationNet;
 	
 	@SuppressLint("NewApi")
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_comment_activity);
-        CDC = new CommentDataController(this, this.getString(R.string.file_name_string));
-        
+        appState = ApplicationStateModel.getInstance();
+		appState.setFileContext(this);
+
         ueditText = (EditText)findViewById(R.id.cc_username);
 		teditText = (EditText)findViewById(R.id.cc_title);
 		ceditText = (EditText)findViewById(R.id.cc_content);
@@ -73,11 +68,13 @@ public class CreateCommentActivity extends Activity{
 	@Override 
 	protected void onResume(){
 		super.onResume();
-		
+		appState.setFileContext(this);
+
 		//Receive information from the intent
-		Bundle bundle = getIntent().getExtras();
-		String receivedUsername = (String) bundle.getSerializable("username");
-		CommentModel receivedComment = (CommentModel) bundle.getSerializable("comment");
+		//Bundle bundle = getIntent().getExtras();
+		String receivedUsername = appState.getUserModel().getUsername();
+		//CommentModel receivedComment = (CommentModel) bundle.getSerializable("comment"); //TODO CHANGE FROM SERIALIZABLE TO SIMPLE OBJECT
+		CommentModel receivedComment = appState.getCreateCommentParent();
 		fillContents(receivedUsername, receivedComment);
 		
 		//Set imageView to either "No Image" or the picture returned from camera
@@ -85,99 +82,37 @@ public class CreateCommentActivity extends Activity{
 		
 		//TODO Check to see if GPS is enabled
         //TODO Start listening for location information
-        //startListeningLocation();
-	}
-	
-	// The following method is a direct copy from http://stackoverflow.com/questions/843675/how-do-i-find-out-if-the-gps-of-an-android-device-is-enabled received on March 9 at 2:00PM
-	protected void noGPSError(){
-		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	    builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
-	           .setCancelable(false)
-	           .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-	               public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-	                   startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-	               }
-	           })
-	           .setNegativeButton("No", new DialogInterface.OnClickListener() {
-	               public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-	                    dialog.cancel();
-	               }
-	           });
-	    final AlertDialog alert = builder.create();
-	    alert.show();
+        startListeningLocation();
 	}
 	
 	private void startListeningLocation(){
 		Toast.makeText(getBaseContext(), "Starting to listen for location...", Toast.LENGTH_LONG).show();
-		LocationManager mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		
-
-	    if ( !mLocationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
-	    	gpsEnabled = false;
-	        noGPSError();
-	    }
-	    
-	    else{
-	    	gpsEnabled = true;
-	    }
-	    
-	    if ( !mLocationManager.isProviderEnabled( LocationManager.NETWORK_PROVIDER ) ) {
-	    	netEnabled = false;
-	    }
-	    else{
-	    	netEnabled = true;
-	    }
-
-    	LocationListenerController locationListener = new LocationListenerController(this);  
-    	if (gpsEnabled){
-    		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5 * 60 * 1000 , 10, locationListener);
-    	}
-    	if (netEnabled){
-    		mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5 * 60 * 1000 , 10, locationListener);
-    	}
+		this.locationListener = new LocationListenerController(this);
 	}
-
+	
 	// Retrieved from http://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android on March 6 at 5:00
 	
-	private Location getLastBestLocation() {
-
-	    Location locationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-	    Location locationNet = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-	    long GPSLocationTime = 0;
-	    if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
-
-	    long NetLocationTime = 0;
-
-	    if (null != locationNet) {
-	        NetLocationTime = locationNet.getTime();
-	    }
-
-	    if ( 0 < GPSLocationTime - NetLocationTime ) {
-	        return locationGPS;
-	    }
-	    else{
-	        return locationNet;
-	    }
+	private void getLastBestLocation() {
+		
+		bestKnownLoc = locationListener.getLastBestLocation();
 
 	}
 
 	public void fillContents(String username, CommentModel parentModel){
-		setLocation();
+		Log.e("username", username);
 		if(!checkStringIsAllWhiteSpace(username)){
 			this.postUsername = username;
 			setUsernameView(username);
 		}
-		/*else{
+		else{
 			if(checkStringIsAllWhiteSpace(username)){
 				this.postUsername = "Anonymous";
 				setUsernameView(this.postUsername);
 			}
 			//setUsernameView("Please set a username");
-		}*/
-		if(parentModel != null){
-			this.parentModel = parentModel;
-			this.postTitle = "RE:" + parentModel.getTitle();
+		}
+		if(appState.getCreateCommentParent() != null){
+			this.postTitle = "RE:" + appState.getCreateCommentParent().getTitle();
 			teditText.setKeyListener(null);
 			setTitleView(postTitle);
 		}
@@ -335,14 +270,13 @@ public class CreateCommentActivity extends Activity{
 	
 	//A currently redundant method which creates a location with a title (not used yet)
 	private void setLocation(){
-		this.postLocation = new LocationModel("TITLE", bestKnownLoc);
+		this.postLocation = new LocationModel(String.valueOf("Lat: " + bestKnownLoc.getLatitude()) + " Long: " + String.valueOf(bestKnownLoc.getLongitude()), bestKnownLoc);
 		//TODO Set location variable to...?
 		// Location should never be null
 	}
 	
 	//Called when the user presses "Post" button to create and store a new comment
 	public void attemptCommentCreation(View v){
-		
 		this.postContents = ceditText.getText().toString();
 		this.postUsername = ueditText.getText().toString();
 		this.postTitle = teditText.getText().toString();
@@ -355,13 +289,13 @@ public class CreateCommentActivity extends Activity{
 		}
 		else{
 			
-			if(this.parentModel != null){
+			if(appState.getCreateCommentParent() != null){
 				
 				if(checkStringIsAllWhiteSpace(this.postUsername)){
 					raiseUsernameIncompleteError();
 				}
 				// This should be edited so that the model handles all the getting and setting
-				model = new SubCommentModel(this.parentModel);
+				model = new SubCommentModel(appState.getCreateCommentParent());
 				model.setAuthor(this.postUsername);
 				model.setContent(this.postContents);
 				model.setLocation(this.postLocation);
@@ -378,7 +312,8 @@ public class CreateCommentActivity extends Activity{
 				model.setNumFavourites(0);
 				
 				//Adds the newly created model to its referrent's list of subcomments
-				this.parentModel.addSubComment((SubCommentModel) model);
+				appState.getCreateCommentParent().addSubComment((SubCommentModel) model);
+				appState.updateSubAdapter();
 			}
 			else{
 				if(checkStringIsAllWhiteSpace(this.postUsername)){
@@ -400,21 +335,20 @@ public class CreateCommentActivity extends Activity{
 				model.setTimestamp(calendar);
 				model.setNumFavourites(0);
 				
+				appState.getCommentList().add(model);
 				//TODO Add this head comment to the list of head comments on the phone
-			
 			}
 			
 			//TODO Stop listening for location information
 
 			//stopListeningLocation();
 			//setLocation();
-			//model.setLocation(this.postLocation);
-
-
-			ArrayList<CommentModel> tempList = CDC.loadFromFile();
-			tempList.add(model);
-			CDC.saveToFile(tempList);
 			
+			model.setLocation(this.postLocation);
+
+			appState.saveComments();
+			appState.loadComments();
+			appState.updateMainAdapter();
 			//Destroy this activity so that we return to the previous one.
 			goBack();
 		}
@@ -422,16 +356,15 @@ public class CreateCommentActivity extends Activity{
 	
 	
 	private void stopListeningLocation(){
-		bestKnownLoc = getLastBestLocation();
+		getLastBestLocation();
 		if (bestKnownLoc == null){
 			Toast.makeText(getBaseContext(), "Ain't no location here", Toast.LENGTH_LONG).show();
 		}
 		else{
-			Toast.makeText(getBaseContext(), "Getting location...", Toast.LENGTH_LONG).show();
 			Location location = locationListener.getCurrentBestLocation();
 			bestKnownLoc.setLatitude(location.getLatitude());
 			bestKnownLoc.setLongitude(location.getLongitude());
-			mLocationManager.removeUpdates(locationListener);
+			locationListener.removeUpdates();
 		}
 	}
 	

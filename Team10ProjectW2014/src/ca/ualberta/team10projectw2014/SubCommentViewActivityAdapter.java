@@ -177,7 +177,8 @@ public class SubCommentViewActivityAdapter extends
 		
 		//Grabs the title of the comment being replied by the getReplyTitle function
 		if(commentList.get(position).getClass() == SubCommentModel.class){
-			holder.textReplyTitle.setText(this.getReplyTitle((SubCommentModel)commentList.get(position)));
+			//TO-DO get reply title from comment model.
+			holder.textReplyTitle.setText("REPLY TITLE");
 		}else{
 			holder.textReplyTitle.setText("");
 		}
@@ -250,10 +251,7 @@ public class SubCommentViewActivityAdapter extends
 	 * 		  comment is replying to.
 	 * @return a string that contains the title of the comment being replied to.
 	 */
-	private String getReplyTitle(SubCommentModel subComment){
-		return "Re: " + subComment.getRespondedTo().getTitle();
-		
-	}
+
 	
 
 	

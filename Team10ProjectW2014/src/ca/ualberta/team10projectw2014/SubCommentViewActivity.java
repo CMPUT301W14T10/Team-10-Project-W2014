@@ -44,15 +44,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class SubCommentViewActivity extends Activity {
-
-	private CommentModel headCommentData;
 	private ListView subListView;
-	private UserModel userData;
-	private SubCommentViewActivityAdapter adapter;
-	private ArrayList<CommentModel> commentsList;
+	private ApplicationStateModel appState;
+	private ArrayList<CommentModel> commentList;
 	private ActionBar actionbar;
 	private Bundle bundle;
 
@@ -61,79 +57,63 @@ public class SubCommentViewActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sub_comment_view);
 		
-			
-		// Disable the Home Icon on the Actionbar
-		actionbar = getActionBar();
-		actionbar.setDisplayShowHomeEnabled(false);
-		
-		/*
-		 * Get data being passed to this activity
-		 */
-		bundle = getIntent().getExtras();
+		appState = ApplicationStateModel.getInstance();
+		appState.setFileContext(this);
 
-		
-		
 		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
-		
-		if (bundle.containsKey("comment")) {
-			
-			//userData = (UserModel) bundle.getSerializable("UserModel");
-			userData = new UserModel(this);
-			userData.setUsername("user");
 
-			headCommentData = (CommentModel) bundle.getSerializable("comment");
-			
-			// Set the Title in the Actionbar to the title of the head comment
-			actionbar.setTitle(headCommentData.getTitle());
-
-			// Set the first item in the list to the header Comment
-			subListView.addHeaderView((View) SetHeader(headCommentData));
-			
-		} else if(bundle.containsKey("favourite")) {
-			// Set the Title in the Actionbar to the title to favourites
-			actionbar.setTitle("Favourites");
-			userData = (UserModel) bundle.getSerializable("favourite");
-
-			
-			commentsList = new ArrayList<CommentModel>();
-			commentsList = userData.getFavourites();
-			
-			
-			
-		} else if(bundle.containsKey("wantToRead")) {
-			
-			
-			// Set the Title in the Actionbar to the title to Want to read 
-			actionbar.setTitle("Want to Read");
-		
-			
-			userData = (UserModel) bundle.getSerializable("wantToRead");
-			commentsList = new ArrayList<CommentModel>();
-			commentsList = userData.getWantToReadComments();
-			
-		}
+		// Set the first item in the list to the header Comment
+		subListView.addHeaderView((View) SetHeader(appState.getSubCommentViewHead()));
 		
 
-		
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
+
+		appState.setFileContext(this);
+
+		// Disable the Home Icon on the Actionbar
+		ActionBar actionbar = getActionBar();
+		actionbar.setDisplayShowHomeEnabled(false);
 		
-		if (bundle.containsKey("comment")) {
-			commentsList = new ArrayList<CommentModel>();
-			AddCommentToList(headCommentData.getSubComments());
-			
-		}
-		adapter = new SubCommentViewActivityAdapter(this,
-				R.layout.sub_comment_view_sub_comment_item, commentsList,
-				userData);
-		
-		subListView.setAdapter(adapter);
-		
-		
-		
+		// Set the Title in the Actionbar to the title of the head comment
+		actionbar.setTitle(appState.getSubCommentViewHead().getTitle());
+
+		// Gets all the SubComments and all its subComments
+		commentList = new ArrayList<CommentModel>();
+		AddCommentToList(appState.getSubCommentViewHead().getSubComments());
+
+		appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
+				R.layout.sub_comment_view_sub_comment_item, commentList,
+				appState.getUserModel()));
+
+		/*
+		 * } else if(bundle.containsKey("favourite")) { // Set the Title in the
+		 * Actionbar to the title to favourites
+		 * actionbar.setTitle("Favourites");
+		 * 
+		 * appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
+		 * R.layout.sub_comment_view_sub_comment_item,
+		 * appState.getUserModel().getFavourites(), appState.getUserModel()));
+		 * 
+		 * 
+		 * 
+		 * 
+		 * } else if(bundle.containsKey("wantToRead")) {
+		 * 
+		 * // Set the Title in the Actionbar to the title to Want to read
+		 * actionbar.setTitle("Want to Read");
+		 * 
+		 * appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
+		 * R.layout.sub_comment_view_sub_comment_item,
+		 * appState.getUserModel().getWantToReadComments(),
+		 * appState.getUserModel())); }
+		 */
+
+		subListView.setAdapter(appState.getSCVAdapter());
+
 	}
 
 	/**
@@ -155,7 +135,7 @@ public class SubCommentViewActivity extends Activity {
 		inflater.inflate(R.menu.subcommentview, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-	
+
 	/**
 	 * Capture the cases where the menu items are selected.
 	 * 
@@ -171,15 +151,13 @@ public class SubCommentViewActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
-		
-		
 		switch (item.getItemId()) {
 		case R.id.action_reply:
 			openReply();
 			return true;
 		case R.id.action_favourite:
 			// Add the head comment to the users favourite list
-			addFavourite(headCommentData);
+			addFavourite(appState.getSubCommentViewHead());
 			return true;
 		case R.id.action_edit_username:
 			// Bring up dialog box for the user to edit username
@@ -191,15 +169,9 @@ public class SubCommentViewActivity extends Activity {
 			return true;
 		case R.id.action_favourites:
 			// Bring up the user's favourite list
-			Intent favouriteList = new Intent(this,SubCommentViewActivity.class);
-			favouriteList.putExtra("favourite", userData);
-			this.startActivity(favouriteList);
 			return true;
 		case R.id.action_want_to_read:
 			// Bring up the user's want to read list
-			Intent wantToReadList = new Intent(this,SubCommentViewActivity.class);
-			wantToReadList.putExtra("wantToRead", userData);
-			this.startActivity(wantToReadList);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -215,41 +187,17 @@ public class SubCommentViewActivity extends Activity {
 	 * @param
 	 */
 	private void openReply() {
-		// TODO: Implement openReply
 		// send an intent to CreateCommentActivity
 		// send info:
 		// - title
-		
-		/*//responds to head comment
-		SubCommentModel subComment1 = new SubCommentModel(headCommentData);
-		subComment1.setAuthor("TestUser1");
-		subComment1.setTitle("SubComment1");
-		subComment1.setContent("Replies to head comment");
-		subComment1.setTimestamp(Calendar.getInstance());
-		headCommentData.addSubComment(subComment1);
-		
-		SubCommentModel subComment2 = new SubCommentModel(headCommentData);
-		subComment2.setAuthor("TestUser2");
-		subComment2.setTitle("SubComment2");
-		subComment2.setContent("replies to head comment");
-		subComment2.setTimestamp(Calendar.getInstance());
-		headCommentData.addSubComment(subComment2);
-		
-		SubCommentModel subComment3 = new SubCommentModel(subComment1);
-		subComment3.setAuthor("TestUser2");
-		subComment3.setTitle("SubComment3");
-		subComment3.setContent("Reply to SubComment1");
-		subComment3.setTimestamp(Calendar.getInstance());
-		subComment1.addSubComment(subComment3);
-		
-		*/
-
 		Intent createComment = new Intent(getApplicationContext(),
 				CreateCommentActivity.class);
-		createComment.putExtra("comment",headCommentData);
-		createComment.putExtra("username",userData.getUsername());
+		appState.setCreateCommentParent(appState.getSubCommentViewHead());
+		// createComment.putExtra("comment",headCommentData);
+		createComment.putExtra("username", appState.getUserModel()
+				.getUsername());
 		this.startActivity(createComment);
-		
+
 	}
 
 	/**
@@ -262,8 +210,7 @@ public class SubCommentViewActivity extends Activity {
 	 */
 	private void addFavourite(CommentModel comment) {
 		// TODO: Implement addFavourite
-		Toast.makeText(this,"Comment added to favourites!", Toast.LENGTH_SHORT).show();
-		userData.getFavourites().add(comment);
+		appState.getUserModel().getFavourites().add(comment);
 	}
 
 	/***
@@ -288,7 +235,7 @@ public class SubCommentViewActivity extends Activity {
 				Editable usernameEditable = usernameText.getText();
 				String usernameString = usernameEditable.toString();
 
-				userData.setUsername(usernameString);
+				appState.getUserModel().setUsername(usernameString);
 
 			}
 		});
@@ -329,7 +276,8 @@ public class SubCommentViewActivity extends Activity {
 		TextView textContent = (TextView) header
 				.findViewById(R.id.head_comment_text_body_sub);
 		Button moreButton = (Button) header.findViewById(R.id.head_more_option);
-		ImageView imageView = (ImageView) header.findViewById(R.id.head_comment_image);
+		ImageView imageView = (ImageView) header
+				.findViewById(R.id.head_comment_image);
 
 		// Set the items to the contents of the Head Comment
 		textTitle.setText(headComment.getTitle());
@@ -337,36 +285,34 @@ public class SubCommentViewActivity extends Activity {
 		// textLocation.setText(headComment.getLocation().getName());
 		textTime.setText(TimeToString(headComment.getTimestamp()));
 		textContent.setText(headComment.getContent());
-		
+
 		// Sets the image attached to the comment
-		if(headComment.getPhotoPath() != null){
+		if (headComment.getPhotoPath() != null) {
 
-				String imagePath = headComment.getPhotoPath();
-			    // Get the dimensions of the View
-			    //int targetW = holder.imageView.getWidth();
-			    //int targetH = holder.imageView.getHeight();
+			String imagePath = headComment.getPhotoPath();
+			// Get the dimensions of the View
+			// int targetW = holder.imageView.getWidth();
+			// int targetH = holder.imageView.getHeight();
 
-			    // Get the dimensions of the bitmap
-			    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-			    bmOptions.inJustDecodeBounds = true;
-			    BitmapFactory.decodeFile(imagePath, bmOptions);
-			    int photoW = bmOptions.outWidth;
-			    int photoH = bmOptions.outHeight;
-			    
-			    // Determine how much to scale down the image
-			    int scaleFactor = Math.min(photoW/50, photoH/50);
+			// Get the dimensions of the bitmap
+			BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+			bmOptions.inJustDecodeBounds = true;
+			BitmapFactory.decodeFile(imagePath, bmOptions);
+			int photoW = bmOptions.outWidth;
+			int photoH = bmOptions.outHeight;
 
-			    // Decode the image file into a Bitmap sized to fill the View
-			    bmOptions.inJustDecodeBounds = false;
-			    bmOptions.inSampleSize = scaleFactor;
-			    bmOptions.inPurgeable = true;
-				
+			// Determine how much to scale down the image
+			int scaleFactor = Math.min(photoW / 50, photoH / 50);
 
-			    Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
-			    imageView.setImageBitmap(bitmap);
-			   
+			// Decode the image file into a Bitmap sized to fill the View
+			bmOptions.inJustDecodeBounds = false;
+			bmOptions.inSampleSize = scaleFactor;
+			bmOptions.inPurgeable = true;
+
+			Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
+			imageView.setImageBitmap(bitmap);
+
 		}
-	
 
 		moreButton.setOnClickListener(new View.OnClickListener() {
 
@@ -374,7 +320,7 @@ public class SubCommentViewActivity extends Activity {
 			public void onClick(View v) {
 
 				// TODO Auto-generated method stub
-				openMoreDialog(headCommentData);
+				openMoreDialog(appState.getSubCommentViewHead());
 
 			}
 		});
@@ -410,7 +356,7 @@ public class SubCommentViewActivity extends Activity {
 			return;
 		} else {
 			for (SubCommentModel subComment : subCommentList) {
-				this.commentsList.add(subComment);
+				commentList.add(subComment);
 				if (subComment.getSubComments().size() > 0) {
 					AddCommentToList(subComment.getSubComments());
 				}
@@ -440,13 +386,15 @@ public class SubCommentViewActivity extends Activity {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
-						userData.getFavourites().add(commentData);
+						appState.getUserModel().getFavourites()
+								.add(commentData);
 
 					}
 				});
 
 		// User will only have the option if the
-		if (userData.getAndroidID().equals(comment.getAuthorAndroidID())) {
+		if (appState.getUserModel().getAndroidID()
+				.equals(comment.getAuthorAndroidID())) {
 			moreDialog.setNeutralButton("Edit Comment",
 					new DialogInterface.OnClickListener() {
 
@@ -486,18 +434,18 @@ public class SubCommentViewActivity extends Activity {
 
 		RadioButton button;
 
-		if (userData.isSortByDate()) {
+		if (appState.getUserModel().isSortByDate()) {
 			button = (RadioButton) sortRadioGroup.getChildAt(0);
 			button.toggle();
-		} else if (userData.isSortByLoc()) {
+		} else if (appState.getUserModel().isSortByLoc()) {
 			button = (RadioButton) sortRadioGroup.getChildAt(1);
 			button.toggle();
-		} else if (userData.isSortByPopularity()) {
+		} else if (appState.getUserModel().isSortByPopularity()) {
 			button = (RadioButton) sortRadioGroup.getChildAt(2);
 			button.toggle();
 		}
 
-		if (userData.isSortByPic()) {
+		if (appState.getUserModel().isSortByPic()) {
 			button = (RadioButton) ((ViewGroup) optionsView.getChildAt(2))
 					.getChildAt(0);
 			button.toggle();

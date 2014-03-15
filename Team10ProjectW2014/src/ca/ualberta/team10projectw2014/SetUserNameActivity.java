@@ -16,13 +16,16 @@ public class SetUserNameActivity extends Activity {
 	private EditText userNameField;
 	private Button setButton;
 	private Button skipButton;
+	private ApplicationStateModel appState;
 	//private UserDataController userDataController;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_set_user_name);
-		
+		appState = ApplicationStateModel.getInstance();
+		appState.loadComments();
+		appState.loadUser();
 		//userDataController = new UserDataController(this, this.getString(R.string.user_sav));
 		
 		//Disable Actionbar Icon and set title
@@ -79,7 +82,8 @@ public class SetUserNameActivity extends Activity {
 	private void startNewActivity(UserModel user){
 		//userDataController.saveToFile(user);
 		Intent mainListViewActivity = new Intent(getApplicationContext(),MainListViewActivity.class);
-		mainListViewActivity.putExtra("userData", user);
+		//mainListViewActivity.putExtra("userData", user);
+		appState.saveUser();
 		getApplicationContext().startActivity(mainListViewActivity);
 		finish();
 		
