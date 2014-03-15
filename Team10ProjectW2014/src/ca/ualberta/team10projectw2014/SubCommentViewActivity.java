@@ -477,7 +477,6 @@ public class SubCommentViewActivity extends Activity {
 	}
 	
 	private void sortList (ArrayList<CommentModel> commentsToSort){
-		for(int i )
 		
 		
 		

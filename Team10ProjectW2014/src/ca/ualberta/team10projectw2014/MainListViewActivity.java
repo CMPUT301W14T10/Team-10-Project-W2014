@@ -23,12 +23,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -99,13 +101,16 @@ public class MainListViewActivity extends Activity{
 //			if(appState.getUserModel().isSortByLoc() == true) {
 //				appState.getCommentList(pictureSort(appState.getCommentList(), locCompare));
 //			}
+			else if(appState.getUserModel().isSortByPopularity())
+				appState.setCommentList(appState.pictureSort(appState.getCommentList(), ApplicationStateModel.popularityCompare));
 		}
 		else {
 			// Sort by date
 			if (appState.getUserModel().isSortByDate() == true) {
 				appState.setCommentList(appState.sort(appState.getCommentList(), ApplicationStateModel.dateCompare));
 			}
-			
+			else if(appState.getUserModel().isSortByPopularity())
+				appState.setCommentList(appState.pictureSort(appState.getCommentList(), ApplicationStateModel.popularityCompare));
 		}
 		
 		commentView.setAdapter(appState.getMLVAdapter());
@@ -210,6 +215,7 @@ public class MainListViewActivity extends Activity{
 		ViewGroup sortRadioGroup = (ViewGroup) optionsView.getChildAt(0);
 				
 		RadioButton button;
+		CheckBox box;
 		
 		if(appState.getUserModel().isSortByDate()){
 			button = (RadioButton) sortRadioGroup.getChildAt(0);
@@ -225,8 +231,8 @@ public class MainListViewActivity extends Activity{
 		}
 
 		if(appState.getUserModel().isSortByPic()){
-			button = (RadioButton) ((ViewGroup) optionsView.getChildAt(2)).getChildAt(0);
-			button.toggle();
+			box = (CheckBox) optionsView.getChildAt(2);
+			box.setChecked(true);
 		}
 		
 		alert.setView(optionsView);
@@ -251,6 +257,22 @@ public class MainListViewActivity extends Activity{
 		});
 
 		alert.show();
+	}
+	
+	//from the android developer page http://developer.android.com/guide/topics/ui/controls/checkbox.html
+	public void onCheckboxClicked(View view) {
+	    // Is the view now checked?
+	    boolean checked = ((CheckBox) view).isChecked();
+	    
+	    // Check which checkbox was clicked
+	    switch(view.getId()) {
+	        case R.id.pictures:
+	            if (checked)
+	            	appState.getUserModel().setSortByPic(true);
+	            else
+	            	appState.getUserModel().setSortByPic(false);
+	            break;
+	    }
 	}
 	
 	/**
@@ -294,14 +316,6 @@ public class MainListViewActivity extends Activity{
 	        		buttonGroup.clearCheck();
 	            break;
 	            
-	        case R.id.pictures:
-	        	if(checked){
-	        		appState.getUserModel().setSortByPic(true);
-	            	buttonPressed.toggle();
-	        	}
-	        	else
-	        		buttonGroup.clearCheck();
-	            break;
 	    }
 	}
 	
