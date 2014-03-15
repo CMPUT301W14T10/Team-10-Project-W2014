@@ -126,8 +126,6 @@ public class ApplicationStateModel {
 	}
 
 	public void updateMainAdapter(){
-		if(commentList.isEmpty())
-				Log.e("The list is empty...", "empty list");
 		MLVAdapter.notifyDataSetChanged();
 	}
 	
