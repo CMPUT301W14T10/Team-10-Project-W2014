@@ -19,6 +19,8 @@ public class LocationListenerController implements LocationListener {
 	protected LocationManager mLocationManager;
 	private Location locationGPS;
  	private Location locationNet;
+ 	
+ 	private static final int TWO_MINUTES = 1000 * 60 * 2;
 
 	public LocationListenerController(Context context) {
 		this.context = context;
@@ -171,12 +173,17 @@ public class LocationListenerController implements LocationListener {
 	// From http://developer.android.com/guide/topics/location/strategies.html 
 	// Accessed on March 6th at 4:00PM
 	// Methods used to determine the most accurate location possible
-	
-	private static final int TWO_MINUTES = 1000 * 60 * 2;
 
-	/** Determines whether one Location reading is better than the current Location fix
-	  * @param location  The new Location that you want to evaluate
-	  * @param currentBestLocation  The current Location fix, to which you want to compare the new one
+	/** Determines whether one Location reading is better than the current 
+	  * Location reading.
+	  * 
+	  * @param location
+	  * 		The new Location that you want to evaluate
+	  * @param currentBestLocation 
+	  * 		The current Location fix, to which you want to compare the 
+	  * 		new one
+	  * @return <code>true</code> if new location is better,
+	  * 		<code>false</code> otherwise;
 	  */
 	protected boolean isBetterLocation(
 			Location location, 
@@ -226,7 +233,13 @@ public class LocationListenerController implements LocationListener {
 	    return false;
 	}
 
-	/** Checks whether two providers are the same */
+	/** Checks whether two providers are the same using a string comparison. 
+	 * 
+	 * 	@param provider1 the first provider to compare
+	 *  @param provider2 the second provider to compare
+     *  @return <code>true</code> if the specified object is equal to this 
+     *           string, <code>false</code> otherwise.
+	 */ 
 	private boolean isSameProvider(String provider1, String provider2) {
 	    if (provider1 == null) {
 	      return provider2 == null;
