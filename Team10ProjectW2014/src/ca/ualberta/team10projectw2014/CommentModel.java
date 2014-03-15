@@ -38,7 +38,7 @@ public class CommentModel{
 	private Bitmap photo;
 	private Calendar timestamp;
 	private int numFavourites;
-	private int authorAndroidID;
+	private String authorAndroidID;
 	private ArrayList<SubCommentModel> subComments = new ArrayList<SubCommentModel>();
 	private String photoPath;
 	private Uri imageUri;
@@ -109,10 +109,10 @@ public class CommentModel{
 	public void setNumFavourites(int numFavourites) {
 		this.numFavourites = numFavourites;
 	}
-	public int getAuthorAndroidID() {
+	public String getAuthorAndroidID() {
 		return authorAndroidID;
 	}
-	public void setAuthorAndroidID(int authorAndroidID) {
+	public void setAuthorAndroidID(String authorAndroidID) {
 		this.authorAndroidID = authorAndroidID;
 	}
 	
