@@ -49,7 +49,7 @@ public class ApplicationStateModel {
 
 
 	//comparator used in sorting comments by location:
-	private static Comparator locCompare = new Comparator(){
+	public static Comparator locCompare = new Comparator(){
 		public int compare(Object comment1, Object comment2){
 			LocationModel userLocation = new LocationModel("here", location);
 			LocationModel loc1 = ((CommentModel)comment1).getLocation();
@@ -59,7 +59,7 @@ public class ApplicationStateModel {
 	};
 
 	//comparator used in sorting comments by date:
-	private static Comparator dateCompare = new Comparator(){
+	public static Comparator dateCompare = new Comparator(){
 		public int compare(Object comment1, Object comment2){
 			Calendar time1 = ((CommentModel)comment1).getTimestamp();
 			Calendar time2 = ((CommentModel)comment2).getTimestamp();
@@ -68,7 +68,7 @@ public class ApplicationStateModel {
 	};
 
 	//comparator used in sorting comments by number of likes:
-	private static Comparator popularityCompare = new Comparator(){
+	public static Comparator popularityCompare = new Comparator(){
 		public int compare(Object comment1, Object comment2){
 			int favs1 = ((CommentModel) comment1).getNumFavourites();
 			int favs2 = ((CommentModel) comment2).getNumFavourites();
