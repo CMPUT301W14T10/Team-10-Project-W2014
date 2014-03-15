@@ -157,7 +157,7 @@ public class ApplicationStateModel {
 
 	public void loadComments(){
 		FileInputStream fis;
-		commentList = new ArrayList<CommentModel>();
+		commentList.clear();
 		try
 		{
 			fis = COMMENT_fileContext.openFileInput(COMMENT_FILE_NAME);
