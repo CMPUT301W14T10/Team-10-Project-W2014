@@ -24,6 +24,7 @@ import java.util.Calendar;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -49,24 +50,24 @@ public class SubCommentViewActivity extends Activity {
 	private ListView subListView;
 	private ApplicationStateModel appState;
 	private ArrayList<CommentModel> commentList;
-	private ArrayList<CommentModel> sortedArrayList;
 	private ActionBar actionbar;
 	private Bundle bundle;
+	private View headerView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sub_comment_view);
-		
+
 		appState = ApplicationStateModel.getInstance();
 		appState.setFileContext(this);
 
-		commentList = new ArrayList<CommentModel>();
 		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
 
-	
+		headerView = (View) SetHeader(appState.getSubCommentViewHead());
 		// Set the first item in the list to the header Comment
-		subListView.addHeaderView((View) SetHeader(appState.getSubCommentViewHead()));
+		subListView.addHeaderView(headerView);
+
 
 	}
 
@@ -75,16 +76,19 @@ public class SubCommentViewActivity extends Activity {
 		super.onResume();
 
 		appState.setFileContext(this);
+		subListView.removeHeaderView(headerView);
+		headerView = (View) SetHeader(appState.getSubCommentViewHead());
+		subListView.addHeaderView(headerView);
 
 		// Disable the Home Icon on the Actionbar
 		ActionBar actionbar = getActionBar();
 		actionbar.setDisplayShowHomeEnabled(false);
-		
+
 		// Set the Title in the Actionbar to the title of the head comment
 		actionbar.setTitle(appState.getSubCommentViewHead().getTitle());
 
 		// Gets all the SubComments and all its subComments
-		commentList.clear();
+		commentList = new ArrayList<CommentModel>();
 		AddCommentToList(appState.getSubCommentViewHead().getSubComments());
 
 		appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
@@ -382,7 +386,7 @@ public class SubCommentViewActivity extends Activity {
 		moreDialog.setTitle("More...");
 
 		// set Add to Read later
-		moreDialog.setPositiveButton("Add to Read Later",
+		moreDialog.setNeutralButton("Add to Read Later",
 				new DialogInterface.OnClickListener() {
 
 					@Override
@@ -394,6 +398,7 @@ public class SubCommentViewActivity extends Activity {
 					}
 				});
 
+		final Context editCommentContext = this;
 		// User will only have the option if the
 		if (appState.getUserModel().getAndroidID()
 				.equals(comment.getAuthorAndroidID())) {
@@ -404,12 +409,14 @@ public class SubCommentViewActivity extends Activity {
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub
 							// Open CreateComment Activity
-
+							appState.setCommentToEdit(commentData);
+							Intent editComment = new Intent(getApplicationContext(), EditCommentActivity.class);
+							//subCommentView.putExtra("comment", (Object) headComment);
+							editCommentContext.startActivity(editComment);
 						}
 					});
 		}
 
-		
 		moreDialog.setNegativeButton("Cancel", null);
 
 		moreDialog.show();
@@ -474,12 +481,6 @@ public class SubCommentViewActivity extends Activity {
 				});
 
 		alert.show();
-	}
-	
-	private void sortList (ArrayList<CommentModel> commentsToSort){
-		
-		
-		
 	}
 
 }
