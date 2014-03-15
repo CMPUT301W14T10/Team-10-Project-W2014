@@ -45,6 +45,7 @@ public class SubCommentViewActivityAdapter extends
 	private int layoutResourceId;
 	private ArrayList<CommentModel> commentList;
 	private UserModel userData;
+	private ApplicationStateModel appState;
 
 	
 
@@ -73,6 +74,7 @@ public class SubCommentViewActivityAdapter extends
 			ArrayList<CommentModel> commentList,UserModel userData) {
 
 		super(context, layoutResourceId, commentList);
+		this.appState = ApplicationStateModel.getInstance();
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
 		this.commentList = commentList;
@@ -134,9 +136,9 @@ public class SubCommentViewActivityAdapter extends
 					//Open up Create comment activity
 					//will send the title of the comment the user wants to reply to. 
 					Intent createComment = new Intent(context.getApplicationContext(), CreateCommentActivity.class);
-					createComment.putExtra("Comment Title",commentList.get(pos).getTitle());
+					appState.setCreateCommentParent(commentList.get(pos));
 					context.startActivity(createComment);
-				
+			
 					
 				}
 			});

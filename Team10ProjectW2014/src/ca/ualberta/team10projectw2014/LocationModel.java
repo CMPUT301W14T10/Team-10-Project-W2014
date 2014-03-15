@@ -36,6 +36,20 @@ public class LocationModel{
 	
 	//TODO Be sure to use the lat and lng from location, not latitude and longitude.
 
+	
+	public Location getLocation()
+	{
+	
+		return location;
+	}
+
+	
+	public void setLocation(Location location)
+	{
+	
+		this.location = location;
+	}
+
 	public LocationModel(String name, Location location) {
 		this.location = location;
 		this.name = name;

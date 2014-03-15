@@ -34,7 +34,7 @@ public class ApplicationStateModel {
 		return instance;
 	}
 
-	private Context COMMENT_fileContext;
+	private static Context COMMENT_fileContext;
 	private String COMMENT_FILE_NAME = "comments.sav";
 	private Context USER_fileContext;
 	private MainListViewAdapter MLVAdapter;
@@ -44,17 +44,30 @@ public class ApplicationStateModel {
 	private CommentModel subCommentViewHead;
 	private CommentModel createCommentParent;
 	private SubCommentViewActivityAdapter SCVAdapter;
+<<<<<<< HEAD
+	private CommentModel commentToEdit;
+=======
 	private static Location location = null;
+	private CommentModel commentToEdit;
+
+>>>>>>> 639436eec18c91dc7900c2f516096ca3b2abe0ff
 
 
+	public CommentModel getCommentToEdit() {
+		return commentToEdit;
+	}
+	public void setCommentToEdit(CommentModel commentToEdit) {
+		this.commentToEdit = commentToEdit;
+	}
 
 	//comparator used in sorting comments by location:
 	public static Comparator locCompare = new Comparator(){
 		public int compare(Object comment1, Object comment2){
-			LocationModel userLocation = new LocationModel("here", location);
-			LocationModel loc1 = ((CommentModel)comment1).getLocation();
-			LocationModel loc2 = ((CommentModel)comment2).getLocation();
-			return loc1.distanceTo(userLocation) - loc2.distanceTo(userLocation);
+			final LocationListenerController locationListener = new LocationListenerController(COMMENT_fileContext);
+			Location userLocation = locationListener.getLastBestLocation();
+			Location loc1 = ((CommentModel)comment1).getLocation().getLocation();
+			Location loc2 = ((CommentModel)comment2).getLocation().getLocation();
+			return (int) (loc2.distanceTo(userLocation) - loc1.distanceTo(userLocation));
 		}
 	};
 
@@ -76,6 +89,18 @@ public class ApplicationStateModel {
 		}
 	};
 
+	public CommentModel getCommentToEdit()
+	{
+	
+		return commentToEdit;
+	}
+	
+	public void setCommentToEdit(CommentModel commentToEdit)
+	{
+	
+		this.commentToEdit = commentToEdit;
+	}
+	
 	public MainListViewAdapter getMLVAdapter() {
 		return MLVAdapter;
 	}
@@ -126,8 +151,6 @@ public class ApplicationStateModel {
 	}
 
 	public void updateMainAdapter(){
-		if(commentList.isEmpty())
-				Log.e("The list is empty...", "empty list");
 		MLVAdapter.notifyDataSetChanged();
 	}
 	
