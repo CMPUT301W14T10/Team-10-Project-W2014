@@ -32,18 +32,18 @@ public class CreateCommentActivity extends Activity{
 	private String postContents;
 	private LocationModel postLocation;
 	private Bitmap postPhoto;
-	private EditText ueditText;
-	private EditText teditText;
-	private EditText ceditText;
+	private EditText ueditText; // username edit field
+	private EditText teditText; // title edit field
+	private EditText ceditText; // content edit field
 	private ImageView imageView;
-	protected double longitude;
-	protected double latitude;
- 	protected Location bestKnownLoc = null;
- 	protected CommentModel model;
- 	protected LocationListenerController locationListener;
- 	protected LocationManager mLocationManager;
- 	protected Boolean gpsEnabled;
- 	protected Boolean netEnabled;
+	private double longitude;
+	private double latitude;
+	private Location bestKnownLoc = null;
+	private CommentModel model;
+	private LocationListenerController locationListener;
+	private LocationManager mLocationManager;
+	private Boolean gpsEnabled;
+	private Boolean netEnabled;
  	private ApplicationStateModel appState;
  	private String photoPath = null;
  	private Uri imageUri = null;
