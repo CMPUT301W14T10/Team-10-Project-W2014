@@ -255,7 +255,6 @@ public class EditCommentActivity extends Activity {
 
 			appState.saveComments();
 			appState.loadComments();
-			appState.updateMainAdapter();
 			//Destroy this activity so that we return to the previous one.
 			goBack();
 		}

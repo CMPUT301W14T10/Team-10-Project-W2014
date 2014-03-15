@@ -52,6 +52,7 @@ public class SubCommentViewActivity extends Activity {
 	private ArrayList<CommentModel> commentList;
 	private ActionBar actionbar;
 	private Bundle bundle;
+	private View headerView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +63,10 @@ public class SubCommentViewActivity extends Activity {
 		appState.setFileContext(this);
 
 		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
-
+		
+		headerView = (View) SetHeader(appState.getSubCommentViewHead());
 		// Set the first item in the list to the header Comment
-		subListView.addHeaderView((View) SetHeader(appState.getSubCommentViewHead()));
+		subListView.addHeaderView(headerView);
 		
 
 	}
@@ -74,6 +76,9 @@ public class SubCommentViewActivity extends Activity {
 		super.onResume();
 
 		appState.setFileContext(this);
+		subListView.removeHeaderView(headerView);
+		headerView = (View) SetHeader(appState.getSubCommentViewHead());
+		subListView.addHeaderView(headerView);
 
 		// Disable the Home Icon on the Actionbar
 		ActionBar actionbar = getActionBar();

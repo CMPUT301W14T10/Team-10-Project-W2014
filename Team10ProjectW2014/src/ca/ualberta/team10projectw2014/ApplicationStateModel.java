@@ -44,21 +44,7 @@ public class ApplicationStateModel {
 	private CommentModel subCommentViewHead;
 	private CommentModel createCommentParent;
 	private SubCommentViewActivityAdapter SCVAdapter;
-<<<<<<< HEAD
 	private CommentModel commentToEdit;
-=======
-	private static Location location = null;
-	private CommentModel commentToEdit;
-
->>>>>>> 639436eec18c91dc7900c2f516096ca3b2abe0ff
-
-
-	public CommentModel getCommentToEdit() {
-		return commentToEdit;
-	}
-	public void setCommentToEdit(CommentModel commentToEdit) {
-		this.commentToEdit = commentToEdit;
-	}
 
 	//comparator used in sorting comments by location:
 	public static Comparator locCompare = new Comparator(){
