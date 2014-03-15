@@ -48,6 +48,7 @@ import android.widget.TextView;
 public class SubCommentViewActivity extends Activity {
 	private ListView subListView;
 	private ApplicationStateModel appState;
+	private ArrayList<CommentModel> commentList;
 	
 
 	@Override
@@ -56,6 +57,8 @@ public class SubCommentViewActivity extends Activity {
 		setContentView(R.layout.activity_sub_comment_view);
 		appState = ApplicationStateModel.getInstance();
 		appState.setFileContext(this);
+		commentList = new ArrayList<CommentModel>();
+		AddCommentToList(appState.getSubCommentViewHead().getSubComments());
 	}
 
 	@Override
@@ -85,7 +88,7 @@ public class SubCommentViewActivity extends Activity {
 			AddCommentToList(appState.getSubCommentViewHead().getSubComments());
 			
 			appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
-					R.layout.sub_comment_view_sub_comment_item, appState.getSubCommentViewHead().getSubComments(),
+					R.layout.sub_comment_view_sub_comment_item, commentList,
 					appState.getUserModel()));
 
 		/*} else if(bundle.containsKey("favourite")) {
@@ -360,7 +363,7 @@ public class SubCommentViewActivity extends Activity {
 			return;
 		} else {
 			for (SubCommentModel subComment : subCommentList) {
-				appState.getSubCommentViewHead().getSubComments().add(subComment);
+				commentList.add(subComment);
 				if (subComment.getSubComments().size() > 0) {
 					AddCommentToList(subComment.getSubComments());
 				}
