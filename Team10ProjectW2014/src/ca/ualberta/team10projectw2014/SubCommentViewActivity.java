@@ -24,6 +24,7 @@ import java.util.Calendar;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -392,6 +393,7 @@ public class SubCommentViewActivity extends Activity {
 					}
 				});
 
+		final Context editCommentContext = this;
 		// User will only have the option if the
 		if (appState.getUserModel().getAndroidID()
 				.equals(comment.getAuthorAndroidID())) {
@@ -402,7 +404,10 @@ public class SubCommentViewActivity extends Activity {
 						public void onClick(DialogInterface dialog, int which) {
 							// TODO Auto-generated method stub
 							// Open CreateComment Activity
-
+							appState.setCommentToEdit(commentData);
+							Intent editComment = new Intent(getApplicationContext(), EditCommentActivity.class);
+							//subCommentView.putExtra("comment", (Object) headComment);
+							editCommentContext.startActivity(editComment);
 						}
 					});
 		}

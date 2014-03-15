@@ -100,13 +100,16 @@ public class MainListViewActivity extends Activity{
 //			if(appState.getUserModel().isSortByLoc() == true) {
 //				appState.getCommentList(pictureSort(appState.getCommentList(), locCompare));
 //			}
+			else if(appState.getUserModel().isSortByPopularity())
+				appState.setCommentList(appState.pictureSort(appState.getCommentList(), ApplicationStateModel.popularityCompare));
 		}
 		else {
 			// Sort by date
 			if (appState.getUserModel().isSortByDate() == true) {
 				appState.setCommentList(appState.sort(appState.getCommentList(), ApplicationStateModel.dateCompare));
 			}
-			
+			else if(appState.getUserModel().isSortByPopularity())
+				appState.setCommentList(appState.pictureSort(appState.getCommentList(), ApplicationStateModel.popularityCompare));
 		}
 		
 		commentView.setAdapter(appState.getMLVAdapter());
