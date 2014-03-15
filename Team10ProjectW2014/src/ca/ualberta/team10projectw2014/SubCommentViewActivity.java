@@ -120,6 +120,7 @@ public class SubCommentViewActivity extends Activity {
 
 	}
 
+	
 	/**
 	 * Inflate the menu.
 	 * 
@@ -200,7 +201,6 @@ public class SubCommentViewActivity extends Activity {
 		//createComment.putExtra("comment",headCommentData);
 		createComment.putExtra("username",appState.getUserModel().getUsername());
 		this.startActivity(createComment);
-
 	}
 
 	/**
