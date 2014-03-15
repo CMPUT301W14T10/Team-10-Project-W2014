@@ -59,8 +59,6 @@ public class MainListViewActivity extends Activity{
 		appState.setFileContext(this);
 		appState.loadComments();
 		appState.loadUser();
-		appState.setMLVAdapter(new MainListViewAdapter(this, appState.getCommentList()));
-		appState.updateMainAdapter();
 	}
 
 	
@@ -85,7 +83,8 @@ public class MainListViewActivity extends Activity{
 		commentView = (ListView) findViewById(R.id.HeadCommentList);
 		appState.setFileContext(this);
 		appState.loadComments();
-		appState.loadUser();		
+		appState.loadUser();
+		appState.setMLVAdapter(new MainListViewAdapter(this, appState.getCommentList()));
 		
 		/**
 		 * Head Comment Sorting:
