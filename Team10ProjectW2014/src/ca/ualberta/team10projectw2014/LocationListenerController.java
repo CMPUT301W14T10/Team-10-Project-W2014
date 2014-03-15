@@ -1,6 +1,5 @@
 package ca.ualberta.team10projectw2014;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,6 +19,8 @@ public class LocationListenerController implements LocationListener {
 	protected LocationManager mLocationManager;
 	private Location locationGPS;
  	private Location locationNet;
+ 	
+ 	private static final int TWO_MINUTES = 1000 * 60 * 2;
 
 	public LocationListenerController(Context context) {
 		this.context = context;
@@ -57,7 +58,7 @@ public class LocationListenerController implements LocationListener {
     	if (currentBestLocation != null){
     		Toast.makeText(
     				context, 
-    				"Current Best Location on create: " + 
+    				R.string.current_best_loc_on_create + 
     				currentBestLocation.getLatitude() + 
     				" " + 
     				currentBestLocation.getLongitude(), 
@@ -70,15 +71,13 @@ public class LocationListenerController implements LocationListener {
 	protected void noGPSError(){
 		final AlertDialog.Builder builder = 
 				new AlertDialog.Builder(context);
-	    builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+	    builder.setMessage(R.string.gps_appears_disabled)
 	           .setCancelable(false)
 	           .setPositiveButton(
-	        		   "Yes", 
+	        		   R.string.yes, 
 	        		   new DialogInterface.OnClickListener() {
 	        			   public void onClick(
-	        					   @SuppressWarnings("unused") 
 	        					   final DialogInterface dialog, 
-	        					   @SuppressWarnings("unused") 
 	        					   final int id) {
 	        				   			context.startActivity(
 		   						new Intent(android.provider.Settings.
@@ -86,11 +85,10 @@ public class LocationListenerController implements LocationListener {
 	        			   }
 	           })
 	           .setNegativeButton(
-	        		   "No", 
+	        		   R.string.no, 
 	        		   new DialogInterface.OnClickListener() {
 			               public void onClick(
 			            		   final DialogInterface dialog, 
-			            		   @SuppressWarnings("unused") 
 			            		   final int id) {
 			                    dialog.cancel();
 			               }
@@ -135,7 +133,7 @@ public class LocationListenerController implements LocationListener {
 		if (currentBestLocation != null){
 			Toast.makeText(
 					context, 
-					"Current Best Location on search: " + 
+					R.string.current_best_loc_on_search + 
 					currentBestLocation.getLatitude() + 
 					" " + 
 					currentBestLocation.getLongitude(), 
@@ -175,12 +173,17 @@ public class LocationListenerController implements LocationListener {
 	// From http://developer.android.com/guide/topics/location/strategies.html 
 	// Accessed on March 6th at 4:00PM
 	// Methods used to determine the most accurate location possible
-	
-	private static final int TWO_MINUTES = 1000 * 60 * 2;
 
-	/** Determines whether one Location reading is better than the current Location fix
-	  * @param location  The new Location that you want to evaluate
-	  * @param currentBestLocation  The current Location fix, to which you want to compare the new one
+	/** Determines whether one Location reading is better than the current 
+	  * Location reading.
+	  * 
+	  * @param location
+	  * 		The new Location that you want to evaluate
+	  * @param currentBestLocation 
+	  * 		The current Location fix, to which you want to compare the 
+	  * 		new one
+	  * @return <code>true</code> if new location is better,
+	  * 		<code>false</code> otherwise;
 	  */
 	protected boolean isBetterLocation(
 			Location location, 
@@ -230,7 +233,13 @@ public class LocationListenerController implements LocationListener {
 	    return false;
 	}
 
-	/** Checks whether two providers are the same */
+	/** Checks whether two providers are the same using a string comparison. 
+	 * 
+	 * 	@param provider1 the first provider to compare
+	 *  @param provider2 the second provider to compare
+     *  @return <code>true</code> if the specified object is equal to this 
+     *           string, <code>false</code> otherwise.
+	 */ 
 	private boolean isSameProvider(String provider1, String provider2) {
 	    if (provider1 == null) {
 	      return provider2 == null;

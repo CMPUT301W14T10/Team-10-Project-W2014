@@ -302,6 +302,7 @@ public class CreateCommentActivity extends Activity{
 				model.setPhoto(this.postPhoto);
 				model.setTitle(this.postTitle);
 				model.setPhotoPath(photoPath);
+				model.setAuthorAndroidID(appState.getUserModel().getAndroidID());
 				((SubCommentModel) model).setParentTitle("RE: " + appState.getCreateCommentParent().getTitle());
 				
 				// Sets the current date and time for the comment
@@ -335,6 +336,7 @@ public class CreateCommentActivity extends Activity{
 				calendar.setTimeInMillis(timestamp);
 				model.setTimestamp(calendar);
 				model.setNumFavourites(0);
+				model.setAuthorAndroidID(appState.getUserModel().getAndroidID());
 				
 				appState.getCommentList().add(model);
 				//TODO Add this head comment to the list of head comments on the phone

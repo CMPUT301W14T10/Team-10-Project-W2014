@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+	<!-- General Strings -->
     <string name="app_name">Team10ProjectW2014</string>
-    <string name="action_settings">Settings</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="dash_string">  -  </string>
+    
     <string name="desc">The picture the user posted with this comment.</string>
-    <string name="action_add_head_comment">Add Head Comment</string>
+    
+    <!-- ActionBar Strings -->
+    <string name="action_settings">Settings</string>
     <string name="action_menu">Menu</string>
     <string name="action_favourite">Favourite</string>
     <string name="action_edit_username">Edit Username</string>
@@ -13,7 +18,9 @@
     <string name="action_want_to_read">Want to Read</string>
     <string name="action_reply">Reply</string>
     <string name="action_title">Title</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="action_add_head_comment">Add Head Comment</string>
+    
+    <!-- SubCommentView -->
     <string name="title_activity_sub_comment_view">SubCommentViewActivity</string>
     <string name="comment_image">Head Comment Image</string>
     <string name="long_title">Long Title</string>
@@ -37,7 +44,7 @@
     <string name="number_of_favourites">Number of Favourites</string>
     <string name="pictures">Pictures</string>
     <string name="sort_subtitle">sort by:</string>
-    <string name="dash_string">  -  </string>
+    
     <string name="file_name_string">commentListFile.sav</string>
     <string name="user_sav">user.sav</string>
     <string name="title_activity_set_user_name">SetUserNameActivity</string>
@@ -46,5 +53,9 @@
     <string name="skip_button">Skip this Step</string>
     <string name="head_comment_list_at">at</string>
     <string name="head_comment_list_location">location</string>
-
+    
+    <!-- LocationListenerController -->
+    <string name="gps_appears_disabled">Your GPS seems to be disabled, do you want to enable it?</string>
+    <string name="current_best_loc_on_search">Current best location on search: </string>
+    <string name="current_best_loc_on_create">Current best location on create: </string>
 </resources>
