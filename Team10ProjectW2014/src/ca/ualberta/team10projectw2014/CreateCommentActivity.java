@@ -111,17 +111,17 @@ public class CreateCommentActivity extends Activity{
 			}
 			//setUsernameView("Please set a username");
 		}
-		if(appState.getCreateCommentParent() != null){
+		/*if(appState.getCreateCommentParent() != null){
 			this.postTitle = "RE:" + appState.getCreateCommentParent().getTitle();
 			teditText.setKeyListener(null);
 			setTitleView(postTitle);
 		}
-		else{
-			if (this.postTitle == null){
-				this.postTitle = null;
-			}
-			//setTitleView("Create a Name for Your Post");
+		else{*/
+		if (this.postTitle == null){
+			this.postTitle = null;
 		}
+			//setTitleView("Create a Name for Your Post");
+		//}
 	}
 	
 	public boolean checkStringIsAllWhiteSpace(String string){
@@ -302,6 +302,7 @@ public class CreateCommentActivity extends Activity{
 				model.setPhoto(this.postPhoto);
 				model.setTitle(this.postTitle);
 				model.setPhotoPath(photoPath);
+				((SubCommentModel) model).setParentTitle("RE: " + appState.getCreateCommentParent().getTitle());
 				
 				// Sets the current date and time for the comment
 				// Referenced http://stackoverflow.com/questions/16686298/string-timestamp-to-calendar-in-java on March 2
