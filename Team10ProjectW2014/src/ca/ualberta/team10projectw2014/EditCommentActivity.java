@@ -35,6 +35,7 @@ public class EditCommentActivity extends Activity {
 	private String postTitle;
 	private String postUsername;
 	private String postContents;
+	@SuppressWarnings("unused")
 	private LocationModel postLocation;
 	private Bitmap postPhoto;
 	
@@ -86,6 +87,7 @@ public class EditCommentActivity extends Activity {
 	
 	/**
 	 * Sets the views using data set in {@link #onCreate()} and tells {@link #locationListener to start listening for location}
+	 * Location is not supported as of version 1.
 	 */
 	@Override 
 	protected void onResume(){
@@ -101,13 +103,14 @@ public class EditCommentActivity extends Activity {
 		
 
         // Start listening for location information
-        startListeningLocation();
+        //startListeningLocation();
 	}
 	
 	/**
 	 * Creates a LocationListenerController to start keeping track of the user's location
 	 *
 	 */
+	@SuppressWarnings("unused")
 	private void startListeningLocation(){
 		Toast.makeText(getBaseContext(), "Starting to listen for location...", Toast.LENGTH_LONG).show();
 		this.locationListener = new LocationListenerController(this);
@@ -183,7 +186,7 @@ public class EditCommentActivity extends Activity {
 	 * @param v   the view which calls this method (in this case, "Location")
 	 */
 	public void chooseLocation(View v){
-		Toast.makeText(getBaseContext(), "You Want to Choose a Location, Eh?", Toast.LENGTH_LONG).show();
+		Toast.makeText(getBaseContext(), "Sorry, this feature is not supported yet", Toast.LENGTH_LONG).show();
 	}
 	
 	/**
@@ -345,7 +348,6 @@ public class EditCommentActivity extends Activity {
 			appState.getCommentToEdit().setAuthor(this.postUsername);
 			appState.getCommentToEdit().setContent(this.postContents);
 			appState.getCommentToEdit().setPhoto(this.postPhoto);
-			appState.getCommentToEdit().setLocation(this.postLocation);
 			
 			//appState.getCommentToEdit().setLocation(this.postLocation);
 
@@ -364,10 +366,7 @@ public class EditCommentActivity extends Activity {
 	@SuppressWarnings("unused")
 	private void stopListeningLocation(){
 		getLastBestLocation();
-		if (bestKnownLoc == null){
-			Toast.makeText(getBaseContext(), "Ain't no location here", Toast.LENGTH_LONG).show();
-		}
-		else{
+		if (bestKnownLoc != null){
 			Location location = locationListener.getCurrentBestLocation();
 			bestKnownLoc.setLatitude(location.getLatitude());
 			bestKnownLoc.setLongitude(location.getLongitude());
