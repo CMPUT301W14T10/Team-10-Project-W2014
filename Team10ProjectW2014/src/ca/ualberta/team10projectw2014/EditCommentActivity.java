@@ -228,7 +228,7 @@ public class EditCommentActivity extends Activity {
 	
 	//A currently redundant method which creates a location with a title (not used yet)
 	private void setLocation(){
-		this.postLocation = new LocationModel(String.valueOf("Lat: " + bestKnownLoc.getLatitude()) + " Long: " + String.valueOf(bestKnownLoc.getLongitude()), bestKnownLoc);
+		this.postLocation = new LocationModel(String.valueOf("Lat: " + bestKnownLoc.getLatitude()) + " Long: " + String.valueOf(bestKnownLoc.getLongitude()), bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude());
 		//TODO Set location variable to...?
 		// Location should never be null
 	}

@@ -215,9 +215,7 @@ public class CreateCommentActivity extends Activity{
             ".jpg",         /* suffix */
             storageDir      /* directory */
         );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        photoPath = image.getAbsolutePath(); //"file:" + 
+        photoPath = image.getAbsolutePath();
 
         return image;
     }
@@ -238,41 +236,12 @@ public class CreateCommentActivity extends Activity{
                 e.printStackTrace();
             }
         }
-    	/*
-    	if (photoPath == null){
-    		//Placeholder
-    		photoPath = null;
-    	}
-    	else{
-	        // Get the dimensions of the View
-	        int targetW = imageView.getWidth();
-	        int targetH = imageView.getHeight();
-	
-	        // Get the dimensions of the bitmap
-	        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-	        bmOptions.inJustDecodeBounds = true;
-	        BitmapFactory.decodeFile(photoPath, bmOptions);
-	        int photoW = bmOptions.outWidth;
-	        int photoH = bmOptions.outHeight;
-	
-	        // Determine how much to scale down the image
-	        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-	
-	        // Decode the image file into a Bitmap sized to fill the View
-	        bmOptions.inJustDecodeBounds = false;
-	        bmOptions.inSampleSize = scaleFactor;
-	        bmOptions.inPurgeable = true;
-	
-	        Bitmap bitmap = BitmapFactory.decodeFile(photoPath, bmOptions);
-	        imageView.setImageBitmap(bitmap);
-    	}*/
 		
 	
 	//A currently redundant method which creates a location with a title (not used yet)
 	private void setLocation(){
-		this.postLocation = new LocationModel(String.valueOf("Lat: " + bestKnownLoc.getLatitude()) + " Long: " + String.valueOf(bestKnownLoc.getLongitude()), bestKnownLoc);
-		//TODO Set location variable to...?
-		// Location should never be null
+		//Toast.makeText(getBaseContext(), "Lat: " + bestKnownLoc.getLatitude() + " " + " Long: " + bestKnownLoc.getLatitude(), Toast.LENGTH_LONG).show();
+		this.postLocation = new LocationModel(String.valueOf("Lat: " + bestKnownLoc.getLatitude()) + " Long: " + String.valueOf(bestKnownLoc.getLongitude()), bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude());
 	}
 	
 	//Called when the user presses "Post" button to create and store a new comment
@@ -344,8 +313,8 @@ public class CreateCommentActivity extends Activity{
 			
 			//TODO Stop listening for location information
 
-			//stopListeningLocation();
-			//setLocation();
+			stopListeningLocation();
+			setLocation();
 			
 			model.setLocation(this.postLocation);
 
