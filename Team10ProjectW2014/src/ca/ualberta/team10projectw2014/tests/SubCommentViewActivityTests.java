@@ -264,4 +264,151 @@ public class SubCommentViewActivityTests extends
 		assertEquals("Sub comment displays correct Content",
 				 subComment.getContent(),textContent.getText());
 	}
+	
+	/***
+	 * test to test if the elements of the sub comments are shown.
+	 * 
+	 * @throws Exception
+	 */
+
+	public void testShowSubSubComment() throws Exception {
+
+		CommentModel headComment = new CommentModel();
+		headComment.setAuthor("test author");
+		headComment.setTitle("test title");
+		headComment.setTimestamp(Calendar.getInstance());
+		headComment.setContent("Body");
+		headComment.setImageUri(null);
+		headComment.setLocation(new LocationModel("Test Location name", 10.4,
+				10.4));
+
+		SubCommentModel subComment = new SubCommentModel(headComment);
+		subComment.setAuthor("test author");
+		subComment.setTitle("test sub title");
+		subComment.setTimestamp(Calendar.getInstance());
+		subComment.setContent("Body");
+		subComment.setImageUri(null);
+		subComment.setLocation(new LocationModel("Test Location name", 10.4,
+				10.4));
+		
+		SubCommentModel subSubComment = new SubCommentModel(subComment);
+		subSubComment.setAuthor("test author");
+		subSubComment.setTitle("test sub title");
+		subSubComment.setTimestamp(Calendar.getInstance());
+		subSubComment.setContent("Body");
+		subSubComment.setImageUri(null);
+		subSubComment.setLocation(new LocationModel("Test Location name", 10.4,
+				10.4));
+		subComment.setParentTitle("RE: " + subComment.getTitle());
+		
+		subComment.addSubComment(subSubComment);
+
+		headComment.addSubComment(subComment);
+		appState.setSubCommentViewHead(headComment);
+
+		Activity subCommentViewActivity = getActivity();
+
+		View subCommentView = subCommentViewActivity.getWindow().getDecorView();
+
+		TextView textAuthor = (TextView) subCommentViewActivity
+				.findViewById(R.id.sub_comment_author);
+		TextView textReplyTitle = (TextView) subCommentViewActivity
+				.findViewById(R.id.reply_title);
+		TextView textTitle = (TextView) subCommentViewActivity
+				.findViewById(R.id.sub_title);
+		TextView textTime = (TextView) subCommentViewActivity
+				.findViewById(R.id.sub_comment_time_sub);
+		TextView textContent = (TextView) subCommentViewActivity
+				.findViewById(R.id.sub_comment_text_body);
+		TextView textLocation = (TextView) subCommentViewActivity
+				.findViewById(R.id.sub_comment_location_sub);
+		ImageView image = (ImageView) subCommentViewActivity
+				.findViewById(R.id.sub_comment_image);
+
+		ViewAsserts.assertOnScreen(subCommentView, textAuthor);
+		ViewAsserts.assertOnScreen(subCommentView, textReplyTitle);
+		ViewAsserts.assertOnScreen(subCommentView, textTitle);
+		ViewAsserts.assertOnScreen(subCommentView, textTime);
+		ViewAsserts.assertOnScreen(subCommentView, textContent);
+		ViewAsserts.assertOnScreen(subCommentView, textLocation);
+		ViewAsserts.assertOnScreen(subCommentView, image);
+
+	}
+	
+	/***
+	 * test to test if the elements of the sub comment's sub comments
+	 * are shown
+	 * 
+	 * @throws Exception
+	 */
+
+	public void testSubSubCommentText() throws Exception {
+
+		CommentModel headComment = new CommentModel();
+		headComment.setAuthor("test author");
+		headComment.setTitle("test title");
+		headComment.setTimestamp(Calendar.getInstance());
+		headComment.setContent("Body");
+		headComment.setImageUri(null);
+		headComment.setLocation(new LocationModel("Test Location name", 10.4,
+				10.4));
+
+		SubCommentModel subComment = new SubCommentModel(headComment);
+		subComment.setAuthor("test author");
+		subComment.setTitle("test sub title");
+		subComment.setTimestamp(Calendar.getInstance());
+		subComment.setContent("Body");
+		subComment.setImageUri(null);
+		subComment.setLocation(new LocationModel("Test Location name", 10.4,
+				10.4));
+		subComment.setParentTitle("RE: " + headComment.getTitle());
+		
+		
+		SubCommentModel subSubComment = new SubCommentModel(subComment);
+		subSubComment.setAuthor("test author");
+		subSubComment.setTitle("test sub title");
+		subSubComment.setTimestamp(Calendar.getInstance());
+		subSubComment.setContent("Body");
+		subSubComment.setImageUri(null);
+		subSubComment.setLocation(new LocationModel("Test Location name", 10.4,
+				10.4));
+		subSubComment.setParentTitle("RE: " + subComment.getTitle());
+		
+		subComment.addSubComment(subSubComment);
+		headComment.addSubComment(subComment);
+		appState.setSubCommentViewHead(headComment);
+
+		Activity subCommentViewActivity = getActivity();
+  
+		TextView textAuthor = (TextView) subCommentViewActivity
+				.findViewById(R.id.sub_comment_author);
+		TextView textReplyTitle = (TextView) subCommentViewActivity
+				.findViewById(R.id.reply_title);
+		TextView textTitle = (TextView) subCommentViewActivity
+				.findViewById(R.id.sub_title);
+		TextView textTime = (TextView) subCommentViewActivity
+				.findViewById(R.id.sub_comment_time_sub);
+		TextView textContent = (TextView) subCommentViewActivity
+				.findViewById(R.id.sub_comment_text_body);
+		TextView textLocation = (TextView) subCommentViewActivity
+				.findViewById(R.id.sub_comment_location_sub);
+
+		// Converts new headcomment's timestamp calendar object to a testable
+		// string
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:mm aa",java.util.Locale.getDefault());
+		String timeString = sdf.format(headComment.getTimestamp().getTime());
+
+		assertEquals("Sub comment displays correct Reply Title",
+				subSubComment.getParentTitle(), textReplyTitle.getText());
+		assertEquals("Sub comment displays correct Title",
+				subSubComment.getTitle(), textTitle.getText());
+		assertEquals("Sub comment displays correct Author",
+				subSubComment.getAuthor(), textAuthor.getText());
+		assertEquals("Sub comment displays correct Time", timeString,
+				textTime.getText());
+		assertEquals("Sub comment displays correct Location", subSubComment
+				.getLocation().getName(), textLocation.getText());
+		assertEquals("Sub comment displays correct Content",
+				 subSubComment.getContent(),textContent.getText());
+	}
 }
