@@ -21,6 +21,7 @@ public class MainListViewActivityTests extends
 	Activity activity;
 	ListView headListView;
 	ApplicationStateModel appState;
+	ArrayList<CommentModel> backupList = new ArrayList<CommentModel>();
 	
 	public MainListViewActivityTests() {
 		super(MainListViewActivity.class);
@@ -49,10 +50,16 @@ public class MainListViewActivityTests extends
 		headComment.setTimestamp(Calendar.getInstance());
 		commentList.add(headComment);
 		
+		// Set comment list to something so that it is not null for the load
+		appState.setCommentList(backupList);
+		// Sets file path for comment list file
+		appState.setFileContext(getInstrumentation().getContext());
+		appState.loadComments();
+		// Backup actual comment list
+		backupList = appState.getCommentList();
+		
 		// Sets test comment list
 		appState.setCommentList(commentList);
-		// Sets filepath for comment list save file
-		appState.setFileContext(getInstrumentation().getContext());
 		// Saves comments
 		appState.saveComments();
 		
@@ -88,6 +95,9 @@ public class MainListViewActivityTests extends
         // Test comment date is correct
         assertEquals("Head comment date should appear in list", timeString, date.getText());
         
+        // Restores actual comment list
+        appState.setCommentList(backupList);
+        appState.saveComments();
         // Close activity
         activity.finish();
         setActivity(null);
