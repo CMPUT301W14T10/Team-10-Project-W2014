@@ -19,7 +19,6 @@
             android:id="@+id/sub_comment_image"
             android:layout_width="50dip"
             android:layout_height="50dip"
-            android:background="#000000"
             android:contentDescription="@string/comment_image" />
     </LinearLayout>
 

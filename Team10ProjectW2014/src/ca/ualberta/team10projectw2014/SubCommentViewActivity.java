@@ -39,6 +39,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -49,20 +50,28 @@ import android.widget.TextView;
 public class SubCommentViewActivity extends Activity {
 	private ListView subListView;
 	private ApplicationStateModel appState;
-	private ArrayList<CommentModel> commentList;
+	private ArrayList<? extends CommentModel> commentList;
+	private ArrayList<CommentModel> sortedList;
+	private ArrayList<CommentModel> fullSortedList;
 	private ActionBar actionbar;
-	private Bundle bundle;
 	private View headerView;
+	private Boolean toSortByPicture = false;
+	private LayoutInflater layoutInflater;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sub_comment_view);
+		layoutInflater = LayoutInflater.from(this);
 
 		appState = ApplicationStateModel.getInstance();
 		appState.setFileContext(this);
 
 		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
+		
+		// Disable the Home Icon on the Actionbar
+	    actionbar = getActionBar();
+		actionbar.setDisplayShowHomeEnabled(false);
 
 		headerView = (View) SetHeader(appState.getSubCommentViewHead());
 		// Set the first item in the list to the header Comment
@@ -75,48 +84,33 @@ public class SubCommentViewActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 
-		appState.setFileContext(this);
 		subListView.removeHeaderView(headerView);
 		headerView = (View) SetHeader(appState.getSubCommentViewHead());
 		subListView.addHeaderView(headerView);
 
-		// Disable the Home Icon on the Actionbar
-	    actionbar = getActionBar();
-		actionbar.setDisplayShowHomeEnabled(false);
-
+		
 		// Set the Title in the Actionbar to the title of the head comment
 		actionbar.setTitle(appState.getSubCommentViewHead().getTitle());
 
 		// Gets all the SubComments and all its subComments
-		commentList = new ArrayList<CommentModel>();
-		AddCommentToList(appState.getSubCommentViewHead().getSubComments());
-
+		if(toSortByPicture == true){
+			commentList = new ArrayList<CommentModel>();
+		    ArrayList<? extends CommentModel> comments = appState.getSubCommentViewHead().getSubComments();
+	    	commentList = appState.pictureSort((ArrayList<CommentModel>)comments, appState.dateCompare);
+	    	
+	    	
+		}else{
+			commentList = new ArrayList<CommentModel>();
+			commentList = appState.getSubCommentViewHead().getSubComments();
+			
+		} 
+		
+		sortedList = new ArrayList<CommentModel>();
+		AddCommentToList(commentList);
+		
 		appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
-				R.layout.sub_comment_view_sub_comment_item, commentList,
+				R.layout.sub_comment_view_sub_comment_item, sortedList,
 				appState.getUserModel()));
-
-		/*
-		 * } else if(bundle.containsKey("favourite")) { // Set the Title in the
-		 * Actionbar to the title to favourites
-		 * actionbar.setTitle("Favourites");
-		 * 
-		 * appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
-		 * R.layout.sub_comment_view_sub_comment_item,
-		 * appState.getUserModel().getFavourites(), appState.getUserModel()));
-		 * 
-		 * 
-		 * 
-		 * 
-		 * } else if(bundle.containsKey("wantToRead")) {
-		 * 
-		 * // Set the Title in the Actionbar to the title to Want to read
-		 * actionbar.setTitle("Want to Read");
-		 * 
-		 * appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
-		 * R.layout.sub_comment_view_sub_comment_item,
-		 * appState.getUserModel().getWantToReadComments(),
-		 * appState.getUserModel())); }
-		 */
 
 		subListView.setAdapter(appState.getSCVAdapter());
 
@@ -171,7 +165,7 @@ public class SubCommentViewActivity extends Activity {
 			return true;
 		case R.id.action_sort:
 			// Bring up the dialog box for the user to sort comments by
-			SortComments();
+			sortComments();
 			return true;
 		case R.id.action_favourites:
 			// Bring up the user's favourite list
@@ -357,14 +351,14 @@ public class SubCommentViewActivity extends Activity {
 	 * @author sgiang92
 	 * @param subCommentList
 	 */
-	private void AddCommentToList(ArrayList<SubCommentModel> subCommentList) {
+	private void AddCommentToList(ArrayList<? extends CommentModel> subCommentList) {
 		if (subCommentList.size() == 0) {
 			return;
 		} else {
-			for (SubCommentModel subComment : subCommentList) {
-				commentList.add(subComment);
-				if (subComment.getSubComments().size() > 0) {
-					AddCommentToList(subComment.getSubComments());
+			for (int i = 0; i < subCommentList.size();i++) {
+				sortedList.add(subCommentList.get(i));
+				if (subCommentList.get(i).getSubComments().size() > 0) {
+					AddCommentToList(subCommentList.get(i).getSubComments());
 				}
 			}
 		}
@@ -425,62 +419,72 @@ public class SubCommentViewActivity extends Activity {
 
 	/**
 	 * Brings up a dialog box to prompt user for sorting criteria:
-	 * 
-	 * @see sort_comments() in MainListViewActivity
-	 * 
 	 */
-	private void SortComments() {
-		LayoutInflater layoutInflater = LayoutInflater.from(this);
-
+	private void sortComments(){
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-		// set the fields of the dialog:
+		//set the fields of the dialog:
 		alert.setTitle("Sort By:");
-
-		LinearLayout optionsView = (LinearLayout) layoutInflater.inflate(
-				R.layout.sort_by_dialog_list, null);
-
+	
+		LinearLayout optionsView = (LinearLayout)layoutInflater.inflate(R.layout.sort_by_dialog_list, 
+				null);
+		
 		ViewGroup sortRadioGroup = (ViewGroup) optionsView.getChildAt(0);
-
+				
 		RadioButton button;
-
-		if (appState.getUserModel().isSortByDate()) {
+		CheckBox box;
+		
+		if(appState.getUserModel().isSortByDate()){
 			button = (RadioButton) sortRadioGroup.getChildAt(0);
 			button.toggle();
-		} else if (appState.getUserModel().isSortByLoc()) {
+		}
+		else if(appState.getUserModel().isSortByLoc()){
 			button = (RadioButton) sortRadioGroup.getChildAt(1);
 			button.toggle();
-		} else if (appState.getUserModel().isSortByPopularity()) {
+		}
+		else if(appState.getUserModel().isSortByPopularity()){
 			button = (RadioButton) sortRadioGroup.getChildAt(2);
 			button.toggle();
 		}
 
-		if (appState.getUserModel().isSortByPic()) {
-			button = (RadioButton) ((ViewGroup) optionsView.getChildAt(2))
-					.getChildAt(0);
-			button.toggle();
+		if(appState.getUserModel().isSortByPic()){
+			box = (CheckBox) optionsView.getChildAt(2);
+			box.setChecked(false);
 		}
-
+		
 		alert.setView(optionsView);
 
-		// set the positive button with its text and set up an on click listener
-		// to add the counter with the text provided when it is pressed:
+		//Set the user's sort preferences
 		alert.setPositiveButton("Set", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
-
-				// userController.saveInFile();
+				onResume();
+			
 			}
 		});
 
-		// also set a cancel negative button that does nothing but close the
-		// dialog window:
-		alert.setNegativeButton("Cancel",
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-					}
-				});
+		//also set a cancel negative button that does nothing but close the 
+		//dialog window:
+		
+		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+			}
+		});
 
 		alert.show();
 	}
+	
+	//from the android developer page http://developer.android.com/guide/topics/ui/controls/checkbox.html
+	public void onCheckboxClicked(View view) {
+	    // Is the view now checked?
+	    boolean checked = ((CheckBox) view).isChecked();
+	   
+	    if(checked){
+	    	toSortByPicture = true;
+	    }
+	}
+	
+	
+
+
 
 }
