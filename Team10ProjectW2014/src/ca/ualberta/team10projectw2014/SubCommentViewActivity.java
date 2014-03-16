@@ -64,19 +64,16 @@ public class SubCommentViewActivity extends Activity {
 		setContentView(R.layout.activity_sub_comment_view);
 		layoutInflater = LayoutInflater.from(this);
 
+		//Get an instance of the ApplicationStateModel singleton
 		appState = ApplicationStateModel.getInstance();
 		appState.setFileContext(this);
 
+		//Set the layout 
 		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
 		
 		// Disable the Home Icon on the Actionbar
 	    actionbar = getActionBar();
 		actionbar.setDisplayShowHomeEnabled(false);
-
-		headerView = (View) SetHeader(appState.getSubCommentViewHead());
-		// Set the first item in the list to the header Comment
-		subListView.addHeaderView(headerView);
-
 
 	}
 
@@ -84,6 +81,8 @@ public class SubCommentViewActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 
+		//Remove any already displayed head comment and display an new one
+		//old one may be updated.
 		subListView.removeHeaderView(headerView);
 		headerView = (View) SetHeader(appState.getSubCommentViewHead());
 		subListView.addHeaderView(headerView);
@@ -92,22 +91,26 @@ public class SubCommentViewActivity extends Activity {
 		// Set the Title in the Actionbar to the title of the head comment
 		actionbar.setTitle(appState.getSubCommentViewHead().getTitle());
 
-		// Gets all the SubComments and all its subComments
+		
 		if(toSortByPicture == true){
+			//Sort Head Comment's sub comments by those with pictures
 			commentList = new ArrayList<CommentModel>();
 		    ArrayList<? extends CommentModel> comments = appState.getSubCommentViewHead().getSubComments();
 	    	commentList = appState.pictureSort((ArrayList<CommentModel>)comments, appState.dateCompare);
 	    	
 	    	
 		}else{
+			//get the lists of comment in the order they were created
 			commentList = new ArrayList<CommentModel>();
 			commentList = appState.getSubCommentViewHead().getSubComments();
 			
 		} 
 		
+		// Gets all the SubComments and all its subComments and put them in a list
 		sortedList = new ArrayList<CommentModel>();
 		AddCommentToList(commentList);
 		
+		//Add the list of comments to the adapter to be displayed to list view
 		appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
 				R.layout.sub_comment_view_sub_comment_item, sortedList,
 				appState.getUserModel()));
@@ -209,7 +212,7 @@ public class SubCommentViewActivity extends Activity {
 	 * 
 	 * @author dvyee, sgiang92
 	 * @return
-	 * @param
+	 * @param 
 	 */
 	private void addFavourite(CommentModel comment) {
 		// TODO: Implement addFavourite
@@ -272,8 +275,8 @@ public class SubCommentViewActivity extends Activity {
 		TextView textTitle = (TextView) header.findViewById(R.id.long_title);
 		TextView textAuthor = (TextView) header
 				.findViewById(R.id.head_comment_author);
-		// TextView textLocation = (TextView) header
-		// .findViewById(R.id.head_comment_location_sub);
+		TextView textLocation = (TextView) header
+				.findViewById(R.id.head_comment_location_sub);
 		TextView textTime = (TextView) header
 				.findViewById(R.id.head_comment_time_sub);
 		TextView textContent = (TextView) header
@@ -285,7 +288,7 @@ public class SubCommentViewActivity extends Activity {
 		// Set the items to the contents of the Head Comment
 		textTitle.setText(headComment.getTitle());
 		textAuthor.setText(headComment.getAuthor());
-		// textLocation.setText(headComment.getLocation().getName());
+		textLocation.setText(headComment.getLocation().getName());
 		textTime.setText(TimeToString(headComment.getTimestamp()));
 		textContent.setText(headComment.getContent());
 
