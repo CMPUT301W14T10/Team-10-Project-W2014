@@ -192,8 +192,8 @@ public class MainListViewActivityTests extends
 		headCommentNoPic.setTimestamp(Calendar.getInstance());
 		
 		// Create test location model
-		LocationModel locMod = new LocationModel("testlocationmodel", 100, 100);
-		headCommentNoPic.setLocation(locMod);
+		LocationModel tstLocationModel = new LocationModel("Lat: 100 Long: 100", 100, 100);
+		headCommentNoPic.setLocation(tstLocationModel);
 		
 		// Add coment to test list
 		commentList.add(headCommentNoPic);
@@ -205,7 +205,7 @@ public class MainListViewActivityTests extends
 		headCommentPic.setContent("Pic Test Head Comment Content");
 		headCommentPic.setTimestamp(Calendar.getInstance());
 		headCommentPic.setPhotoPath("testpath");
-		headCommentPic.setLocation(locMod);
+		headCommentPic.setLocation(tstLocationModel);
 		commentList.add(headCommentPic);
 		
 		// Set comment list to something so that it is not null for the load
@@ -232,8 +232,7 @@ public class MainListViewActivityTests extends
         // Identifies list item objects required for the test
         TextView title = (TextView) commentLayout.findViewById(R.id.head_comment_title);
         TextView userName = (TextView) commentLayout.findViewById(R.id.head_comment_username);
-        // TODO re-add in location when location implemented
-        //TextView location = (TextView) commentLayout.findViewById(R.id.head_comment_location);
+        TextView location = (TextView) commentLayout.findViewById(R.id.head_comment_location);
         TextView date = (TextView) commentLayout.findViewById(R.id.head_comment_time);
         
         // Test new comment title is correct
@@ -241,8 +240,7 @@ public class MainListViewActivityTests extends
         // Test new comment username is correct
         assertEquals("Head comment username should appear in list", headCommentPic.getAuthor(), userName.getText());
         // Test new comment location is correct
-        // TODO re-add in location when location implemented
-        //assertEquals("Head comment location should appear in list", headComment.getLocation(), location.getText());
+        assertEquals("Head comment location should appear in list", headCommentPic.getLocation().getName(), location.getText());
         
         // Converts new headcomment's timestamp calendar object to a testable string
         SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:mm aa");
