@@ -45,6 +45,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 public class SubCommentViewActivity extends Activity {
@@ -490,7 +491,58 @@ public class SubCommentViewActivity extends Activity {
 	}
 	
 	
-
+	/**
+	 * Responds to clicks on a radio button in the sort by alert
+	 * dialog. Adapted from the android developer website
+	 * http://developer.android.com/guide/topics/ui/controls/radiobutton.html
+	 */
+	public void onRadioButtonClicked(View view) {
+		RadioButton buttonPressed = (RadioButton) view;
+		RadioGroup buttonGroup = (RadioGroup) buttonPressed.getParent();
+	    // Is the button now checked?
+	    boolean checked = ((RadioButton) view).isChecked();
+	    buttonGroup.clearCheck();
+	    // Check which radio button was clicked
+	    switch(view.getId()) {
+	    	
+	        case R.id.date:
+	            if (checked){
+	            	appState.getUserModel().setSortByDate(true);
+	            	buttonPressed.toggle();
+	            	appState.saveUser();
+	            }
+	            else{
+	        		appState.getUserModel().setSortByDate(false);
+            		appState.saveUser();
+	            }
+	            break;
+	            
+	        case R.id.location:
+	            if (checked){
+	            	appState.getUserModel().setSortByLoc(true);
+	            	buttonPressed.toggle();
+	            	appState.saveUser();
+	            }
+	            else{
+	            	appState.getUserModel().setSortByLoc(false);
+	            	appState.saveUser();
+	            }
+	            break;
+	            
+	        case R.id.number_of_favourites:
+	            if (checked){
+	            	appState.getUserModel().setSortByPopularity(true);
+	            	buttonPressed.toggle();
+	            	appState.saveUser();
+	            }
+	            else{
+	            	appState.getUserModel().setSortByPopularity(false);
+	            	appState.saveUser();
+	            }
+	            break;
+	            
+	    }
+	}
 
 
 }

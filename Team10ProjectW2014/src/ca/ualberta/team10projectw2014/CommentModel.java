@@ -35,9 +35,6 @@ public class CommentModel{
 	public void setPhotoPath(String photoPath) {
 		this.photoPath = photoPath;
 	}
-	public void addSubComment(SubCommentModel subComment){
-		subComments.add(subComment);
-	}
 	public ArrayList<SubCommentModel> getSubComments() {
 		return subComments;
 	}
@@ -88,6 +85,17 @@ public class CommentModel{
 	}
 	public void setAuthorAndroidID(String authorAndroidID) {
 		this.authorAndroidID = authorAndroidID;
+	}
+	
+	/**
+	 * A method that adds the provided SubCommetnModel to the
+	 * CommentModel's list of SubCommentModels.
+	 * @param  subComment - the SubCommentModel to add.
+	 * @return      void, no return value.
+	 * @see #subComments
+	 */
+	public void addSubComment(SubCommentModel subComment){
+		subComments.add(subComment);
 	}
 	
 }
