@@ -109,8 +109,11 @@ public class MainListViewActivity extends Activity{
 			if (appState.getUserModel().isSortByDate() == true) {
 				appState.setCommentList(appState.sort(appState.getCommentList(), ApplicationStateModel.dateCompare));
 			}
+			else if(appState.getUserModel().isSortByLoc() == true) {
+				appState.setCommentList(appState.sort(appState.getCommentList(), ApplicationStateModel.locCompare));
+			}
 			else if(appState.getUserModel().isSortByPopularity())
-				appState.setCommentList(appState.pictureSort(appState.getCommentList(), ApplicationStateModel.popularityCompare));
+				appState.setCommentList(appState.sort(appState.getCommentList(), ApplicationStateModel.popularityCompare));
 		}
 		
 		commentView.setAdapter(appState.getMLVAdapter());
