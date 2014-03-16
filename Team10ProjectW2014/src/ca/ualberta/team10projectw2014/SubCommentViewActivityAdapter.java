@@ -239,7 +239,7 @@ public class SubCommentViewActivityAdapter extends
 	 * @return string of the formatted date of the timestamp
 	 */
 	private String TimeToString (Calendar calendar) {
-		SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:00 aa",java.util.Locale.getDefault());
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:mm aa",java.util.Locale.getDefault());
 		String timeString = sdf.format(calendar.getTime());
 		return timeString;
 	}
