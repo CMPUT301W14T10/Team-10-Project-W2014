@@ -290,8 +290,8 @@ public class EditCommentActivity extends Activity {
             storageDir      /* directory */
         );
 
-        // Save a file: path for use with ACTION_VIEW intents
-        photoPath = image.getAbsolutePath(); //"file:" + 
+        // Save the path of the image created
+        photoPath = image.getAbsolutePath();
 
         return image;
     }
@@ -358,6 +358,7 @@ public class EditCommentActivity extends Activity {
 
 			appState.saveComments();
 			appState.loadComments();
+			
 			//Destroy this activity so that we return to the previous one.
 			goBack();
 		}

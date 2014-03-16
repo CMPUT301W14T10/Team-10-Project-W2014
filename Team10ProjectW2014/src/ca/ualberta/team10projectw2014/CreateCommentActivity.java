@@ -106,10 +106,8 @@ public class CreateCommentActivity extends Activity{
 
 		String receivedUsername = appState.getUserModel().getUsername();fillContents(receivedUsername);
 		
-		//setPic();
+		setPic();
 		
-		//TODO Check to see if GPS is enabled
-        //TODO Start listening for location information
         startListeningLocation();
 	}
 	
@@ -224,8 +222,6 @@ public class CreateCommentActivity extends Activity{
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-
-         // Taken from http://www.androidhive.info/2013/09/android-working-with-camera-api/
     	if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 // successfully captured the image
@@ -375,10 +371,7 @@ public class CreateCommentActivity extends Activity{
 				model.setAuthorAndroidID(appState.getUserModel().getAndroidID());
 				
 				appState.getCommentList().add(model);
-				//TODO Add this head comment to the list of head comments on the phone
 			}
-			
-			//TODO Stop listening for location information
 
 			stopListeningLocation();
 			setLocation();
