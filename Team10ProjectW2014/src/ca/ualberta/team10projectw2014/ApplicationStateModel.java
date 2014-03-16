@@ -54,7 +54,7 @@ public class ApplicationStateModel {
 	/**
 	*adapters for displaying the list of comments
 	*in the MainListViewActivity and SubCommentViewActivity
-	*respectively:
+	*respectively.
 	*/
 	private MainListViewAdapter MLVAdapter;
 	private SubCommentViewActivityAdapter SCVAdapter;
@@ -64,18 +64,21 @@ public class ApplicationStateModel {
 	*The list of all head comments that in turn
 	*contain all subcomments, i.e. the following
 	*list contains all comments and subcomments(recursively)
-	*and is used in saving/loading:
+	*and is used in saving/loading.
 	*/
 	private ArrayList<CommentModel> commentList;
 	
-	
+	/**
+	*Holds all of the user's preferences and cached
+	*comments. Can be accessed from any activity.
+	*/
 	private UserModel userModel;
 	
 	/**
 	*The head comment that is to be displayed by
 	*the SubCommentViewActivity. The activity
 	*will show this head comment in full, followed
-	*by its subcomments in list form:
+	*by its subcomments in list form.
 	*/
 	private CommentModel subCommentViewHead;
 	
@@ -83,18 +86,18 @@ public class ApplicationStateModel {
 	*The comment that CreateComment is to
 	*create a subcomment for. This will
 	*be null if CreateComment is to create
-	*a new head comment:
+	*a new head comment.
 	*/
 	private CommentModel createCommentParent;
 	
 	/**
 	*The comment that EditComment is to
-	*change:
+	*change.
 	*/
 	private CommentModel commentToEdit;
 
 	/**
-	*comparator used in sorting comments by location:
+	*A comparator used in sorting comments by location.
 	*/
 	public static Comparator<CommentModel> locCompare = new Comparator<CommentModel>(){
 		
@@ -119,7 +122,7 @@ public class ApplicationStateModel {
 	};
 
 	/**
-	*comparator used in sorting comments by date:
+	*A comparator used in sorting comments by date.
 	*/
 	public static Comparator<CommentModel> dateCompare = new Comparator<CommentModel>(){
 		public int compare(CommentModel comment1, CommentModel comment2){
@@ -130,7 +133,7 @@ public class ApplicationStateModel {
 	};
 
 	/**
-	*comparator used in sorting comments by number of likes:
+	*A comparator used in sorting comments by number of likes.
 	*/
 	public static Comparator<CommentModel> popularityCompare = new Comparator<CommentModel>(){
 		public int compare(CommentModel comment1, CommentModel comment2){
@@ -140,7 +143,7 @@ public class ApplicationStateModel {
 		}
 	};
 
-	
+	//Getters and Setters:
 	public CommentModel getCommentToEdit()
 	{
 	
@@ -202,15 +205,34 @@ public class ApplicationStateModel {
 		return userModel;
 	}
 
+	/**
+	 * A method for updating the MainListViewAdapter from outside of the
+	 * singleton.
+	 * @param  void no arguments
+	 * @return      void, no return value.
+	 */
 	public void updateMainAdapter(){
 		MLVAdapter.notifyDataSetChanged();
 	}
-	
+
+	/**
+	 * A method for updating the SubCommentViewActivtyAdapter
+	 * from outside of the singleton.
+	 * @param  void, no arguments
+	 * @return      void, no return value.
+	 */
 	public void updateSubAdapter()
 	{
 		SCVAdapter.notifyDataSetChanged();
 	}
 
+	/**
+	 * A method for saving the list of head
+	 * comments(i.e. commentList) to file
+	 * @param  void, no arguments
+	 * @return      void, no return value.
+	 * @see #commentList
+	 */
 	public void saveComments(){
 		try {
 			FileOutputStream fos = COMMENT_fileContext.openFileOutput(COMMENT_FILE_NAME,
@@ -230,6 +252,13 @@ public class ApplicationStateModel {
 		}
 	}
 
+	/**
+	 * A method for loading the list of head
+	 * comments(i.e. commentList) from file
+	 * @param  void, no arguments
+	 * @return      void, no return value.
+	 * @see #commentList
+	 */
 	public void loadComments(){
 		FileInputStream fis;
 		commentList.clear();
@@ -256,6 +285,13 @@ public class ApplicationStateModel {
 		}
 	}
 
+	/**
+	 * A method for saving the user's
+	 * preferences to file.
+	 * @param  void, no arguments
+	 * @return      void, no return value.
+	 * @see #userModel
+	 */
 	public void saveUser(){
 		try {
 			FileOutputStream fos = USER_fileContext.openFileOutput(USER_FILE_NAME,
@@ -275,6 +311,13 @@ public class ApplicationStateModel {
 		}
 	}
 
+	/**
+	 * A method for loading the user's
+	 * preferences from file.
+	 * @param  void, no arguments
+	 * @return      void, no return value.
+	 * @see #userModel
+	 */
 	public void loadUser(){
 		FileInputStream fis;
 		userModel = new UserModel(USER_fileContext);
@@ -303,9 +346,9 @@ public class ApplicationStateModel {
 	/**
 	 * Selection sort algorithm to sort an array of comments by a given comparator
 	 * 
-	 * @param commentList array of CommentModels to sort
-	 * @param cmp comparator to compare CommentModels when sorting
-	 * @return the array of head comments
+	 * @param list - array of CommentModels to sort
+	 * @param cmp - comparator to compare CommentModels when sorting
+	 * @return the sorted array of head comments
 	 */
 	 public ArrayList<CommentModel> sort(ArrayList<CommentModel> list, Comparator<CommentModel> cmp) {
 		 for (int i=0; i < list.size()-1; i++) {
