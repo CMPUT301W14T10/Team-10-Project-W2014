@@ -37,7 +37,7 @@ public class SubCommentViewActivityTests extends
 	
 		appState.setSubCommentViewHead(headComment);
 		
-		Activity subCommentViewActivity = getActivity();
+		//Activity subCommentViewActivity = getActivity();
 		
 		
 
