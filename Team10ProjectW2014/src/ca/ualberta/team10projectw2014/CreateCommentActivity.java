@@ -13,43 +13,69 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+/**
+ * @author      Bradley Poulette <bpoulett@ualberta.ca>
+ * @version     1                (current version number of program)
+*/
 public class CreateCommentActivity extends Activity{
 	
+	/**
+	 *  These serve as temporary variables for the comment to created.
+	 *  They are filled into the comment when the user presses "post".
+	 */
 	private String postTitle;
 	private String postUsername;
 	private String postContents;
 	private LocationModel postLocation;
 	private Bitmap postPhoto;
+	
+	/**
+	 *  These are the layout's fields
+	 */
 	private EditText ueditText; // username edit field
 	private EditText teditText; // title edit field
 	private EditText ceditText; // content edit field
 	private ImageView imageView;
-	private double longitude;
-	private double latitude;
-	private Location bestKnownLoc = null;
-	private CommentModel model;
-	private LocationListenerController locationListener;
-	private LocationManager mLocationManager;
-	private Boolean gpsEnabled;
-	private Boolean netEnabled;
- 	private ApplicationStateModel appState;
- 	private String photoPath = null;
+	private String photoPath = null;
  	private Uri imageUri = null;
- 	private Location locationGPS;
- 	private Location locationNet;
+ 	
+	/**
+	 *  This is changed multiple times in order to store the most accurate
+	 *  position of the user during comment creation.
+	 */
+	private Location bestKnownLoc = null;
 	
+	/**
+	 * A temporary comment model to be stored when created
+	 */
+	private CommentModel model;
+	
+	/**
+	 *  A custom class used to get the user's location
+	 */
+	private LocationListenerController locationListener;
+ 	
+	/**
+	 *  Our singleton, which allows us to pass application state
+	 *  between activities
+	 */
+	private ApplicationStateModel appState;
+	
+	/**
+ 	 * Initiates application state singleton then sets class variables to comment values
+ 	 * returned in the application state singleton.
+ 	 */
 	@SuppressLint("NewApi")
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,20 +90,16 @@ public class CreateCommentActivity extends Activity{
 		imageView = (ImageView)findViewById(R.id.cc_image_view);
 	}
 	
-	
+	/**
+	 * Sets the views using data set in {@link #onCreate()} and tells {@link #locationListener to start listening for location}
+	 */
 	@Override 
 	protected void onResume(){
 		super.onResume();
 		appState.setFileContext(this);
 
-		//Receive information from the intent
-		//Bundle bundle = getIntent().getExtras();
-		String receivedUsername = appState.getUserModel().getUsername();
-		//CommentModel receivedComment = (CommentModel) bundle.getSerializable("comment"); //TODO CHANGE FROM SERIALIZABLE TO SIMPLE OBJECT
-		CommentModel receivedComment = appState.getCreateCommentParent();
-		fillContents(receivedUsername, receivedComment);
+		String receivedUsername = appState.getUserModel().getUsername();fillContents(receivedUsername);
 		
-		//Set imageView to either "No Image" or the picture returned from camera
 		//setPic();
 		
 		//TODO Check to see if GPS is enabled
@@ -85,21 +107,32 @@ public class CreateCommentActivity extends Activity{
         startListeningLocation();
 	}
 	
+	/**
+	 * Creates a LocationListenerController to start keeping track of the user's location
+	 *
+	 */
 	private void startListeningLocation(){
 		Toast.makeText(getBaseContext(), "Starting to listen for location...", Toast.LENGTH_LONG).show();
 		this.locationListener = new LocationListenerController(this);
 	}
 	
-	// Retrieved from http://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android on March 6 at 5:00
-	
+	/**
+	 * Sets {@link #bestKnownLoc} to the most accurate location in {@link #locationListener}
+	 *
+	 * Implementation retrieved from http://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android on March 6 at 5:00
+	 */
 	private void getLastBestLocation() {
 		
 		bestKnownLoc = locationListener.getLastBestLocation();
 
 	}
 
-	public void fillContents(String username, CommentModel parentModel){
-		Log.e("username", username);
+	/**
+	 * Sets the view to show the data provided by application state in {@link #onCreate(Bundle)}
+	 *
+	 * @param username username taken from UserModel in singleton
+	 */
+	public void fillContents(String username){
 		if(!checkStringIsAllWhiteSpace(username)){
 			this.postUsername = username;
 			setUsernameView(username);
@@ -109,21 +142,18 @@ public class CreateCommentActivity extends Activity{
 				this.postUsername = "Anonymous";
 				setUsernameView(this.postUsername);
 			}
-			//setUsernameView("Please set a username");
 		}
-		/*if(appState.getCreateCommentParent() != null){
-			this.postTitle = "RE:" + appState.getCreateCommentParent().getTitle();
-			teditText.setKeyListener(null);
-			setTitleView(postTitle);
-		}
-		else{*/
 		if (this.postTitle == null){
 			this.postTitle = null;
 		}
-			//setTitleView("Create a Name for Your Post");
-		//}
 	}
 	
+	/**
+	 * Checks if a string contains all whitespace using REGEX
+	 * 
+	 * @param string string to be checked 
+	 * @return            true if the string is all whitespace or empty, otherwise false
+	 */
 	public boolean checkStringIsAllWhiteSpace(String string){
 		boolean isWhitespace = string.matches("^\\s*$");
 		boolean longerThan0 = (string.trim().length() > 0);
@@ -133,16 +163,18 @@ public class CreateCommentActivity extends Activity{
 	private void setUsernameView(String name){
 		ueditText.setText(name, TextView.BufferType.EDITABLE);
 	}
-	
-	private void setTitleView(String title){
-		teditText.setText(title, TextView.BufferType.EDITABLE);
-	}
 
 	public void chooseLocation(View v){
 		Toast.makeText(getBaseContext(), "You Want to Choose a Location, Eh?", Toast.LENGTH_LONG).show();
 	}
 	
-	//Starts camera activity
+	/**
+	 * Starts camera activity when the "Photo" button is pressed in the view
+	 * 
+	 * Calls {@link #createImageFile()} to create a file to which the photo will be stored
+	 *
+	 * @param v   the view from which the method is called
+	 */
 	public void choosePhoto(View v){
 		PackageManager packageManager = this.getPackageManager();
 		if (packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA)){
@@ -174,8 +206,16 @@ public class CreateCommentActivity extends Activity{
 		}
 	}
 	
-	//Takes thumbnail from the camera activity and puts it into postPhoto.
-    @Override
+	/**
+	 * Handles the output of the camera activity upon return
+	 * 
+	 * Idea taken from http://www.androidhive.info/2013/09/android-working-with-camera-api/
+	 *
+	 * @param requestCode the type of request made to the camera (should always be 1)
+	 * @param resultCode informs the method whether the camera activity was successful or not
+	 * @param data an intent which stores the thumbnail of the image from camera
+	 */
+	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 
@@ -199,9 +239,16 @@ public class CreateCommentActivity extends Activity{
         }	
     }
     
-    //Sends the image taken from the camera to file.
-    
-    private File createImageFile() throws IOException {
+	/**
+	 * Creates the file to which the camera will send the full image
+	 *
+	 * Idea taken from http://www.androidhive.info/2013/09/android-working-with-camera-api/
+	 *
+	 * @return  the file for saving
+	 * @throws any exception if the file cannot be created
+	 */
+    @SuppressLint("SimpleDateFormat")
+	private File createImageFile() throws IOException {
  
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -220,6 +267,10 @@ public class CreateCommentActivity extends Activity{
         return image;
     }
     
+    
+    /**
+	 * Sets the view which shows the photo as a thumbnail in this activity
+	 */
     private void setPic() {
             try {
      
@@ -237,15 +288,25 @@ public class CreateCommentActivity extends Activity{
             }
         }
 		
-	
-	//A currently redundant method which creates a location with a title (not used yet)
-	private void setLocation(){
-		//Toast.makeText(getBaseContext(), "Lat: " + bestKnownLoc.getLatitude() + " " + " Long: " + bestKnownLoc.getLatitude(), Toast.LENGTH_LONG).show();
-		this.postLocation = new LocationModel(String.valueOf("Lat: " + bestKnownLoc.getLatitude()) + " Long: " + String.valueOf(bestKnownLoc.getLongitude()), bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude());
+    /**
+	 * Sets the temporary comment location to the location of the user from
+	 * {@link #locationListener}
+	 * 
+	 * Not used as of version 1.
+	 */
+    private void setLocation(){
+		if (bestKnownLoc != null){
+			this.postLocation = new LocationModel(String.valueOf("Lat: " + bestKnownLoc.getLatitude()) + " Long: " + String.valueOf(bestKnownLoc.getLongitude()), bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude());
+		}
+		else{
+			this.postLocation = new LocationModel("Unknown Location", 1, 2);
+		}
 	}
-	
-	//Called when the user presses "Post" button to create and store a new comment
-	public void attemptCommentCreation(View v){
+    
+    /**
+     * Creates a new subComment or headComment based on the information passed.
+	 */
+    public void attemptCommentCreation(View v){
 		this.postContents = ceditText.getText().toString();
 		this.postUsername = ueditText.getText().toString();
 		this.postTitle = teditText.getText().toString();
@@ -326,7 +387,11 @@ public class CreateCommentActivity extends Activity{
 		}
 	}
 	
-	
+    /**
+	 * Tells the locationListener to stop listening for the user's location
+	 * 
+	 * Not used as of version 1
+	 */
 	private void stopListeningLocation(){
 		getLastBestLocation();
 		if (bestKnownLoc == null){
@@ -340,19 +405,34 @@ public class CreateCommentActivity extends Activity{
 		}
 	}
 	
+	/**
+	 * Tells the user to add content if {@link #attemptCommentCreation(View)} finds the content view is empty
+	 */
 	private void raiseContentsIncompleteError(){
 		Toast.makeText(getBaseContext(), "Please Add Some Content", Toast.LENGTH_LONG).show();
 	}
 	
+	/**
+	 * If not set in {@link #attemptCommentCreation(View)}, sets username to "Anonymous"
+	 */
 	private void raiseUsernameIncompleteError(){
 		//TODO Make it so that the user is prompted to post as anonymous
 	    postUsername = "Anonymous";
 	}
 	
+	/**
+	 * Tells the user to add a title if {@link #attemptCommentCreation(View)} finds the title view is empty
+	 */
 	private void raiseTitleIncompleteError(){
 		Toast.makeText(getBaseContext(), "Please Create a Title", Toast.LENGTH_LONG).show();
 	}
 	
+	/**
+	 * Terminates the application
+	 * 
+	 * This is in a separate method so that it may be called by a button, should we decide
+	 * to add one in the future.
+	 */
 	private void goBack(){
 		finish();
 	}

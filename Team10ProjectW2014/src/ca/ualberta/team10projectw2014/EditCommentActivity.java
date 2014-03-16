@@ -3,7 +3,6 @@ package ca.ualberta.team10projectw2014;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import android.annotation.SuppressLint;
@@ -13,23 +12,19 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.app.Activity;
 
 /**
  * @author      Bradley Poulette <bpoulett@ualberta.ca>
  * @version     1                (current version number of program)
- * @since       2014-16-03        (the version of the package this class was first added to)
  */
 public class EditCommentActivity extends Activity {
 
@@ -40,6 +35,7 @@ public class EditCommentActivity extends Activity {
 	private String postTitle;
 	private String postUsername;
 	private String postContents;
+	@SuppressWarnings("unused")
 	private LocationModel postLocation;
 	private Bitmap postPhoto;
 	
@@ -91,6 +87,7 @@ public class EditCommentActivity extends Activity {
 	
 	/**
 	 * Sets the views using data set in {@link #onCreate()} and tells {@link #locationListener to start listening for location}
+	 * Location is not supported as of version 1.
 	 */
 	@Override 
 	protected void onResume(){
@@ -106,13 +103,14 @@ public class EditCommentActivity extends Activity {
 		
 
         // Start listening for location information
-        startListeningLocation();
+        //startListeningLocation();
 	}
 	
 	/**
 	 * Creates a LocationListenerController to start keeping track of the user's location
 	 *
 	 */
+	@SuppressWarnings("unused")
 	private void startListeningLocation(){
 		Toast.makeText(getBaseContext(), "Starting to listen for location...", Toast.LENGTH_LONG).show();
 		this.locationListener = new LocationListenerController(this);
@@ -188,7 +186,7 @@ public class EditCommentActivity extends Activity {
 	 * @param v   the view which calls this method (in this case, "Location")
 	 */
 	public void chooseLocation(View v){
-		Toast.makeText(getBaseContext(), "You Want to Choose a Location, Eh?", Toast.LENGTH_LONG).show();
+		Toast.makeText(getBaseContext(), "Sorry, this feature is not supported yet", Toast.LENGTH_LONG).show();
 	}
 	
 	/**
@@ -271,7 +269,8 @@ public class EditCommentActivity extends Activity {
 	 * @return  the file for saving
 	 * @throws any exception if the file cannot be created
 	 */
-    private File createImageFile() throws IOException {
+    @SuppressLint("SimpleDateFormat")
+	private File createImageFile() throws IOException {
  
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -320,6 +319,7 @@ public class EditCommentActivity extends Activity {
 	 * 
 	 * Not used as of version 1.
 	 */
+	@SuppressWarnings("unused")
 	private void setLocation(){
 		this.postLocation = new LocationModel(String.valueOf("Lat: " + bestKnownLoc.getLatitude()) + " Long: " + String.valueOf(bestKnownLoc.getLongitude()), bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude());
 	}
@@ -338,11 +338,16 @@ public class EditCommentActivity extends Activity {
 		else if(checkStringIsAllWhiteSpace(this.postTitle)){
 			raiseTitleIncompleteError();
 		}
+		else if(checkStringIsAllWhiteSpace(this.postUsername)){
+			raiseUsernameIncompleteError();
+		}
+		
 		else{
 			
 			appState.getCommentToEdit().setTitle(this.postTitle);
 			appState.getCommentToEdit().setAuthor(this.postUsername);
 			appState.getCommentToEdit().setContent(this.postContents);
+			appState.getCommentToEdit().setPhoto(this.postPhoto);
 			
 			//appState.getCommentToEdit().setLocation(this.postLocation);
 
@@ -358,12 +363,10 @@ public class EditCommentActivity extends Activity {
 	 * 
 	 * Not used as of version 1
 	 */
+	@SuppressWarnings("unused")
 	private void stopListeningLocation(){
 		getLastBestLocation();
-		if (bestKnownLoc == null){
-			Toast.makeText(getBaseContext(), "Ain't no location here", Toast.LENGTH_LONG).show();
-		}
-		else{
+		if (bestKnownLoc != null){
 			Location location = locationListener.getCurrentBestLocation();
 			bestKnownLoc.setLatitude(location.getLatitude());
 			bestKnownLoc.setLongitude(location.getLongitude());
