@@ -14,14 +14,14 @@
    limitations under the License.
  */
 
-package ca.ualberta.team10projectw2014;
+package ca.ualberta.team10projectw2014.models;
 
 /**
  * This class handles the user's Internet connection and fetches things
  * such as user comments from the database.
  * @author Cole Fudge
  */
-public class NetworkConnectionController {
+public class NetworkConnectionModel {
 	
 	
 }

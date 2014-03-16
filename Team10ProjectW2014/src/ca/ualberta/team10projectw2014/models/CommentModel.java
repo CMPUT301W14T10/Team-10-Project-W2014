@@ -1,4 +1,4 @@
-package ca.ualberta.team10projectw2014;
+package ca.ualberta.team10projectw2014.models;
 
 import java.util.ArrayList;
 import java.util.Calendar;

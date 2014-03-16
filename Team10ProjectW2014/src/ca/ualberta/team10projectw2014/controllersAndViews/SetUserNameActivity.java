@@ -1,6 +1,10 @@
-package ca.ualberta.team10projectw2014;
+package ca.ualberta.team10projectw2014.controllersAndViews;
 
-import ca.ualberta.team10projectw2014.controller.UserDataController;
+import ca.ualberta.team10projectw2014.R;
+import ca.ualberta.team10projectw2014.R.id;
+import ca.ualberta.team10projectw2014.R.layout;
+import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
+import ca.ualberta.team10projectw2014.models.UserModel;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;

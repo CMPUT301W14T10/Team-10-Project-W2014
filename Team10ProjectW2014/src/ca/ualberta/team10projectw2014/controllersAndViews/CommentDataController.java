@@ -1,3 +1,4 @@
+package ca.ualberta.team10projectw2014.controllersAndViews;
 /*package ca.ualberta.team10projectw2014.controller;
 
 import java.io.FileInputStream;

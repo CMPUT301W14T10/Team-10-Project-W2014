@@ -1,5 +1,7 @@
-package ca.ualberta.team10projectw2014;
+package ca.ualberta.team10projectw2014.models;
 
+import ca.ualberta.team10projectw2014.R;
+import ca.ualberta.team10projectw2014.R.string;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,7 +19,7 @@ import android.os.Bundle;
  * returning that location upon request.
  * 
  */
-public class LocationListenerController implements LocationListener {
+public class LocationListenerModel implements LocationListener {
 
 	private Location currentBestLocation = null;
 	private boolean gpsEnabled;
@@ -33,7 +35,7 @@ public class LocationListenerController implements LocationListener {
  	/**
  	 * Checks to see if either network or GPS are enabled, and asks user to turn GPS on if it is disabled.
  	 */
-	public LocationListenerController(Context context) {
+	public LocationListenerModel(Context context) {
 		this.context = context;
 		mLocationManager = (LocationManager)
 				context.getSystemService(Context.LOCATION_SERVICE);

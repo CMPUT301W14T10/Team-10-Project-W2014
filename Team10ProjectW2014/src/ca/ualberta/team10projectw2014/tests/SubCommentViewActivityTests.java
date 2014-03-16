@@ -1,7 +1,7 @@
 package ca.ualberta.team10projectw2014.tests;
 
-import ca.ualberta.team10projectw2014.ApplicationStateModel;
-import ca.ualberta.team10projectw2014.SubCommentViewActivity;
+import ca.ualberta.team10projectw2014.controllersAndViews.SubCommentViewActivity;
+import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
 

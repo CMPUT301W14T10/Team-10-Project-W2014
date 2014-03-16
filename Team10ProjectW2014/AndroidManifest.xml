@@ -29,7 +29,7 @@
         <uses-library android:name="android.test.runner" />
 
         <activity
-            android:name="ca.ualberta.team10projectw2014.MainListViewActivity"
+            android:name="ca.ualberta.team10projectw2014.controllersAndViews.MainListViewActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,17 +37,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="ca.ualberta.team10projectw2014.CreateCommentActivity" >
+        <activity android:name="ca.ualberta.team10projectw2014.controllersAndViews.CreateCommentActivity" >
         </activity>
         
-        <activity android:name="ca.ualberta.team10projectw2014.EditCommentActivity" >
+        <activity android:name="ca.ualberta.team10projectw2014.controllersAndViews.EditCommentActivity" >
         </activity>
-        <activity
-            
-            android:name="ca.ualberta.team10projectw2014.SubCommentViewActivity"
+        <activity android:name="ca.ualberta.team10projectw2014.controllersAndViews.SubCommentViewActivity"
             android:label="@string/title_activity_sub_comment_view" >
-        </activity>
-        <activity android:name="ca.ualberta.team10projectw2014.EditCommentViewActivity" >  
         </activity>
 
     </application>

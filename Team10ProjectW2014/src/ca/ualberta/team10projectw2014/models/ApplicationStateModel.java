@@ -1,4 +1,4 @@
-package ca.ualberta.team10projectw2014;
+package ca.ualberta.team10projectw2014.models;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,6 +13,9 @@ import java.util.Comparator;
 
 import android.content.Context;
 import android.location.Location;
+
+import ca.ualberta.team10projectw2014.controllersAndViews.MainListViewAdapter;
+import ca.ualberta.team10projectw2014.controllersAndViews.SubCommentViewActivityAdapter;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -124,7 +127,7 @@ public class ApplicationStateModel {
 		public int compare(CommentModel comment1, CommentModel comment2){
 			
 			//Get the user's current location:
-			final LocationListenerController locationListener = new LocationListenerController(COMMENT_fileContext);
+			final LocationListenerModel locationListener = new LocationListenerModel(COMMENT_fileContext);
 			Location userLocation = locationListener.getLastBestLocation();
 			
 			//create a location with the latitude and longitude each of the comments under consideration:

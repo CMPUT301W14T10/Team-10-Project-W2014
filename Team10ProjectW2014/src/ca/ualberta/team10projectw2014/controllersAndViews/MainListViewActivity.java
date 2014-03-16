@@ -14,8 +14,15 @@
    limitations under the License.
  */
 
-package ca.ualberta.team10projectw2014;
+package ca.ualberta.team10projectw2014.controllersAndViews;
 import java.util.ArrayList;
+
+import ca.ualberta.team10projectw2014.R;
+import ca.ualberta.team10projectw2014.R.id;
+import ca.ualberta.team10projectw2014.R.layout;
+import ca.ualberta.team10projectw2014.R.menu;
+import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
+import ca.ualberta.team10projectw2014.models.CommentModel;
 
 import android.app.Activity;
 import android.app.AlertDialog;

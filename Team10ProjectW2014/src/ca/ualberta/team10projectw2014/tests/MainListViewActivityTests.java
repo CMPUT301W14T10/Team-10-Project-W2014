@@ -1,9 +1,16 @@
-package ca.ualberta.team10projectw2014;
+package ca.ualberta.team10projectw2014.tests;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
+
+import ca.ualberta.team10projectw2014.R;
+import ca.ualberta.team10projectw2014.R.id;
+import ca.ualberta.team10projectw2014.controllersAndViews.MainListViewActivity;
+import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
+import ca.ualberta.team10projectw2014.models.CommentModel;
+import ca.ualberta.team10projectw2014.models.LocationModel;
 
 import android.app.Activity;
 import android.location.Location;

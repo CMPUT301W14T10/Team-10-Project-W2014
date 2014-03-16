@@ -1,5 +1,9 @@
-package ca.ualberta.team10projectw2014;
+package ca.ualberta.team10projectw2014.tests;
 
+import ca.ualberta.team10projectw2014.R;
+import ca.ualberta.team10projectw2014.R.id;
+import ca.ualberta.team10projectw2014.controllersAndViews.CreateCommentActivity;
+import ca.ualberta.team10projectw2014.models.CommentModel;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;

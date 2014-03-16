@@ -14,7 +14,7 @@
    limitations under the License.
  */
 
-package ca.ualberta.team10projectw2014;
+package ca.ualberta.team10projectw2014.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
