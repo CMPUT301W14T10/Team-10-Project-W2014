@@ -9,6 +9,7 @@ import android.net.Uri;
 /**
  * This class acts as the super class model for comments.
  * @author David Yee
+ * @version     1                (current version number of program)
  */
 public class CommentModel{
 	private String title;
@@ -88,11 +89,10 @@ public class CommentModel{
 	}
 	
 	/**
-	 * A method that adds the provided SubCommetnModel to the
+	 * A method that adds the provided SubCommentModel to the
 	 * CommentModel's list of SubCommentModels.
 	 * @param  subComment - the SubCommentModel to add.
 	 * @return      void, no return value.
-	 * @see #subComments
 	 */
 	public void addSubComment(SubCommentModel subComment){
 		subComments.add(subComment);

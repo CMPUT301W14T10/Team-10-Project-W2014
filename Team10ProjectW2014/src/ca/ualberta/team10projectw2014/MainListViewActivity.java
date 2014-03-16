@@ -40,6 +40,7 @@ import android.widget.RadioGroup;
 /**
  * This class handles the activity displaying the list view of head comments.
  * @author Cole Fudge
+ * @version     1                (current version number of program)
  */
 public class MainListViewActivity extends Activity{
 	private ListView commentView;
