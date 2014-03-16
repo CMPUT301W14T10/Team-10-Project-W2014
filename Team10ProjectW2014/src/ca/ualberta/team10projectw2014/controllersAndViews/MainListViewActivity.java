@@ -157,7 +157,7 @@ public class MainListViewActivity extends Activity{
 				edit_username();
 				return true;
 			case R.id.action_sort_main:
-				sort_comments();
+				sortComments();
 				return true;
 			case R.id.action_favourites_main:
 				appState.setCommentList(appState.getUserModel().getFavourites());
@@ -214,7 +214,7 @@ public class MainListViewActivity extends Activity{
 	/**
 	 * Brings up a dialog box to prompt user for sorting criteria:
 	 */
-	private void sort_comments(){
+	private void sortComments(){
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
 		//set the fields of the dialog:
