@@ -16,7 +16,6 @@
 
 package ca.ualberta.team10projectw2014.models;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -25,6 +24,7 @@ import android.provider.Settings.Secure;
 /**
  * This class acts as the model for the User.
  * @author Steven Giang, David Yee
+ * @version     1                (current version number of program)
  */
 public class UserModel{
 	private String androidID;
@@ -123,7 +123,7 @@ public class UserModel{
 	
 	public void setSortByDate(boolean sortByDate) {
 		this.sortByDate = sortByDate;
-		if(sortByDate){
+		if(this.sortByDate){
 			this.sortByLoc = false;
 			this.sortByPopularity = false;
 		}
@@ -135,7 +135,7 @@ public class UserModel{
 	
 	public void setSortByLoc(boolean sortByLoc) {
 		this.sortByLoc = sortByLoc;
-		if(sortByDate){
+		if(this.sortByLoc){
 			this.sortByDate = false;
 			this.sortByPopularity = false;
 		}
@@ -147,7 +147,7 @@ public class UserModel{
 	
 	public void setSortByPopularity(boolean sortByPopularity) {
 		this.sortByPopularity = sortByPopularity;
-		if(sortByDate){
+		if(this.sortByPopularity){
 			this.sortByLoc = false;
 			this.sortByDate = false;
 		}

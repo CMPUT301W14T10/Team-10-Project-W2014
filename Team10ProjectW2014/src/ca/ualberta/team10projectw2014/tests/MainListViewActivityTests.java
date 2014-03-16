@@ -6,25 +6,32 @@ import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 import ca.ualberta.team10projectw2014.R;
-import ca.ualberta.team10projectw2014.R.id;
 import ca.ualberta.team10projectw2014.controllersAndViews.MainListViewActivity;
 import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.location.Location;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
 import android.widget.TextView;
 
+/**
+ * This class tests various aspects of the MainListViewActivity
+ * @author      Costa Zervos <czervos@ualberta.ca>
+ * @version     1            (current version number of program)
+ */
 public class MainListViewActivityTests extends
 		ActivityInstrumentationTestCase2<MainListViewActivity> {
 	
 	Activity activity;
-	ApplicationStateModel appState;
-	ArrayList<CommentModel> backupList = new ArrayList<CommentModel>();
+	ApplicationStateModel appState; // Application singleton
+	ArrayList<CommentModel> backupList = new ArrayList<CommentModel>(); // Backs up original comment list
 	
+	/**
+	 * Initializes test suite on MainListViewActivity
+	 */
 	public MainListViewActivityTests() {
 		super(MainListViewActivity.class);
 		appState = ApplicationStateModel.getInstance();
@@ -39,6 +46,7 @@ public class MainListViewActivityTests extends
 	 * 
 	 * @throws Throwable
 	 */
+	@SuppressLint("SimpleDateFormat")
 	public void testDisplayCommentInList() throws Throwable {
 		// Create test comment List
 		ArrayList<CommentModel> commentList = new ArrayList<CommentModel>();
@@ -108,6 +116,7 @@ public class MainListViewActivityTests extends
 	 * 
 	 * @throws Throwable
 	 */
+	@SuppressLint("SimpleDateFormat")
 	public void testSortCommentsByDate() throws Throwable {
 		// Create test comment List
 		ArrayList<CommentModel> commentList = new ArrayList<CommentModel>();
@@ -145,7 +154,7 @@ public class MainListViewActivityTests extends
 		// Sets test comment list
 		appState.setCommentList(commentList);
 		// Sorts list by date
-		appState.sort(commentList, appState.dateCompare);
+		appState.sort(commentList, ApplicationStateModel.dateCompare);
 		// Saves comments
 		appState.saveComments();
 		
@@ -188,6 +197,7 @@ public class MainListViewActivityTests extends
 	 * 
 	 * @throws Throwable
 	 */
+	@SuppressLint("SimpleDateFormat")
 	public void testSortCommentsByPic() throws Throwable {
 		// Create test comment List
 		ArrayList<CommentModel> commentList = new ArrayList<CommentModel>();
@@ -226,7 +236,7 @@ public class MainListViewActivityTests extends
 		// Sets test comment list
 		appState.setCommentList(commentList);
 		// Sorts list by date
-		appState.pictureSort(commentList, appState.dateCompare);
+		appState.pictureSort(commentList, ApplicationStateModel.dateCompare);
 		// Saves comments
 		appState.saveComments();
 		
@@ -262,5 +272,92 @@ public class MainListViewActivityTests extends
         // Close activity
         activity.finish();
         setActivity(null);
+	}
+	
+	/**
+	 * Test to confirm head comment list sorts by location correctly.
+	 *
+	 * @throws Throwable
+	 */
+	@SuppressLint("SimpleDateFormat")
+	public void testSortCommentsByLocation() throws Throwable {
+		// Create test comment List
+		ArrayList<CommentModel> commentList = new ArrayList<CommentModel>();
+		// Creates two test head comments
+		CommentModel headCommentFar = new CommentModel();
+		headCommentFar.setTitle("Far Test Title");
+		headCommentFar.setAuthor("FarTestUsername");
+		headCommentFar.setContent("Far Test Head Comment Content");
+		headCommentFar.setTimestamp(Calendar.getInstance());
+
+		// Create test location model
+		LocationModel tstLocationModelFar = new LocationModel("Lat: 100 Long: 100", 100, 100);
+		headCommentFar.setLocation(tstLocationModelFar);
+
+		// Add comment to test list
+		commentList.add(headCommentFar);
+
+		// Sleep one second to ensure second comment is created later
+		TimeUnit.SECONDS.sleep(1);
+		CommentModel headCommentClose = new CommentModel();
+		headCommentClose.setTitle("Close Test Title");
+		headCommentClose.setAuthor("CloseTestUsername");
+		headCommentClose.setContent("Close Test Head Comment Content");
+		headCommentClose.setTimestamp(Calendar.getInstance());
+
+		// Create test location model
+		LocationModel tstLocationModelClose = new LocationModel("Lat: 5 Long: 5", 5, 5);
+		headCommentClose.setLocation(tstLocationModelClose);
+
+		// Add comment to test list
+		commentList.add(headCommentClose);
+
+		// Set comment list to something so that it is not null for the load
+		appState.setCommentList(backupList);
+		// Sets file path for comment list file
+		appState.setFileContext(getInstrumentation().getContext());
+		appState.loadComments();
+		// Backup actual comment list
+		backupList = appState.getCommentList();
+
+		// Sets test comment list
+		appState.setCommentList(commentList);
+		// Sorts list by date
+		appState.pictureSort(commentList, ApplicationStateModel.locCompare);
+		// Saves comments
+		appState.saveComments();
+
+		// Launches MainListviewActivity
+		activity = getActivity();
+
+		// Gets layout of head comment list item
+		View commentLayout = (View) activity.findViewById(R.id.head_comment_list_item_layout);
+
+		// Identifies list item objects required for the test
+		TextView title = (TextView) commentLayout.findViewById(R.id.head_comment_title);
+		TextView userName = (TextView) commentLayout.findViewById(R.id.head_comment_username);
+		TextView location = (TextView) commentLayout.findViewById(R.id.head_comment_location);
+		TextView date = (TextView) commentLayout.findViewById(R.id.head_comment_time);
+
+		// Test new comment title is correct
+		assertEquals("Head comment title should appear in list", headCommentClose.getTitle(), title.getText());
+		// Test new comment username is correct
+		assertEquals("Head comment username should appear in list", headCommentClose.getAuthor(), userName.getText());
+		// Test new comment location is correct
+		assertEquals("Head comment location should appear in list", headCommentClose.getLocation().getName(), location.getText());
+
+		// Converts new headcomment's timestamp calendar object to a testable string
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:mm aa");
+		String timeString = sdf.format(headCommentClose.getTimestamp().getTime());
+
+		// Test new comment date is correct
+		assertEquals("Head comment date should appear in list", timeString, date.getText());
+
+		// Restores actual comment list
+		appState.setCommentList(backupList);
+		appState.saveComments();
+		// Close activity
+		activity.finish();
+		setActivity(null);
 	}
 }

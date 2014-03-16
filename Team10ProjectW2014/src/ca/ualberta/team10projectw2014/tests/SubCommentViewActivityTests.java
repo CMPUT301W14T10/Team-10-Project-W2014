@@ -263,6 +263,5 @@ public class SubCommentViewActivityTests extends
 				.getLocation().getName(), textLocation.getText());
 		assertEquals("Sub comment displays correct Content",
 				 subComment.getContent(),textContent.getText());
-		
 	}
 }
