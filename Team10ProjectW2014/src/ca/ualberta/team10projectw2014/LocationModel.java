@@ -3,6 +3,9 @@ package ca.ualberta.team10projectw2014;
 /**
  * @author      Bradley Poulette <bpoulett@ualberta.ca>
  * @version     1                (current version number of program)
+ * 
+ * This class stores the latitude and longitude of a comment's location, along with a name for that location.
+ * 
  */
 public class LocationModel{
 	private String name;

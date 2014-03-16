@@ -12,6 +12,10 @@ import android.os.Bundle;
 /**
  * @author      Bradley Poulette <bpoulett@ualberta.ca>
  * @version     1                (current version number of program)
+ * 
+ * This class is used to deal with listening for the user's most accurate current location and
+ * returning that location upon request.
+ * 
  */
 public class LocationListenerController implements LocationListener {
 
