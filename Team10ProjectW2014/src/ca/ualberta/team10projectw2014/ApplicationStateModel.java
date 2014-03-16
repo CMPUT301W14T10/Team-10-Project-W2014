@@ -48,12 +48,25 @@ public class ApplicationStateModel {
 
 	//comparator used in sorting comments by location:
 	public static Comparator locCompare = new Comparator(){
+		
 		public int compare(Object comment1, Object comment2){
+			
 			final LocationListenerController locationListener = new LocationListenerController(COMMENT_fileContext);
 			Location userLocation = locationListener.getLastBestLocation();
-			Location loc1 = ((CommentModel)comment1).getLocation().getLocation();
-			Location loc2 = ((CommentModel)comment2).getLocation().getLocation();
-			return (int) (loc2.distanceTo(userLocation) - loc1.distanceTo(userLocation));
+			
+			Location loc1 = new Location("provider");
+			loc1.setLatitude(((CommentModel)comment1).getLocation().getLatitude());
+			loc1.setLongitude(((CommentModel)comment1).getLocation().getLongitude());
+
+			Location loc2 = new Location("provider");
+			loc2.setLatitude(((CommentModel)comment2).getLocation().getLatitude());
+			loc2.setLongitude(((CommentModel)comment2).getLocation().getLongitude());
+			double difference = (loc1.distanceTo(userLocation) - loc2.distanceTo(userLocation));
+			if(difference < 0)
+					Math.floor(difference);
+			else if(difference > 0)
+					Math.ceil(difference);
+			return (int) difference;
 		}
 	};
 

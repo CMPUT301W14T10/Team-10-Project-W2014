@@ -98,9 +98,9 @@ public class MainListViewActivity extends Activity{
 			if (appState.getUserModel().isSortByDate() == true) {
 				appState.setCommentList(appState.pictureSort(appState.getCommentList(), ApplicationStateModel.dateCompare));
 			}
-//			if(appState.getUserModel().isSortByLoc() == true) {
-//				appState.getCommentList(pictureSort(appState.getCommentList(), locCompare));
-//			}
+			else if(appState.getUserModel().isSortByLoc() == true) {
+				appState.setCommentList(appState.pictureSort(appState.getCommentList(), ApplicationStateModel.locCompare));
+			}
 			else if(appState.getUserModel().isSortByPopularity())
 				appState.setCommentList(appState.pictureSort(appState.getCommentList(), ApplicationStateModel.popularityCompare));
 		}
