@@ -189,7 +189,7 @@ public class SubCommentViewActivityAdapter extends
 		holder.textTime.setText(this.TimeToString(commentList.get(position).getTimestamp()));
 		
 		//Grabs the Location of the model.
-		//holder.textLocation.setText(subCommentList.get(position).getLocation().getName());
+		holder.textLocation.setText(commentList.get(position).getLocation().getName());
 		
 		// Grabs strings to be displayed for each sub comment in the list
 		holder.textSubTitle.setText(commentList.get(position).getTitle());

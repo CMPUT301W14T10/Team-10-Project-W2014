@@ -50,8 +50,9 @@ public class LocationModel{
 		this.location = location;
 	}
 
-	public LocationModel(String name, Location location) {
-		this.location = location;
+	public LocationModel(String name, double lat, double lng) {
+		this.latitude = lat;
+		this.longitude = lng;
 		this.name = name;
 	}
 

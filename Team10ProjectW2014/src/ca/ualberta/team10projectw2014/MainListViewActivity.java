@@ -98,9 +98,9 @@ public class MainListViewActivity extends Activity{
 			if (appState.getUserModel().isSortByDate() == true) {
 				appState.setCommentList(appState.pictureSort(appState.getCommentList(), ApplicationStateModel.dateCompare));
 			}
-//			if(appState.getUserModel().isSortByLoc() == true) {
-//				appState.getCommentList(pictureSort(appState.getCommentList(), locCompare));
-//			}
+			else if(appState.getUserModel().isSortByLoc() == true) {
+				appState.setCommentList(appState.pictureSort(appState.getCommentList(), ApplicationStateModel.locCompare));
+			}
 			else if(appState.getUserModel().isSortByPopularity())
 				appState.setCommentList(appState.pictureSort(appState.getCommentList(), ApplicationStateModel.popularityCompare));
 		}
@@ -109,8 +109,11 @@ public class MainListViewActivity extends Activity{
 			if (appState.getUserModel().isSortByDate() == true) {
 				appState.setCommentList(appState.sort(appState.getCommentList(), ApplicationStateModel.dateCompare));
 			}
+			else if(appState.getUserModel().isSortByLoc() == true) {
+				appState.setCommentList(appState.sort(appState.getCommentList(), ApplicationStateModel.locCompare));
+			}
 			else if(appState.getUserModel().isSortByPopularity())
-				appState.setCommentList(appState.pictureSort(appState.getCommentList(), ApplicationStateModel.popularityCompare));
+				appState.setCommentList(appState.sort(appState.getCommentList(), ApplicationStateModel.popularityCompare));
 		}
 		
 		commentView.setAdapter(appState.getMLVAdapter());
@@ -293,27 +296,36 @@ public class MainListViewActivity extends Activity{
 	            if (checked){
 	            	appState.getUserModel().setSortByDate(true);
 	            	buttonPressed.toggle();
+	            	appState.saveUser();
 	            }
-	            else
-	        		buttonGroup.clearCheck();
+	            else{
+	        		appState.getUserModel().setSortByDate(false);
+            		appState.saveUser();
+	            }
 	            break;
 	            
 	        case R.id.location:
 	            if (checked){
 	            	appState.getUserModel().setSortByLoc(true);
 	            	buttonPressed.toggle();
+	            	appState.saveUser();
 	            }
-	            else
-	        		buttonGroup.clearCheck();
+	            else{
+	            	appState.getUserModel().setSortByLoc(false);
+	            	appState.saveUser();
+	            }
 	            break;
 	            
 	        case R.id.number_of_favourites:
 	            if (checked){
 	            	appState.getUserModel().setSortByPopularity(true);
 	            	buttonPressed.toggle();
+	            	appState.saveUser();
 	            }
-	            else
-	        		buttonGroup.clearCheck();
+	            else{
+	            	appState.getUserModel().setSortByPopularity(false);
+	            	appState.saveUser();
+	            }
 	            break;
 	            
 	    }
