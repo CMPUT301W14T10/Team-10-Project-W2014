@@ -342,7 +342,7 @@ public class SubCommentViewActivity extends Activity {
 	 * @return timeString - string of the formatted date of the timestamp
 	 */
 	private String TimeToString(Calendar calendar) {
-		SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:00 aa",
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:mm aa",
 				java.util.Locale.getDefault());
 		String timeString = sdf.format(calendar.getTime());
 		return timeString;
