@@ -16,7 +16,6 @@
 
 package ca.ualberta.team10projectw2014.models;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -25,6 +24,7 @@ import android.provider.Settings.Secure;
 /**
  * This class acts as the model for the User.
  * @author Steven Giang, David Yee
+ * @version     1                (current version number of program)
  */
 public class UserModel{
 	private String androidID;

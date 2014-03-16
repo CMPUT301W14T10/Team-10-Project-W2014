@@ -11,6 +11,7 @@ import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
@@ -37,6 +38,7 @@ public class MainListViewActivityTests extends
 	 * 
 	 * @throws Throwable
 	 */
+	@SuppressLint("SimpleDateFormat")
 	public void testDisplayCommentInList() throws Throwable {
 		// Create test comment List
 		ArrayList<CommentModel> commentList = new ArrayList<CommentModel>();
@@ -106,6 +108,7 @@ public class MainListViewActivityTests extends
 	 * 
 	 * @throws Throwable
 	 */
+	@SuppressLint("SimpleDateFormat")
 	public void testSortCommentsByDate() throws Throwable {
 		// Create test comment List
 		ArrayList<CommentModel> commentList = new ArrayList<CommentModel>();
@@ -143,7 +146,7 @@ public class MainListViewActivityTests extends
 		// Sets test comment list
 		appState.setCommentList(commentList);
 		// Sorts list by date
-		appState.sort(commentList, appState.dateCompare);
+		appState.sort(commentList, ApplicationStateModel.dateCompare);
 		// Saves comments
 		appState.saveComments();
 		
@@ -186,6 +189,7 @@ public class MainListViewActivityTests extends
 	 * 
 	 * @throws Throwable
 	 */
+	@SuppressLint("SimpleDateFormat")
 	public void testSortCommentsByPic() throws Throwable {
 		// Create test comment List
 		ArrayList<CommentModel> commentList = new ArrayList<CommentModel>();
@@ -224,7 +228,7 @@ public class MainListViewActivityTests extends
 		// Sets test comment list
 		appState.setCommentList(commentList);
 		// Sorts list by date
-		appState.pictureSort(commentList, appState.dateCompare);
+		appState.pictureSort(commentList, ApplicationStateModel.dateCompare);
 		// Saves comments
 		appState.saveComments();
 		
@@ -267,6 +271,7 @@ public class MainListViewActivityTests extends
 	 *
 	 * @throws Throwable
 	 */
+	@SuppressLint("SimpleDateFormat")
 	public void testSortCommentsByLocation() throws Throwable {
 		// Create test comment List
 		ArrayList<CommentModel> commentList = new ArrayList<CommentModel>();
@@ -310,7 +315,7 @@ public class MainListViewActivityTests extends
 		// Sets test comment list
 		appState.setCommentList(commentList);
 		// Sorts list by date
-		appState.pictureSort(commentList, appState.locCompare);
+		appState.pictureSort(commentList, ApplicationStateModel.locCompare);
 		// Saves comments
 		appState.saveComments();
 

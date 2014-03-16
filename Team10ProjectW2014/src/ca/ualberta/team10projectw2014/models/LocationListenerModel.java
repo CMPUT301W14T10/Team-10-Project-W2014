@@ -1,7 +1,6 @@
 package ca.ualberta.team10projectw2014.models;
 
 import ca.ualberta.team10projectw2014.R;
-import ca.ualberta.team10projectw2014.R.string;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;

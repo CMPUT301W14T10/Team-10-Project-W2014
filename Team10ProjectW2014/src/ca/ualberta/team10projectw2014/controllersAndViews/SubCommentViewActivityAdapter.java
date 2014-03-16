@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import ca.ualberta.team10projectw2014.R;
-import ca.ualberta.team10projectw2014.R.id;
 import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.SubCommentModel;

@@ -16,12 +16,10 @@
 
 package ca.ualberta.team10projectw2014.models;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
 /**
  * This class acts as the model for the sub comments.
  * @author Costa Zervos
+ * @version     1                (current version number of program)
  */
 public class SubCommentModel extends CommentModel{
 	private String parentTitle;
