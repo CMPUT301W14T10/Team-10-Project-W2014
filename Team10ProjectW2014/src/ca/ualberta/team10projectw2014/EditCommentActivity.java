@@ -71,18 +71,15 @@ public class EditCommentActivity extends Activity {
 		super.onResume();
 		appState.setFileContext(this);
 
-		//Receive information from the intent
-		//Bundle bundle = getIntent().getExtras();
-		/////String receivedUsername = appState.getUserModel().getUsername();
-		//CommentModel receivedComment = (CommentModel) bundle.getSerializable("comment"); //TODO CHANGE FROM SERIALIZABLE TO SIMPLE OBJECT
+		
 		CommentModel receivedComment = appState.getCommentToEdit();
 		fillContents(receivedComment);
 		
 		//Set imageView to either "No Image" or the picture returned from camera
-		//setPic();
+		setPic();
 		
-		//TODO Check to see if GPS is enabled
-        //TODO Start listening for location information
+
+        // Start listening for location information
         startListeningLocation();
 	}
 	
@@ -209,13 +206,15 @@ public class EditCommentActivity extends Activity {
     
     private void setPic() {
             try {
-     
-               
+            	if (photoPath != null){
+            		appState.getCommentToEdit().setPhotoPath(this.photoPath);
+            	}
+            	
                 BitmapFactory.Options options = new BitmapFactory.Options();
 
                 options.inSampleSize = 8;
      
-                final Bitmap bitmap = BitmapFactory.decodeFile(imageUri.getPath(),
+                final Bitmap bitmap = BitmapFactory.decodeFile(appState.getCommentToEdit().getPhotoPath(),
                         options);
      
                 imageView.setImageBitmap(bitmap);
