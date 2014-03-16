@@ -1,20 +1,3 @@
-
-/**
- * Copyright 2014 Cole Fudge, Steven Giang, Bradley Poullet, David Yee, and Costa Zervos
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
- */
-
 package ca.ualberta.team10projectw2014;
 
 import java.text.SimpleDateFormat;
@@ -27,24 +10,29 @@ import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
- * Creates a custom adapter for displaying three textviews and an imageview for 
- * each item in a listview.
+ * Creates a custom adapter for displaying textviews and an imageview for each 
+ * item in a listview.
+ * @author      Costa Zervos <czervos@ualberta.ca>
+ * @version     1            (current version number of program)
+ * 
+ * CODE REUSE:
+ * This code was modified from
+ * @author FabiF
+ * @URL http://stackoverflow.com/questions/11106418/how-to-set-adapter-in-case-of-multiple-textviews-per-listview
+ * @date Jan. 25, 2014
+ * @license Creative Commons 3.0 Attribution-ShareAlike (http://creativecommons.org/licenses/by-sa/3.0/)
  */
 public class MainListViewAdapter extends BaseAdapter {
 
-	private LayoutInflater inflater;
+	private LayoutInflater inflater; // Object used to instantiate XML layout into view objects
 	private ArrayList<CommentModel> headCommentList;
-	private SimpleDateFormat sdf;
-	private String timeString;
+	private SimpleDateFormat sdf; // Object used for formatting date of Calendar objects
+	private String timeString; // Contains timestamp in string format
 	
 	/**
 	 * Initializes textview objects to be added to the ListView.
@@ -54,7 +42,7 @@ public class MainListViewAdapter extends BaseAdapter {
 		TextView textUsername;
 		TextView textLocation;
 		TextView textTime;
-		ImageView imageView;
+		ImageView imageView; // View that contains picture
 	}
 	
 	/**
@@ -99,7 +87,8 @@ public class MainListViewAdapter extends BaseAdapter {
 					findViewById(R.id.head_comment_location);
 			holder.textTime = (TextView) convertView.
 					findViewById(R.id.head_comment_time);
-			holder.imageView = (ImageView) convertView.findViewById(R.id.head_comment_image);
+			holder.imageView = (ImageView) convertView.findViewById(R.id.
+					head_comment_image);
 			// Add the holder data to the view
 			convertView.setTag(holder);
 		}
@@ -111,41 +100,37 @@ public class MainListViewAdapter extends BaseAdapter {
 		// Grabs strings to be displayed for each head comment in the list
 		holder.textTitle.setText(headCommentList.get(position).getTitle());
 		holder.textUsername.setText(headCommentList.get(position).getAuthor());
-		
-		// TODO implement location when its working and doesn't crash everything
 		holder.textLocation.setText(headCommentList.get(position).getLocation().
 			getName());
 		
 		// String for time retrieved using private method
-		holder.textTime.setText(this.timeToString(headCommentList.get(position).
-				getTimestamp()));
+		holder.textTime.setText(this.timeToString(headCommentList.
+				get(position).getTimestamp()));
 		
 		// Sets the image attached to the comment
 		if(headCommentList.get(position).getPhotoPath() != null){
+			
+			// Gets the filepath for the image
+			String imagePath = headCommentList.get(position).getPhotoPath();
 
-				String imagePath = headCommentList.get(position).getPhotoPath();
-			    // Get the dimensions of the View
-			    //int targetW = holder.imageView.getWidth();
-			    //int targetH = holder.imageView.getHeight();
+			// Get the dimensions of the bitmap
+			BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+			bmOptions.inJustDecodeBounds = true;
+			BitmapFactory.decodeFile(imagePath, bmOptions);
+			int photoW = bmOptions.outWidth;
+			int photoH = bmOptions.outHeight;
 
-			    // Get the dimensions of the bitmap
-			    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-			    bmOptions.inJustDecodeBounds = true;
-			    BitmapFactory.decodeFile(imagePath, bmOptions);
-			    int photoW = bmOptions.outWidth;
-			    int photoH = bmOptions.outHeight;
-			    
-			    // Determine how much to scale down the image
-			    int scaleFactor = Math.min(photoW/50, photoH/50);
+			// Determine how much to scale down the image
+			int scaleFactor = Math.min(photoW/50, photoH/50);
 
-			    // Decode the image file into a Bitmap sized to fill the View
-			    bmOptions.inJustDecodeBounds = false;
-			    bmOptions.inSampleSize = scaleFactor;
-			    bmOptions.inPurgeable = true;
-				
+			// Decode the image file into a Bitmap sized to fill the View
+			bmOptions.inJustDecodeBounds = false;
+			bmOptions.inSampleSize = scaleFactor;
+			bmOptions.inPurgeable = true;
 
-			    Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
-			    holder.imageView.setImageBitmap(bitmap);
+
+			Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
+			holder.imageView.setImageBitmap(bitmap);
 			   
 		}
 		return convertView;
@@ -178,5 +163,4 @@ public class MainListViewAdapter extends BaseAdapter {
 		timeString = sdf.format(calendar.getTime());
 		return timeString;
 	}
-	
 }
