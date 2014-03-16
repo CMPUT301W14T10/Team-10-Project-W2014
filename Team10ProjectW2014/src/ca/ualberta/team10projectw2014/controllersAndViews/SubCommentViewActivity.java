@@ -83,6 +83,7 @@ public class SubCommentViewActivity extends Activity {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -102,7 +103,7 @@ public class SubCommentViewActivity extends Activity {
 			//Sort Head Comment's sub comments by those with pictures
 			commentList = new ArrayList<CommentModel>();
 		    ArrayList<? extends CommentModel> comments = appState.getSubCommentViewHead().getSubComments();
-	    	commentList = appState.pictureSort((ArrayList<CommentModel>)comments, appState.dateCompare);
+	    	commentList = appState.pictureSort((ArrayList<CommentModel>)comments, ApplicationStateModel.dateCompare);
 	    	
 	    	
 		}else{
