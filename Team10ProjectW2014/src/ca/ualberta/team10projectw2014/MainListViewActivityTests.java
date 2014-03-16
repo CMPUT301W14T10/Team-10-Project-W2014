@@ -6,21 +6,14 @@ import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 import android.app.Activity;
-import android.app.Instrumentation;
-import android.content.Context;
-import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.UiThreadTest;
-import android.util.Log;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainListViewActivityTests extends
 		ActivityInstrumentationTestCase2<MainListViewActivity> {
 	
 	Activity activity;
-	ListView headListView;
 	ApplicationStateModel appState;
 	ArrayList<CommentModel> backupList = new ArrayList<CommentModel>();
 	
@@ -65,12 +58,8 @@ public class MainListViewActivityTests extends
         // Launches MainListviewActivity
         activity = getActivity();     
         
-        // Gets the head comment list
-        headListView = (ListView) activity.findViewById(R.id.HeadCommentList);
-
         // Gets layout of head comment list item
         View commentLayout = (View) activity.findViewById(R.id.head_comment_list_item_layout);
-        //View commentLayout = (View) headListView.findViewById(R.id.head_comment_list_item_layout);
         
         // Identifies list item objects required for the test
         TextView title = (TextView) commentLayout.findViewById(R.id.head_comment_title);
@@ -143,13 +132,9 @@ public class MainListViewActivityTests extends
 		
         // Launches MainListviewActivity
         activity = getActivity();     
-        
-        // Gets the head comment list
-        headListView = (ListView) activity.findViewById(R.id.HeadCommentList);
 
         // Gets layout of head comment list item
         View commentLayout = (View) activity.findViewById(R.id.head_comment_list_item_layout);
-        //View commentLayout = (View) headListView.findViewById(R.id.head_comment_list_item_layout);
         
         // Identifies list item objects required for the test
         TextView title = (TextView) commentLayout.findViewById(R.id.head_comment_title);
@@ -223,13 +208,9 @@ public class MainListViewActivityTests extends
 		
         // Launches MainListviewActivity
         activity = getActivity();     
-        
-        // Gets the head comment list
-        headListView = (ListView) activity.findViewById(R.id.HeadCommentList);
 
         // Gets layout of head comment list item
         View commentLayout = (View) activity.findViewById(R.id.head_comment_list_item_layout);
-        //View commentLayout = (View) headListView.findViewById(R.id.head_comment_list_item_layout);
         
         // Identifies list item objects required for the test
         TextView title = (TextView) commentLayout.findViewById(R.id.head_comment_title);
@@ -260,6 +241,4 @@ public class MainListViewActivityTests extends
         activity.finish();
         setActivity(null);
 	}
-
-
 }
