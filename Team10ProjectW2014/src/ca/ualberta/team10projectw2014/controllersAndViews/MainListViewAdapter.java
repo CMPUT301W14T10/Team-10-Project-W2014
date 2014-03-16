@@ -5,10 +5,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import ca.ualberta.team10projectw2014.R;
-import ca.ualberta.team10projectw2014.R.id;
-import ca.ualberta.team10projectw2014.R.layout;
 import ca.ualberta.team10projectw2014.models.CommentModel;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -163,6 +162,7 @@ public class MainListViewAdapter extends BaseAdapter {
 	 * @param calendar object to retrieve string from
 	 * @return string of the formatted date of the timestamp
 	 */
+	@SuppressLint("SimpleDateFormat")
 	private String timeToString (Calendar calendar) {
 		sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:mm aa");
 		timeString = sdf.format(calendar.getTime());
