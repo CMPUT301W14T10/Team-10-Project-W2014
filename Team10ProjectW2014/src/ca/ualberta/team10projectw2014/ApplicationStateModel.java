@@ -23,6 +23,7 @@ import com.google.gson.reflect.TypeToken;
 * The code for setting up a singleton structure was
 * borrowed from http://www.javaworld.com/article/2073352/core-java/simply-singleton.html
 * @author Cole Fudge
+* @version     1                (current version number of program)
 */
 public class ApplicationStateModel {
 
@@ -41,22 +42,41 @@ public class ApplicationStateModel {
 	}
 
 	/**
-	*required contexts and filenames for opening files
-	*(for saving/loading comments/user)
+	*The required context for opening files
+	*(for saving/loading comments)
 	*/
 	private static Context COMMENT_fileContext;
+	
+	/**
+	*The required filename for opening files
+	*(for saving/loading comments)
+	*/
 	private String COMMENT_FILE_NAME = "comments.sav";
 	
+	
+	/**
+	*The required context for opening files
+	*(for saving/loading user)
+	*/
 	private Context USER_fileContext;
+	
+	/**
+	*The required filename for opening user file
+	*(for saving/loading user preferences)
+	*/
 	private String USER_FILE_NAME = "user.sav";
 
 
 	/**
-	*adapters for displaying the list of comments
-	*in the MainListViewActivity and SubCommentViewActivity
-	*respectively.
+	*Adapter for displaying the list of comments
+	*in the MainListViewActivity.
 	*/
 	private MainListViewAdapter MLVAdapter;
+	
+	/**
+	*Adapter for displaying the list of comments
+	*in the SubCommentViewActivity.
+	*/
 	private SubCommentViewActivityAdapter SCVAdapter;
 	
 
@@ -103,8 +123,11 @@ public class ApplicationStateModel {
 		
 		public int compare(CommentModel comment1, CommentModel comment2){
 			
+			//Get the user's current location:
 			final LocationListenerController locationListener = new LocationListenerController(COMMENT_fileContext);
 			Location userLocation = locationListener.getLastBestLocation();
+			
+			//create a location with the latitude and longitude each of the comments under consideration:
 			Location loc1 = new Location("provider");
 			loc1.setLatitude(comment1.getLocation().getLatitude());
 			loc1.setLongitude(comment1.getLocation().getLongitude());
@@ -112,11 +135,19 @@ public class ApplicationStateModel {
 			Location loc2 = new Location("provider");
 			loc2.setLatitude(comment2.getLocation().getLatitude());
 			loc2.setLongitude(comment2.getLocation().getLongitude());
+			
+			//get the difference in their distance from the user:
 			double difference = (loc2.distanceTo(userLocation) - loc1.distanceTo(userLocation));
+			
+			//The difference in distances is a double and the precision is lost if it is cast
+			//to an integer, which is what the comparator needs to return. Since the difference 
+			//might be between -1 and 1, I call floor or ceiling respectively in order to maintain 
+			//their ordering(e.g. the t is still negative if the difference is -0.11, it will be
+			//floored to -1.0 so that it remains negative when cast to an int).
 			if(difference < 0)
-					Math.floor(difference);
+					difference = Math.floor(difference);
 			else if(difference > 0)
-					Math.ceil(difference);
+					difference = Math.ceil(difference);
 			return (int) difference;
 		}
 	};
@@ -422,9 +453,9 @@ public class ApplicationStateModel {
 	  * pictures, and the other without. Sorts each array by given comparator,
 	  * then combines them.
 	  * 
-	  * @param commentList array of CommentModels to sort
-	  * @param cmp comparator to compare CommentModels when sorting
-	  * @return the array of head comments
+	  * @param list - the array of CommentModels to sort
+	  * @param cmp - the comparator to compare CommentModels when sorting
+	  * @return the sorted array of head comments
 	  */
 	 public ArrayList<CommentModel> pictureSort(ArrayList<CommentModel> list, Comparator<CommentModel> cmp) {
 		 ArrayList<CommentModel> noPicArray = new ArrayList<CommentModel>();
@@ -446,6 +477,16 @@ public class ApplicationStateModel {
 		 return list;
 	 }
 	 
+	 
+	 /**
+	  * Separates given array into two arrays with one containing comments with
+	  * pictures, and the other without. Sorts each array by given comparator,
+	  * then combines them.
+	  * 
+	  * @param list - the array of SubCommentModels to sort.
+	  * @param cmp - the comparator to compare SubCommentModels when sorting.
+	  * @return the sorted array of SubCommentModels.
+	  */
 	 public ArrayList<SubCommentModel> sort2(ArrayList<SubCommentModel> list, Comparator<CommentModel> cmp) {
 		 for (int i=0; i < list.size()-1; i++) {
 			 // Sets current comment as the one that should appear first
