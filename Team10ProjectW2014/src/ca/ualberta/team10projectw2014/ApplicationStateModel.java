@@ -13,11 +13,17 @@ import java.util.Comparator;
 
 import android.content.Context;
 import android.location.Location;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+/**
+* This class is used as a singleton to contain data
+* available to all activities.
+* The code for setting up a singleton structure was
+* borrowed from http://www.javaworld.com/article/2073352/core-java/simply-singleton.html
+* @author Cole Fudge
+*/
 public class ApplicationStateModel {
 
 	//to set up this class as a singleton:
@@ -34,34 +40,76 @@ public class ApplicationStateModel {
 		return instance;
 	}
 
+	/**
+	*required contexts and filenames for opening files
+	*(for saving/loading comments/user)
+	*/
 	private static Context COMMENT_fileContext;
 	private String COMMENT_FILE_NAME = "comments.sav";
+	
 	private Context USER_fileContext;
-	private MainListViewAdapter MLVAdapter;
 	private String USER_FILE_NAME = "user.sav";
-	private ArrayList<CommentModel> commentList;
-	private UserModel userModel;
-	private CommentModel subCommentViewHead;
-	private CommentModel createCommentParent;
+
+
+	/**
+	*adapters for displaying the list of comments
+	*in the MainListViewActivity and SubCommentViewActivity
+	*respectively:
+	*/
+	private MainListViewAdapter MLVAdapter;
 	private SubCommentViewActivityAdapter SCVAdapter;
+	
+
+	/**
+	*The list of all head comments that in turn
+	*contain all subcomments, i.e. the following
+	*list contains all comments and subcomments(recursively)
+	*and is used in saving/loading:
+	*/
+	private ArrayList<CommentModel> commentList;
+	
+	
+	private UserModel userModel;
+	
+	/**
+	*The head comment that is to be displayed by
+	*the SubCommentViewActivity. The activity
+	*will show this head comment in full, followed
+	*by its subcomments in list form:
+	*/
+	private CommentModel subCommentViewHead;
+	
+	/**
+	*The comment that CreateComment is to
+	*create a subcomment for. This will
+	*be null if CreateComment is to create
+	*a new head comment:
+	*/
+	private CommentModel createCommentParent;
+	
+	/**
+	*The comment that EditComment is to
+	*change:
+	*/
 	private CommentModel commentToEdit;
 
-	//comparator used in sorting comments by location:
-	public static Comparator locCompare = new Comparator(){
+	/**
+	*comparator used in sorting comments by location:
+	*/
+	public static Comparator<CommentModel> locCompare = new Comparator<CommentModel>(){
 		
-		public int compare(Object comment1, Object comment2){
+		public int compare(CommentModel comment1, CommentModel comment2){
 			
 			final LocationListenerController locationListener = new LocationListenerController(COMMENT_fileContext);
 			Location userLocation = locationListener.getLastBestLocation();
-			
 			Location loc1 = new Location("provider");
-			loc1.setLatitude(((CommentModel)comment1).getLocation().getLatitude());
-			loc1.setLongitude(((CommentModel)comment1).getLocation().getLongitude());
+			loc1.setLatitude(comment1.getLocation().getLatitude());
+			loc1.setLongitude(comment1.getLocation().getLongitude());
 
 			Location loc2 = new Location("provider");
-			loc2.setLatitude(((CommentModel)comment2).getLocation().getLatitude());
-			loc2.setLongitude(((CommentModel)comment2).getLocation().getLongitude());
-			double difference = (loc1.distanceTo(userLocation) - loc2.distanceTo(userLocation));
+			loc2.setLatitude(comment2.getLocation().getLatitude());
+			loc2.setLongitude(comment2.getLocation().getLongitude());
+			double difference = (loc2.distanceTo(userLocation) - loc1.distanceTo(userLocation));
 			if(difference < 0)
 					Math.floor(difference);
 			else if(difference > 0)
@@ -70,24 +118,29 @@ public class ApplicationStateModel {
 		}
 	};
 
-	//comparator used in sorting comments by date:
-	public static Comparator dateCompare = new Comparator(){
-		public int compare(Object comment1, Object comment2){
-			Calendar time1 = ((CommentModel)comment1).getTimestamp();
-			Calendar time2 = ((CommentModel)comment2).getTimestamp();
+	/**
+	*comparator used in sorting comments by date:
+	*/
+	public static Comparator<CommentModel> dateCompare = new Comparator<CommentModel>(){
+		public int compare(CommentModel comment1, CommentModel comment2){
+			Calendar time1 = comment1.getTimestamp();
+			Calendar time2 = comment2.getTimestamp();
 			return time1.compareTo(time2);
 		}
 	};
 
-	//comparator used in sorting comments by number of likes:
-	public static Comparator popularityCompare = new Comparator(){
-		public int compare(Object comment1, Object comment2){
-			int favs1 = ((CommentModel) comment1).getNumFavourites();
-			int favs2 = ((CommentModel) comment2).getNumFavourites();
+	/**
+	*comparator used in sorting comments by number of likes:
+	*/
+	public static Comparator<CommentModel> popularityCompare = new Comparator<CommentModel>(){
+		public int compare(CommentModel comment1, CommentModel comment2){
+			int favs1 = comment1.getNumFavourites();
+			int favs2 = comment2.getNumFavourites();
 			return (favs1 - favs2);
 		}
 	};
 
+	
 	public CommentModel getCommentToEdit()
 	{
 	
@@ -254,7 +307,7 @@ public class ApplicationStateModel {
 	 * @param cmp comparator to compare CommentModels when sorting
 	 * @return the array of head comments
 	 */
-	 public ArrayList<CommentModel> sort(ArrayList<CommentModel> list, Comparator cmp) {
+	 public ArrayList<CommentModel> sort(ArrayList<CommentModel> list, Comparator<CommentModel> cmp) {
 		 for (int i=0; i < list.size()-1; i++) {
 			 // Sets current comment as the one that should appear first
 			 CommentModel maxComment = list.get(i);
@@ -285,7 +338,7 @@ public class ApplicationStateModel {
 	  * @param cmp comparator to compare CommentModels when sorting
 	  * @return the array of head comments
 	  */
-	 public ArrayList<CommentModel> pictureSort(ArrayList<CommentModel> list, Comparator cmp) {
+	 public ArrayList<CommentModel> pictureSort(ArrayList<CommentModel> list, Comparator<CommentModel> cmp) {
 		 ArrayList<CommentModel> noPicArray = new ArrayList<CommentModel>();
 		 for (int i=0; i < list.size(); i++) {
 			 // If comment does not have a photo
