@@ -400,6 +400,32 @@ public class ApplicationStateModel {
 		 list.addAll(noPicArray);
 		 return list;
 	 }
+	 
+	 public ArrayList<SubCommentModel> sort2(ArrayList<SubCommentModel> list, Comparator cmp) {
+		 for (int i=0; i < list.size()-1; i++) {
+			 // Sets current comment as the one that should appear first
+			 SubCommentModel maxComment = list.get(i);
+			 int maxIndex = i;
+			 // Iterates through remaining comments in the list
+			 for (int j=i+1; j < list.size(); j++) {
+				 // If i compared to j = -1, j should be max value
+				 if (cmp.compare(list.get(i), list.get(j)) < 0) {
+					 maxComment = list.get(j);
+					 maxIndex = j;
+				 }
+			 }
+			 // Swap current comment with the maxComment
+			 SubCommentModel tempComment;
+			 tempComment = list.get(i);
+			 list.set(i, maxComment);
+			 list.set(maxIndex, tempComment);
+		 }
+		 return list;
+	 }
+	 
+
+
+	 
 
 }	
 

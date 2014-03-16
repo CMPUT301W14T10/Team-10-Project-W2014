@@ -26,31 +26,55 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.app.Activity;
 
+/**
+ * @author      Bradley Poulette <bpoulett@ualberta.ca>
+ * @version     1                (current version number of program)
+ * @since       2014-16-03        (the version of the package this class was first added to)
+ */
 public class EditCommentActivity extends Activity {
 
+	/**
+	 *  These serve as temporary variables for the comment to created.
+	 *  They are filled into the comment when the user presses "post".
+	 */
 	private String postTitle;
 	private String postUsername;
 	private String postContents;
 	private LocationModel postLocation;
 	private Bitmap postPhoto;
+	
+	/**
+	 *  These are the layout's fields
+	 */
 	private EditText ueditText; // username edit field
 	private EditText teditText; // title edit field
 	private EditText ceditText; // content edit field
 	private ImageView imageView;
-	private double longitude;
-	private double latitude;
-	private Location bestKnownLoc = null;
-	private CommentModel model;
-	private LocationListenerController locationListener;
-	private LocationManager mLocationManager;
-	private Boolean gpsEnabled;
-	private Boolean netEnabled;
- 	private ApplicationStateModel appState;
- 	private String photoPath = null;
+	private String photoPath = null;
  	private Uri imageUri = null;
- 	private Location locationGPS;
- 	private Location locationNet;
 	
+	/**
+	 *  This is changed multiple times in order to store the most accurate
+	 *  position of the user during comment creation.
+	 */
+	private Location bestKnownLoc = null;
+	
+	/**
+	 *  A custom class used to get the user's location
+	 */
+	private LocationListenerController locationListener;
+	
+	/**
+	 *  Our singleton, which allows us to pass application state
+	 *  between activities
+	 */
+ 	private ApplicationStateModel appState;
+	
+ 	
+ 	/**
+ 	 * Initiates application state singleton then sets class variables to comment values
+ 	 * returned in the application state singleton.
+ 	 */
 	@SuppressLint("NewApi")
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +89,9 @@ public class EditCommentActivity extends Activity {
 		imageView = (ImageView)findViewById(R.id.cc_image_view);
 	}
 	
-	
+	/**
+	 * Sets the views using data set in {@link #onCreate()} and tells {@link #locationListener to start listening for location}
+	 */
 	@Override 
 	protected void onResume(){
 		super.onResume();
@@ -83,48 +109,95 @@ public class EditCommentActivity extends Activity {
         startListeningLocation();
 	}
 	
+	/**
+	 * Creates a LocationListenerController to start keeping track of the user's location
+	 *
+	 */
 	private void startListeningLocation(){
 		Toast.makeText(getBaseContext(), "Starting to listen for location...", Toast.LENGTH_LONG).show();
 		this.locationListener = new LocationListenerController(this);
 	}
 	
-	// Retrieved from http://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android on March 6 at 5:00
-	
+	/**
+	 * Sets {@link #bestKnownLoc} to the most accurate location in {@link #locationListener}
+	 *
+	 * Implementation retrieved from http://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android on March 6 at 5:00
+	 */
 	private void getLastBestLocation() {
 		
 		bestKnownLoc = locationListener.getLastBestLocation();
 
 	}
 
+	/**
+	 * Sets the view to show the data provided by application state in {@link #onCreate(Bundle)}
+	 *
+	 * @param commentToEdit comment with data to set in the view
+	 */
 	public void fillContents(CommentModel commentToEdit){
 		setUsernameView(commentToEdit.getAuthor());
 		setTitleView(commentToEdit.getTitle());
 		setContentsView(commentToEdit.getContent());
 	}
 	
+	/**
+	 * Checks if a string contains all whitespace using REGEX
+	 * 
+	 * @param string string to be checked 
+	 * @return            true if the string is all whitespace or empty, otherwise false
+	 */
 	public boolean checkStringIsAllWhiteSpace(String string){
 		boolean isWhitespace = string.matches("^\\s*$");
 		boolean longerThan0 = (string.trim().length() > 0);
 		return isWhitespace && !longerThan0;
 	}
 	
+	/**
+	 * Sets the view which represents comment contents
+	 *
+	 * @param contents   a string to put in the contents field
+	 */
 	private void setContentsView(String contents){
 		ceditText.setText(contents, TextView.BufferType.EDITABLE);
 	}
 	
+	/**
+	 * Sets the view which represents comment username
+	 *
+	 * @param name   a string to put in the username field
+	 */
 	private void setUsernameView(String name){
 		ueditText.setText(name, TextView.BufferType.EDITABLE);
 	}
 	
+	/**
+	 * Sets the view which represents comment title
+	 *
+	 * @param title   a string to put in the title field
+	 */
 	private void setTitleView(String title){
 		teditText.setText(title, TextView.BufferType.EDITABLE);
 	}
-
+	
+	/**
+	 * Gives the user a menu from which they can select a new location
+	 * as the default.
+	 * 
+	 * Not implemented as of version 1.
+	 *
+	 * @param v   the view which calls this method (in this case, "Location")
+	 */
 	public void chooseLocation(View v){
 		Toast.makeText(getBaseContext(), "You Want to Choose a Location, Eh?", Toast.LENGTH_LONG).show();
 	}
 	
-	//Starts camera activity
+	/**
+	 * Starts camera activity when the "Photo" button is pressed in the view
+	 * 
+	 * Calls {@link #createImageFile()} to create a file to which the photo will be stored
+	 *
+	 * @param v   the view from which the method is called
+	 */
 	public void choosePhoto(View v){
 		PackageManager packageManager = this.getPackageManager();
 		if (packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA)){
@@ -156,12 +229,19 @@ public class EditCommentActivity extends Activity {
 		}
 	}
 	
-	//Takes thumbnail from the camera activity and puts it into postPhoto.
+	/**
+	 * Handles the output of the camera activity upon return
+	 * 
+	 * Idea taken from http://www.androidhive.info/2013/09/android-working-with-camera-api/
+	 *
+	 * @param requestCode the type of request made to the camera (should always be 1)
+	 * @param resultCode informs the method whether the camera activity was successful or not
+	 * @param data an intent which stores the thumbnail of the image from camera
+	 */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 
-         // Taken from http://www.androidhive.info/2013/09/android-working-with-camera-api/
     	if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 // successfully captured the image
@@ -181,8 +261,16 @@ public class EditCommentActivity extends Activity {
         }	
     }
     
-    //Sends the image taken from the camera to file.
+
     
+    /**
+	 * Creates the file to which the camera will send the full image
+	 *
+	 * Idea taken from http://www.androidhive.info/2013/09/android-working-with-camera-api/
+	 *
+	 * @return  the file for saving
+	 * @throws any exception if the file cannot be created
+	 */
     private File createImageFile() throws IOException {
  
         // Create an image file name
@@ -204,6 +292,9 @@ public class EditCommentActivity extends Activity {
         return image;
     }
     
+    /**
+	 * Sets the view which shows the photo as a thumbnail in this activity
+	 */
     private void setPic() {
             try {
             	if (photoPath != null){
@@ -222,17 +313,20 @@ public class EditCommentActivity extends Activity {
                 e.printStackTrace();
             }
         }
-    	
-		
-	
-	//A currently redundant method which creates a location with a title (not used yet)
+
+    /**
+	 * Sets the temporary comment location to the location of the user from
+	 * {@link #locationListener}
+	 * 
+	 * Not used as of version 1.
+	 */
 	private void setLocation(){
 		this.postLocation = new LocationModel(String.valueOf("Lat: " + bestKnownLoc.getLatitude()) + " Long: " + String.valueOf(bestKnownLoc.getLongitude()), bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude());
-		//TODO Set location variable to...?
-		// Location should never be null
 	}
 	
-	//Called when the user presses "Post" button to create and store a new comment
+	/**
+	 * Updates the current comment and saves it to file if all the views are filled in appropriately.
+	 */
 	public void attemptCommentCreation(View v){
 		this.postContents = ceditText.getText().toString();
 		this.postUsername = ueditText.getText().toString();
@@ -259,7 +353,11 @@ public class EditCommentActivity extends Activity {
 		}
 	}
 	
-	
+	/**
+	 * Tells the locationListener to stop listening for the user's location
+	 * 
+	 * Not used as of version 1
+	 */
 	private void stopListeningLocation(){
 		getLastBestLocation();
 		if (bestKnownLoc == null){
@@ -273,19 +371,33 @@ public class EditCommentActivity extends Activity {
 		}
 	}
 	
+	/**
+	 * Tells the user to add content if {@link #attemptCommentCreation(View)} finds the content view is empty
+	 */
 	private void raiseContentsIncompleteError(){
 		Toast.makeText(getBaseContext(), "Please Add Some Content", Toast.LENGTH_LONG).show();
 	}
 	
+	/**
+	 * If not set in {@link #attemptCommentCreation(View)}, sets username to "Anonymous"
+	 */
 	private void raiseUsernameIncompleteError(){
-		//TODO Make it so that the user is prompted to post as anonymous
 	    postUsername = "Anonymous";
 	}
 	
+	/**
+	 * Tells the user to add a title if {@link #attemptCommentCreation(View)} finds the title view is empty
+	 */
 	private void raiseTitleIncompleteError(){
 		Toast.makeText(getBaseContext(), "Please Create a Title", Toast.LENGTH_LONG).show();
 	}
 	
+	/**
+	 * Terminates the application
+	 * 
+	 * This is in a separate method so that it may be called by a button, should we decide
+	 * to add one in the future.
+	 */
 	private void goBack(){
 		finish();
 	}
