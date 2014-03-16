@@ -63,7 +63,7 @@ public class CreateCommentActivityTests extends
 			public void run(){
 				CreateCommentActivity activity = getActivity();
 				
-				activity.fillContents(username, null);
+				activity.fillContents(username);
 				
 				assertEquals("contentText should be blank", "", contentText.getText().toString());
 				assertEquals("titleText should be standard message", "Create a Name for Your Post", titleText.getText().toString());
@@ -84,7 +84,7 @@ public class CreateCommentActivityTests extends
 			public void run(){
 				CreateCommentActivity activity = getActivity();
 				
-				activity.fillContents(null, sampleHead);
+				activity.fillContents(null);
 				
 				assertEquals("contentText should be blank", "", contentText.getText().toString());
 				assertEquals("titleText should be RE: title", "RE:"+title, titleText.getText().toString());
@@ -106,7 +106,7 @@ public class CreateCommentActivityTests extends
 			public void run(){
 				CreateCommentActivity activity = getActivity();
 				
-				activity.fillContents(username, sampleHead);
+				activity.fillContents(username);
 				
 				assertEquals("contentText should be blank", "", contentText.getText().toString());
 				assertEquals("titleText should be RE: title","RE:"+ title, titleText.getText().toString());

@@ -29,7 +29,6 @@ import android.app.Activity;
 /**
  * @author      Bradley Poulette <bpoulett@ualberta.ca>
  * @version     1                (current version number of program)
- * @since       2014-16-03        (the version of the package this class was first added to)
  */
 public class EditCommentActivity extends Activity {
 
