@@ -123,7 +123,7 @@ public class UserModel{
 	
 	public void setSortByDate(boolean sortByDate) {
 		this.sortByDate = sortByDate;
-		if(sortByDate){
+		if(this.sortByDate){
 			this.sortByLoc = false;
 			this.sortByPopularity = false;
 		}
@@ -135,7 +135,7 @@ public class UserModel{
 	
 	public void setSortByLoc(boolean sortByLoc) {
 		this.sortByLoc = sortByLoc;
-		if(sortByDate){
+		if(this.sortByLoc){
 			this.sortByDate = false;
 			this.sortByPopularity = false;
 		}
@@ -147,7 +147,7 @@ public class UserModel{
 	
 	public void setSortByPopularity(boolean sortByPopularity) {
 		this.sortByPopularity = sortByPopularity;
-		if(sortByDate){
+		if(this.sortByPopularity){
 			this.sortByLoc = false;
 			this.sortByDate = false;
 		}

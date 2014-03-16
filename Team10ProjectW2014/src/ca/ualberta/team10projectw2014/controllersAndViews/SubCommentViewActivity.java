@@ -422,6 +422,22 @@ public class SubCommentViewActivity extends Activity {
 
 	}
 
+	//from the android developer page http://developer.android.com/guide/topics/ui/controls/checkbox.html
+	public void onCheckboxClicked(View view) {
+	    // Is the view now checked?
+	    boolean checked = ((CheckBox) view).isChecked();
+	    
+	    // Check which checkbox was clicked
+	    switch(view.getId()) {
+	        case R.id.pictures:
+	            if (checked)
+	            	appState.getUserModel().setSortByPic(true);
+	            else
+	            	appState.getUserModel().setSortByPic(false);
+	            break;
+	    }
+	}
+	
 	/**
 	 * Brings up a dialog box to prompt user for sorting criteria:
 	 */
@@ -454,16 +470,19 @@ public class SubCommentViewActivity extends Activity {
 
 		if(appState.getUserModel().isSortByPic()){
 			box = (CheckBox) optionsView.getChildAt(2);
-			box.setChecked(false);
+			box.setChecked(true);
 		}
 		
 		alert.setView(optionsView);
 
-		//Set the user's sort preferences
+		//set the positive button with its text and set up an on click listener
+		//to add the counter with the text provided when it is pressed:
 		alert.setPositiveButton("Set", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
-				onResume();
 			
+				
+				appState.saveUser();
+				onResume();
 			}
 		});
 
@@ -478,16 +497,6 @@ public class SubCommentViewActivity extends Activity {
 		alert.show();
 	}
 	
-	//from the android developer page http://developer.android.com/guide/topics/ui/controls/checkbox.html
-	public void onCheckboxClicked(View view) {
-	    // Is the view now checked?
-	    boolean checked = ((CheckBox) view).isChecked();
-	   
-	    if(checked){
-	    	toSortByPicture = true;
-	    }
-	}
-	
 	
 	/**
 	 * Responds to clicks on a radio button in the sort by alert
@@ -495,6 +504,7 @@ public class SubCommentViewActivity extends Activity {
 	 * http://developer.android.com/guide/topics/ui/controls/radiobutton.html
 	 */
 	public void onRadioButtonClicked(View view) {
+		appState.loadUser();
 		RadioButton buttonPressed = (RadioButton) view;
 		RadioGroup buttonGroup = (RadioGroup) buttonPressed.getParent();
 	    // Is the button now checked?
