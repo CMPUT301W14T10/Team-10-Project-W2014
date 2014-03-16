@@ -17,13 +17,21 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
 import android.widget.TextView;
 
+/**
+ * This class tests various aspects of the MainListViewActivity
+ * @author      Costa Zervos <czervos@ualberta.ca>
+ * @version     1            (current version number of program)
+ */
 public class MainListViewActivityTests extends
 		ActivityInstrumentationTestCase2<MainListViewActivity> {
 	
 	Activity activity;
-	ApplicationStateModel appState;
-	ArrayList<CommentModel> backupList = new ArrayList<CommentModel>();
+	ApplicationStateModel appState; // Application singleton
+	ArrayList<CommentModel> backupList = new ArrayList<CommentModel>(); // Backs up original comment list
 	
+	/**
+	 * Initializes test suite on MainListViewActivity
+	 */
 	public MainListViewActivityTests() {
 		super(MainListViewActivity.class);
 		appState = ApplicationStateModel.getInstance();
