@@ -22,9 +22,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import ca.ualberta.team10projectw2014.R;
-import ca.ualberta.team10projectw2014.R.id;
-import ca.ualberta.team10projectw2014.R.layout;
-import ca.ualberta.team10projectw2014.R.menu;
 import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
 
@@ -83,6 +80,7 @@ public class SubCommentViewActivity extends Activity {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -102,7 +100,7 @@ public class SubCommentViewActivity extends Activity {
 			//Sort Head Comment's sub comments by those with pictures
 			commentList = new ArrayList<CommentModel>();
 		    ArrayList<? extends CommentModel> comments = appState.getSubCommentViewHead().getSubComments();
-	    	commentList = appState.pictureSort((ArrayList<CommentModel>)comments, appState.dateCompare);
+	    	commentList = appState.pictureSort((ArrayList<CommentModel>)comments, ApplicationStateModel.dateCompare);
 	    	
 	    	
 		}else{

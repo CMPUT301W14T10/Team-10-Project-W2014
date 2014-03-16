@@ -18,9 +18,6 @@ package ca.ualberta.team10projectw2014.controllersAndViews;
 import java.util.ArrayList;
 
 import ca.ualberta.team10projectw2014.R;
-import ca.ualberta.team10projectw2014.R.id;
-import ca.ualberta.team10projectw2014.R.layout;
-import ca.ualberta.team10projectw2014.R.menu;
 import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
 
@@ -30,7 +27,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,6 +44,7 @@ import android.widget.RadioGroup;
  * This class handles the activity displaying the list view of head comments.
  * @author Cole Fudge
  * @version     1                (current version number of program)
+ * 
  */
 public class MainListViewActivity extends Activity{
 	private ListView commentView;
