@@ -235,12 +235,21 @@ public class ApplicationStateModel {
 	 */
 	public void saveComments(){
 		try {
+			//open the file for writing:
 			FileOutputStream fos = COMMENT_fileContext.openFileOutput(COMMENT_FILE_NAME,
 					Context.MODE_PRIVATE); // TODO REMEMBER TO SET THE CONTEXT BEFORE YOU USE THIS
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
+			
 			Gson gson = new Gson();
+			
+			//A type token to pass GSON, indicating that we want to load
+			//a list of CommentModels:
 			Type fooType = new TypeToken<ArrayList<CommentModel>>() {}.getType();
-			gson.toJson(commentList, fooType, osw); //TODO Initialize this list
+			
+			//Conver the list to a JSON string, saving it to file:
+			gson.toJson(commentList, fooType, osw); 
+			
+			//close the file:
 			osw.close();
 			fos.close();
 		} catch (FileNotFoundException e)
@@ -254,26 +263,45 @@ public class ApplicationStateModel {
 
 	/**
 	 * A method for loading the list of head
-	 * comments(i.e. commentList) from file
+	 * comments(i.e. {@link #commentList}) from file.
+	 * The {@link #commentList} is changed in place,
+	 * i.e. the reference is not changed, in
+	 * order to avoid conflicting references.
 	 * @param  void, no arguments
 	 * @return      void, no return value.
 	 * @see #commentList
 	 */
 	public void loadComments(){
 		FileInputStream fis;
+		//clear the comment list so that their
+		//are no duplicates and we have only 
+		//comments from file:
 		commentList.clear();
 		try
 		{
+			//Get the file for reading:
 			fis = COMMENT_fileContext.openFileInput(COMMENT_FILE_NAME);
 			InputStreamReader isr = new InputStreamReader(fis);
+			
 			Gson gson = new Gson();
 
+			//create a type token to tell GSON what type of object it is saving:
 			Type fooType = new TypeToken<ArrayList<CommentModel>>() {}.getType();
+			
+			//use GSON object, type token and file stream to get list of
+			//head comments from file:
 			ArrayList<CommentModel> list_temp = gson.fromJson(isr, fooType);
+			
+			//if the comments in the file were null, we can't call list_temp.size()
+			//or list_temp.get(i)
 			if(list_temp != null){
+				//iterate through the list to add each element, as opposed to
+				//changing the commentList's reference by assignment:
 				for(int i = 0; i < list_temp.size(); i++)
 					commentList.add(list_temp.get(i));
 			}
+			
+			//Close the files:
 			isr.close();
 			fis.close();
 		} catch (FileNotFoundException e)
@@ -294,12 +322,20 @@ public class ApplicationStateModel {
 	 */
 	public void saveUser(){
 		try {
+			//Obtain the file to write, creating it if it does not exist:
 			FileOutputStream fos = USER_fileContext.openFileOutput(USER_FILE_NAME,
 					Context.MODE_PRIVATE);
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
+			
+			//Create a GSON object and type token:
 			Gson gson = new Gson();
 			Type fooType = new TypeToken<UserModel>() {}.getType();
+			
+			//Obtain the JSON string for the object/type provided
+			//and save it to file:
 			gson.toJson(userModel, fooType, osw);
+			
+			//Close the files:
 			osw.close();
 			fos.close();
 		} catch (FileNotFoundException e)
@@ -323,14 +359,23 @@ public class ApplicationStateModel {
 		userModel = new UserModel(USER_fileContext);
 		try
 		{
+			//Obtain the file to read:
 			fis = USER_fileContext.openFileInput(USER_FILE_NAME);
 			InputStreamReader isr = new InputStreamReader(fis);
+			
+			//Create the GSON object and type token:
 			Gson gson = new Gson();
-
 			Type fooType = new TypeToken<UserModel>() {}.getType();
+			
+			//Get the UserModel from the File using the GSON object
 			UserModel list_temp = gson.fromJson(isr, fooType);
+			
+			//if the file was empty, keep an empty list, not null.
+			//Otherwise, set the user to whatever was in the file:
 			if(list_temp != null)
 				userModel = list_temp;
+			
+			//close the file:
 			isr.close();
 			fis.close();
 		} catch (FileNotFoundException e)
@@ -401,7 +446,7 @@ public class ApplicationStateModel {
 		 return list;
 	 }
 	 
-	 public ArrayList<SubCommentModel> sort2(ArrayList<SubCommentModel> list, Comparator cmp) {
+	 public ArrayList<SubCommentModel> sort2(ArrayList<SubCommentModel> list, Comparator<CommentModel> cmp) {
 		 for (int i=0; i < list.size()-1; i++) {
 			 // Sets current comment as the one that should appear first
 			 SubCommentModel maxComment = list.get(i);

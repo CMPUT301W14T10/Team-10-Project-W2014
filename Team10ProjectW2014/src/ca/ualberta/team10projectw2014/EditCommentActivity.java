@@ -25,6 +25,11 @@ import android.widget.Toast;
 /**
  * @author      Bradley Poulette <bpoulett@ualberta.ca>
  * @version     1                (current version number of program)
+ * 
+ * This class deals with a comment which has already been created in the system, but
+ * the user wants to change. 
+ * 
+ * As of version 1, this class will not change the location of the comment.
  */
 public class EditCommentActivity extends Activity {
 

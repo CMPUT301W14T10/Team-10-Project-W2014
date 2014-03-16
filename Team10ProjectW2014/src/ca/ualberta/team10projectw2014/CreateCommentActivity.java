@@ -27,6 +27,12 @@ import android.widget.Toast;
 /**
  * @author      Bradley Poulette <bpoulett@ualberta.ca>
  * @version     1                (current version number of program)
+ * 
+ * <p>
+ * This class deals with creating comments by talking with the app's singleton.
+ *  
+ * This is where the location of a comment, its picture, and any textual contents will be set.
+ * 
 */
 public class CreateCommentActivity extends Activity{
 	
@@ -165,7 +171,7 @@ public class CreateCommentActivity extends Activity{
 	}
 
 	public void chooseLocation(View v){
-		Toast.makeText(getBaseContext(), "You Want to Choose a Location, Eh?", Toast.LENGTH_LONG).show();
+		Toast.makeText(getBaseContext(), "Sorry, this feature is not supported yet.", Toast.LENGTH_LONG).show();
 	}
 	
 	/**
@@ -394,10 +400,7 @@ public class CreateCommentActivity extends Activity{
 	 */
 	private void stopListeningLocation(){
 		getLastBestLocation();
-		if (bestKnownLoc == null){
-			Toast.makeText(getBaseContext(), "Ain't no location here", Toast.LENGTH_LONG).show();
-		}
-		else{
+		if (bestKnownLoc != null){
 			Location location = locationListener.getCurrentBestLocation();
 			bestKnownLoc.setLatitude(location.getLatitude());
 			bestKnownLoc.setLongitude(location.getLongitude());

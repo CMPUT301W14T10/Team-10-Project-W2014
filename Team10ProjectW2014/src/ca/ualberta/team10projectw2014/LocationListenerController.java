@@ -8,8 +8,15 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.widget.Toast;
 
+/**
+ * @author      Bradley Poulette <bpoulett@ualberta.ca>
+ * @version     1                (current version number of program)
+ * 
+ * This class is used to deal with listening for the user's most accurate current location and
+ * returning that location upon request.
+ * 
+ */
 public class LocationListenerController implements LocationListener {
 
 	private Location currentBestLocation = null;
@@ -22,6 +29,10 @@ public class LocationListenerController implements LocationListener {
  	
  	private static final int TWO_MINUTES = 1000 * 60 * 2;
 
+ 	
+ 	/**
+ 	 * Checks to see if either network or GPS are enabled, and asks user to turn GPS on if it is disabled.
+ 	 */
 	public LocationListenerController(Context context) {
 		this.context = context;
 		mLocationManager = (LocationManager)
@@ -55,19 +66,17 @@ public class LocationListenerController implements LocationListener {
     	}
     	
     	currentBestLocation = getLastBestLocation();
-    	if (currentBestLocation != null){
-    		Toast.makeText(
-    				context, 
-    				R.string.current_best_loc_on_create + 
-    				currentBestLocation.getLatitude() + 
-    				" " + 
-    				currentBestLocation.getLongitude(), 
-    				Toast.LENGTH_LONG).show();
-    	}
 	}
 	
-	// The following method is a direct copy from 
-	// http://stackoverflow.com/a/843716/2557554 accessed on March 9 at 2:00PM
+
+	
+	/**
+	 * Tells the user to turn on the GPS 
+	 * Called in {@link #LocationListenerController(Context)} 
+	 * 
+ 	 * This is a direct copy from 
+	 * http://stackoverflow.com/a/843716/2557554 accessed on March 9 at 2:00PM
+ 	 */
 	protected void noGPSError(){
 		final AlertDialog.Builder builder = 
 				new AlertDialog.Builder(context);
@@ -97,6 +106,10 @@ public class LocationListenerController implements LocationListener {
 	    alert.show();
 	}
 	
+	/**
+	 * Returns the best location between GPS and network, then returns the result.
+	 * @return the current location, null if networks are not on
+ 	 */
 	public Location getLastBestLocation() {
 		if (!netEnabled && gpsEnabled){
 			locationGPS = mLocationManager.getLastKnownLocation(
@@ -130,18 +143,13 @@ public class LocationListenerController implements LocationListener {
 		    	makeUseOfNewLocation(locationNet);
 		    }
 		}
-		if (currentBestLocation != null){
-			Toast.makeText(
-					context, 
-					R.string.current_best_loc_on_search + 
-					currentBestLocation.getLatitude() + 
-					" " + 
-					currentBestLocation.getLongitude(), 
-					Toast.LENGTH_LONG).show();
-		}
 		return currentBestLocation;
 	}
 
+	/**
+	 * Checks to see if the current location is a better one than what is known, and sets the known location to it
+	 * if this is true.
+ 	 */
 	private void makeUseOfNewLocation(Location location){
 		if ( isBetterLocation(location, currentBestLocation) ) {
 	        currentBestLocation = location;
@@ -170,12 +178,11 @@ public class LocationListenerController implements LocationListener {
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {}
 
-	// From http://developer.android.com/guide/topics/location/strategies.html 
-	// Accessed on March 6th at 4:00PM
-	// Methods used to determine the most accurate location possible
-
 	/** Determines whether one Location reading is better than the current 
 	  * Location reading.
+	  * 
+	  * From http://developer.android.com/guide/topics/location/strategies.html 
+	  * Accessed on March 6th at 4:00PM
 	  * 
 	  * @param location
 	  * 		The new Location that you want to evaluate
@@ -235,6 +242,9 @@ public class LocationListenerController implements LocationListener {
 
 	/** Checks whether two providers are the same using a string comparison. 
 	 * 
+	 * 	From http://developer.android.com/guide/topics/location/strategies.html 
+	 *  Accessed on March 6th at 4:00PM
+	 *  
 	 * 	@param provider1 the first provider to compare
 	 *  @param provider2 the second provider to compare
      *  @return <code>true</code> if the specified object is equal to this 
