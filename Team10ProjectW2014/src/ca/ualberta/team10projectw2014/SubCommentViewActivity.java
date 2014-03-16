@@ -81,7 +81,7 @@ public class SubCommentViewActivity extends Activity {
 		subListView.addHeaderView(headerView);
 
 		// Disable the Home Icon on the Actionbar
-		ActionBar actionbar = getActionBar();
+	    actionbar = getActionBar();
 		actionbar.setDisplayShowHomeEnabled(false);
 
 		// Set the Title in the Actionbar to the title of the head comment
