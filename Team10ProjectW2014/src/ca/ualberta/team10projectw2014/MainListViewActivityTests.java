@@ -43,8 +43,8 @@ public class MainListViewActivityTests extends
 		headComment.setTimestamp(Calendar.getInstance());
 		
 		// Create test location model
-		LocationModel locMod = new LocationModel("testlocationmodel", 100, 100);
-		headComment.setLocation(locMod);
+		LocationModel tstLocationModel = new LocationModel("Lat: 100 Long: 100", 100, 100);
+		headComment.setLocation(tstLocationModel);
 		
 		// Add head comment to the test comment list
 		commentList.add(headComment);
@@ -71,18 +71,15 @@ public class MainListViewActivityTests extends
         // Identifies list item objects required for the test
         TextView title = (TextView) commentLayout.findViewById(R.id.head_comment_title);
         TextView userName = (TextView) commentLayout.findViewById(R.id.head_comment_username);
-        // TODO re-add in location when location implemented
-        //TextView location = (TextView) commentLayout.findViewById(R.id.head_comment_location);
         TextView date = (TextView) commentLayout.findViewById(R.id.head_comment_time);
-        //TextView location = (TextView) commentLayout.findViewById(R.id.head_comment_location)
+        TextView location = (TextView) commentLayout.findViewById(R.id.head_comment_location);
         
         // Test comment title is correct
         assertEquals("Head comment title should appear in list", headComment.getTitle(), title.getText());
         // Test comment username is correct
         assertEquals("Head comment username should appear in list", headComment.getAuthor(), userName.getText());
         // Test comment location is correct
-        // TODO re-add in location when location implemented
-        //assertEquals("Head comment location should appear in list", headComment.getLocation(), location.getText());
+        assertEquals("Head comment location should appear in list", headComment.getLocation().getName(), location.getText());
         
         // Converts headcomment's timestamp calendar object to a testable string
         SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:mm aa");
