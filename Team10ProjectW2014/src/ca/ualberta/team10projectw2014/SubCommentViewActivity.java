@@ -31,7 +31,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -52,7 +51,6 @@ public class SubCommentViewActivity extends Activity {
 	private ApplicationStateModel appState;
 	private ArrayList<? extends CommentModel> commentList;
 	private ArrayList<CommentModel> sortedList;
-	private ArrayList<CommentModel> fullSortedList;
 	private ActionBar actionbar;
 	private View headerView;
 	private Boolean toSortByPicture = false;
@@ -262,8 +260,8 @@ public class SubCommentViewActivity extends Activity {
 	 * head comment.
 	 * 
 	 * @author sgiang92, dvyee
-	 * @param headComment
-	 * @return HeadModel headComment
+	 * @param 
+	 * @return View
 	 */
 	private View SetHeader(CommentModel headComment) {
 
@@ -296,10 +294,7 @@ public class SubCommentViewActivity extends Activity {
 		if (headComment.getPhotoPath() != null) {
 
 			String imagePath = headComment.getPhotoPath();
-			// Get the dimensions of the View
-			// int targetW = holder.imageView.getWidth();
-			// int targetH = holder.imageView.getHeight();
-
+			
 			// Get the dimensions of the bitmap
 			BitmapFactory.Options bmOptions = new BitmapFactory.Options();
 			bmOptions.inJustDecodeBounds = true;
@@ -321,27 +316,22 @@ public class SubCommentViewActivity extends Activity {
 		}
 
 		moreButton.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-
-				// TODO Auto-generated method stub
+				//Open More Dialog
 				openMoreDialog(appState.getSubCommentViewHead());
-
 			}
 		});
 
 		return header;
-
 	}
 
 	/**
 	 * Takes in the timestamp as a Calendar object and converts it to a string
 	 * that can be used in a textView.
 	 * 
-	 * @param calendar
-	 *            object to retrieve string from
-	 * @return string of the formatted date of the timestamp
+	 * @param calendar - object to retrieve string from
+	 * @return timeString - string of the formatted date of the timestamp
 	 */
 	private String TimeToString(Calendar calendar) {
 		SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:00 aa",
@@ -355,7 +345,8 @@ public class SubCommentViewActivity extends Activity {
 	 * in the listView. Uses recursion to get all the subComment's subcomments
 	 * 
 	 * @author sgiang92
-	 * @param subCommentList
+	 * @param subCommentList - A list to be iterated through to 
+	 * add all its subComments to the list to be displayed on the ListView
 	 */
 	private void AddCommentToList(ArrayList<? extends CommentModel> subCommentList) {
 		if (subCommentList.size() == 0) {
@@ -375,7 +366,7 @@ public class SubCommentViewActivity extends Activity {
 	 * later list, or if the user is the author of that comment, they can edit
 	 * the comment.
 	 * 
-	 * @param comment
+	 * @param
 	 */
 	public void openMoreDialog(CommentModel comment) {
 
