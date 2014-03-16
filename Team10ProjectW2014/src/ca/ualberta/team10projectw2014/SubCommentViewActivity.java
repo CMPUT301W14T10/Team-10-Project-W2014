@@ -164,6 +164,9 @@ public class SubCommentViewActivity extends Activity {
 		case R.id.action_favourite:
 			// Add the head comment to the users favourite list
 			addFavourite(appState.getSubCommentViewHead());
+			appState.getSubCommentViewHead().setNumFavourites(appState.getSubCommentViewHead().getNumFavourites() + 1);
+			appState.saveComments();
+			appState.loadComments();
 			return true;
 		case R.id.action_edit_username:
 			// Bring up dialog box for the user to edit username

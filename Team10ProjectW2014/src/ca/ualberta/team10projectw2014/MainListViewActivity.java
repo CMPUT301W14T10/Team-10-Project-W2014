@@ -296,27 +296,36 @@ public class MainListViewActivity extends Activity{
 	            if (checked){
 	            	appState.getUserModel().setSortByDate(true);
 	            	buttonPressed.toggle();
+	            	appState.saveUser();
 	            }
-	            else
-	        		buttonGroup.clearCheck();
+	            else{
+	        		appState.getUserModel().setSortByDate(false);
+            		appState.saveUser();
+	            }
 	            break;
 	            
 	        case R.id.location:
 	            if (checked){
 	            	appState.getUserModel().setSortByLoc(true);
 	            	buttonPressed.toggle();
+	            	appState.saveUser();
 	            }
-	            else
-	        		buttonGroup.clearCheck();
+	            else{
+	            	appState.getUserModel().setSortByLoc(false);
+	            	appState.saveUser();
+	            }
 	            break;
 	            
 	        case R.id.number_of_favourites:
 	            if (checked){
 	            	appState.getUserModel().setSortByPopularity(true);
 	            	buttonPressed.toggle();
+	            	appState.saveUser();
 	            }
-	            else
-	        		buttonGroup.clearCheck();
+	            else{
+	            	appState.getUserModel().setSortByPopularity(false);
+	            	appState.saveUser();
+	            }
 	            break;
 	            
 	    }
