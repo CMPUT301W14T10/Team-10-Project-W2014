@@ -247,7 +247,8 @@ public class CreateCommentActivity extends Activity{
 	 * @return  the file for saving
 	 * @throws any exception if the file cannot be created
 	 */
-    private File createImageFile() throws IOException {
+    @SuppressLint("SimpleDateFormat")
+	private File createImageFile() throws IOException {
  
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());

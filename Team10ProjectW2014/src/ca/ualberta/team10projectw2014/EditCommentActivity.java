@@ -3,7 +3,6 @@ package ca.ualberta.team10projectw2014;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import android.annotation.SuppressLint;
@@ -13,18 +12,15 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.app.Activity;
 
 /**
  * @author      Bradley Poulette <bpoulett@ualberta.ca>
@@ -270,7 +266,8 @@ public class EditCommentActivity extends Activity {
 	 * @return  the file for saving
 	 * @throws any exception if the file cannot be created
 	 */
-    private File createImageFile() throws IOException {
+    @SuppressLint("SimpleDateFormat")
+	private File createImageFile() throws IOException {
  
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -319,6 +316,7 @@ public class EditCommentActivity extends Activity {
 	 * 
 	 * Not used as of version 1.
 	 */
+	@SuppressWarnings("unused")
 	private void setLocation(){
 		this.postLocation = new LocationModel(String.valueOf("Lat: " + bestKnownLoc.getLatitude()) + " Long: " + String.valueOf(bestKnownLoc.getLongitude()), bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude());
 	}
@@ -337,11 +335,17 @@ public class EditCommentActivity extends Activity {
 		else if(checkStringIsAllWhiteSpace(this.postTitle)){
 			raiseTitleIncompleteError();
 		}
+		else if(checkStringIsAllWhiteSpace(this.postUsername)){
+			raiseUsernameIncompleteError();
+		}
+		
 		else{
 			
 			appState.getCommentToEdit().setTitle(this.postTitle);
 			appState.getCommentToEdit().setAuthor(this.postUsername);
 			appState.getCommentToEdit().setContent(this.postContents);
+			appState.getCommentToEdit().setPhoto(this.postPhoto);
+			appState.getCommentToEdit().setLocation(this.postLocation);
 			
 			//appState.getCommentToEdit().setLocation(this.postLocation);
 
@@ -357,6 +361,7 @@ public class EditCommentActivity extends Activity {
 	 * 
 	 * Not used as of version 1
 	 */
+	@SuppressWarnings("unused")
 	private void stopListeningLocation(){
 		getLastBestLocation();
 		if (bestKnownLoc == null){
