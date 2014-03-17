@@ -20,15 +20,6 @@ import java.util.ArrayList;
 import ca.ualberta.team10projectw2014.R;
 import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
-
-/**
- * Sets up action bar options
- */
-
-/**
-
- */
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -70,11 +61,11 @@ public class MainListViewActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_head_comment_view);
 		layoutInflater = LayoutInflater.from(this);
-		appState = ApplicationStateModel.getInstance();
-		appState.setCommentList(new ArrayList<CommentModel>());
-		appState.setFileContext(this);
-		appState.loadComments();
-		appState.loadUser();
+		this.appState = ApplicationStateModel.getInstance();
+		this.appState.setCommentList(new ArrayList<CommentModel>());
+		this.appState.setFileContext(this);
+		this.appState.loadComments();
+		this.appState.loadUser();
 	}
 
 	
@@ -85,10 +76,10 @@ public class MainListViewActivity extends Activity{
 		//Tells the ApplicationStateModel singleton to load comments/user 
 		//from network(when implemented)/file and creates a new adapter
 		//in the appState for these values.
-		appState.setFileContext(this);
-		appState.loadComments();
-		appState.loadUser();
-		appState.setMLVAdapter(new MainListViewAdapter(this, appState.getCommentList()));
+		this.appState.setFileContext(this);
+		this.appState.loadComments();
+		this.appState.loadUser();
+		this.appState.setMLVAdapter(new MainListViewAdapter(this, this.appState.getCommentList()));
 		return true;
 	}
 	
@@ -98,54 +89,54 @@ public class MainListViewActivity extends Activity{
 	protected void onResume(){
 		super.onResume(); 
 		setContentView(R.layout.activity_head_comment_view);
-		commentView = (ListView) findViewById(R.id.HeadCommentList);
+		this.commentView = (ListView) findViewById(R.id.HeadCommentList);
 		
 		//call the ApplicationStateModel singleton's methods to update
 		//its attributes from file(and/or a network connection when implemented):
-		appState.setFileContext(this);
-		appState.loadComments();
-		appState.loadUser();
+		this.appState.setFileContext(this);
+		this.appState.loadComments();
+		this.appState.loadUser();
 		
 		//Head Comment Sorting:
 		//Checks which selection method is active and sorts the list accordingly.
 		//Sort by picture
-		if (appState.getUserModel().isSortByPic() == true) {
+		if (this.appState.getUserModel().isSortByPic() == true) {
 			//Sort by date and picture:
-			if (appState.getUserModel().isSortByDate() == true) {
-				appState.setCommentList(appState.pictureSort(appState.getCommentList(), ApplicationStateModel.dateCompare));
+			if (this.appState.getUserModel().isSortByDate() == true) {
+				this.appState.setCommentList(this.appState.pictureSort(this.appState.getCommentList(), ApplicationStateModel.dateCompare));
 			}
 			//Sort by location and picture:
-			else if(appState.getUserModel().isSortByLoc() == true) {
-				appState.setCommentList(appState.pictureSort(appState.getCommentList(), ApplicationStateModel.locCompare));
+			else if(this.appState.getUserModel().isSortByLoc() == true) {
+				this.appState.setCommentList(this.appState.pictureSort(this.appState.getCommentList(), ApplicationStateModel.locCompare));
 			}
 			//Sort by popularity(i.e. number of times favourited) and picture:
-			else if(appState.getUserModel().isSortByPopularity())
-				appState.setCommentList(appState.pictureSort(appState.getCommentList(), ApplicationStateModel.popularityCompare));
+			else if(this.appState.getUserModel().isSortByPopularity())
+				this.appState.setCommentList(this.appState.pictureSort(this.appState.getCommentList(), ApplicationStateModel.popularityCompare));
 		}
 		//Sort without sorting by picture:
 		else {
 			//Sort by date
-			if (appState.getUserModel().isSortByDate() == true) {
-				appState.setCommentList(appState.sort(appState.getCommentList(), ApplicationStateModel.dateCompare));
+			if (this.appState.getUserModel().isSortByDate() == true) {
+				this.appState.setCommentList(this.appState.sort(this.appState.getCommentList(), ApplicationStateModel.dateCompare));
 			}
 			//Sort by location:
-			else if(appState.getUserModel().isSortByLoc() == true) {
-				appState.setCommentList(appState.sort(appState.getCommentList(), ApplicationStateModel.locCompare));
+			else if(this.appState.getUserModel().isSortByLoc() == true) {
+				this.appState.setCommentList(this.appState.sort(this.appState.getCommentList(), ApplicationStateModel.locCompare));
 			}
 			//Sort by popularity(i.e. number of times favourited):
-			else if(appState.getUserModel().isSortByPopularity())
-				appState.setCommentList(appState.sort(appState.getCommentList(), ApplicationStateModel.popularityCompare));
+			else if(this.appState.getUserModel().isSortByPopularity())
+				this.appState.setCommentList(this.appState.sort(this.appState.getCommentList(), ApplicationStateModel.popularityCompare));
 		}
 		
 		//Create an adapter to reflect the comments loaded/sorted:
-		appState.setMLVAdapter(new MainListViewAdapter(this, appState.getCommentList()));
+		this.appState.setMLVAdapter(new MainListViewAdapter(this, this.appState.getCommentList()));
 		
 		//Set the commentView in this activity to reflect the corresponding 
 		//adapter in the ApplicationStateModel:
-		commentView.setAdapter(appState.getMLVAdapter());
+		this.commentView.setAdapter(this.appState.getMLVAdapter());
 
 		//Opens SubCommentViewActivity when a comment is selected:
-		commentView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+		this.commentView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id){
@@ -175,11 +166,11 @@ public class MainListViewActivity extends Activity{
 				//activity makes a subcomment inside the parent comment
 				//provided, or makes a new head comment if it is null:
 				Intent createComment = new Intent(getApplicationContext(), CreateCommentActivity.class);
-				appState.setCreateCommentParent(null);
+				this.appState.setCreateCommentParent(null);
 				this.startActivity(createComment);
 				return true;
 			case R.id.action_edit_username_main:
-				edit_username();
+				editUsername();
 				return true;
 			case R.id.action_sort_main:
 				sortComments();
@@ -188,14 +179,14 @@ public class MainListViewActivity extends Activity{
 			//Display the list of favourites specified in the user model
 			//when implemented:
 			case R.id.action_favourites_main:
-				appState.setCommentList(appState.getUserModel().getFavourites());
-				appState.updateMainAdapter();
+				this.appState.setCommentList(this.appState.getUserModel().getFavourites());
+				this.appState.updateMainAdapter();
 				return true;
 			//Display the list of want to read comments specified in the user model
 			//when implemented:
 			case R.id.action_want_to_read_main:
-				appState.setCommentList(appState.getUserModel().getWantToReadComments());
-				appState.updateMainAdapter();
+				this.appState.setCommentList(this.appState.getUserModel().getWantToReadComments());
+				this.appState.updateMainAdapter();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -206,7 +197,7 @@ public class MainListViewActivity extends Activity{
 	/**
 	 * Brings up a dialog box to prompt user for a new username:
 	 */
-	private void edit_username(){
+	private void editUsername(){
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
 		//set the fields of the dialog:
@@ -241,6 +232,77 @@ public class MainListViewActivity extends Activity{
 		alert.show();
 	}
 	
+
+	
+	//Adapted from the android developer page 
+	//http://developer.android.com/guide/topics/ui/controls/checkbox.html
+	public void onCheckboxClicked(View view) {
+	    // Is the view now checked?
+	    boolean checked = ((CheckBox) view).isChecked();
+	    
+	    // Check which checkbox was clicked
+	    switch(view.getId()) {
+	    	//Set user preferences according
+	    	//to whether the pictures checkbox is checked:
+	        case R.id.pictures:
+	            if (checked)
+	            	this.appState.getUserModel().setSortByPic(true);
+	            else
+	            	this.appState.getUserModel().setSortByPic(false);
+	            break;
+	    }
+	}
+	
+	/**
+	 * Responds to clicks on a radio button in the sort by alert
+	 * dialog. Adapted from the android developer website
+	 * http://developer.android.com/guide/topics/ui/controls/radiobutton.html
+	 * @param view - the radio button that was clicked.
+	 * @return void, no return value.
+	 */
+	public void onRadioButtonClicked(View view) {
+		RadioButton buttonPressed = (RadioButton) view;
+		RadioGroup buttonGroup = (RadioGroup) buttonPressed.getParent();
+	    // Is the button now checked?
+	    boolean checked = ((RadioButton) view).isChecked();
+	    buttonGroup.clearCheck();
+	    //Check which radio button was clicked and set the
+	    //preferences and checked radio button as appropriate:
+	    switch(view.getId()) {
+	        case R.id.date:
+	            if (checked){
+	            	this.appState.getUserModel().setSortByDate(true);
+	            	buttonPressed.toggle();
+	            }
+	            else{
+	        		this.appState.getUserModel().setSortByDate(false);
+	            }
+	            break;
+	            
+	        case R.id.location:
+	            if (checked){
+	            	this.appState.getUserModel().setSortByLoc(true);
+	            	buttonPressed.toggle();
+	            }
+	            else{
+	            	this.appState.getUserModel().setSortByLoc(false);
+	            }
+	            break;
+	            
+	        case R.id.number_of_favourites:
+	            if (checked){
+	            	this.appState.getUserModel().setSortByPopularity(true);
+	            	buttonPressed.toggle();
+	            }
+	            else{
+	            	this.appState.getUserModel().setSortByPopularity(false);
+	            }
+	            break;
+	            
+	    }
+	}
+	
+	
 	/**
 	 * Brings up a dialog box to prompt user for sorting criteria:
 	 */
@@ -262,23 +324,23 @@ public class MainListViewActivity extends Activity{
 		
 		//if/else statements that set the correct radio button
 		//and check the sort by picture box if appropriate:
-		if(appState.getUserModel().isSortByDate()){
+		if(this.appState.getUserModel().isSortByDate()){
 			//Set the date radio button:
 			button = (RadioButton) sortRadioGroup.getChildAt(0);
 			button.toggle();
 		}
-		else if(appState.getUserModel().isSortByLoc()){
+		else if(this.appState.getUserModel().isSortByLoc()){
 			//Set the location radio button:
 			button = (RadioButton) sortRadioGroup.getChildAt(1);
 			button.toggle();
 		}
-		else if(appState.getUserModel().isSortByPopularity()){
+		else if(this.appState.getUserModel().isSortByPopularity()){
 			//Set the Popularity radio button:
 			button = (RadioButton) sortRadioGroup.getChildAt(2);
 			button.toggle();
 		}
 
-		if(appState.getUserModel().isSortByPic()){
+		if(this.appState.getUserModel().isSortByPic()){
 			//Set the sort by picture check box:
 			box = (CheckBox) optionsView.getChildAt(2);
 			box.setChecked(true);
@@ -306,74 +368,5 @@ public class MainListViewActivity extends Activity{
 
 		alert.show();
 	}
-	
-	//Adapted from the android developer page 
-	//http://developer.android.com/guide/topics/ui/controls/checkbox.html
-	public void onCheckboxClicked(View view) {
-	    // Is the view now checked?
-	    boolean checked = ((CheckBox) view).isChecked();
-	    
-	    // Check which checkbox was clicked
-	    switch(view.getId()) {
-	    	//Set user preferences according
-	    	//to whether the pictures checkbox is checked:
-	        case R.id.pictures:
-	            if (checked)
-	            	appState.getUserModel().setSortByPic(true);
-	            else
-	            	appState.getUserModel().setSortByPic(false);
-	            break;
-	    }
-	}
-	
-	/**
-	 * Responds to clicks on a radio button in the sort by alert
-	 * dialog. Adapted from the android developer website
-	 * http://developer.android.com/guide/topics/ui/controls/radiobutton.html
-	 * @param view - the radio button that was clicked.
-	 * @return void, no return value.
-	 */
-	public void onRadioButtonClicked(View view) {
-		RadioButton buttonPressed = (RadioButton) view;
-		RadioGroup buttonGroup = (RadioGroup) buttonPressed.getParent();
-	    // Is the button now checked?
-	    boolean checked = ((RadioButton) view).isChecked();
-	    buttonGroup.clearCheck();
-	    //Check which radio button was clicked and set the
-	    //preferences and checked radio button as appropriate:
-	    switch(view.getId()) {
-	        case R.id.date:
-	            if (checked){
-	            	appState.getUserModel().setSortByDate(true);
-	            	buttonPressed.toggle();
-	            }
-	            else{
-	        		appState.getUserModel().setSortByDate(false);
-	            }
-	            break;
-	            
-	        case R.id.location:
-	            if (checked){
-	            	appState.getUserModel().setSortByLoc(true);
-	            	buttonPressed.toggle();
-	            }
-	            else{
-	            	appState.getUserModel().setSortByLoc(false);
-	            }
-	            break;
-	            
-	        case R.id.number_of_favourites:
-	            if (checked){
-	            	appState.getUserModel().setSortByPopularity(true);
-	            	buttonPressed.toggle();
-	            }
-	            else{
-	            	appState.getUserModel().setSortByPopularity(false);
-	            }
-	            break;
-	            
-	    }
-	}
-	
 	
 }	
