@@ -8,7 +8,7 @@ import android.net.Uri;
 
 /**
  * This class acts as the super class model for comments.
- * @author David Yee
+ * @author David Yee <dvyee@ualberta.ca>
  * @version     1                (current version number of program)
  */
 public class CommentModel{

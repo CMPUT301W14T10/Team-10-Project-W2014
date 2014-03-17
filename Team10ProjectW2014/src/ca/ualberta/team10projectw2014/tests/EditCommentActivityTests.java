@@ -1,4 +1,3 @@
-
 package ca.ualberta.team10projectw2014.tests;
 
 import java.util.Calendar;
@@ -10,10 +9,15 @@ import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-
+/**
+ * @author      Bradley Poulette <bpoulett@ualberta.ca>
+ * @version     1                (current version number of program)
+ * 
+ * <p>
+ * Runs tests for EditCommentActivity
+ * 
+*/
 public class EditCommentActivityTests extends ActivityInstrumentationTestCase2<EditCommentActivity> {
 	
 	EditCommentActivity activity;

@@ -11,7 +11,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
+/**
+ * Called from mainListViewActivity the first time the app is run in order
+ * for the user to set a username. Currently unused.
+ * @author      Steven Giang <giang2@ualberta.ca>
+ * @version     1            (current version number of program)
+ * 
+ */
 public class SetUserNameActivity extends Activity {
 	
 	private UserModel userData;

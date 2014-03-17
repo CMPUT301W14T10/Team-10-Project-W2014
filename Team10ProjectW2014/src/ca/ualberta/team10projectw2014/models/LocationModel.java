@@ -5,7 +5,6 @@ package ca.ualberta.team10projectw2014.models;
  * @version     1                (current version number of program)
  * 
  * This class stores the latitude and longitude of a comment's location, along with a name for that location.
- * @version     1                (current version number of program)
  */
 public class LocationModel{
 	private String name;

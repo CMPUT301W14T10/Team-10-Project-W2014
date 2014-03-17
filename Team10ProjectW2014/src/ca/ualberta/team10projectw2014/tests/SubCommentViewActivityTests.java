@@ -16,6 +16,11 @@ import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
 import ca.ualberta.team10projectw2014.models.SubCommentModel;
 
+/**
+ * This class tests various aspects of the SubCommentViewActivity
+ * @author      Steve Giang <giang2@ualberta.ca>
+ * @version     1            (current version number of program)
+ */
 public class SubCommentViewActivityTests extends
 		ActivityInstrumentationTestCase2<SubCommentViewActivity> {
 

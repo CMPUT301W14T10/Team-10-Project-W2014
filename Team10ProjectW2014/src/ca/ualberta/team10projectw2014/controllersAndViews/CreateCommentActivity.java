@@ -39,7 +39,6 @@ import android.widget.Toast;
  * This class deals with creating comments by talking with the app's singleton.
  *  
  * This is where the location of a comment, its picture, and any textual contents will be set.
- * 
 */
 public class CreateCommentActivity extends Activity implements CommentContentEditing{
 	

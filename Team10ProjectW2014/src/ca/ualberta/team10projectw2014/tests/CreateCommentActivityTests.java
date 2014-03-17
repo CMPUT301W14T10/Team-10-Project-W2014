@@ -9,10 +9,15 @@ import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-
+/**
+ * @author      Bradley Poulette <bpoulett@ualberta.ca>
+ * @version     1                (current version number of program)
+ * 
+ * <p>
+ * Runs tests for CreateCommentActivity
+ * 
+*/
 public class CreateCommentActivityTests extends ActivityInstrumentationTestCase2<CreateCommentActivity> {
 	
 	CreateCommentActivity activity;
