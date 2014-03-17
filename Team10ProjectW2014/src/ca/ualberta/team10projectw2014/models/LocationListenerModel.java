@@ -24,7 +24,7 @@ public class LocationListenerModel implements LocationListener {
 	private boolean gpsEnabled;
 	private boolean netEnabled;
 	private Context context;
-	protected LocationManager mLocationManager;
+	private LocationManager mLocationManager;
 	private Location locationGPS;
  	private Location locationNet;
  	
