@@ -6,11 +6,6 @@ import ca.ualberta.team10projectw2014.controllersAndViews.CreateCommentActivity;
 import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
-import ca.ualberta.team10projectw2014.models.UserModel;
-import android.app.Activity;
-import android.app.Instrumentation;
-import android.content.Context;
-import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.EditText;
 
