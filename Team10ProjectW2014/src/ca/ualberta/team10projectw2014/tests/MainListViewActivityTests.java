@@ -323,7 +323,7 @@ public class MainListViewActivityTests extends
 		// Sets test comment list
 		appState.setCommentList(commentList);
 		// Sorts list by date
-		appState.pictureSort(commentList, ApplicationStateModel.locCompare);
+		appState.sort(commentList, ApplicationStateModel.locCompare);
 		// Saves comments
 		appState.saveComments();
 
@@ -359,5 +359,70 @@ public class MainListViewActivityTests extends
 		// Close activity
 		activity.finish();
 		setActivity(null);
+	}
+	
+	public void testGetLatestHeadComments() throws Throwable {
+		/* TODO implement when elastic search implemented
+		 * 
+		 * // Get comment list from server and back it up
+		 * appState.loadCommentsFromServer();
+		 * backupList = appState.getCommentList();
+		 * 
+		 * // Create new head comment
+		 * CommentModel headComment = new CommentModel();
+		 * headComment.setTitle("Test Title");
+		 * headComment.setAuthor("TestUsername");
+		 * headComment.setContent("Test Head Comment Content");
+		 * headComment.setTimestamp(Calendar.getInstance());
+		 * 
+		 * LocationModel tstLocationModel = new LocationModel("Lat: 100 Long: 100", 100, 100);
+		 * headComment.setLocation(tstLocationModel);
+		 * 
+		 * commentList.add(headComment);
+		 * 
+		 * // Save comment list to server
+		 * appState.saveCommentsToServer(commentList);
+		 * 
+		 * // Set current list on phone to null
+		 * commentList = NULL;
+		 * 
+		 * // Load test comment list from server
+		 * appState.loadCommentsFromServer;
+		 * commentList = appState.getCommentListFromServer();
+		 * 
+		 * // Launches MainListviewActivity
+         * activity = getActivity();     
+         * 
+         * // Gets layout of head comment list item
+         * View commentLayout = (View) activity.findViewById(R.id.head_comment_list_item_layout);
+         * 
+         * // Identifies list item objects required for the test
+         * TextView title = (TextView) commentLayout.findViewById(R.id.head_comment_title);
+         * TextView userName = (TextView) commentLayout.findViewById(R.id.head_comment_username);
+         * TextView date = (TextView) commentLayout.findViewById(R.id.head_comment_time);
+         * TextView location = (TextView) commentLayout.findViewById(R.id.head_comment_location);
+         * 
+         * // Test comment title is correct
+         * assertEquals("Head comment title should appear in list", headComment.getTitle(), title.getText());
+         * // Test comment username is correct
+         * assertEquals("Head comment username should appear in list", headComment.getAuthor(), userName.getText());
+         * // Test comment location is correct
+         * assertEquals("Head comment location should appear in list", headComment.getLocation().getName(), location.getText());
+         * 
+         * // Converts headcomment's timestamp calendar object to a testable string
+         * SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:mm aa");
+         * String timeString = sdf.format(headComment.getTimestamp().getTime());
+         * 
+         * // Test comment date is correct
+         * assertEquals("Head comment date should appear in list", timeString, date.getText());
+         * 
+         * // Restores actual comment list
+         * appState.setCommentList(backupList);
+         * appState.saveComments();
+         * // Close activity
+         * activity.finish();
+         * setActivity(null);
+		 * 
+		 */
 	}
 }
