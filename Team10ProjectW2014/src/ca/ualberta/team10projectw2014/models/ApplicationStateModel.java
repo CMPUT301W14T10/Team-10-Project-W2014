@@ -181,7 +181,7 @@ public class ApplicationStateModel {
 	public CommentModel getCommentToEdit()
 	{
 	
-		return commentToEdit;
+		return this.commentToEdit;
 	}
 	
 	public void setCommentToEdit(CommentModel commentToEdit)
@@ -191,28 +191,28 @@ public class ApplicationStateModel {
 	}
 	
 	public MainListViewAdapter getMLVAdapter() {
-		return MLVAdapter;
+		return this.MLVAdapter;
 	}
 
 	public void setMLVAdapter(MainListViewAdapter mLVAdapter) {
-		MLVAdapter = mLVAdapter;
+		this.MLVAdapter = mLVAdapter;
 	}
 
 	public SubCommentViewActivityAdapter getSCVAdapter() {
-		return SCVAdapter;
+		return this.SCVAdapter;
 	}
 
 	public void setSCVAdapter(SubCommentViewActivityAdapter sCVAdapter) {
-		SCVAdapter = sCVAdapter;
+		this.SCVAdapter = sCVAdapter;
 	}
 
 	public void setFileContext(Context fileContext) {
-		USER_fileContext = fileContext;
-		COMMENT_fileContext = fileContext;
+		this.USER_fileContext = fileContext;
+		ApplicationStateModel.COMMENT_fileContext = fileContext;
 	}
 
 	public CommentModel getCreateCommentParent() {
-		return createCommentParent;
+		return this.createCommentParent;
 	}
 
 	public void setCreateCommentParent(CommentModel createCommentParent) {
@@ -220,7 +220,7 @@ public class ApplicationStateModel {
 	}
 
 	public CommentModel getSubCommentViewHead() {
-		return subCommentViewHead;
+		return this.subCommentViewHead;
 	}
 
 	public void setSubCommentViewHead(CommentModel subCommentViewHead) {
@@ -228,7 +228,7 @@ public class ApplicationStateModel {
 	}
 
 	public ArrayList<CommentModel> getCommentList() {
-		return commentList;
+		return this.commentList;
 	}
 
 	public void setCommentList(ArrayList<CommentModel> commentList) {
@@ -236,7 +236,7 @@ public class ApplicationStateModel {
 	}
 
 	public UserModel getUserModel() {
-		return userModel;
+		return this.userModel;
 	}
 
 	/**
@@ -246,7 +246,7 @@ public class ApplicationStateModel {
 	 * @return      void, no return value.
 	 */
 	public void updateMainAdapter(){
-		MLVAdapter.notifyDataSetChanged();
+		this.MLVAdapter.notifyDataSetChanged();
 	}
 
 	/**
@@ -257,7 +257,7 @@ public class ApplicationStateModel {
 	 */
 	public void updateSubAdapter()
 	{
-		SCVAdapter.notifyDataSetChanged();
+		this.SCVAdapter.notifyDataSetChanged();
 	}
 
 	/**
@@ -270,7 +270,7 @@ public class ApplicationStateModel {
 	public void saveComments(){
 		try {
 			//open the file for writing:
-			FileOutputStream fos = COMMENT_fileContext.openFileOutput(COMMENT_FILE_NAME,
+			FileOutputStream fos = ApplicationStateModel.COMMENT_fileContext.openFileOutput(COMMENT_FILE_NAME,
 					Context.MODE_PRIVATE); // TODO REMEMBER TO SET THE CONTEXT BEFORE YOU USE THIS
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
 			
@@ -310,11 +310,11 @@ public class ApplicationStateModel {
 		//clear the comment list so that their
 		//are no duplicates and we have only 
 		//comments from file:
-		commentList.clear();
+		this.commentList.clear();
 		try
 		{
 			//Get the file for reading:
-			fis = COMMENT_fileContext.openFileInput(COMMENT_FILE_NAME);
+			fis = ApplicationStateModel.COMMENT_fileContext.openFileInput(COMMENT_FILE_NAME);
 			InputStreamReader isr = new InputStreamReader(fis);
 			
 			Gson gson = new Gson();
@@ -332,7 +332,7 @@ public class ApplicationStateModel {
 				//iterate through the list to add each element, as opposed to
 				//changing the commentList's reference by assignment:
 				for(int i = 0; i < list_temp.size(); i++)
-					commentList.add(list_temp.get(i));
+					this.commentList.add(list_temp.get(i));
 			}
 			
 			//Close the files:
@@ -402,12 +402,12 @@ public class ApplicationStateModel {
 			Type fooType = new TypeToken<UserModel>() {}.getType();
 			
 			//Get the UserModel from the File using the GSON object
-			UserModel list_temp = gson.fromJson(isr, fooType);
+			UserModel loadedUser = gson.fromJson(isr, fooType);
 			
 			//if the file was empty, keep an empty list, not null.
 			//Otherwise, set the user to whatever was in the file:
-			if(list_temp != null)
-				userModel = list_temp;
+			if(loadedUser != null)
+				this.userModel = loadedUser;
 			
 			//close the file:
 			isr.close();

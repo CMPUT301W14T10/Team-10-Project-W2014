@@ -439,18 +439,21 @@ public class SubCommentViewActivity extends Activity {
 
 	}
 
-	//from the android developer page http://developer.android.com/guide/topics/ui/controls/checkbox.html
+	//Adapted from the android developer page 
+	//http://developer.android.com/guide/topics/ui/controls/checkbox.html
 	public void onCheckboxClicked(View view) {
 	    // Is the view now checked?
 	    boolean checked = ((CheckBox) view).isChecked();
 	    
 	    // Check which checkbox was clicked
 	    switch(view.getId()) {
+	    	//Set user preferences according
+	    	//to whether the pictures checkbox is checked:
 	        case R.id.pictures:
 	            if (checked)
-	            	appState.getUserModel().setSortByPic(true);
+	            	this.appState.getUserModel().setSortByPic(true);
 	            else
-	            	appState.getUserModel().setSortByPic(false);
+	            	this.appState.getUserModel().setSortByPic(false);
 	            break;
 	    }
 	}
@@ -464,28 +467,36 @@ public class SubCommentViewActivity extends Activity {
 		//set the fields of the dialog:
 		alert.setTitle("Sort By:");
 	
+		//get the dialogue's layout from XML:
 		LinearLayout optionsView = (LinearLayout)layoutInflater.inflate(R.layout.sort_by_dialog_list, 
 				null);
 		
+		//get the group of radio buttons that determine sorting criteria:
 		ViewGroup sortRadioGroup = (ViewGroup) optionsView.getChildAt(0);
-				
+		
 		RadioButton button;
 		CheckBox box;
 		
-		if(appState.getUserModel().isSortByDate()){
+		//if/else statements that set the correct radio button
+		//and check the sort by picture box if appropriate:
+		if(this.appState.getUserModel().isSortByDate()){
+			//Set the date radio button:
 			button = (RadioButton) sortRadioGroup.getChildAt(0);
 			button.toggle();
 		}
-		else if(appState.getUserModel().isSortByLoc()){
+		else if(this.appState.getUserModel().isSortByLoc()){
+			//Set the location radio button:
 			button = (RadioButton) sortRadioGroup.getChildAt(1);
 			button.toggle();
 		}
-		else if(appState.getUserModel().isSortByPopularity()){
+		else if(this.appState.getUserModel().isSortByPopularity()){
+			//Set the Popularity radio button:
 			button = (RadioButton) sortRadioGroup.getChildAt(2);
 			button.toggle();
 		}
 
-		if(appState.getUserModel().isSortByPic()){
+		if(this.appState.getUserModel().isSortByPic()){
+			//Set the sort by picture check box:
 			box = (CheckBox) optionsView.getChildAt(2);
 			box.setChecked(true);
 		}
@@ -493,21 +504,20 @@ public class SubCommentViewActivity extends Activity {
 		alert.setView(optionsView);
 
 		//set the positive button with its text and set up an on click listener
-		//to add the counter with the text provided when it is pressed:
+		//that saves the changes:
 		alert.setPositiveButton("Set", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
-			
-				
 				appState.saveUser();
 				onResume();
 			}
 		});
 
-		//also set a cancel negative button that does nothing but close the 
-		//dialog window:
-		
+		//also set a cancel negative button that loads the old user so that the
+		//changes are not applied:
 		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
+				appState.loadUser();
+				onResume();
 			}
 		});
 
@@ -519,50 +529,45 @@ public class SubCommentViewActivity extends Activity {
 	 * Responds to clicks on a radio button in the sort by alert
 	 * dialog. Adapted from the android developer website
 	 * http://developer.android.com/guide/topics/ui/controls/radiobutton.html
+	 * @param view - the radio button that was clicked.
+	 * @return void, no return value.
 	 */
 	public void onRadioButtonClicked(View view) {
-		appState.loadUser();
 		RadioButton buttonPressed = (RadioButton) view;
 		RadioGroup buttonGroup = (RadioGroup) buttonPressed.getParent();
 	    // Is the button now checked?
 	    boolean checked = ((RadioButton) view).isChecked();
 	    buttonGroup.clearCheck();
-	    // Check which radio button was clicked
+	    //Check which radio button was clicked and set the
+	    //preferences and checked radio button as appropriate:
 	    switch(view.getId()) {
-	    	
 	        case R.id.date:
 	            if (checked){
-	            	appState.getUserModel().setSortByDate(true);
+	            	this.appState.getUserModel().setSortByDate(true);
 	            	buttonPressed.toggle();
-	            	appState.saveUser();
 	            }
 	            else{
-	        		appState.getUserModel().setSortByDate(false);
-            		appState.saveUser();
+	        		this.appState.getUserModel().setSortByDate(false);
 	            }
 	            break;
 	            
 	        case R.id.location:
 	            if (checked){
-	            	appState.getUserModel().setSortByLoc(true);
+	            	this.appState.getUserModel().setSortByLoc(true);
 	            	buttonPressed.toggle();
-	            	appState.saveUser();
 	            }
 	            else{
-	            	appState.getUserModel().setSortByLoc(false);
-	            	appState.saveUser();
+	            	this.appState.getUserModel().setSortByLoc(false);
 	            }
 	            break;
 	            
 	        case R.id.number_of_favourites:
 	            if (checked){
-	            	appState.getUserModel().setSortByPopularity(true);
+	            	this.appState.getUserModel().setSortByPopularity(true);
 	            	buttonPressed.toggle();
-	            	appState.saveUser();
 	            }
 	            else{
-	            	appState.getUserModel().setSortByPopularity(false);
-	            	appState.saveUser();
+	            	this.appState.getUserModel().setSortByPopularity(false);
 	            }
 	            break;
 	            
