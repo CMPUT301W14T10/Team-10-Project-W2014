@@ -21,6 +21,14 @@ import ca.ualberta.team10projectw2014.R;
 import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
 
+/**
+ * Sets up action bar options
+ */
+
+/**
+
+ */
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -50,12 +58,13 @@ public class MainListViewActivity extends Activity{
 	private ListView commentView;
 	private static LayoutInflater layoutInflater;
 	private ApplicationStateModel appState;
-	
 
 	
-	/**
-	 * Prepares the view to display the activity.
-	 */
+	
+	// In onCreate we will prepare the view to 
+	//display the activity and set up the 
+	//ApplicationStateModel, which is a singleton 
+	//used throughout the application
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -69,81 +78,97 @@ public class MainListViewActivity extends Activity{
 	}
 
 	
-	/**
-	 * Sets up action bar options
-	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu){
 		// Inflate the menu; this adds items to the action bar if present.
 		getMenuInflater().inflate(R.menu.head_comment_view, menu);
-		return true;
-	}
-	
-	/**
-	 * I do almost the same thing here as in onCreate, but refresh the view
-	 * if there has already been data loaded and sort comments
-	 * according to the options selected:
-	 */
-	protected void onResume(){
-		super.onResume(); 
-		setContentView(R.layout.activity_head_comment_view);
-		commentView = (ListView) findViewById(R.id.HeadCommentList);
+		//Tells the ApplicationStateModel singleton to load comments/user 
+		//from network(when implemented)/file and creates a new adapter
+		//in the appState for these values.
 		appState.setFileContext(this);
 		appState.loadComments();
 		appState.loadUser();
 		appState.setMLVAdapter(new MainListViewAdapter(this, appState.getCommentList()));
+		return true;
+	}
+	
+	//In onResume the content view is set and the appState
+	//is told to reload and update the view, in case
+	//this was not done since any changes occurred.
+	protected void onResume(){
+		super.onResume(); 
+		setContentView(R.layout.activity_head_comment_view);
+		commentView = (ListView) findViewById(R.id.HeadCommentList);
 		
-		/**
-		 * Head Comment Sorting:
-		 * Checks which selection method is active and sorts the list accordingly
-		 */
-		// Sort by picture
+		//call the ApplicationStateModel singleton's methods to update
+		//its attributes from file(and/or a network connection when implemented):
+		appState.setFileContext(this);
+		appState.loadComments();
+		appState.loadUser();
+		
+		//Head Comment Sorting:
+		//Checks which selection method is active and sorts the list accordingly.
+		//Sort by picture
 		if (appState.getUserModel().isSortByPic() == true) {
-			// Sort by date
+			//Sort by date and picture:
 			if (appState.getUserModel().isSortByDate() == true) {
 				appState.setCommentList(appState.pictureSort(appState.getCommentList(), ApplicationStateModel.dateCompare));
 			}
+			//Sort by location and picture:
 			else if(appState.getUserModel().isSortByLoc() == true) {
 				appState.setCommentList(appState.pictureSort(appState.getCommentList(), ApplicationStateModel.locCompare));
 			}
+			//Sort by popularity(i.e. number of times favourited) and picture:
 			else if(appState.getUserModel().isSortByPopularity())
 				appState.setCommentList(appState.pictureSort(appState.getCommentList(), ApplicationStateModel.popularityCompare));
 		}
+		//Sort without sorting by picture:
 		else {
-			// Sort by date
+			//Sort by date
 			if (appState.getUserModel().isSortByDate() == true) {
 				appState.setCommentList(appState.sort(appState.getCommentList(), ApplicationStateModel.dateCompare));
 			}
+			//Sort by location:
 			else if(appState.getUserModel().isSortByLoc() == true) {
 				appState.setCommentList(appState.sort(appState.getCommentList(), ApplicationStateModel.locCompare));
 			}
+			//Sort by popularity(i.e. number of times favourited):
 			else if(appState.getUserModel().isSortByPopularity())
 				appState.setCommentList(appState.sort(appState.getCommentList(), ApplicationStateModel.popularityCompare));
 		}
 		
+		//Create an adapter to reflect the comments loaded/sorted:
+		appState.setMLVAdapter(new MainListViewAdapter(this, appState.getCommentList()));
+		
+		//Set the commentView in this activity to reflect the corresponding 
+		//adapter in the ApplicationStateModel:
 		commentView.setAdapter(appState.getMLVAdapter());
-		appState.updateMainAdapter();
 
+		//Opens SubCommentViewActivity when a comment is selected:
 		commentView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id){
+				//get the comment that was selected
 				CommentModel headComment = appState.getCommentList().get(position);
 				Intent subCommentView = new Intent(getApplicationContext(), SubCommentViewActivity.class);
-				//subCommentView.putExtra("comment", (Object) headComment);
+				//Set the appropriate singleton attribute to point to the comment that
+				//SubCommentViewActivity is to represent:
 				appState.setSubCommentViewHead(headComment);
+				//start the SubCommentViewActivity on top of the activity
+				//containing the view(i.e. this MainListViewActivity):
 				view.getContext().startActivity(subCommentView);
 				
 			}});
-		appState.updateMainAdapter();
 	}	
 	
-	/**
-	 * Responds to selection of options from the action bar:
-	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		switch(item.getItemId()){
+			//open the CreateCommentActivity. The parent comment
+			//is null because CreateCommentActiviy creates a new
+			//head comment when it is null. It creates a sub comment
+			//responding to CreateCommentParent otherwise.
 			case R.id.add_comment:
 				//Start the create comment activity to add a comment. 
 				//CreateCommentParent is null because the CreateComment
@@ -159,13 +184,14 @@ public class MainListViewActivity extends Activity{
 			case R.id.action_sort_main:
 				sortComments();
 				return true;
-			//Show favourited comments according to the users preferences
+
+			//Display the list of favourites specified in the user model
 			//when implemented:
 			case R.id.action_favourites_main:
 				appState.setCommentList(appState.getUserModel().getFavourites());
 				appState.updateMainAdapter();
 				return true;
-			//Show want to read comments according to the users preferences
+			//Display the list of want to read comments specified in the user model
 			//when implemented:
 			case R.id.action_want_to_read_main:
 				appState.setCommentList(appState.getUserModel().getWantToReadComments());
