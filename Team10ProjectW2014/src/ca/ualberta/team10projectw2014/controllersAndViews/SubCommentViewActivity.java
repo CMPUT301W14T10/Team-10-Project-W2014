@@ -69,6 +69,7 @@ public class SubCommentViewActivity extends Activity {
 		//Get an instance of the ApplicationStateModel singleton
 		appState = ApplicationStateModel.getInstance();
 		appState.setFileContext(this);
+		appState.loadUser();
 
 		//Set the layout 
 		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
@@ -97,7 +98,6 @@ public class SubCommentViewActivity extends Activity {
 		ArrayList<? extends CommentModel> comments = appState.getSubCommentViewHead().getSubComments();
 		commentList = new ArrayList<CommentModel>();
 
-	
 		if (appState.getUserModel().isSortByPic() == true) {
 			// Sort by picture
 			if (appState.getUserModel().isSortByDate() == true) {
@@ -126,6 +126,7 @@ public class SubCommentViewActivity extends Activity {
 			}
 			
 		}
+		
 		
 		
 		// Gets all the SubComments and all its subComments and put them in a list

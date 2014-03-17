@@ -25,12 +25,27 @@ public class SubCommentViewActivityTests extends
 	public SubCommentViewActivityTests() {
 		super(SubCommentViewActivity.class);
 		appState = ApplicationStateModel.getInstance();
+		
 	}
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 	}
+	
+	
+	/***
+	 * User Story 1: As a user, I want to sort comments by proximity to me
+	 * 
+	 * Test:
+	 * 		testSortByProximity
+	 * 
+	 */
+	
+	public void testSortByProximity() throws Exception{
+		
+	}
+
 
 	/***
 	 * User Store 5. As a user, I want to browse comment replies Test:
@@ -51,7 +66,7 @@ public class SubCommentViewActivityTests extends
 	 */
 
 	public void testShowHeadComment() throws Exception {
-
+	
 		CommentModel headComment = new CommentModel();
 		headComment.setAuthor("test author");
 		headComment.setTitle("test title");
@@ -61,9 +76,11 @@ public class SubCommentViewActivityTests extends
 		headComment.setLocation(new LocationModel("Test Location name", 10.4,
 				10.4));
 
+		
 		appState.setSubCommentViewHead(headComment);
 
 		Activity subCommentViewActivity = getActivity();
+		
 
 		View subCommentView = subCommentViewActivity.getWindow().getDecorView();
 
@@ -96,7 +113,7 @@ public class SubCommentViewActivityTests extends
 	 * @throws Exception
 	 */
 	public void testHeadCommentText() throws Exception {
-
+		
 		CommentModel headComment = new CommentModel();
 		headComment.setAuthor("test author");
 		headComment.setTitle("test title");
@@ -104,8 +121,9 @@ public class SubCommentViewActivityTests extends
 		headComment.setContent("Body");
 		headComment.setLocation(new LocationModel("Test Location name", 10.4,
 				10.4));
-
+		
 		appState.setSubCommentViewHead(headComment);
+
 
 		Activity subCommentViewActivity = getActivity();
 
@@ -261,5 +279,93 @@ public class SubCommentViewActivityTests extends
 		assertEquals("Sub comment displays correct Content",
 				 subComment.getContent(),textContent.getText());
 	}
+	
+	
+	/***
+	 * User Story 6. As a user, I want to reply to comments.
+	 * 
+	 * Tests:
+	 * 		testReplyToHeadComment();
+	 * 		testReplyToSubComment();
+	 */
+	
+	public void testReplyToHeadComment(){
+		
+		CommentModel headComment = new CommentModel();
+		headComment.setAuthor("test author");
+		headComment.setTitle("test title");
+		headComment.setTimestamp(Calendar.getInstance());
+		headComment.setContent("Body");
+		headComment.setImageUri(null);
+		headComment.setLocation(new LocationModel("Test Location name", 10.4,
+				10.4));
+		
+		SubCommentModel subComment = new SubCommentModel(headComment);
+		subComment.setAuthor("test author");
+		subComment.setTitle("test sub title");
+		subComment.setTimestamp(Calendar.getInstance());
+		subComment.setContent("Body");
+		subComment.setImageUri(null);
+		subComment.setLocation(new LocationModel("Test Location name", 10.4,
+				10.4));
+		subComment.setParentTitle("RE: " + headComment.getTitle());
+		
+		headComment.addSubComment(subComment);
+		appState.setSubCommentViewHead(headComment);
+
+		assertEquals("Head comment should have one sub comment",1,
+				headComment.getSubComments().size());
+		assertEquals( "The title of the respond to should be equal to the head title",
+				"RE: " + headComment.getTitle(), subComment.getParentTitle());
+		
+	}
+	
+	public void testReplyToComment(){
+		
+		CommentModel headComment = new CommentModel();
+		headComment.setAuthor("test author");
+		headComment.setTitle("test title");
+		headComment.setTimestamp(Calendar.getInstance());
+		headComment.setContent("Body");
+		headComment.setImageUri(null);
+		headComment.setLocation(new LocationModel("Test Location name", 10.4,
+				10.4));
+		
+		SubCommentModel subComment = new SubCommentModel(headComment);
+		subComment.setAuthor("test author");
+		subComment.setTitle("test sub title");
+		subComment.setTimestamp(Calendar.getInstance());
+		subComment.setContent("Body");
+		subComment.setImageUri(null);
+		subComment.setLocation(new LocationModel("Test Location name", 10.4,
+				10.4));
+		subComment.setParentTitle("RE: " + headComment.getTitle());
+		
+		headComment.addSubComment(subComment);
+		
+		SubCommentModel subComment2 = new SubCommentModel(subComment);
+		subComment2.setAuthor("test author");
+		subComment2.setTitle("test sub title");
+		subComment2.setTimestamp(Calendar.getInstance());
+		subComment2.setContent("Body");
+		subComment2.setImageUri(null);
+		subComment2.setLocation(new LocationModel("Test Location name", 10.4,
+				10.4));
+		subComment2.setParentTitle("RE: " + subComment.getTitle());
+		subComment.addSubComment(subComment2);
+		
+		appState.setSubCommentViewHead(headComment);
+
+		assertEquals("Sub comment should have one sub comment",1,subComment.getSubComments().size());
+		assertEquals(
+				"The sub comment 2 title should be equal to the sub comment title",
+				"RE: " + subComment.getTitle(), subComment2.getParentTitle());
+		
+		
+	}
+	
+	
+	
+
 
 }
