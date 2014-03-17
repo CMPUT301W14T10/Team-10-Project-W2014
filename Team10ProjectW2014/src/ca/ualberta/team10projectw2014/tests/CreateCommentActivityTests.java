@@ -28,7 +28,7 @@ public class CreateCommentActivityTests extends ActivityInstrumentationTestCase2
 		appState = ApplicationStateModel.getInstance();
 	}
 	
-	public void testCreateNewHeadCommentWithoutUsername() throws Throwable{
+	public void testCreateHeadCommentWithUsername() throws Throwable{
 		CommentModel headComment = new CommentModel();
 		headComment.setAuthor("test author");
 		headComment.setTitle("test title");
@@ -43,6 +43,8 @@ public class CreateCommentActivityTests extends ActivityInstrumentationTestCase2
 		
 		appState.loadUser();
 		activity = getActivity();
+		
+		fail();
 		
 	}
 }
