@@ -18,7 +18,7 @@
     
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
-        android:label="SubCommentViewActivityTests"
+        android:label="CreateCommentActivityTests"
         android:targetPackage="ca.ualberta.team10projectw2014" />
 
     <application

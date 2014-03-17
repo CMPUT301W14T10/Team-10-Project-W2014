@@ -111,7 +111,8 @@ public class CreateCommentActivity extends Activity{
 		super.onResume();
 		appState.setFileContext(this);
 
-		String receivedUsername = appState.getUserModel().getUsername();fillContents(receivedUsername);
+		String receivedUsername = appState.getUserModel().getUsername();
+		fillContents(receivedUsername);
 		
 		setPic();
 		

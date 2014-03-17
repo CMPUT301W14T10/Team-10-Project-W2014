@@ -1,19 +1,24 @@
 package ca.ualberta.team10projectw2014.tests;
 
+import java.util.Calendar;
+
 import ca.ualberta.team10projectw2014.controllersAndViews.CreateCommentActivity;
+import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
+import ca.ualberta.team10projectw2014.models.LocationModel;
+import ca.ualberta.team10projectw2014.models.UserModel;
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.content.Context;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.EditText;
 
 
-public class CreateCommentActivityTests extends
-		ActivityInstrumentationTestCase2<CreateCommentActivity> {
+public class CreateCommentActivityTests extends ActivityInstrumentationTestCase2<CreateCommentActivity> {
 	
-	Instrumentation instrumentation;
-	Activity activity;
+	CreateCommentActivity activity;
+	ApplicationStateModel appState;
 	EditText usernameText;
 	EditText contentText;
 	EditText titleText;
@@ -22,101 +27,28 @@ public class CreateCommentActivityTests extends
 		super(CreateCommentActivity.class);
 	}
 	
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		instrumentation = getInstrumentation();
-		//activity = getActivity();
-		/*
-		contentText = ((EditText) activity.findViewById(ca.ualberta.team10projectw2014.R.id.cc_content));
-		titleText = ((EditText) activity.findViewById(ca.ualberta.team10projectw2014.R.id.cc_title));
-		usernameText = ((EditText) activity.findViewById(ca.ualberta.team10projectw2014.R.id.cc_username));*/
+		appState = ApplicationStateModel.getInstance();
 	}
 	
 	public void testCreateNewHeadCommentWithoutUsername() throws Throwable{
+		CommentModel headComment = new CommentModel();
+		headComment.setAuthor("test author");
+		headComment.setTitle("test title");
+		headComment.setTimestamp(Calendar.getInstance());
+		headComment.setContent("Body");
+		headComment.setImageUri(null);
+		headComment.setLocation(new LocationModel("Test Location name", 10.4,
+				10.4));
 		
-		runTestOnUiThread(new Runnable(){
-			@Override
-			public void run(){
-				Intent intent = new Intent();
-				//intent.putExtra(CreateCommentActivity.TEXT_KEY, text);
-
-				setActivityIntent(intent);
-				CreateCommentActivity activity = getActivity();
-				
-				//activity.fillContents(null, null);
-				contentText = ((EditText) activity.findViewById(ca.ualberta.team10projectw2014.R.id.cc_content));
-				titleText = ((EditText) activity.findViewById(ca.ualberta.team10projectw2014.R.id.cc_title));
-				usernameText = ((EditText) activity.findViewById(ca.ualberta.team10projectw2014.R.id.cc_username));
-				
-				assertEquals("contentText should be blank", "", contentText.getText().toString());
-				assertEquals("titleText should be standard message", "Create a Name for Your Post", titleText.getText().toString());
-				assertEquals("usernameText should be standard message", "Please set a username", usernameText.getText().toString());
-				
-			}
-		});
+		appState.setFileContext(this.getInstrumentation().getContext());
+		appState.setCreateCommentParent(headComment);
+		
+		appState.loadUser();
+		activity = getActivity();
 		
 	}
-
-	public void testCreateNewHeadCommentWithUsername() throws Throwable{
-		
-		final String username = "Joseph";
-		runTestOnUiThread(new Runnable(){
-			@Override
-			public void run(){
-				CreateCommentActivity activity = getActivity();
-				
-				activity.fillContents(username);
-				
-				assertEquals("contentText should be blank", "", contentText.getText().toString());
-				assertEquals("titleText should be standard message", "Create a Name for Your Post", titleText.getText().toString());
-				assertEquals("usernameText should be username", username, usernameText.getText().toString());
-				
-			}
-		});
-		
-	}
-	
-	public void testCreateNewSubCommentWithoutUsername() throws Throwable{
-		
-		final String title = "TITLE STRING";
-		final CommentModel sampleHead = new CommentModel();
-		sampleHead.setTitle(title);
-		runTestOnUiThread(new Runnable(){
-			@Override
-			public void run(){
-				CreateCommentActivity activity = getActivity();
-				
-				activity.fillContents(null);
-				
-				assertEquals("contentText should be blank", "", contentText.getText().toString());
-				assertEquals("titleText should be RE: title", "RE:"+title, titleText.getText().toString());
-				assertEquals("usernameText should be standard message", "Please set a username", usernameText.getText().toString());
-				
-			}
-		});
-		
-	}
-	
-	public void testCreateNewSubCommentWithUsername() throws Throwable{
-		
-		final String title = "TITLE STRING";
-		final String username = "USERNAME";
-		final CommentModel sampleHead = new CommentModel();
-		sampleHead.setTitle(title);
-		runTestOnUiThread(new Runnable(){
-			@Override
-			public void run(){
-				CreateCommentActivity activity = getActivity();
-				
-				activity.fillContents(username);
-				
-				assertEquals("contentText should be blank", "", contentText.getText().toString());
-				assertEquals("titleText should be RE: title","RE:"+ title, titleText.getText().toString());
-				assertEquals("usernameText should be username", username, usernameText.getText().toString());
-				
-			}
-		});
-		
-	}
-
 }
+
