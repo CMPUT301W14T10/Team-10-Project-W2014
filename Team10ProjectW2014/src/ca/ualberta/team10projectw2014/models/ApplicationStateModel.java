@@ -13,7 +13,6 @@ import java.util.Comparator;
 
 import android.content.Context;
 import android.location.Location;
-
 import ca.ualberta.team10projectw2014.controllersAndViews.MainListViewAdapter;
 import ca.ualberta.team10projectw2014.controllersAndViews.SubCommentViewActivityAdapter;
 
@@ -129,7 +128,10 @@ public class ApplicationStateModel {
 			//Get the user's current location:
 			final LocationListenerModel locationListener = new LocationListenerModel(COMMENT_fileContext);
 			Location userLocation = locationListener.getLastBestLocation();
-			
+			//If the user's location is unavailable, simply set all of the comparisons to equal:
+			if(userLocation == null){
+				return 0;
+			}
 			//create a location with the latitude and longitude each of the comments under consideration:
 			Location loc1 = new Location("provider");
 			loc1.setLatitude(comment1.getLocation().getLatitude());
