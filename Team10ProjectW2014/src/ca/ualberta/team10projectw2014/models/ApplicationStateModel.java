@@ -24,7 +24,7 @@ import com.google.gson.reflect.TypeToken;
 * available to all activities.
 * The code for setting up a singleton structure was
 * borrowed from http://www.javaworld.com/article/2073352/core-java/simply-singleton.html
-* @author Cole Fudge
+* @author Cole Fudge <cfudge@ualberta.ca>
 * @version     1                (current version number of program)
 */
 public class ApplicationStateModel {

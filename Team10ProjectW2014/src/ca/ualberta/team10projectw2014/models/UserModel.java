@@ -7,7 +7,7 @@ import android.provider.Settings.Secure;
 
 /**
  * This class acts as the model for the User.
- * @author Steven Giang, David Yee
+ * @author Steven Giang <giang2@ualberta.ca>, David Yee <
  * @version     1                (current version number of program)
  */
 public class UserModel{
