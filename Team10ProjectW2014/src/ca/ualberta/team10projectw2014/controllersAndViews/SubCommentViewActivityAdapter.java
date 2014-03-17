@@ -192,7 +192,7 @@ public class SubCommentViewActivityAdapter extends
 		}
 		
 		//Grabs the Time.
-		holder.textTime.setText(this.TimeToString(commentList.get(position).getTimestamp()));
+		holder.textTime.setText(this.timeToString(commentList.get(position).getTimestamp()));
 		
 		//Grabs the Location of the model.
 		holder.textLocation.setText(commentList.get(position).getLocation().getName());
@@ -244,7 +244,7 @@ public class SubCommentViewActivityAdapter extends
 	 * @param calendar object to retrieve string from
 	 * @return string of the formatted date of the timestamp
 	 */
-	private String TimeToString (Calendar calendar) {
+	private String timeToString (Calendar calendar) {
 		SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:mm aa",java.util.Locale.getDefault());
 		String timeString = sdf.format(calendar.getTime());
 		return timeString;

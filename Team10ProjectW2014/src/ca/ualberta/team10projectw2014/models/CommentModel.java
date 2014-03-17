@@ -24,6 +24,16 @@ public class CommentModel{
 	private String photoPath;
 	private Uri imageUri;
 	
+	/**
+	 * A method that adds the provided SubCommentModel to the
+	 * CommentModel's list of SubCommentModels.
+	 * @param  subComment - the SubCommentModel to add.
+	 * @return      void, no return value.
+	 */
+	public void addSubComment(SubCommentModel subComment){
+		subComments.add(subComment);
+	}
+	
 	public Uri getImageUri() {
 		return imageUri;
 	}
@@ -87,15 +97,4 @@ public class CommentModel{
 	public void setAuthorAndroidID(String authorAndroidID) {
 		this.authorAndroidID = authorAndroidID;
 	}
-	
-	/**
-	 * A method that adds the provided SubCommentModel to the
-	 * CommentModel's list of SubCommentModels.
-	 * @param  subComment - the SubCommentModel to add.
-	 * @return      void, no return value.
-	 */
-	public void addSubComment(SubCommentModel subComment){
-		subComments.add(subComment);
-	}
-	
 }

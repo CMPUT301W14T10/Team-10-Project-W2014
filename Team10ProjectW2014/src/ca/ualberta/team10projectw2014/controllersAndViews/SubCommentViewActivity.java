@@ -88,7 +88,7 @@ public class SubCommentViewActivity extends Activity {
 		//Remove any already displayed head comment and display an new one
 		//old one may be updated.
 		subListView.removeHeaderView(headerView);
-		headerView = (View) SetHeader(appState.getSubCommentViewHead());
+		headerView = (View) setHeader(appState.getSubCommentViewHead());
 		subListView.addHeaderView(headerView);
 
 		
@@ -131,7 +131,7 @@ public class SubCommentViewActivity extends Activity {
 		
 		// Gets all the SubComments and all its subComments and put them in a list
 		sortedList = new ArrayList<CommentModel>();
-		AddCommentToList(commentList);
+		addCommentToList(commentList);
 		
 		//Add the list of comments to the adapter to be displayed to list view
 		appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
@@ -288,7 +288,7 @@ public class SubCommentViewActivity extends Activity {
 	 * @param 
 	 * @return View
 	 */
-	private View SetHeader(CommentModel headComment) {
+	private View setHeader(CommentModel headComment) {
 
 		// Get the head comment item layout view
 		View header = (View) getLayoutInflater().inflate(
@@ -312,7 +312,7 @@ public class SubCommentViewActivity extends Activity {
 		textTitle.setText(headComment.getTitle());
 		textAuthor.setText(headComment.getAuthor());
 		textLocation.setText(headComment.getLocation().getName());
-		textTime.setText(TimeToString(headComment.getTimestamp()));
+		textTime.setText(timeToString(headComment.getTimestamp()));
 		textContent.setText(headComment.getContent());
 
 		// Sets the image attached to the comment
@@ -358,7 +358,7 @@ public class SubCommentViewActivity extends Activity {
 	 * @param calendar - object to retrieve string from
 	 * @return timeString - string of the formatted date of the timestamp
 	 */
-	private String TimeToString(Calendar calendar) {
+	private String timeToString(Calendar calendar) {
 		SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:mm aa",
 				java.util.Locale.getDefault());
 		String timeString = sdf.format(calendar.getTime());
@@ -373,14 +373,14 @@ public class SubCommentViewActivity extends Activity {
 	 * @param subCommentList - A list to be iterated through to 
 	 * add all its subComments to the list to be displayed on the ListView
 	 */
-	private void AddCommentToList(ArrayList<? extends CommentModel> subCommentList) {
+	private void addCommentToList(ArrayList<? extends CommentModel> subCommentList) {
 		if (subCommentList.size() == 0) {
 			return;
 		} else {
 			for (int i = 0; i < subCommentList.size();i++) {
 				sortedList.add(subCommentList.get(i));
 				if (subCommentList.get(i).getSubComments().size() > 0) {
-					AddCommentToList(subCommentList.get(i).getSubComments());
+					addCommentToList(subCommentList.get(i).getSubComments());
 				}
 			}
 		}

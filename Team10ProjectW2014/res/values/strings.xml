@@ -45,7 +45,7 @@
     <string name="pictures">Pictures</string>
     <string name="sort_subtitle">sort by:</string>
     
-    <string name="file_name_string">commentListFile.sav</string>
+    <string name="comments_sav">comments.sav</string>
     <string name="user_sav">user.sav</string>
     <string name="title_activity_set_user_name">SetUserNameActivity</string>
     <string name="set_username">Enter Username</string>
