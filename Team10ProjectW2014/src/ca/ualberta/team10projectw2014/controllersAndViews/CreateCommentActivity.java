@@ -93,7 +93,7 @@ public class CreateCommentActivity extends Activity{
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.create_comment_activity);
+        setContentView(R.layout.activity_create_comment);
         appState = ApplicationStateModel.getInstance();
 		appState.setFileContext(this);
 

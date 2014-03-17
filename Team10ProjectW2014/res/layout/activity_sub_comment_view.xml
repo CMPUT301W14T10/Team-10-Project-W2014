@@ -13,7 +13,7 @@
         android:layout_height="fill_parent"
         android:divider="#000000"
         android:dividerHeight="1px"
-        tools:listheader="@layout/sub_comment_view_head_comment_item"
-    	tools:listitem="@layout/sub_comment_view_sub_comment_item" />
+        tools:listheader="@layout/subcommentview_head_item"
+    	tools:listitem="@layout/subcommentview_sub_item" />
 
 </LinearLayout>

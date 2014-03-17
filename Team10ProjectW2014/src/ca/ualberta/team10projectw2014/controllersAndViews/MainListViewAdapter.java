@@ -80,7 +80,7 @@ public class MainListViewAdapter extends BaseAdapter {
 			// If view is empty, create a new viewholder
 			holder = new ViewHolder();
 			// Add head_comment_list_item data to the view
-			convertView = inflater.inflate(R.layout.head_comment_list_item, 
+			convertView = inflater.inflate(R.layout.headcommentview_head_item, 
 					null);
 			// Add the four textviews used in each list entry to the holder
 			holder.textTitle = (TextView) convertView.

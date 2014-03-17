@@ -135,7 +135,7 @@ public class SubCommentViewActivity extends Activity {
 		
 		//Add the list of comments to the adapter to be displayed to list view
 		appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
-				R.layout.sub_comment_view_sub_comment_item, sortedList,
+				R.layout.subcommentview_sub_item, sortedList,
 				appState.getUserModel()));
 
 		subListView.setAdapter(appState.getSCVAdapter());
@@ -292,7 +292,7 @@ public class SubCommentViewActivity extends Activity {
 
 		// Get the head comment item layout view
 		View header = (View) getLayoutInflater().inflate(
-				R.layout.sub_comment_view_head_comment_item, null);
+				R.layout.subcommentview_head_item, null);
 
 		// assign the proper layout item so it can be set
 		TextView textTitle = (TextView) header.findViewById(R.id.long_title);
