@@ -37,7 +37,7 @@ import android.widget.Toast;
  * 
  * As of version 1, this class will not change the location of the comment.
  */
-public class EditCommentActivity extends Activity {
+public class EditCommentActivity extends Activity implements CommentContentEditing{
 
 	/**
 	 *  These serve as temporary variables for the comment to created.

@@ -41,7 +41,7 @@ import android.widget.Toast;
  * This is where the location of a comment, its picture, and any textual contents will be set.
  * 
 */
-public class CreateCommentActivity extends Activity{
+public class CreateCommentActivity extends Activity implements CommentContentEditing{
 	
 	/**
 	 *  These serve as temporary variables for the comment to created.
