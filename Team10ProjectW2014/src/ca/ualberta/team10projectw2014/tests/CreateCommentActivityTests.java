@@ -2,12 +2,15 @@ package ca.ualberta.team10projectw2014.tests;
 
 import java.util.Calendar;
 
+import ca.ualberta.team10projectw2014.R;
 import ca.ualberta.team10projectw2014.controllersAndViews.CreateCommentActivity;
 import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 
 public class CreateCommentActivityTests extends ActivityInstrumentationTestCase2<CreateCommentActivity> {
@@ -28,7 +31,7 @@ public class CreateCommentActivityTests extends ActivityInstrumentationTestCase2
 		appState = ApplicationStateModel.getInstance();
 	}
 	
-	public void testCreateHeadCommentWithUsername() throws Throwable{
+	public void testCreateSubCommentWithUsername() throws Throwable{
 		CommentModel headComment = new CommentModel();
 		headComment.setAuthor("test author");
 		headComment.setTitle("test title");
@@ -41,11 +44,42 @@ public class CreateCommentActivityTests extends ActivityInstrumentationTestCase2
 		appState.setFileContext(this.getInstrumentation().getContext());
 		appState.setCreateCommentParent(headComment);
 		
+		String testUsername = "Jerry";
 		appState.loadUser();
+		appState.getUserModel().setUsername(testUsername);
+		
 		activity = getActivity();
 		
-		fail();
+		usernameText = (EditText) activity.findViewById(R.id.cc_username);
+		titleText = (EditText) activity.findViewById(R.id.cc_title);
+		contentText = (EditText) activity.findViewById(R.id.cc_content);
+		
+		assertEquals(usernameText.getText().toString(), testUsername);
+		assertEquals("", titleText.getText().toString());
+		assertEquals("", contentText.getText().toString());
 		
 	}
+	
+	public void testCreateHeadCommentWithUsername() throws Throwable{
+
+		appState.setFileContext(this.getInstrumentation().getContext());
+
+		String testUsername = "Jerry";
+		appState.loadUser();
+		appState.getUserModel().setUsername(testUsername);
+		
+		activity = getActivity();
+		
+		usernameText = (EditText) activity.findViewById(R.id.cc_username);
+		titleText = (EditText) activity.findViewById(R.id.cc_title);
+		contentText = (EditText) activity.findViewById(R.id.cc_content);
+		
+		assertEquals(usernameText.getText().toString(), testUsername);
+		assertEquals("", titleText.getText().toString());
+		assertEquals("", contentText.getText().toString());
+		
+	}
+	
+	
 }
 
