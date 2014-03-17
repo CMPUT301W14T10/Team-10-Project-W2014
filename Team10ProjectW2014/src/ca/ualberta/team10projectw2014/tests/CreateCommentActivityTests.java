@@ -80,6 +80,55 @@ public class CreateCommentActivityTests extends ActivityInstrumentationTestCase2
 		
 	}
 	
+	public void testCreateSubCommentWithoutUsername() throws Throwable{
+		CommentModel headComment = new CommentModel();
+		headComment.setAuthor("test author");
+		headComment.setTitle("test title");
+		headComment.setTimestamp(Calendar.getInstance());
+		headComment.setContent("Body");
+		headComment.setImageUri(null);
+		headComment.setLocation(new LocationModel("Test Location name", 10.4,
+				10.4));
+		
+		appState.setFileContext(this.getInstrumentation().getContext());
+		appState.setCreateCommentParent(headComment);
+		
+		String testUsername = "";
+		appState.loadUser();
+		appState.getUserModel().setUsername(testUsername);
+		
+		activity = getActivity();
+		
+		usernameText = (EditText) activity.findViewById(R.id.cc_username);
+		titleText = (EditText) activity.findViewById(R.id.cc_title);
+		contentText = (EditText) activity.findViewById(R.id.cc_content);
+		
+		assertEquals(usernameText.getText().toString(), "Anonymous");
+		assertEquals("", titleText.getText().toString());
+		assertEquals("", contentText.getText().toString());
+		
+	}
+	
+	public void testCreateHeadCommentWithoutUsername() throws Throwable{
+
+		appState.setFileContext(this.getInstrumentation().getContext());
+		
+		String testUsername = "";
+		appState.loadUser();
+		appState.getUserModel().setUsername(testUsername);
+		
+		activity = getActivity();
+		
+		usernameText = (EditText) activity.findViewById(R.id.cc_username);
+		titleText = (EditText) activity.findViewById(R.id.cc_title);
+		contentText = (EditText) activity.findViewById(R.id.cc_content);
+		
+		assertEquals(usernameText.getText().toString(), "Anonymous");
+		assertEquals("", titleText.getText().toString());
+		assertEquals("", contentText.getText().toString());
+		
+	}
+	
 	
 }
 
