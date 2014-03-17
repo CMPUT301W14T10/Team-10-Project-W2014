@@ -9,10 +9,12 @@ import ca.ualberta.team10projectw2014.R;
 import ca.ualberta.team10projectw2014.controllersAndViews.MainListViewActivity;
 import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
+import ca.ualberta.team10projectw2014.models.LocationListenerModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.location.Location;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
 import android.widget.TextView;
@@ -322,43 +324,51 @@ public class MainListViewActivityTests extends
 
 		// Sets test comment list
 		appState.setCommentList(commentList);
-		// Sorts list by date
+		// Sorts list by location
 		appState.sort(commentList, ApplicationStateModel.locCompare);
 		// Saves comments
 		appState.saveComments();
+		
+		final LocationListenerModel locationListener = new LocationListenerModel(getInstrumentation().getContext());
+		Location userLocation = locationListener.getLastBestLocation();
+		
+		// If the user's location is set
+		if(userLocation != null){
 
-		// Launches MainListviewActivity
-		activity = getActivity();
+			// Launches MainListviewActivity
+			activity = getActivity();
 
-		// Gets layout of head comment list item
-		View commentLayout = (View) activity.findViewById(R.id.head_comment_list_item_layout);
+			// Gets layout of head comment list item
+			View commentLayout = (View) activity.findViewById(R.id.head_comment_list_item_layout);
 
-		// Identifies list item objects required for the test
-		TextView title = (TextView) commentLayout.findViewById(R.id.head_comment_title);
-		TextView userName = (TextView) commentLayout.findViewById(R.id.head_comment_username);
-		TextView location = (TextView) commentLayout.findViewById(R.id.head_comment_location);
-		TextView date = (TextView) commentLayout.findViewById(R.id.head_comment_time);
+			// Identifies list item objects required for the test
+			TextView title = (TextView) commentLayout.findViewById(R.id.head_comment_title);
+			TextView userName = (TextView) commentLayout.findViewById(R.id.head_comment_username);
+			TextView location = (TextView) commentLayout.findViewById(R.id.head_comment_location);
+			TextView date = (TextView) commentLayout.findViewById(R.id.head_comment_time);
 
-		// Test new comment title is correct
-		assertEquals("Head comment title should appear in list", headCommentClose.getTitle(), title.getText());
-		// Test new comment username is correct
-		assertEquals("Head comment username should appear in list", headCommentClose.getAuthor(), userName.getText());
-		// Test new comment location is correct
-		assertEquals("Head comment location should appear in list", headCommentClose.getLocation().getName(), location.getText());
+			// Test new comment title is correct
+			assertEquals("Head comment title should appear in list", headCommentClose.getTitle(), title.getText());
+			// Test new comment username is correct
+			assertEquals("Head comment username should appear in list", headCommentClose.getAuthor(), userName.getText());
+			// Test new comment location is correct
+			assertEquals("Head comment location should appear in list", headCommentClose.getLocation().getName(), location.getText());
 
-		// Converts new headcomment's timestamp calendar object to a testable string
-		SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:mm aa");
-		String timeString = sdf.format(headCommentClose.getTimestamp().getTime());
+			// Converts new headcomment's timestamp calendar object to a testable string
+			SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:mm aa");
+			String timeString = sdf.format(headCommentClose.getTimestamp().getTime());
 
-		// Test new comment date is correct
-		assertEquals("Head comment date should appear in list", timeString, date.getText());
+			// Test new comment date is correct
+			assertEquals("Head comment date should appear in list", timeString, date.getText());
 
-		// Restores actual comment list
-		appState.setCommentList(backupList);
-		appState.saveComments();
-		// Close activity
-		activity.finish();
-		setActivity(null);
+			// Restores actual comment list
+			appState.setCommentList(backupList);
+			appState.saveComments();
+			
+			// Close activity
+			activity.finish();
+			setActivity(null);
+		}
 	}
 	
 	public void testGetLatestHeadComments() throws Throwable {
