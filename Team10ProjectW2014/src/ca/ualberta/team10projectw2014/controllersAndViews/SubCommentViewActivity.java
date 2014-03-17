@@ -58,7 +58,6 @@ public class SubCommentViewActivity extends Activity {
 	private ArrayList<CommentModel> sortedList;
 	private ActionBar actionbar;
 	private View headerView;
-	private Boolean toSortByPicture = false;
 	private LayoutInflater layoutInflater;
 
 	@Override
@@ -94,21 +93,40 @@ public class SubCommentViewActivity extends Activity {
 		
 		// Set the Title in the Actionbar to the title of the head comment
 		actionbar.setTitle(appState.getSubCommentViewHead().getTitle());
-
 		
-		if(toSortByPicture == true){
-			//Sort Head Comment's sub comments by those with pictures
-			commentList = new ArrayList<CommentModel>();
-		    ArrayList<? extends CommentModel> comments = appState.getSubCommentViewHead().getSubComments();
-	    	commentList = appState.pictureSort((ArrayList<CommentModel>)comments, ApplicationStateModel.dateCompare);
-	    	
-	    	
-		}else{
-			//get the lists of comment in the order they were created
-			commentList = new ArrayList<CommentModel>();
-			commentList = appState.getSubCommentViewHead().getSubComments();
+		ArrayList<? extends CommentModel> comments = appState.getSubCommentViewHead().getSubComments();
+		commentList = new ArrayList<CommentModel>();
+
+	
+		if (appState.getUserModel().isSortByPic() == true) {
+			// Sort by picture
+			if (appState.getUserModel().isSortByDate() == true) {
+				// Sort by date
+				commentList = appState.pictureSort((ArrayList<CommentModel>)comments, ApplicationStateModel.dateCompare);
+			} else if(appState.getUserModel().isSortByLoc() == true) {
+				// Sort by Location
+				commentList = appState.pictureSort((ArrayList<CommentModel>)comments, ApplicationStateModel.locCompare);
+			} else if(appState.getUserModel().isSortByPopularity())
+				// Sort by number of Favourites
+				commentList = appState.pictureSort((ArrayList<CommentModel>)comments, ApplicationStateModel.popularityCompare);
+		}
+		else {
+			if (appState.getUserModel().isSortByDate() == true) {
+				// Sort by date
+				commentList = appState.sort((ArrayList<CommentModel>) comments, ApplicationStateModel.dateCompare);
+			} else if(appState.getUserModel().isSortByLoc() == true) {
+				//Sort by Location 
+				commentList = appState.sort((ArrayList<CommentModel>) comments, ApplicationStateModel.locCompare);
+			} else if(appState.getUserModel().isSortByPopularity())
+				//Sort by number of favourites
+				commentList = appState.sort((ArrayList<CommentModel>) comments, ApplicationStateModel.popularityCompare);
+			else{
+				//No sorting just grab the array as is
+				commentList = appState.getSubCommentViewHead().getSubComments();
+			}
 			
-		} 
+		}
+		
 		
 		// Gets all the SubComments and all its subComments and put them in a list
 		sortedList = new ArrayList<CommentModel>();

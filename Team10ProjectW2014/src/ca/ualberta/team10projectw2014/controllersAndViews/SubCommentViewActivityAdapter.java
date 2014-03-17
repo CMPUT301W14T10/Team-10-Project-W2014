@@ -250,17 +250,6 @@ public class SubCommentViewActivityAdapter extends
 		return timeString;
 	}
 
-	
-	
-	/**
-	 * Takes the current subComment and gets the title from the comment it is
-	 * replying to and appends it to "Re: ".
-	 * @param subCommentModel object to get the title of the comment the current
-	 * 		  comment is replying to.
-	 * @return a string that contains the title of the comment being replied to.
-	 */
-
-	
 
 	
 
