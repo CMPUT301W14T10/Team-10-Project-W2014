@@ -297,8 +297,8 @@ public class ApplicationStateModel {
 
 	/**
 	 * A method for loading the list of head
-	 * comments(i.e. {@link #commentList}) from file.
-	 * The {@link #commentList} is changed in place,
+	 * comments(i.e. commentList) from file.
+	 * The commentList is changed in place,
 	 * i.e. the reference is not changed, in
 	 * order to avoid conflicting references.
 	 * @param  void, no arguments

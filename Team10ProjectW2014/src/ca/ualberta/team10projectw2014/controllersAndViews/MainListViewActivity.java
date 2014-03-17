@@ -170,6 +170,10 @@ public class MainListViewActivity extends Activity{
 			//head comment when it is null. It creates a sub comment
 			//responding to CreateCommentParent otherwise.
 			case R.id.add_comment:
+				//Start the create comment activity to add a comment. 
+				//CreateCommentParent is null because the CreateComment
+				//activity makes a subcomment inside the parent comment
+				//provided, or makes a new head comment if it is null:
 				Intent createComment = new Intent(getApplicationContext(), CreateCommentActivity.class);
 				appState.setCreateCommentParent(null);
 				this.startActivity(createComment);
@@ -180,6 +184,7 @@ public class MainListViewActivity extends Activity{
 			case R.id.action_sort_main:
 				sortComments();
 				return true;
+
 			//Display the list of favourites specified in the user model
 			//when implemented:
 			case R.id.action_favourites_main:
@@ -213,13 +218,14 @@ public class MainListViewActivity extends Activity{
 		alert.setView(usernameText);
 
 		//set the positive button with its text and set up an on click listener
-		//to add the counter with the text provided when it is pressed:
+		//to replace the username in the ApplicationStateModel singleton:
 		alert.setPositiveButton("Set", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				//get the text from the editable:
 				Editable usernameEditable = usernameText.getText();
 				String usernameString = usernameEditable.toString();
 				
+				//Set the new username and save the UserModel:
 				appState.getUserModel().setUsername(usernameString);
 				appState.saveUser();
 			}
@@ -233,7 +239,6 @@ public class MainListViewActivity extends Activity{
 		});
 
 		alert.show();
-		
 	}
 	
 	/**
@@ -245,28 +250,36 @@ public class MainListViewActivity extends Activity{
 		//set the fields of the dialog:
 		alert.setTitle("Sort By:");
 	
+		//get the dialogue's layout from XML:
 		LinearLayout optionsView = (LinearLayout)layoutInflater.inflate(R.layout.sort_by_dialog_list, 
 				null);
 		
+		//get the group of radio buttons that determine sorting criteria:
 		ViewGroup sortRadioGroup = (ViewGroup) optionsView.getChildAt(0);
-				
+		
 		RadioButton button;
 		CheckBox box;
 		
+		//if/else statements that set the correct radio button
+		//and check the sort by picture box if appropriate:
 		if(appState.getUserModel().isSortByDate()){
+			//Set the date radio button:
 			button = (RadioButton) sortRadioGroup.getChildAt(0);
 			button.toggle();
 		}
 		else if(appState.getUserModel().isSortByLoc()){
+			//Set the location radio button:
 			button = (RadioButton) sortRadioGroup.getChildAt(1);
 			button.toggle();
 		}
 		else if(appState.getUserModel().isSortByPopularity()){
+			//Set the Popularity radio button:
 			button = (RadioButton) sortRadioGroup.getChildAt(2);
 			button.toggle();
 		}
 
 		if(appState.getUserModel().isSortByPic()){
+			//Set the sort by picture check box:
 			box = (CheckBox) optionsView.getChildAt(2);
 			box.setChecked(true);
 		}
@@ -274,34 +287,36 @@ public class MainListViewActivity extends Activity{
 		alert.setView(optionsView);
 
 		//set the positive button with its text and set up an on click listener
-		//to add the counter with the text provided when it is pressed:
+		//that saves the changes:
 		alert.setPositiveButton("Set", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
-			
-				
 				appState.saveUser();
 				onResume();
 			}
 		});
 
-		//also set a cancel negative button that does nothing but close the 
-		//dialog window:
-		
+		//also set a cancel negative button that loads the old user so that the
+		//changes are not applied:
 		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
+				appState.loadUser();
+				onResume();
 			}
 		});
 
 		alert.show();
 	}
 	
-	//from the android developer page http://developer.android.com/guide/topics/ui/controls/checkbox.html
+	//Adapted from the android developer page 
+	//http://developer.android.com/guide/topics/ui/controls/checkbox.html
 	public void onCheckboxClicked(View view) {
 	    // Is the view now checked?
 	    boolean checked = ((CheckBox) view).isChecked();
 	    
 	    // Check which checkbox was clicked
 	    switch(view.getId()) {
+	    	//Set user preferences according
+	    	//to whether the pictures checkbox is checked:
 	        case R.id.pictures:
 	            if (checked)
 	            	appState.getUserModel().setSortByPic(true);
@@ -315,6 +330,8 @@ public class MainListViewActivity extends Activity{
 	 * Responds to clicks on a radio button in the sort by alert
 	 * dialog. Adapted from the android developer website
 	 * http://developer.android.com/guide/topics/ui/controls/radiobutton.html
+	 * @param view - the radio button that was clicked.
+	 * @return void, no return value.
 	 */
 	public void onRadioButtonClicked(View view) {
 		RadioButton buttonPressed = (RadioButton) view;
@@ -322,18 +339,16 @@ public class MainListViewActivity extends Activity{
 	    // Is the button now checked?
 	    boolean checked = ((RadioButton) view).isChecked();
 	    buttonGroup.clearCheck();
-	    // Check which radio button was clicked
+	    //Check which radio button was clicked and set the
+	    //preferences and checked radio button as appropriate:
 	    switch(view.getId()) {
-	    	
 	        case R.id.date:
 	            if (checked){
 	            	appState.getUserModel().setSortByDate(true);
 	            	buttonPressed.toggle();
-	            	appState.saveUser();
 	            }
 	            else{
 	        		appState.getUserModel().setSortByDate(false);
-            		appState.saveUser();
 	            }
 	            break;
 	            
@@ -341,11 +356,9 @@ public class MainListViewActivity extends Activity{
 	            if (checked){
 	            	appState.getUserModel().setSortByLoc(true);
 	            	buttonPressed.toggle();
-	            	appState.saveUser();
 	            }
 	            else{
 	            	appState.getUserModel().setSortByLoc(false);
-	            	appState.saveUser();
 	            }
 	            break;
 	            
@@ -353,11 +366,9 @@ public class MainListViewActivity extends Activity{
 	            if (checked){
 	            	appState.getUserModel().setSortByPopularity(true);
 	            	buttonPressed.toggle();
-	            	appState.saveUser();
 	            }
 	            else{
 	            	appState.getUserModel().setSortByPopularity(false);
-	            	appState.saveUser();
 	            }
 	            break;
 	            
