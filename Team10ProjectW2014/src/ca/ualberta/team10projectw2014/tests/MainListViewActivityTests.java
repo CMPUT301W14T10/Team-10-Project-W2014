@@ -360,15 +360,14 @@ public class MainListViewActivityTests extends
 
 			// Test new comment date is correct
 			assertEquals("Head comment date should appear in list", timeString, date.getText());
-
-			// Restores actual comment list
-			appState.setCommentList(backupList);
-			appState.saveComments();
 			
 			// Close activity
 			activity.finish();
 			setActivity(null);
 		}
+		// Restores actual comment list
+		appState.setCommentList(backupList);
+		appState.saveComments();
 	}
 	
 	public void testGetLatestHeadComments() throws Throwable {
