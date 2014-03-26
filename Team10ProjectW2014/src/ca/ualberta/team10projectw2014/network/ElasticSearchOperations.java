@@ -18,7 +18,7 @@ import com.google.gson.GsonBuilder;
 
 
 /**
- * Handles sending PicPostModels to the server and executing searches on the server.
+ * Handles sending CommentModels to the server and executing searches on the server.
  * Most of the code in this class is based on: https://github.com/rayzhangcl/ESDemo
  * @author zjullion. Edited by sgiang92
  * 
@@ -54,7 +54,7 @@ public class ElasticSearchOperations {
 					request.setEntity(new StringEntity(GSON.toJson(comment)));
 				}
 				catch (UnsupportedEncodingException exception) {
-					Log.w(LOG_TAG, "Error encoding HeadComment: " + exception.getMessage());
+					Log.w(LOG_TAG, "Error encoding Comment: " + exception.getMessage());
 					return;
 				}
 
