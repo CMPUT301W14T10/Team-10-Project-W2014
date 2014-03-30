@@ -34,7 +34,6 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 /**
  * Called from mainListViewActivity when a head comment is selected.
  * displays that head comment and all of its replies(recursively, so
@@ -175,6 +174,7 @@ public class SubCommentViewActivity extends Activity {
 			return true;
 		case R.id.action_favourite:
 			// Add the head comment to the users favourite list
+<<<<<<< HEAD
 			if (!appState.getUserModel().getFavourites().contains(appState.getSubCommentViewHead())) {
 				addFavourite(appState.getSubCommentViewHead());
 				appState.getSubCommentViewHead().setNumFavourites(appState.getSubCommentViewHead().getNumFavourites() + 1);
@@ -185,6 +185,12 @@ public class SubCommentViewActivity extends Activity {
 			else {
 				Toast.makeText(this, "Comment already in Favourite List", Toast.LENGTH_LONG).show();
 			}
+=======
+			addFavourite(appState.getSubCommentViewHead());
+			appState.getSubCommentViewHead().setNumFavourites(appState.getSubCommentViewHead().getNumFavourites() + 1);
+			appState.saveComments();
+			appState.loadComments();
+>>>>>>> parent of 62fdb31... Added toast warning  when adding head comment to favourite list twice
 			return true;
 		case R.id.action_edit_username:
 			// Bring up dialog box for the user to edit username
