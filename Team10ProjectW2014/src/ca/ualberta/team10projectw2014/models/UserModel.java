@@ -3,6 +3,8 @@ package ca.ualberta.team10projectw2014.models;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.provider.Settings.Secure;
 
 /**
@@ -16,6 +18,15 @@ public class UserModel{
 	private ArrayList<CommentModel> readComments;
 	private ArrayList<CommentModel> wantToReadComments;
 	private String userName;
+	
+	// These values are associated with the user's profile
+	private String biography;
+	private String twitter;
+	private String email;
+	private String givenName;
+	private Bitmap profilePic;
+	private String photoPath;
+	private Uri imageUri;
 	
 	//These boolean values dictate which criteria to sort comments by:
 	private boolean sortByPic = false;
@@ -135,6 +146,74 @@ public class UserModel{
 			this.sortByLoc = false;
 			this.sortByDate = false;
 		}
+	}
+	
+	public String getBiography() {
+		return biography;
+	}
+
+
+	public void setBiography(String biography) {
+		this.biography = biography;
+	}
+
+
+	public String getTwitter() {
+		return twitter;
+	}
+
+
+	public void setTwitter(String twitter) {
+		this.twitter = twitter;
+	}
+
+
+	public String getEmail() {
+		return email;
+	}
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
+	public String getGivenName() {
+		return givenName;
+	}
+
+
+	public void setGivenName(String givenName) {
+		this.givenName = givenName;
+	}
+
+
+	public Bitmap getProfilePic() {
+		return profilePic;
+	}
+
+
+	public void setProfilePic(Bitmap profilePic) {
+		this.profilePic = profilePic;
+	}
+	
+	public String getPhotoPath() {
+		return photoPath;
+	}
+
+
+	public void setPhotoPath(String photoPath) {
+		this.photoPath = photoPath;
+	}
+
+
+	public Uri getImageUri() {
+		return imageUri;
+	}
+
+
+	public void setImageUri(Uri imageUri) {
+		this.imageUri = imageUri;
 	}
 	
 }
