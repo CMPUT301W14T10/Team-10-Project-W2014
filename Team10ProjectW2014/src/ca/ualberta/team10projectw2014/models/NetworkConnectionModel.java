@@ -1,8 +1,8 @@
 package ca.ualberta.team10projectw2014.models;
-import static org.elasticsearch.node.NodeBuilder.*;
-
-import org.elasticsearch.client.Client;
-import org.elasticsearch.node.Node;
+//import static org.elasticsearch.node.NodeBuilder.*;
+//
+//import org.elasticsearch.client.Client;
+//import org.elasticsearch.node.Node;
 
 /**
  * This class handles the user's Internet connection and fetches things
