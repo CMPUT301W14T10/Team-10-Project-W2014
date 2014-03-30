@@ -151,6 +151,12 @@ public class SubCommentViewActivity extends Activity {
 		// Inflate the menu items for use in the action bar
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.subcommentview, menu);
+		if (appState.getSubCommentViewHead().isInArrayList(appState.getUserModel().getFavourites())) {
+			menu.findItem(R.id.action_favourite).setIcon(resources.getDrawable(R.drawable.ic_action_star_yellow));
+		}
+		else {
+			menu.findItem(R.id.action_favourite).setIcon(resources.getDrawable(R.drawable.ic_action_favourite));
+		}
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -175,15 +181,21 @@ public class SubCommentViewActivity extends Activity {
 			return true;
 		case R.id.action_favourite:
 			// Add the head comment to the users favourite list
-			if (!appState.getUserModel().getFavourites().contains(appState.getSubCommentViewHead())) {
+			if (!appState.getSubCommentViewHead().isInArrayList(appState.getUserModel().getFavourites())) {
 				addFavourite(appState.getSubCommentViewHead());
+				appState.saveUser();
 				appState.getSubCommentViewHead().setNumFavourites(appState.getSubCommentViewHead().getNumFavourites() + 1);
 				appState.saveComments();
 				appState.loadComments();
 				item.setIcon(resources.getDrawable(R.drawable.ic_action_star_yellow));
 			}
 			else {
-				Toast.makeText(this, "Comment already in Favourite List", Toast.LENGTH_LONG).show();
+				appState.getSubCommentViewHead().removeFromArrayList(appState.getUserModel().getFavourites());
+				appState.saveUser();
+				appState.getSubCommentViewHead().setNumFavourites(appState.getSubCommentViewHead().getNumFavourites() + 1);
+				appState.saveComments();
+				appState.loadComments();				
+				item.setIcon(resources.getDrawable(R.drawable.ic_action_favourite));
 			}
 			return true;
 		case R.id.action_edit_username:
@@ -203,6 +215,7 @@ public class SubCommentViewActivity extends Activity {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	
 	}
 
 	/**
