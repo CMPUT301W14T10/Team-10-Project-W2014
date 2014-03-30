@@ -143,6 +143,7 @@ public class SubCommentViewActivityAdapter extends
 					//already in the user's favourite
 					if(!userData.getFavourites().contains(commentList.get(pos))){
 						userData.getFavourites().add(commentList.get(pos));
+						commentList.get(pos).setNumFavourites(commentList.get(pos).getNumFavourites() + 1);
 					}else {
 						Toast.makeText(context, "Comment already in Favourite List", Toast.LENGTH_LONG).show();
 					}
