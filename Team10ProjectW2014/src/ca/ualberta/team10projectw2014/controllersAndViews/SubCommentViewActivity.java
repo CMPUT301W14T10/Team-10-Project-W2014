@@ -14,8 +14,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.LayoutInflater;
@@ -48,6 +50,7 @@ public class SubCommentViewActivity extends Activity {
 	private ActionBar actionbar;
 	private View headerView;
 	private LayoutInflater layoutInflater;
+	private Resources resources;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,7 @@ public class SubCommentViewActivity extends Activity {
 		// Disable the Home Icon on the Actionbar
 	    actionbar = getActionBar();
 		actionbar.setDisplayShowHomeEnabled(false);
+		this.resources = getResources();
 
 	}
 
@@ -176,6 +180,7 @@ public class SubCommentViewActivity extends Activity {
 			appState.getSubCommentViewHead().setNumFavourites(appState.getSubCommentViewHead().getNumFavourites() + 1);
 			appState.saveComments();
 			appState.loadComments();
+			item.setIcon(resources.getDrawable(R.drawable.ic_action_star_yellow));
 			return true;
 		case R.id.action_edit_username:
 			// Bring up dialog box for the user to edit username
