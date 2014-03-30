@@ -11,12 +11,4 @@ import org.elasticsearch.node.Node;
  * @version     1                (current version number of program)
  */
 public class NetworkConnectionModel {
-	@SuppressWarnings("unused")
-	private String saveUrl;
-	// on startup
-
-	Node node = nodeBuilder().client(true).node();
-	Client client = node.client();
-
-	// on shutdown
 }
