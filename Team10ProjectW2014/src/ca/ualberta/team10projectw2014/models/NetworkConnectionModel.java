@@ -1,4 +1,8 @@
 package ca.ualberta.team10projectw2014.models;
+import static org.elasticsearch.node.NodeBuilder.*;
+
+import org.elasticsearch.client.Client;
+import org.elasticsearch.node.Node;
 
 /**
  * This class handles the user's Internet connection and fetches things
@@ -9,5 +13,10 @@ package ca.ualberta.team10projectw2014.models;
 public class NetworkConnectionModel {
 	@SuppressWarnings("unused")
 	private String saveUrl;
-	
+	// on startup
+
+	Node node = nodeBuilder().client(true).node();
+	Client client = node.client();
+
+	// on shutdown
 }

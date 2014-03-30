@@ -14,6 +14,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 /**
  * Called from mainListViewActivity when a head comment is selected.
  * displays that head comment and all of its replies(recursively, so
@@ -48,6 +50,7 @@ public class SubCommentViewActivity extends Activity {
 	private ActionBar actionbar;
 	private View headerView;
 	private LayoutInflater layoutInflater;
+	private Resources resources;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +69,7 @@ public class SubCommentViewActivity extends Activity {
 		// Disable the Home Icon on the Actionbar
 	    actionbar = getActionBar();
 		actionbar.setDisplayShowHomeEnabled(false);
-
+		resources = getResources();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -172,10 +175,16 @@ public class SubCommentViewActivity extends Activity {
 			return true;
 		case R.id.action_favourite:
 			// Add the head comment to the users favourite list
-			addFavourite(appState.getSubCommentViewHead());
-			appState.getSubCommentViewHead().setNumFavourites(appState.getSubCommentViewHead().getNumFavourites() + 1);
-			appState.saveComments();
-			appState.loadComments();
+			if (!appState.getUserModel().getFavourites().contains(appState.getSubCommentViewHead())) {
+				addFavourite(appState.getSubCommentViewHead());
+				appState.getSubCommentViewHead().setNumFavourites(appState.getSubCommentViewHead().getNumFavourites() + 1);
+				appState.saveComments();
+				appState.loadComments();
+				item.setIcon(resources.getDrawable(R.drawable.ic_action_star_yellow));
+			}
+			else {
+				Toast.makeText(this, "Comment already in Favourite List", Toast.LENGTH_LONG).show();
+			}
 			return true;
 		case R.id.action_edit_username:
 			// Bring up dialog box for the user to edit username
