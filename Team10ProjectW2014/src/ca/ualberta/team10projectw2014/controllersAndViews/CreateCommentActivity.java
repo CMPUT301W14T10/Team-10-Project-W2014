@@ -12,6 +12,7 @@ import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationListenerModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
 import ca.ualberta.team10projectw2014.models.SubCommentModel;
+import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -378,6 +379,8 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 				model.setAuthorAndroidID(appState.getUserModel().getAndroidID());
 				
 				appState.getCommentList().add(model);
+				ElasticSearchOperations temp = new ElasticSearchOperations();
+	            temp.pushHeadComment(model);
 			}
 
 			stopListeningLocation();
@@ -385,6 +388,7 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 			
 			model.setLocation(this.postLocation);
 
+			
 			appState.saveComments();
 			appState.loadComments();
 			appState.updateMainAdapter();
