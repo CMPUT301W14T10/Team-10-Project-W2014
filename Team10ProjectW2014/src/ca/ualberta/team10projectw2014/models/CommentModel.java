@@ -97,4 +97,26 @@ public class CommentModel{
 	public void setAuthorAndroidID(String authorAndroidID) {
 		this.authorAndroidID = authorAndroidID;
 	}
+	public boolean compareComments(CommentModel otherComment){
+		if((this.getAuthorAndroidID() == otherComment.getAuthorAndroidID()) &&
+				(this.getTimestamp() == otherComment.getTimestamp()))
+			return true;
+		else
+			return false;
+	}
+	public boolean isInArrayList(ArrayList<CommentModel> commentList){
+		for(CommentModel comment : commentList){
+			if(this.compareComments(comment))
+				return true;
+		}
+		return false;	
+	}
+
+	public void removeFromArrayList(ArrayList<CommentModel> commentList)
+	{
+		for(CommentModel comment : commentList){
+			if(this.compareComments(comment))
+				commentList.remove(comment);
+		}
+	}
 }
