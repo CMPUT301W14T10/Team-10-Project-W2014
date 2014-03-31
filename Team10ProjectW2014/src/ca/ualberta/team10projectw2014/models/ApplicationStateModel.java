@@ -15,6 +15,7 @@ import android.content.Context;
 import android.location.Location;
 import ca.ualberta.team10projectw2014.controllersAndViews.MainListViewAdapter;
 import ca.ualberta.team10projectw2014.controllersAndViews.SubCommentViewActivityAdapter;
+import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -117,7 +118,7 @@ public class ApplicationStateModel {
 	*change.
 	*/
 	private CommentModel commentToEdit;
-
+	
 	/**
 	*A comparator used in sorting comments by location.
 	*/
@@ -514,6 +515,9 @@ public class ApplicationStateModel {
 		 return list;
 	 }
 	 
+	 public void pushComment(CommentModel comment){
+		 ElasticSearchOperations.pushHeadComment(comment);
+	 }
 
 
 	 

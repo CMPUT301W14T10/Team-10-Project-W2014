@@ -20,8 +20,8 @@ import com.google.gson.GsonBuilder;
 /**
  * Handles sending CommentModels to the server and executing searches on the server.
  * Most of the code in this class is based on: https://github.com/rayzhangcl/ESDemo
+ * and https://github.com/zjullion/PicPosterComplete
  * @author zjullion. Edited by sgiang92
- * 
  * 
  */
 public class ElasticSearchOperations {
@@ -29,8 +29,6 @@ public class ElasticSearchOperations {
 	public static final String SERVER_URL = "http://cmput301.softwareprocess.es:8080/testing/team10projectw2014/";
 	public static final String LOG_TAG = "ElasticSearch";
 	private static Gson GSON = null;
-	
-	
 	
 	
 	/**
