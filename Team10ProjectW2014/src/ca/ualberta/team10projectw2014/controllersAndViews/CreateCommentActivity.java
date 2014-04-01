@@ -85,6 +85,8 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 	 */
 	private ApplicationStateModel appState;
 	
+	private static final int MAX_BITMAP_DIMENSIONS = 50;
+	
 	/**
  	 * Initiates application state singleton then sets class variables to comment values
  	 * returned in the application state singleton.
@@ -291,7 +293,8 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
      
                 final Bitmap bitmap = BitmapFactory.decodeFile(imageUri.getPath(),
                         options);
-                this.postPhoto = bitmap;
+                
+                scaleImage(bitmap);
                 imageView.setImageBitmap(bitmap);
             } catch (NullPointerException e) {
                 e.printStackTrace();
@@ -443,5 +446,28 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 		finish();
 	}
 	
-	
+	/***
+	 * Scale down the size of the image
+	 * Code referenced from https://github.com/zjullion/PicPosterComplete
+	 * @author zjullion. Edited by sgiang92
+	 * @param pic the Bitmap to be displayed in the post
+	 *
+	 */
+	private void scaleImage(Bitmap pic) {
+
+		// Scale the pic if it is too large:
+		if (pic.getWidth() > MAX_BITMAP_DIMENSIONS
+				|| pic.getHeight() > MAX_BITMAP_DIMENSIONS) {
+			double scalingFactor = pic.getWidth() * 1.0 / MAX_BITMAP_DIMENSIONS;
+			if (pic.getHeight() > pic.getWidth())
+				scalingFactor = pic.getHeight() * 1.0 / MAX_BITMAP_DIMENSIONS;
+
+			int newWidth = (int) Math.round(pic.getWidth() / scalingFactor);
+			int newHeight = (int) Math.round(pic.getHeight() / scalingFactor);
+
+			pic = Bitmap.createScaledBitmap(pic, newWidth, newHeight, false);
+		}
+		this.postPhoto = pic;
+	}
+
 }

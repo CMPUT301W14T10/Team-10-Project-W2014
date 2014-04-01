@@ -13,6 +13,8 @@ import java.util.Comparator;
 
 import android.content.Context;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import ca.ualberta.team10projectw2014.controllersAndViews.MainListViewAdapter;
 import ca.ualberta.team10projectw2014.controllersAndViews.SubCommentViewActivityAdapter;
 import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
@@ -518,6 +520,13 @@ public class ApplicationStateModel {
 	 public void pushComment(CommentModel comment){
 		 ElasticSearchOperations.pushHeadComment(comment);
 	 }
+	 
+	 private boolean isNetworkAvailable(Context context) {
+		    ConnectivityManager connectivityManager 
+		          = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+		    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+		}
 
 
 	 
