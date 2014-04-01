@@ -291,7 +291,7 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
      
                 final Bitmap bitmap = BitmapFactory.decodeFile(imageUri.getPath(),
                         options);
-     
+                this.postPhoto = bitmap;
                 imageView.setImageBitmap(bitmap);
             } catch (NullPointerException e) {
                 e.printStackTrace();
@@ -379,8 +379,7 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 				model.setAuthorAndroidID(appState.getUserModel().getAndroidID());
 				
 				appState.getCommentList().add(model);
-				ElasticSearchOperations temp = new ElasticSearchOperations();
-	            temp.pushHeadComment(model);
+	            ElasticSearchOperations.pushHeadComment(model);
 			}
 
 			stopListeningLocation();

@@ -36,10 +36,8 @@ public class ElasticSearchOperations {
 	 * @param model a CommentModel
 	 */
 	public static void pushHeadComment(final CommentModel comment){
-		if (GSON == null) {
+		if (GSON == null)
 			constructGson();
-
-		}
 
 		Thread thread = new Thread() {
 
