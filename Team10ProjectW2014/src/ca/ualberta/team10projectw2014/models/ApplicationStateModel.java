@@ -521,7 +521,7 @@ public class ApplicationStateModel {
 		 ElasticSearchOperations.pushHeadComment(comment);
 	 }
 	 
-	 private boolean isNetworkAvailable(Context context) {
+	 public boolean isNetworkAvailable(Context context) {
 		    ConnectivityManager connectivityManager 
 		          = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
