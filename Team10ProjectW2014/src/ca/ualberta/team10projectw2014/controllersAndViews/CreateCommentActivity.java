@@ -3,6 +3,7 @@ package ca.ualberta.team10projectw2014.controllersAndViews;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -14,6 +15,7 @@ import ca.ualberta.team10projectw2014.models.LocationModel;
 import ca.ualberta.team10projectw2014.models.SubCommentModel;
 import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 
+import android.R.anim;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -30,6 +32,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -182,6 +185,7 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 		ueditText.setText(name, TextView.BufferType.EDITABLE);
 	}
 
+	// TODO javadoc this function; custom dialog code modified from http://www.mkyong.com/android/android-custom-dialog-example/ April 1, 2014
 	public void chooseLocation(View v){
 		// TODO remove toast
 		//Toast.makeText(getBaseContext(), "Sorry, this feature is not supported yet.", Toast.LENGTH_LONG).show();
@@ -194,16 +198,21 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setView(locationDialogView);
 		
-		// Sets alert dialog components
+		// Sets components of alert dialog
 		alertDialogBuilder.setTitle("Set Location");
 		// TODO enable set button functionality
 		alertDialogBuilder.setPositiveButton("Set", null);
 		// TODO enable cancel button functionality
 		alertDialogBuilder.setNegativeButton("Cancel", null);
 		
-		// Sets alert dialog custom components
+		// Sets custom components of alert dialog
 		// TODO load up spinner with location data
 		final Spinner spinner = (Spinner) locationDialogView.findViewById(R.id.location_dialog_spinner);
+		ArrayList<String> test = new ArrayList<String>();
+		test.add("None");
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, test);
+		spinner.setAdapter(adapter);
+		
 		// TODO set button click action
 		final Button button = (Button) locationDialogView.findViewById(R.id.location_dialog_button);
 		
