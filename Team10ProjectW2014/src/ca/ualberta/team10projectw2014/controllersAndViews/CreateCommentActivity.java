@@ -16,6 +16,9 @@ import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.AlertDialog.Builder;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -25,9 +28,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -177,7 +183,33 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 	}
 
 	public void chooseLocation(View v){
-		Toast.makeText(getBaseContext(), "Sorry, this feature is not supported yet.", Toast.LENGTH_LONG).show();
+		// TODO remove toast
+		//Toast.makeText(getBaseContext(), "Sorry, this feature is not supported yet.", Toast.LENGTH_LONG).show();
+		
+		// Gets the xml custom dialog layout
+		LayoutInflater li = LayoutInflater.from(this);
+		View locationDialogView = li.inflate(R.layout.layout_location_dialog, null);
+		
+		// Builds alert dialog
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+		alertDialogBuilder.setView(locationDialogView);
+		
+		// Sets alert dialog components
+		alertDialogBuilder.setTitle("Set Location");
+		// TODO enable set button functionality
+		alertDialogBuilder.setPositiveButton("Set", null);
+		// TODO enable cancel button functionality
+		alertDialogBuilder.setNegativeButton("Cancel", null);
+		
+		// Sets alert dialog custom components
+		// TODO load up spinner with location data
+		final Spinner spinner = (Spinner) locationDialogView.findViewById(R.id.location_dialog_spinner);
+		// TODO set button click action
+		final Button button = (Button) locationDialogView.findViewById(R.id.location_dialog_button);
+		
+		// Creates alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
+		alertDialog.show();
 	}
 	
 	/**
