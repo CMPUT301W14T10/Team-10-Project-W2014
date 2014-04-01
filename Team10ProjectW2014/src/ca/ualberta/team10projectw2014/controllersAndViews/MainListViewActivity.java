@@ -62,9 +62,9 @@ public class MainListViewActivity extends Activity{
 		layoutInflater = LayoutInflater.from(this);
 		this.appState = ApplicationStateModel.getInstance();
 		this.appState.setCommentList(new ArrayList<CommentModel>());
-		this.appState.setFileContext(this);
-		this.appState.loadComments();
-		this.appState.loadUser();
+		//this.appState.setFileContext(this);
+		//this.appState.loadComments();
+		//this.appState.loadUser();
 	}
 
 	
@@ -80,7 +80,6 @@ public class MainListViewActivity extends Activity{
 		//this.appState.loadUser();
 		//this.appState.setMLVAdapter(new MainListViewAdapter(this, this.appState.getCommentList()));
 		
-		
 		return true;
 	}
 	
@@ -94,6 +93,9 @@ public class MainListViewActivity extends Activity{
 		
 		//call the ApplicationStateModel singleton's methods to update
 		//its attributes from file(and/or a network connection when implemented):
+		
+		//ElasticSearch Code for getting new comments
+		
 		this.appState.setFileContext(this);
 		this.appState.loadComments();
 		this.appState.loadUser();
