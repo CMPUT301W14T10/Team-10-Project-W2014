@@ -189,6 +189,9 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 	public void chooseLocation(View v){
 		// TODO remove toast
 		//Toast.makeText(getBaseContext(), "Sorry, this feature is not supported yet.", Toast.LENGTH_LONG).show();
+		int i;
+		ArrayList<LocationModel> locationList = new ArrayList<LocationModel>();
+		locationList = appState.getLocationList();
 		
 		// Gets the xml custom dialog layout
 		LayoutInflater li = LayoutInflater.from(this);
@@ -204,12 +207,17 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 		alertDialogBuilder.setPositiveButton("Set", null);
 		alertDialogBuilder.setNegativeButton("Cancel", null);
 		
-		// Sets custom components of alert dialog
-		// TODO load up spinner with location data
+		// Loads up spinner with location names
 		final Spinner spinner = (Spinner) locationDialogView.findViewById(R.id.location_dialog_spinner);
-		ArrayList<String> test = new ArrayList<String>();
-		test.add("None");
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, test);
+		ArrayList<String> locationNameList = new ArrayList<String>();
+		if (locationList != null) {
+			for (i=0; i < locationList.size()-1; i++)
+				locationNameList.add(locationList.get(i).getName());	
+		}
+		else
+			locationNameList.add("No Locations");
+		
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, locationNameList);
 		spinner.setAdapter(adapter);
 		
 		// TODO set button click action
@@ -348,7 +356,7 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
     	// Gets the list of already created locations
 		ArrayList<LocationModel> locationList = new ArrayList<LocationModel>();
 		int i, closestLocationIndex = -1;
-		double distance = 1000; // Min distance set to 1km
+		double distance = 1000; // Min distance set to 1km TODO ask group what they want this set to
 		locationList = appState.getLocationList();
 		
 		// If current location is known and location list is not empty
@@ -368,13 +376,13 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 			// TODO remove old code
 			//this.postLocation = new LocationModel(String.valueOf("Lat: " + bestKnownLoc.getLatitude()) + " Long: " + String.valueOf(bestKnownLoc.getLongitude()), bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude());
 		}
-		// Current locaiton is known and location list is empty
+		// Current location is known and location list is empty
 		else if ((bestKnownLoc != null) && (locationList == null))
 			Toast.makeText(getBaseContext(), "No nearby locations found. Please select or create a location.", Toast.LENGTH_LONG).show();
 		// Current location is not known and location list is not empty
 		else if ((bestKnownLoc == null) && (locationList != null))
 			Toast.makeText(getBaseContext(), "Current location is unknown. Please select a location.", Toast.LENGTH_LONG).show();
-		// Current locaiton is not known and location list is empty
+		// Current location is not known and location list is empty
 		else{
 			this.postLocation = new LocationModel("Unknown Location", 1, 2);
 		}
@@ -397,6 +405,7 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 		else if(checkStringIsAllWhiteSpace(this.postTitle)){
 			raiseTitleIncompleteError();
 		}
+		// Does nothing if no location has been set - error message spawned in setLocation()
 		else if (this.postLocation == null)
 			;
 		else{
