@@ -31,6 +31,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -96,6 +97,11 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 	private ApplicationStateModel appState;
 	
 	/**
+	 * Temporary list of the location models
+	 */
+	private ArrayList<LocationModel> locationList = new ArrayList<LocationModel>();
+	
+	/**
  	 * Initiates application state singleton then sets class variables to comment values
  	 * returned in the application state singleton.
  	 */
@@ -111,6 +117,9 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 		teditText = (EditText)findViewById(R.id.cc_title);
 		ceditText = (EditText)findViewById(R.id.cc_content);
 		imageView = (ImageView)findViewById(R.id.cc_image_view);
+		
+		// TODO crashes when this is uncommented and appState's location list is empty
+		//locationList = appState.getLocationList();
 	}
 	
 	/**
@@ -191,8 +200,8 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 		// TODO remove toast
 		//Toast.makeText(getBaseContext(), "Sorry, this feature is not supported yet.", Toast.LENGTH_LONG).show();
 		int i;
-		ArrayList<LocationModel> locationList = new ArrayList<LocationModel>();
-		locationList = appState.getLocationList();
+		//ArrayList<LocationModel> locationList = new ArrayList<LocationModel>();
+		//locationList = appState.getLocationList();
 		
 		// Gets the xml custom dialog layout
 		LayoutInflater li = LayoutInflater.from(this);
@@ -213,7 +222,7 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 			public void onClick(DialogInterface dialog, int which) {
 				// Gets the xml custom dialog layout
 				LayoutInflater li2 = LayoutInflater.from(CreateCommentActivity.this);
-				View locationNameDialogView = li2.inflate(R.layout.layout_location_name_dialog, null);
+				final View locationNameDialogView = li2.inflate(R.layout.layout_location_name_dialog, null);
 				
 				// Build alert dialog
 				AlertDialog.Builder alertDialogBuilder2 = new AlertDialog.Builder(CreateCommentActivity.this);
@@ -221,22 +230,33 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 				
 				// Set components of alert dialog
 				alertDialogBuilder2.setTitle("Set Location Name");
-				alertDialogBuilder2.setPositiveButton("Set", null);
+				alertDialogBuilder2.setPositiveButton("Set", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						//final EditText editText = (EditText) locationDialogView.findViewById(R.id.enter_location_name);
+						final EditText editText = (EditText) locationNameDialogView.findViewById(R.id.enter_location_name);
+						// TODO check if no name entered
+						// TODO check if name is already in location list
+						stopListeningLocation();
+						String locationNameString = editText.getText().toString();
+						CreateCommentActivity.this.postLocation = new LocationModel(locationNameString, CreateCommentActivity.this.bestKnownLoc.getLatitude(), CreateCommentActivity.this.bestKnownLoc.getLongitude());
+						CreateCommentActivity.this.locationList.add(CreateCommentActivity.this.postLocation);
+					}
+				});
 				alertDialogBuilder2.setNegativeButton("Cancel", null);
 				
 				// Creates alert dialog
 				AlertDialog alertDialog2 = alertDialogBuilder2.create();
 				alertDialog2.show();
-				
-				
 			}
 		});
 		// Loads up spinner with location names
 		final Spinner spinner = (Spinner) locationDialogView.findViewById(R.id.location_dialog_spinner);
 		ArrayList<String> locationNameList = new ArrayList<String>();
-		if (locationList != null) {
-			for (i=0; i < locationList.size()-1; i++)
-				locationNameList.add(locationList.get(i).getName());	
+		if (this.locationList.size() != 0) {
+			for (i=0; i < this.locationList.size(); i++)
+				locationNameList.add(this.locationList.get(i).getName());	
 		}
 		else
 			locationNameList.add("No Locations");
