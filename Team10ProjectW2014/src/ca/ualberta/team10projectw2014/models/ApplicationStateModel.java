@@ -450,7 +450,6 @@ public class ApplicationStateModel {
 		}
 	}
 	
-	/* TODO new stuff here */
 	/**
 	 * A method for saving the list of location
 	 * models(i.e. locationList) to file

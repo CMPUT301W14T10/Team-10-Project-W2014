@@ -102,6 +102,11 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 	private ArrayList<LocationModel> locationList;
 	
 	/**
+	 * Flag that is set if the user selects a location from the location dialog spinner
+	 */
+	private int spinnerFlag;
+	
+	/**
  	 * Initiates application state singleton then sets class variables to comment values
  	 * returned in the application state singleton.
  	 */
@@ -208,6 +213,9 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 		//ArrayList<LocationModel> locationList = new ArrayList<LocationModel>();
 		//locationList = appState.getLocationList();
 		
+		// Sets/resets spinner set flag
+		CreateCommentActivity.this.spinnerFlag = 0;
+		
 		// Gets the xml custom dialog layout
 		LayoutInflater li = LayoutInflater.from(this);
 		View locationDialogView = li.inflate(R.layout.dialog_location, null);
@@ -229,18 +237,25 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, locationNameList);
 		spinner.setAdapter(adapter);
 		
-		// Sets components of alert dialog
+		// Location dialog title
 		alertDialogBuilder.setTitle("Set Location");
-		// TODO enable set button functionality
+		
+		// Location dialog set button functionality
 		alertDialogBuilder.setPositiveButton("Set", new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO don't let them push set when NO LOCATION is active
-				CreateCommentActivity.this.postLocation = CreateCommentActivity.this.locationList.get(spinner.getSelectedItemPosition());	
+				Log.e("SPINNER INDEX", CreateCommentActivity.this.locationList.get(spinner.getSelectedItemPosition()).getName());
+				CreateCommentActivity.this.postLocation = CreateCommentActivity.this.locationList.get(spinner.getSelectedItemPosition());
+				CreateCommentActivity.this.spinnerFlag = 1;
 			}
 		});
+		
+		// Location dialog cancel button functionality 
 		alertDialogBuilder.setNegativeButton("Cancel", null);
+		
+		// Location dialog create location button functionality
 		alertDialogBuilder.setNeutralButton("Create Location", new DialogInterface.OnClickListener() {
 			
 			@Override
@@ -253,8 +268,10 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 				AlertDialog.Builder alertDialogBuilder2 = new AlertDialog.Builder(CreateCommentActivity.this);
 				alertDialogBuilder2.setView(locationNameDialogView);
 				
-				// Set components of alert dialog
+				// Location name dialog title
 				alertDialogBuilder2.setTitle("Set Location Name");
+				
+				// Location name set button functionality
 				alertDialogBuilder2.setPositiveButton("Set", new DialogInterface.OnClickListener() {
 					
 					@Override
@@ -415,19 +432,21 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 		double distance = 1000; // Min distance set to 1km TODO ask group what they want this set to
 		locationList = appState.getLocationList();
 		
-		// If current location is known and location list is not empty
+		// If current location is known and location list is not empty, look for closest location
 		if ((bestKnownLoc != null) && (locationList != null) ){
-			for (i=0; i < locationList.size()-1; i++) {
-				// Determines if there is a nearby location from location list
-				if (distFrom(bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude(), locationList.get(i).getLatitude(), locationList.get(i).getLongitude()) < distance)
-					closestLocationIndex = i;
-			}
-			// No nearby locations found
-			if (closestLocationIndex == -1)
-				Toast.makeText(getBaseContext(), "No nearby locations found. Please select or create a location.", Toast.LENGTH_LONG).show();
-			// Nearby location found in location list
-			else {
-				this.postLocation = locationList.get(i);
+			if (this.spinnerFlag == 0){
+				for (i=0; i < locationList.size()-1; i++) {
+					// Determines if there is a nearby location from location list
+					if (distFrom(bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude(), locationList.get(i).getLatitude(), locationList.get(i).getLongitude()) < distance)
+						closestLocationIndex = i;
+				}
+				// No nearby locations found
+				if (closestLocationIndex == -1)
+					Toast.makeText(getBaseContext(), "No nearby locations found. Please select or create a location.", Toast.LENGTH_LONG).show();
+				// Nearby location found in location list
+				else {
+					this.postLocation = locationList.get(i);
+				}
 			}
 			// TODO remove old code
 			//this.postLocation = new LocationModel(String.valueOf("Lat: " + bestKnownLoc.getLatitude()) + " Long: " + String.valueOf(bestKnownLoc.getLongitude()), bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude());
