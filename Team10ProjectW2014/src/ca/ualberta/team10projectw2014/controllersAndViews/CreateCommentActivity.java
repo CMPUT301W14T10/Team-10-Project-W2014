@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -206,7 +207,14 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 		// TODO enable set button functionality
 		alertDialogBuilder.setPositiveButton("Set", null);
 		alertDialogBuilder.setNegativeButton("Cancel", null);
-		
+		alertDialogBuilder.setNeutralButton("Create Location", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Name new location dialog
+				
+			}
+		});
 		// Loads up spinner with location names
 		final Spinner spinner = (Spinner) locationDialogView.findViewById(R.id.location_dialog_spinner);
 		ArrayList<String> locationNameList = new ArrayList<String>();
@@ -221,7 +229,15 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 		spinner.setAdapter(adapter);
 		
 		// TODO set button click action
-		final Button button = (Button) locationDialogView.findViewById(R.id.location_dialog_button);
+/*		final Button button = (Button) locationDialogView.findViewById(R.id.location_dialog_button);
+		button.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+			}
+		});*/
 		
 		// Creates alert dialog
 		AlertDialog alertDialog = alertDialogBuilder.create();
