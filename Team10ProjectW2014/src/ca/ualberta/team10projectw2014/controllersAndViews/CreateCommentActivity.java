@@ -229,7 +229,7 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 		ArrayList<String> locationNameList = new ArrayList<String>();
 		if (this.locationList.size() != 0) {
 			for (i=0; i < this.locationList.size(); i++)
-				locationNameList.add(this.locationList.get(i).getName());	
+				locationNameList.add(this.locationList.get(i).getName());
 		}
 		else
 			locationNameList.add("No Locations");
