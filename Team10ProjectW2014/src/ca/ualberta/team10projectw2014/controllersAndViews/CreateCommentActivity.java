@@ -99,7 +99,7 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 	/**
 	 * Temporary list of the location models
 	 */
-	private ArrayList<LocationModel> locationList = new ArrayList<LocationModel>();
+	private ArrayList<LocationModel> locationList;
 	
 	/**
  	 * Initiates application state singleton then sets class variables to comment values
@@ -118,7 +118,12 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 		ceditText = (EditText)findViewById(R.id.cc_content);
 		imageView = (ImageView)findViewById(R.id.cc_image_view);
 		
-		// TODO crashes when this is uncommented and appState's location list is empty
+		appState.setLocationList(new ArrayList<LocationModel>());
+		appState.loadLocations();
+		locationList = appState.getLocationList();
+		if (locationList == null)
+			locationList = new ArrayList<LocationModel>();
+		// TODO crashes when creating a new location and this is uncommented and appState's location list is empty
 		//locationList = appState.getLocationList();
 	}
 	
@@ -242,6 +247,8 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 						String locationNameString = editText.getText().toString();
 						CreateCommentActivity.this.postLocation = new LocationModel(locationNameString, CreateCommentActivity.this.bestKnownLoc.getLatitude(), CreateCommentActivity.this.bestKnownLoc.getLongitude());
 						CreateCommentActivity.this.locationList.add(CreateCommentActivity.this.postLocation);
+						CreateCommentActivity.this.appState.setLocationList(CreateCommentActivity.this.locationList);
+						CreateCommentActivity.this.appState.saveLocations();
 					}
 				});
 				alertDialogBuilder2.setNegativeButton("Cancel", null);

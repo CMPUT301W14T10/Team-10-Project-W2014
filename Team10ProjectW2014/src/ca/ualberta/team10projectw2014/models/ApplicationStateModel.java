@@ -69,6 +69,17 @@ public class ApplicationStateModel {
 	*/
 	private String USER_FILE_NAME = "user.sav";
 
+	/**
+	*The required context for opening files
+	*(for saving/loading locations)
+	*/
+	private static Context LOCATION_fileContext;
+	
+	/**
+	*The required filename for opening files
+	*(for saving/loading locations)
+	*/
+	private String LOCATION_FILE_NAME = "locations.sav";
 
 	/**
 	*Adapter for displaying the list of comments
@@ -218,6 +229,7 @@ public class ApplicationStateModel {
 	public void setFileContext(Context fileContext) {
 		this.USER_fileContext = fileContext;
 		ApplicationStateModel.COMMENT_fileContext = fileContext;
+		ApplicationStateModel.LOCATION_fileContext = fileContext;
 	}
 
 	public CommentModel getCreateCommentParent() {
@@ -427,6 +439,94 @@ public class ApplicationStateModel {
 				this.userModel = loadedUser;
 			
 			//close the file:
+			isr.close();
+			fis.close();
+		} catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	/* TODO new stuff here */
+	/**
+	 * A method for saving the list of location
+	 * models(i.e. locationList) to file
+	 * @param  void, no arguments
+	 * @return      void, no return value.
+	 * @see #locationList
+	 */
+	public void saveLocations(){
+		try {
+			//open the file for writing:
+			FileOutputStream fos = ApplicationStateModel.LOCATION_fileContext.openFileOutput(LOCATION_FILE_NAME,
+					Context.MODE_PRIVATE); // TODO REMEMBER TO SET THE CONTEXT BEFORE YOU USE THIS
+			OutputStreamWriter osw = new OutputStreamWriter(fos);
+			
+			Gson gson = new Gson();
+			
+			//A type token to pass GSON, indicating that we want to load
+			//a list of CommentModels:
+			Type fooType = new TypeToken<ArrayList<LocationModel>>() {}.getType();
+			
+			//Convert the list to a JSON string, saving it to file:
+			gson.toJson(locationList, fooType, osw); 
+			
+			//close the file:
+			osw.close();
+			fos.close();
+		} catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * A method for loading the list of location
+	 * models(i.e. locationList) from file.
+	 * The locationList is changed in place,
+	 * i.e. the reference is not changed, in
+	 * order to avoid conflicting references.
+	 * @param  void, no arguments
+	 * @return      void, no return value.
+	 * @see #commentList
+	 */
+	public void loadLocations(){
+		FileInputStream fis;
+		//clear the comment list so that their
+		//are no duplicates and we have only 
+		//comments from file:
+		this.locationList.clear();
+		try
+		{
+			//Get the file for reading:
+			fis = ApplicationStateModel.LOCATION_fileContext.openFileInput(LOCATION_FILE_NAME);
+			InputStreamReader isr = new InputStreamReader(fis);
+			
+			Gson gson = new Gson();
+
+			//create a type token to tell GSON what type of object it is saving:
+			Type fooType = new TypeToken<ArrayList<LocationModel>>() {}.getType();
+			
+			//use GSON object, type token and file stream to get list of
+			//head comments from file:
+			ArrayList<LocationModel> list_temp = gson.fromJson(isr, fooType);
+			
+			//if the comments in the file were null, we can't call list_temp.size()
+			//or list_temp.get(i)
+			if(list_temp != null){
+				//iterate through the list to add each element, as opposed to
+				//changing the commentList's reference by assignment:
+				for(int i = 0; i < list_temp.size(); i++)
+					this.locationList.add(list_temp.get(i));
+			}
+			
+			//Close the files:
 			isr.close();
 			fis.close();
 		} catch (FileNotFoundException e)
