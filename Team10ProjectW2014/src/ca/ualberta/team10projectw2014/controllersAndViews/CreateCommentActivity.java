@@ -216,10 +216,30 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setView(locationDialogView);
 		
+		// Loads up spinner with location names
+		final Spinner spinner = (Spinner) locationDialogView.findViewById(R.id.location_dialog_spinner);
+		ArrayList<String> locationNameList = new ArrayList<String>();
+		if (this.locationList.size() != 0) {
+			for (i=0; i < this.locationList.size(); i++)
+				locationNameList.add(this.locationList.get(i).getName());	
+		}
+		else
+			locationNameList.add("No Locations");
+		
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, locationNameList);
+		spinner.setAdapter(adapter);
+		
 		// Sets components of alert dialog
 		alertDialogBuilder.setTitle("Set Location");
 		// TODO enable set button functionality
-		alertDialogBuilder.setPositiveButton("Set", null);
+		alertDialogBuilder.setPositiveButton("Set", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO don't let them push set when NO LOCATION is active
+				CreateCommentActivity.this.postLocation = CreateCommentActivity.this.locationList.get(spinner.getSelectedItemPosition());	
+			}
+		});
 		alertDialogBuilder.setNegativeButton("Cancel", null);
 		alertDialogBuilder.setNeutralButton("Create Location", new DialogInterface.OnClickListener() {
 			
@@ -258,18 +278,6 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 				alertDialog2.show();
 			}
 		});
-		// Loads up spinner with location names
-		final Spinner spinner = (Spinner) locationDialogView.findViewById(R.id.location_dialog_spinner);
-		ArrayList<String> locationNameList = new ArrayList<String>();
-		if (this.locationList.size() != 0) {
-			for (i=0; i < this.locationList.size(); i++)
-				locationNameList.add(this.locationList.get(i).getName());	
-		}
-		else
-			locationNameList.add("No Locations");
-		
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, locationNameList);
-		spinner.setAdapter(adapter);
 		
 		// Creates alert dialog
 		AlertDialog alertDialog = alertDialogBuilder.create();
