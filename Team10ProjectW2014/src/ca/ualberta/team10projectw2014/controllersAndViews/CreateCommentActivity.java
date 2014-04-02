@@ -211,7 +211,23 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Name new location dialog
+				// Gets the xml custom dialog layout
+				LayoutInflater li2 = LayoutInflater.from(CreateCommentActivity.this);
+				View locationNameDialogView = li2.inflate(R.layout.layout_location_name_dialog, null);
+				
+				// Build alert dialog
+				AlertDialog.Builder alertDialogBuilder2 = new AlertDialog.Builder(CreateCommentActivity.this);
+				alertDialogBuilder2.setView(locationNameDialogView);
+				
+				// Set components of alert dialog
+				alertDialogBuilder2.setTitle("Set Location Name");
+				alertDialogBuilder2.setPositiveButton("Set", null);
+				alertDialogBuilder2.setNegativeButton("Cancel", null);
+				
+				// Creates alert dialog
+				AlertDialog alertDialog2 = alertDialogBuilder2.create();
+				alertDialog2.show();
+				
 				
 			}
 		});
