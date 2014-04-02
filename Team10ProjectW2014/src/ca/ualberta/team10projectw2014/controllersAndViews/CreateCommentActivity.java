@@ -427,17 +427,18 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 	 */
     private void setLocation(){
     	// Gets the list of already created locations
-		ArrayList<LocationModel> locationList = new ArrayList<LocationModel>();
-		int i, closestLocationIndex = -1;
+		//ArrayList<LocationModel> locationList = new ArrayList<LocationModel>();
+		int i; 
+		int closestLocationIndex = -1;
 		double distance = 1000; // Min distance set to 1km TODO ask group what they want this set to
-		locationList = appState.getLocationList();
+		//locationList = appState.getLocationList();
 		
 		// If current location is known and location list is not empty, look for closest location
-		if ((bestKnownLoc != null) && (locationList != null) ){
+		if ((bestKnownLoc != null) && (this.locationList != null) ){
 			if (this.spinnerFlag == 0){
-				for (i=0; i < locationList.size()-1; i++) {
+				for (i=0; i < this.locationList.size(); i++) {
 					// Determines if there is a nearby location from location list
-					if (distFrom(bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude(), locationList.get(i).getLatitude(), locationList.get(i).getLongitude()) < distance)
+					if (distFrom(bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude(), this.locationList.get(i).getLatitude(), this.locationList.get(i).getLongitude()) < distance)
 						closestLocationIndex = i;
 				}
 				// No nearby locations found
@@ -445,17 +446,17 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 					Toast.makeText(getBaseContext(), "No nearby locations found. Please select or create a location.", Toast.LENGTH_LONG).show();
 				// Nearby location found in location list
 				else {
-					this.postLocation = locationList.get(i);
+					this.postLocation = this.locationList.get(closestLocationIndex);
 				}
 			}
 			// TODO remove old code
 			//this.postLocation = new LocationModel(String.valueOf("Lat: " + bestKnownLoc.getLatitude()) + " Long: " + String.valueOf(bestKnownLoc.getLongitude()), bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude());
 		}
 		// Current location is known and location list is empty
-		else if ((bestKnownLoc != null) && (locationList == null))
+		else if ((bestKnownLoc != null) && (this.locationList == null))
 			Toast.makeText(getBaseContext(), "No nearby locations found. Please select or create a location.", Toast.LENGTH_LONG).show();
 		// Current location is not known and location list is not empty
-		else if ((bestKnownLoc == null) && (locationList != null))
+		else if ((bestKnownLoc == null) && (this.locationList != null))
 			Toast.makeText(getBaseContext(), "Current location is unknown. Please select a location.", Toast.LENGTH_LONG).show();
 		// Current location is not known and location list is empty
 		else{
