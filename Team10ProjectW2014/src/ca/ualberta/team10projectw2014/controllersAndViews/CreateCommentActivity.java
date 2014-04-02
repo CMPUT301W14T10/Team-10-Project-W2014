@@ -205,7 +205,7 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 		
 		// Gets the xml custom dialog layout
 		LayoutInflater li = LayoutInflater.from(this);
-		View locationDialogView = li.inflate(R.layout.layout_location_dialog, null);
+		View locationDialogView = li.inflate(R.layout.dialog_location, null);
 		
 		// Builds alert dialog
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -222,7 +222,7 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 			public void onClick(DialogInterface dialog, int which) {
 				// Gets the xml custom dialog layout
 				LayoutInflater li2 = LayoutInflater.from(CreateCommentActivity.this);
-				final View locationNameDialogView = li2.inflate(R.layout.layout_location_name_dialog, null);
+				final View locationNameDialogView = li2.inflate(R.layout.dialog_location_name, null);
 				
 				// Build alert dialog
 				AlertDialog.Builder alertDialogBuilder2 = new AlertDialog.Builder(CreateCommentActivity.this);
@@ -263,17 +263,6 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 		
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, locationNameList);
 		spinner.setAdapter(adapter);
-		
-		// TODO set button click action
-/*		final Button button = (Button) locationDialogView.findViewById(R.id.location_dialog_button);
-		button.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
-			}
-		});*/
 		
 		// Creates alert dialog
 		AlertDialog alertDialog = alertDialogBuilder.create();

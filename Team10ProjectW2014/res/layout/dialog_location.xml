@@ -5,16 +5,7 @@
     
     <Spinner
         android:id="@+id/location_dialog_spinner"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
-    
-    
-     <Button
-        android:id="@+id/location_dialog_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/location_dialog_spinner"
-        android:text="@string/new_location_button"
-        />
 
 </RelativeLayout>
