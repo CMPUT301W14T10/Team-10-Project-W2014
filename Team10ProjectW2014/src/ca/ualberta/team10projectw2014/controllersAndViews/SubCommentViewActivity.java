@@ -62,6 +62,7 @@ public class SubCommentViewActivity extends Activity {
 		appState = ApplicationStateModel.getInstance();
 		appState.setFileContext(this);
 		appState.loadUser();
+		appState.loadComments();
 
 		//Set the layout 
 		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
@@ -182,17 +183,19 @@ public class SubCommentViewActivity extends Activity {
 		case R.id.action_favourite:
 			// Add the head comment to the users favourite list
 			if (!appState.getSubCommentViewHead().isInArrayList(appState.getUserModel().getFavourites())) {
+				Toast.makeText(this, "Comment added to favourites", Toast.LENGTH_SHORT).show();
+				appState.getSubCommentViewHead().setNumFavourites(appState.getSubCommentViewHead().getNumFavourites() + 1);
 				addFavourite(appState.getSubCommentViewHead());
 				appState.saveUser();
-				appState.getSubCommentViewHead().setNumFavourites(appState.getSubCommentViewHead().getNumFavourites() + 1);
 				appState.saveComments();
 				appState.loadComments();
 				item.setIcon(resources.getDrawable(R.drawable.ic_action_star_yellow));
 			}
 			else {
+				Toast.makeText(this, "Comment removed from favourites", Toast.LENGTH_SHORT).show();
+				appState.getSubCommentViewHead().setNumFavourites(appState.getSubCommentViewHead().getNumFavourites() - 1);
 				appState.getSubCommentViewHead().removeFromArrayList(appState.getUserModel().getFavourites());
 				appState.saveUser();
-				appState.getSubCommentViewHead().setNumFavourites(appState.getSubCommentViewHead().getNumFavourites() + 1);
 				appState.saveComments();
 				appState.loadComments();				
 				item.setIcon(resources.getDrawable(R.drawable.ic_action_favourite));
@@ -249,7 +252,6 @@ public class SubCommentViewActivity extends Activity {
 	 * @param 
 	 */
 	private void addFavourite(CommentModel comment) {
-		// TODO: Implement addFavourite
 		appState.getUserModel().getFavourites().add(comment);
 	}
 
