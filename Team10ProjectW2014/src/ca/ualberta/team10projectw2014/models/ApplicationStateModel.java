@@ -92,6 +92,12 @@ public class ApplicationStateModel {
 	private ArrayList<CommentModel> commentList;
 	
 	/**
+	 * The list of all the locations that have been
+	 * used in comments.
+	 */
+	private ArrayList<LocationModel> locationList;
+	
+	/**
 	*Holds all of the user's preferences and cached
 	*comments. Can be accessed from any activity.
 	*/
@@ -240,6 +246,14 @@ public class ApplicationStateModel {
 
 	public UserModel getUserModel() {
 		return this.userModel;
+	}
+	
+	public void setLocationList(ArrayList<LocationModel> locationList) {
+		this.locationList = locationList;
+	}
+	
+	public ArrayList<LocationModel> getLocationList(){
+		return this.locationList;
 	}
 
 	/**

@@ -202,7 +202,6 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 		alertDialogBuilder.setTitle("Set Location");
 		// TODO enable set button functionality
 		alertDialogBuilder.setPositiveButton("Set", null);
-		// TODO enable cancel button functionality
 		alertDialogBuilder.setNegativeButton("Cancel", null);
 		
 		// Sets custom components of alert dialog
@@ -346,9 +345,36 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 	 * Not used as of version 1.
 	 */
     private void setLocation(){
-		if (bestKnownLoc != null){
-			this.postLocation = new LocationModel(String.valueOf("Lat: " + bestKnownLoc.getLatitude()) + " Long: " + String.valueOf(bestKnownLoc.getLongitude()), bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude());
+    	// Gets the list of already created locations
+		ArrayList<LocationModel> locationList = new ArrayList<LocationModel>();
+		int i, closestLocationIndex = -1;
+		double distance = 1000; // Min distance set to 1km
+		locationList = appState.getLocationList();
+		
+		// If current location is known and location list is not empty
+		if ((bestKnownLoc != null) && (locationList != null) ){
+			for (i=0; i < locationList.size()-1; i++) {
+				// Determines if there is a nearby location from location list
+				if (distFrom(bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude(), locationList.get(i).getLatitude(), locationList.get(i).getLongitude()) < distance)
+					closestLocationIndex = i;
+			}
+			// No nearby locations found
+			if (closestLocationIndex == -1)
+				Toast.makeText(getBaseContext(), "No nearby locations found. Please select or create a location.", Toast.LENGTH_LONG).show();
+			// Nearby location found in location list
+			else {
+				this.postLocation = locationList.get(i);
+			}
+			// TODO remove old code
+			//this.postLocation = new LocationModel(String.valueOf("Lat: " + bestKnownLoc.getLatitude()) + " Long: " + String.valueOf(bestKnownLoc.getLongitude()), bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude());
 		}
+		// Current locaiton is known and location list is empty
+		else if ((bestKnownLoc != null) && (locationList == null))
+			Toast.makeText(getBaseContext(), "No nearby locations found. Please select or create a location.", Toast.LENGTH_LONG).show();
+		// Current location is not known and location list is not empty
+		else if ((bestKnownLoc == null) && (locationList != null))
+			Toast.makeText(getBaseContext(), "Current location is unknown. Please select a location.", Toast.LENGTH_LONG).show();
+		// Current locaiton is not known and location list is empty
 		else{
 			this.postLocation = new LocationModel("Unknown Location", 1, 2);
 		}
@@ -362,12 +388,17 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 		this.postUsername = ueditText.getText().toString();
 		this.postTitle = teditText.getText().toString();
 		
+		stopListeningLocation();
+		setLocation();
+		
 		if(checkStringIsAllWhiteSpace(this.postContents)){
 			raiseContentsIncompleteError();
 		}
 		else if(checkStringIsAllWhiteSpace(this.postTitle)){
 			raiseTitleIncompleteError();
 		}
+		else if (this.postLocation == null)
+			;
 		else{
 			
 			if(appState.getCreateCommentParent() != null){
@@ -423,8 +454,6 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 	            ElasticSearchOperations.pushHeadComment(model);
 			}
 
-			stopListeningLocation();
-			setLocation();
 			
 			model.setLocation(this.postLocation);
 
@@ -484,5 +513,19 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 		finish();
 	}
 	
-	
+	// TODO java doc this method: code modified from http://stackoverflow.com/questions/837872/calculate-distance-in-meters-when-you-know-longitude-and-latitude-in-java April 1, 2014
+	public static double distFrom(double lat1, double lng1, double lat2, double lng2) {
+	    double earthRadius = 3958.75;
+	    double dLat = Math.toRadians(lat2-lat1);
+	    double dLng = Math.toRadians(lng2-lng1);
+	    double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+	               Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+	               Math.sin(dLng/2) * Math.sin(dLng/2);
+	    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+	    double dist = earthRadius * c;
+
+	    int meterConversion = 1609;
+
+	    return (dist * meterConversion);
+	    }
 }
