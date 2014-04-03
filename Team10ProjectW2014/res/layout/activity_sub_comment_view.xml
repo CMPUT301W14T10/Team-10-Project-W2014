@@ -11,7 +11,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:divider="#FFFFFF"
-        android:dividerHeight="1px"
+        android:dividerHeight="3px"
         tools:listheader="@layout/subcommentview_head_item"
     	tools:listitem="@layout/subcommentview_sub_item" />
 
