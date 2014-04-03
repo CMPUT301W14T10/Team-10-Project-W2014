@@ -5,10 +5,9 @@
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="dash_string">  -  </string>
-    
     <string name="desc">The picture the user posted with this comment.</string>
     <string name="new_location_name_edittext">Enter location name</string>
-    
+
     <!-- ActionBar Strings -->
     <string name="action_settings">Settings</string>
     <string name="action_menu">Menu</string>
@@ -20,7 +19,7 @@
     <string name="action_reply">Reply</string>
     <string name="action_title">Title</string>
     <string name="action_add_head_comment">Add Head Comment</string>
-    
+
     <!-- SubCommentView -->
     <string name="title_activity_sub_comment_view">SubCommentViewActivity</string>
     <string name="comment_image">Head Comment Image</string>
@@ -45,7 +44,6 @@
     <string name="number_of_favourites">Number of Favourites</string>
     <string name="pictures">Pictures</string>
     <string name="sort_subtitle">sort by:</string>
-    
     <string name="comments_sav">comments.sav</string>
     <string name="user_sav">user.sav</string>
     <string name="title_activity_set_user_name">SetUserNameActivity</string>
@@ -54,9 +52,12 @@
     <string name="skip_button">Skip this Step</string>
     <string name="head_comment_list_at">at</string>
     <string name="head_comment_list_location">location</string>
-    
+
     <!-- LocationListenerController -->
     <string name="gps_appears_disabled">Your GPS seems to be disabled, do you want to enable it?</string>
     <string name="current_best_loc_on_search">Current best location on search: </string>
     <string name="current_best_loc_on_create">Current best location on create: </string>
+    <string name="title_activity_favourites_view">FavouritesViewActivity</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>

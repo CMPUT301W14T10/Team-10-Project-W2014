@@ -7,15 +7,15 @@
     <uses-sdk
         android:minSdkVersion="11"
         android:targetSdkVersion="16" />
-    
-	 <uses-feature android:name="android.hardware.camera"
-                  android:required="false" />
-    
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<uses-permission android:name="android.permission.INTERNET" />
-    
-    
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
         android:label="CreateCommentActivityTests"
@@ -39,13 +39,16 @@
         </activity>
         <activity android:name="ca.ualberta.team10projectw2014.controllersAndViews.CreateCommentActivity" >
         </activity>
-        
         <activity android:name="ca.ualberta.team10projectw2014.controllersAndViews.EditCommentActivity" >
         </activity>
-        <activity android:name="ca.ualberta.team10projectw2014.controllersAndViews.SubCommentViewActivity"
+        <activity
+            android:name="ca.ualberta.team10projectw2014.controllersAndViews.SubCommentViewActivity"
             android:label="@string/title_activity_sub_comment_view" >
         </activity>
-
+        <activity
+            android:name="ca.ualberta.team10projectw2014.controllersAndViews.AssortedListViewActivity"
+            android:label="@string/title_activity_favourites_view" >
+        </activity>
     </application>
 
 </manifest>

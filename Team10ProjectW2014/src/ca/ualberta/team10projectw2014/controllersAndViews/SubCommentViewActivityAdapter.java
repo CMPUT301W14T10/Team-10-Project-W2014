@@ -3,12 +3,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import ca.ualberta.team10projectw2014.R;
-import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
-import ca.ualberta.team10projectw2014.models.CommentModel;
-import ca.ualberta.team10projectw2014.models.SubCommentModel;
-import ca.ualberta.team10projectw2014.models.UserModel;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +16,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import ca.ualberta.team10projectw2014.R;
+import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
+import ca.ualberta.team10projectw2014.models.CommentModel;
+import ca.ualberta.team10projectw2014.models.SubCommentModel;
+import ca.ualberta.team10projectw2014.models.UserModel;
 
 /**
  * Creates a custom adapter for displaying a comment's infomation in
@@ -118,6 +117,10 @@ public class SubCommentViewActivityAdapter extends
 						view.setTag(holder);
 			//Required to be used in an inner method
 			final int pos = position;
+			
+			if(commentList.get(pos).isInArrayList(appState.getUserModel().getFavourites())){
+				holder.favouriteButton.setText("UnFavourite");
+			}
 			
 			holder.replyButton.setOnClickListener(new View.OnClickListener() {
 				

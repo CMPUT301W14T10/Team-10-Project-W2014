@@ -5,7 +5,6 @@ import java.util.Calendar;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.util.Log;
 
 /**
  * This class acts as the super class model for comments.
@@ -126,5 +125,18 @@ public class CommentModel{
 		}
 	}
 	
+	public CommentModel findInArrayList(ArrayList<? extends CommentModel> commentList){
+		CommentModel subCommentMatch;
+		for (CommentModel arrayListComment : commentList){
+			if((subCommentMatch = this.findInArrayList(arrayListComment.getSubComments()))
+						!= null){
+				return subCommentMatch;
+			}
+			if(this.compareComments(arrayListComment)){
+				return arrayListComment;
+			}
+		}
+		return null;
+	}
 
 }

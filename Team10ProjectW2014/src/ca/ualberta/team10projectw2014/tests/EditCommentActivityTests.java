@@ -2,13 +2,13 @@ package ca.ualberta.team10projectw2014.tests;
 
 import java.util.Calendar;
 
+import android.test.ActivityInstrumentationTestCase2;
+import android.widget.EditText;
 import ca.ualberta.team10projectw2014.R;
 import ca.ualberta.team10projectw2014.controllersAndViews.EditCommentActivity;
 import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
-import android.test.ActivityInstrumentationTestCase2;
-import android.widget.EditText;
 
 /**
  * @author      Bradley Poulette <bpoulett@ualberta.ca>
