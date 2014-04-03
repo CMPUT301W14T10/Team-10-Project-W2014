@@ -19,18 +19,24 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -49,7 +55,8 @@ public class MainListViewActivity extends Activity{
 	private static LayoutInflater layoutInflater;
 	private ApplicationStateModel appState;
 
-	
+	SharedPreferences setOverlay;
+	boolean showOverlay;
 	
 	// In onCreate we will prepare the view to 
 	//display the activity and set up the 
@@ -64,8 +71,11 @@ public class MainListViewActivity extends Activity{
 		this.appState.setCommentList(new ArrayList<CommentModel>());
 		this.appState.setFileContext(this);
 		
-		
-		
+		// below sharedpref code adapted from
+		// http://stackoverflow.com/a/19232789/2557554
+		setOverlay = PreferenceManager.getDefaultSharedPreferences(this);
+		showOverlay = setOverlay.getBoolean("MainOverlayPref", true);
+		    if (showOverlay == true) showOverLay();
 		
 		this.appState.loadComments();
 		this.appState.loadUser();
@@ -74,6 +84,24 @@ public class MainListViewActivity extends Activity{
 		
 	}
 
+	// the below method is adapted from 
+	// https://github.com/pranayairan/AndroidExamples/tree/master/AndroidHelpOverlay
+    private void showOverLay(){
+        final Dialog dialog = new Dialog(MainListViewActivity.this, 
+                android.R.style.Theme_Translucent_NoTitleBar);
+        dialog.setContentView(R.layout.main_overlay_view);
+        LinearLayout layout = (LinearLayout) dialog.findViewById(R.id.overlayLayout);
+        layout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                dialog.dismiss();
+                SharedPreferences.Editor editor = setOverlay.edit();
+                editor.putBoolean("MainOverlayPref", false);
+                editor.commit();
+            }
+        });
+        dialog.show();
+    }
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu){
