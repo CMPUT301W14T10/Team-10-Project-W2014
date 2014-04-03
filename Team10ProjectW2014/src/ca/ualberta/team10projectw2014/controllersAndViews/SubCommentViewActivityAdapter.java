@@ -141,11 +141,23 @@ public class SubCommentViewActivityAdapter extends
 					// TODO Auto-generated method stub
 					//Add a Comment the user's favourite list if comment is not
 					//already in the user's favourite
-					if(!userData.getFavourites().contains(commentList.get(pos))){
-						userData.getFavourites().add(commentList.get(pos));
+					if(!commentList.get(pos).isInArrayList(appState.getUserModel().getFavourites())){
 						commentList.get(pos).setNumFavourites(commentList.get(pos).getNumFavourites() + 1);
-					}else {
-						Toast.makeText(context, "Comment already in Favourite List", Toast.LENGTH_LONG).show();
+						appState.getUserModel().getFavourites().add(commentList.get(pos));
+						appState.saveUser();
+						appState.saveComments();
+						appState.loadComments();
+						((Button) v).setText("UnFavourite");
+						Toast.makeText(getContext(), "Comment added to favourites", Toast.LENGTH_SHORT).show();
+					}
+					else {
+						commentList.get(pos).setNumFavourites(commentList.get(pos).getNumFavourites() - 1);
+						commentList.get(pos).removeFromArrayList(appState.getUserModel().getFavourites());
+						appState.saveUser();
+						appState.saveComments();
+						appState.loadComments();
+						((Button) v).setText("Favourite");
+						Toast.makeText(context, "Comment removed from Favourite List", Toast.LENGTH_LONG).show();
 					}
 					
 					

@@ -5,6 +5,7 @@ import java.util.Calendar;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.util.Log;
 
 /**
  * This class acts as the super class model for comments.
@@ -98,8 +99,8 @@ public class CommentModel{
 		this.authorAndroidID = authorAndroidID;
 	}
 	public boolean compareComments(CommentModel otherComment){
-		if((this.getAuthorAndroidID() == otherComment.getAuthorAndroidID()) &&
-				(this.getTimestamp() == otherComment.getTimestamp()))
+		if((this.getAuthorAndroidID().equals(otherComment.getAuthorAndroidID())) &&
+				(this.getTimestamp().equals(otherComment.getTimestamp())))
 			return true;
 		else
 			return false;
@@ -114,9 +115,14 @@ public class CommentModel{
 
 	public void removeFromArrayList(ArrayList<CommentModel> commentList)
 	{
-		for(CommentModel comment : commentList){
+		CommentModel comment;
+		for(int i = 0; i < commentList.size(); i++){
+			comment = commentList.get(i);
 			if(this.compareComments(comment))
-				commentList.remove(comment);
+				//while loop in case comment somehow ended up in the list 
+				//numerous times, which should not happen since comments
+				//are unique:
+				commentList.remove(i);
 		}
 	}
 	

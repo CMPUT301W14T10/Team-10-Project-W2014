@@ -20,12 +20,14 @@ import java.util.ArrayList;
 import ca.ualberta.team10projectw2014.R;
 import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
+import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,8 +51,8 @@ public class MainListViewActivity extends Activity{
 	private static LayoutInflater layoutInflater;
 	private ApplicationStateModel appState;
 
-	
-	
+
+
 	// In onCreate we will prepare the view to 
 	//display the activity and set up the 
 	//ApplicationStateModel, which is a singleton 
@@ -62,12 +64,19 @@ public class MainListViewActivity extends Activity{
 		layoutInflater = LayoutInflater.from(this);
 		this.appState = ApplicationStateModel.getInstance();
 		this.appState.setCommentList(new ArrayList<CommentModel>());
-		//this.appState.setFileContext(this);
-		//this.appState.loadComments();
-		//this.appState.loadUser();
+		this.appState.setFileContext(this);
+
+
+
+
+		this.appState.loadComments();
+		this.appState.loadUser();
+
+		//ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
+
 	}
 
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu){
 		// Inflate the menu; this adds items to the action bar if present.
@@ -75,14 +84,13 @@ public class MainListViewActivity extends Activity{
 		//Tells the ApplicationStateModel singleton to load comments/user 
 		//from network(when implemented)/file and creates a new adapter
 		//in the appState for these values.
-		//this.appState.setFileContext(this);
-		//this.appState.loadComments();
-		//this.appState.loadUser();
-		//this.appState.setMLVAdapter(new MainListViewAdapter(this, this.appState.getCommentList()));
-		
+		this.appState.setFileContext(this);
+		this.appState.loadComments();
+		this.appState.loadUser();
+		this.appState.setMLVAdapter(new MainListViewAdapter(this, this.appState.getCommentList()));
 		return true;
 	}
-	
+
 	//In onResume the content view is set and the appState
 	//is told to reload and update the view, in case
 	//this was not done since any changes occurred.
@@ -90,16 +98,13 @@ public class MainListViewActivity extends Activity{
 		super.onResume(); 
 		setContentView(R.layout.activity_head_comment_view);
 		this.commentView = (ListView) findViewById(R.id.HeadCommentList);
-		
+
 		//call the ApplicationStateModel singleton's methods to update
 		//its attributes from file(and/or a network connection when implemented):
-		
-		//ElasticSearch Code for getting new comments
-		
 		this.appState.setFileContext(this);
 		this.appState.loadComments();
 		this.appState.loadUser();
-		
+
 		//Head Comment Sorting:
 		//Checks which selection method is active and sorts the list accordingly.
 		//Sort by picture
@@ -130,10 +135,10 @@ public class MainListViewActivity extends Activity{
 			else if(this.appState.getUserModel().isSortByPopularity())
 				this.appState.setCommentList(this.appState.sort(this.appState.getCommentList(), ApplicationStateModel.popularityCompare));
 		}
-		
+
 		//Create an adapter to reflect the comments loaded/sorted:
 		this.appState.setMLVAdapter(new MainListViewAdapter(this, this.appState.getCommentList()));
-		
+
 		//Set the commentView in this activity to reflect the corresponding 
 		//adapter in the ApplicationStateModel:
 		this.commentView.setAdapter(this.appState.getMLVAdapter());
@@ -152,10 +157,10 @@ public class MainListViewActivity extends Activity{
 				//start the SubCommentViewActivity on top of the activity
 				//containing the view(i.e. this MainListViewActivity):
 				view.getContext().startActivity(subCommentView);
-				
+
 			}});
 	}	
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		switch(item.getItemId()){
@@ -194,9 +199,9 @@ public class MainListViewActivity extends Activity{
 			default:
 				return super.onOptionsItemSelected(item);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Brings up a dialog box to prompt user for a new username:
 	 */
@@ -218,7 +223,7 @@ public class MainListViewActivity extends Activity{
 				//get the text from the editable:
 				Editable usernameEditable = usernameText.getText();
 				String usernameString = usernameEditable.toString();
-				
+
 				//Set the new username and save the UserModel:
 				appState.getUserModel().setUsername(usernameString);
 				appState.saveUser();
@@ -234,15 +239,15 @@ public class MainListViewActivity extends Activity{
 
 		alert.show();
 	}
-	
 
-	
+
+
 	//Adapted from the android developer page 
 	//http://developer.android.com/guide/topics/ui/controls/checkbox.html
 	public void onCheckboxClicked(View view) {
 	    // Is the view now checked?
 	    boolean checked = ((CheckBox) view).isChecked();
-	    
+
 	    // Check which checkbox was clicked
 	    switch(view.getId()) {
 	    	//Set user preferences according
@@ -255,7 +260,7 @@ public class MainListViewActivity extends Activity{
 	            break;
 	    }
 	}
-	
+
 	/**
 	 * Responds to clicks on a radio button in the sort by alert
 	 * dialog. Adapted from the android developer website
@@ -281,7 +286,7 @@ public class MainListViewActivity extends Activity{
 	        		this.appState.getUserModel().setSortByDate(false);
 	            }
 	            break;
-	            
+
 	        case R.id.location:
 	            if (checked){
 	            	this.appState.getUserModel().setSortByLoc(true);
@@ -291,7 +296,7 @@ public class MainListViewActivity extends Activity{
 	            	this.appState.getUserModel().setSortByLoc(false);
 	            }
 	            break;
-	            
+
 	        case R.id.number_of_favourites:
 	            if (checked){
 	            	this.appState.getUserModel().setSortByPopularity(true);
@@ -301,11 +306,11 @@ public class MainListViewActivity extends Activity{
 	            	this.appState.getUserModel().setSortByPopularity(false);
 	            }
 	            break;
-	            
+
 	    }
 	}
-	
-	
+
+
 	/**
 	 * Brings up a dialog box to prompt user for sorting criteria:
 	 */
@@ -314,17 +319,17 @@ public class MainListViewActivity extends Activity{
 
 		//set the fields of the dialog:
 		alert.setTitle("Sort By:");
-	
+
 		//get the dialogue's layout from XML:
 		LinearLayout optionsView = (LinearLayout)layoutInflater.inflate(R.layout.sort_by_dialog_list, 
 				null);
-		
+
 		//get the group of radio buttons that determine sorting criteria:
 		ViewGroup sortRadioGroup = (ViewGroup) optionsView.getChildAt(0);
-		
+
 		RadioButton button;
 		CheckBox box;
-		
+
 		//if/else statements that set the correct radio button
 		//and check the sort by picture box if appropriate:
 		if(this.appState.getUserModel().isSortByDate()){
@@ -348,7 +353,7 @@ public class MainListViewActivity extends Activity{
 			box = (CheckBox) optionsView.getChildAt(2);
 			box.setChecked(true);
 		}
-		
+
 		alert.setView(optionsView);
 
 		//set the positive button with its text and set up an on click listener
@@ -371,5 +376,5 @@ public class MainListViewActivity extends Activity{
 
 		alert.show();
 	}
-	
-}	
+
+}
