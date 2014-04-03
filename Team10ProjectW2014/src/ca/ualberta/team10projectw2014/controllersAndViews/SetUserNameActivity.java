@@ -1,8 +1,5 @@
 package ca.ualberta.team10projectw2014.controllersAndViews;
 
-import ca.ualberta.team10projectw2014.R;
-import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
-import ca.ualberta.team10projectw2014.models.UserModel;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import ca.ualberta.team10projectw2014.R;
+import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
+import ca.ualberta.team10projectw2014.models.UserModel;
 /**
  * Called from mainListViewActivity the first time the app is run in order
  * for the user to set a username. Currently unused.

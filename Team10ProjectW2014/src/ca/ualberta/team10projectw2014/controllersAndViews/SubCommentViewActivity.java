@@ -4,10 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import ca.ualberta.team10projectw2014.R;
-import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
-import ca.ualberta.team10projectw2014.models.CommentModel;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -19,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,6 +32,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import ca.ualberta.team10projectw2014.R;
+import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
+import ca.ualberta.team10projectw2014.models.CommentModel;
 /**
  * Called from mainListViewActivity when a head comment is selected.
  * displays that head comment and all of its replies(recursively, so
@@ -132,7 +132,6 @@ public class SubCommentViewActivity extends Activity {
 				appState.getUserModel()));
 
 		subListView.setAdapter(appState.getSCVAdapter());
-
 	}
 
 	/**
@@ -320,6 +319,7 @@ public class SubCommentViewActivity extends Activity {
 		Button moreButton = (Button) header.findViewById(R.id.head_more_option);
 		ImageView imageView = (ImageView) header
 				.findViewById(R.id.head_comment_image);
+
 
 		// Set the items to the contents of the Head Comment
 		textTitle.setText(headComment.getTitle());

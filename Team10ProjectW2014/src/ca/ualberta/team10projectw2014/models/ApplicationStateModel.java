@@ -15,6 +15,7 @@ import android.content.Context;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 import ca.ualberta.team10projectw2014.controllersAndViews.MainListViewAdapter;
 import ca.ualberta.team10projectw2014.controllersAndViews.SubCommentViewActivityAdapter;
 import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
@@ -95,6 +96,11 @@ public class ApplicationStateModel {
 	*/
 	private SubCommentViewActivityAdapter SCVAdapter;
 	
+	/**
+	*Adapter for displaying the list of favourites
+	*in the FavouritesViewActivity.
+	*/
+	private MainListViewAdapter assortAdapter;
 
 	/**
 	*The list of all head comments that in turn
@@ -137,6 +143,10 @@ public class ApplicationStateModel {
 	*change.
 	*/
 	private CommentModel commentToEdit;
+	
+	private ArrayList<CommentModel> assortList;
+	
+	private String assortViewTitle;
 	
 	/**
 	*A comparator used in sorting comments by location.
@@ -270,6 +280,39 @@ public class ApplicationStateModel {
 		return this.locationList;
 	}
 
+	public MainListViewAdapter getAssortAdapter()
+	{
+
+		return assortAdapter;
+	}
+	
+	public void setAssortAdapter(MainListViewAdapter favsAdapter)
+	{
+		this.assortAdapter = favsAdapter;
+	}
+	
+	public ArrayList<CommentModel> getAssortList()
+	{
+
+		return assortList;
+	}
+	public void setAssortList(ArrayList<CommentModel> assortList)
+	{
+
+		this.assortList = assortList;
+	}
+	
+	public String getAssortViewTitle()
+	{
+		return assortViewTitle;
+	}
+	public void setAssortViewTitle(String assortViewTitle)
+	{
+
+		this.assortViewTitle = assortViewTitle;
+	}
+
+	
 	/**
 	 * A method for updating the MainListViewAdapter from outside of the
 	 * singleton.
@@ -289,6 +332,11 @@ public class ApplicationStateModel {
 	public void updateSubAdapter()
 	{
 		this.SCVAdapter.notifyDataSetChanged();
+	}
+	
+	public void updateAssortAdapter()
+	{
+		this.assortAdapter.notifyDataSetChanged();
 	}
 
 	/**
@@ -369,6 +417,17 @@ public class ApplicationStateModel {
 			//Close the files:
 			isr.close();
 			fis.close();
+			if(userModel != null){
+				updateFavsAndWantReads();
+			}
+			if(this.getSubCommentViewHead() != null){
+				this.subCommentViewHead = this.subCommentViewHead.findInArrayList(commentList);
+				//If the sub comment head exists but is no longer in the list after loading,
+				//something has gone wrong since comments cannot be deleted:
+				if(this.subCommentViewHead == null){
+					Log.e("Comment Missing", "Couldn't find subCommentViewHead in list of comments after loading.");
+				}
+			}
 		} catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
@@ -420,6 +479,16 @@ public class ApplicationStateModel {
 	 * @see #userModel
 	 */
 	public void loadUser(){
+//		boolean assortIsFavList = false;
+//		boolean assortIsWantReadList = false;
+//		if((this.assortList != null) && (this.assortList == this.userModel.getFavourites())){
+//			assortIsFavList = true;
+//		}
+//		if((this.assortList != null) && (this.assortList == this.userModel.getWantToReadComments())){
+//			assortIsWantReadList = true;
+//		}
+		ArrayList<CommentModel> favsReference;
+		ArrayList<CommentModel> readLaterReference;
 		FileInputStream fis;
 		userModel = new UserModel(USER_fileContext);
 		try
@@ -427,7 +496,7 @@ public class ApplicationStateModel {
 			//Obtain the file to read:
 			fis = USER_fileContext.openFileInput(USER_FILE_NAME);
 			InputStreamReader isr = new InputStreamReader(fis);
-			
+
 			//Create the GSON object and type token:
 			Gson gson = new Gson();
 			Type fooType = new TypeToken<UserModel>() {}.getType();
@@ -437,12 +506,42 @@ public class ApplicationStateModel {
 			
 			//if the file was empty, keep an empty list, not null.
 			//Otherwise, set the user to whatever was in the file:
-			if(loadedUser != null)
+			if(loadedUser != null){
+				//If we already had the usermodel loaded, then
+				//other classes might rely on the references to the 
+				//
+				if(this.userModel != null){
+					favsReference = this.userModel.getFavourites();
+					readLaterReference = this.userModel.getWantToReadComments();
+					favsReference.clear();
+					readLaterReference.clear();
+					for(CommentModel favourite : loadedUser.getFavourites()){
+						favsReference.add(favourite);
+					}
+					for(CommentModel laterComment : loadedUser.getWantToReadComments()){
+						readLaterReference.add(laterComment);
+					}
+					loadedUser.setFavourites(favsReference);
+					loadedUser.setWantToReadComments(readLaterReference);
+				}
 				this.userModel = loadedUser;
+			}
 			
 			//close the file:
 			isr.close();
 			fis.close();
+//			if(assortIsFavList){
+//				this.assortList = this.userModel.getFavourites();
+//				if(this.assortAdapter != null){
+//					this.updateAssortAdapter();
+//				}
+//			}
+//			if(assortIsWantReadList){
+//				this.assortList = this.userModel.getWantToReadComments();
+//				if(this.assortAdapter != null){
+//					this.updateAssortAdapter();
+//				}			
+//			}
 		} catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
@@ -578,24 +677,28 @@ public class ApplicationStateModel {
 	  * @param cmp - the comparator to compare CommentModels when sorting
 	  * @return the sorted array of head comments
 	  */
-	 public ArrayList<CommentModel> pictureSort(ArrayList<CommentModel> list, Comparator<CommentModel> cmp) {
+	 public ArrayList<CommentModel> pictureSort(ArrayList<CommentModel> commentList, Comparator<CommentModel> cmp) {
 		 ArrayList<CommentModel> noPicArray = new ArrayList<CommentModel>();
-		 for (int i=0; i < list.size(); i++) {
+		 ArrayList<CommentModel> picArray = new ArrayList<CommentModel>();
+		 for (CommentModel comment : commentList) {
 			 // If comment does not have a photo
-			 if (list.get(i).getPhotoPath() == null) {
+			 if (comment.getPhotoPath() == null) {
 				 // Add it to the array containing comments without pictures
-				 noPicArray.add(list.get(i));
+				 noPicArray.add(comment);
+			 }
+			 else{
 				 // Remove it from the array containing comments with pictures
-				 list.remove(i);
-				 i--;
+				 picArray.add(comment);
 			 }
 		 }
 		 // Sort each array
-		 list = sort(list, cmp);
+		 picArray = sort(picArray, cmp);
 		 noPicArray = sort(noPicArray, cmp);
+		 commentList.clear();
 		 // Combine both arrays
-		 list.addAll(noPicArray);
-		 return list;
+		 commentList.addAll(picArray);
+		 commentList.addAll(noPicArray);
+		 return commentList;
 	 }
 	 
 	 
@@ -641,9 +744,21 @@ public class ApplicationStateModel {
 		    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 		}
 
-
-	 
-
+	 private void updateFavsAndWantReads(){
+		 for(CommentModel loadedComment : this.commentList){
+			 for(CommentModel fav : this.userModel.getFavourites()){
+				 if(fav.compareComments(loadedComment)){
+					 fav = loadedComment;
+				 }
+			 }
+			 for(CommentModel readLater : this.userModel.getWantToReadComments()){
+				 if(readLater.compareComments(loadedComment)){
+					 readLater = loadedComment;
+				 }
+			 }
+			 saveUser();
+		 }
+	 }
 }	
 
 

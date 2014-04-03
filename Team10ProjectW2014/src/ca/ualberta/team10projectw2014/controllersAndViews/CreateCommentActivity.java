@@ -7,20 +7,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import ca.ualberta.team10projectw2014.R;
-import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
-import ca.ualberta.team10projectw2014.models.CommentModel;
-import ca.ualberta.team10projectw2014.models.LocationListenerModel;
-import ca.ualberta.team10projectw2014.models.LocationModel;
-import ca.ualberta.team10projectw2014.models.SubCommentModel;
-import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
-
-import android.R.anim;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -35,12 +24,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import ca.ualberta.team10projectw2014.R;
+import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
+import ca.ualberta.team10projectw2014.models.CommentModel;
+import ca.ualberta.team10projectw2014.models.LocationListenerModel;
+import ca.ualberta.team10projectw2014.models.LocationModel;
+import ca.ualberta.team10projectw2014.models.SubCommentModel;
+import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 
 
 /**
@@ -361,7 +356,6 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 	    }
 		else{
 			Toast.makeText(getBaseContext(), "Sorry, you don't have a camera!", Toast.LENGTH_LONG).show();
-
 		}
 	}
 
