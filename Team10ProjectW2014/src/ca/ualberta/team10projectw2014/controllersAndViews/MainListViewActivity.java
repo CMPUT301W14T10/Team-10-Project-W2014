@@ -155,7 +155,6 @@ public class MainListViewActivity extends Activity{
 				//start the SubCommentViewActivity on top of the activity
 				//containing the view(i.e. this MainListViewActivity):
 				view.getContext().startActivity(subCommentView);
-				
 			}});
 	}	
 	
