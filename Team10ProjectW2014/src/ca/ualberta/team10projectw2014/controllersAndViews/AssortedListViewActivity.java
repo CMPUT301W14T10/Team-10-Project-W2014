@@ -34,6 +34,13 @@ public class AssortedListViewActivity extends Activity
 		appState.loadComments();
 		appState.setAssortAdapter(new MainListViewAdapter(this, appState.getAssortList()));
 	}
+	
+	protected void onResume(){
+		super.onResume(); 
+		appState.loadUser();
+		appState.loadComments();
+		appState.updateAssortAdapter();
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)

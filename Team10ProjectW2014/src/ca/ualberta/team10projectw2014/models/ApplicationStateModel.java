@@ -98,7 +98,7 @@ public class ApplicationStateModel {
 	*Adapter for displaying the list of favourites
 	*in the FavouritesViewActivity.
 	*/
-	private MainListViewAdapter favsAdapter;
+	private MainListViewAdapter assortAdapter;
 
 	/**
 	*The list of all head comments that in turn
@@ -281,12 +281,12 @@ public class ApplicationStateModel {
 	public MainListViewAdapter getAssortAdapter()
 	{
 
-		return favsAdapter;
+		return assortAdapter;
 	}
 	
 	public void setAssortAdapter(MainListViewAdapter favsAdapter)
 	{
-		this.favsAdapter = favsAdapter;
+		this.assortAdapter = favsAdapter;
 	}
 	
 	public ArrayList<CommentModel> getAssortList()
@@ -302,7 +302,6 @@ public class ApplicationStateModel {
 	
 	public String getAssortViewTitle()
 	{
-
 		return assortViewTitle;
 	}
 	public void setAssortViewTitle(String assortViewTitle)
@@ -331,6 +330,11 @@ public class ApplicationStateModel {
 	public void updateSubAdapter()
 	{
 		this.SCVAdapter.notifyDataSetChanged();
+	}
+	
+	public void updateAssortAdapter()
+	{
+		this.assortAdapter.notifyDataSetChanged();
 	}
 
 	/**
@@ -473,6 +477,16 @@ public class ApplicationStateModel {
 	 * @see #userModel
 	 */
 	public void loadUser(){
+//		boolean assortIsFavList = false;
+//		boolean assortIsWantReadList = false;
+//		if((this.assortList != null) && (this.assortList == this.userModel.getFavourites())){
+//			assortIsFavList = true;
+//		}
+//		if((this.assortList != null) && (this.assortList == this.userModel.getWantToReadComments())){
+//			assortIsWantReadList = true;
+//		}
+		ArrayList<CommentModel> favsReference;
+		ArrayList<CommentModel> readLaterReference;
 		FileInputStream fis;
 		userModel = new UserModel(USER_fileContext);
 		try
@@ -480,7 +494,7 @@ public class ApplicationStateModel {
 			//Obtain the file to read:
 			fis = USER_fileContext.openFileInput(USER_FILE_NAME);
 			InputStreamReader isr = new InputStreamReader(fis);
-			
+
 			//Create the GSON object and type token:
 			Gson gson = new Gson();
 			Type fooType = new TypeToken<UserModel>() {}.getType();
@@ -490,12 +504,42 @@ public class ApplicationStateModel {
 			
 			//if the file was empty, keep an empty list, not null.
 			//Otherwise, set the user to whatever was in the file:
-			if(loadedUser != null)
+			if(loadedUser != null){
+				//If we already had the usermodel loaded, then
+				//other classes might rely on the references to the 
+				//
+				if(this.userModel != null){
+					favsReference = this.userModel.getFavourites();
+					readLaterReference = this.userModel.getWantToReadComments();
+					favsReference.clear();
+					readLaterReference.clear();
+					for(CommentModel favourite : loadedUser.getFavourites()){
+						favsReference.add(favourite);
+					}
+					for(CommentModel laterComment : loadedUser.getWantToReadComments()){
+						readLaterReference.add(laterComment);
+					}
+					loadedUser.setFavourites(favsReference);
+					loadedUser.setWantToReadComments(readLaterReference);
+				}
 				this.userModel = loadedUser;
+			}
 			
 			//close the file:
 			isr.close();
 			fis.close();
+//			if(assortIsFavList){
+//				this.assortList = this.userModel.getFavourites();
+//				if(this.assortAdapter != null){
+//					this.updateAssortAdapter();
+//				}
+//			}
+//			if(assortIsWantReadList){
+//				this.assortList = this.userModel.getWantToReadComments();
+//				if(this.assortAdapter != null){
+//					this.updateAssortAdapter();
+//				}			
+//			}
 		} catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
@@ -631,24 +675,28 @@ public class ApplicationStateModel {
 	  * @param cmp - the comparator to compare CommentModels when sorting
 	  * @return the sorted array of head comments
 	  */
-	 public ArrayList<CommentModel> pictureSort(ArrayList<CommentModel> list, Comparator<CommentModel> cmp) {
+	 public ArrayList<CommentModel> pictureSort(ArrayList<CommentModel> commentList, Comparator<CommentModel> cmp) {
 		 ArrayList<CommentModel> noPicArray = new ArrayList<CommentModel>();
-		 for (int i=0; i < list.size(); i++) {
+		 ArrayList<CommentModel> picArray = new ArrayList<CommentModel>();
+		 for (CommentModel comment : commentList) {
 			 // If comment does not have a photo
-			 if (list.get(i).getPhotoPath() == null) {
+			 if (comment.getPhotoPath() == null) {
 				 // Add it to the array containing comments without pictures
-				 noPicArray.add(list.get(i));
+				 noPicArray.add(comment);
+			 }
+			 else{
 				 // Remove it from the array containing comments with pictures
-				 list.remove(i);
-				 i--;
+				 picArray.add(comment);
 			 }
 		 }
 		 // Sort each array
-		 list = sort(list, cmp);
+		 picArray = sort(picArray, cmp);
 		 noPicArray = sort(noPicArray, cmp);
+		 commentList.clear();
 		 // Combine both arrays
-		 list.addAll(noPicArray);
-		 return list;
+		 commentList.addAll(picArray);
+		 commentList.addAll(noPicArray);
+		 return commentList;
 	 }
 	 
 	 

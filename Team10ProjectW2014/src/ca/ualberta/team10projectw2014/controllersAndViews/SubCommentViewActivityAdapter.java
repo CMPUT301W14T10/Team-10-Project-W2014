@@ -118,6 +118,10 @@ public class SubCommentViewActivityAdapter extends
 			//Required to be used in an inner method
 			final int pos = position;
 			
+			if(commentList.get(pos).isInArrayList(appState.getUserModel().getFavourites())){
+				holder.favouriteButton.setText("UnFavourite");
+			}
+			
 			holder.replyButton.setOnClickListener(new View.OnClickListener() {
 				
 				@Override
