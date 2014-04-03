@@ -335,7 +335,6 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 	    }
 		else{
 			Toast.makeText(getBaseContext(), "Sorry, you don't have a camera!", Toast.LENGTH_LONG).show();
-
 		}
 	}
 	

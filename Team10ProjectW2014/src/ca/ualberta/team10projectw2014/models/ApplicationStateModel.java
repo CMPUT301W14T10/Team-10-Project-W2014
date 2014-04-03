@@ -93,6 +93,11 @@ public class ApplicationStateModel {
 	*/
 	private SubCommentViewActivityAdapter SCVAdapter;
 	
+	/**
+	*Adapter for displaying the list of favourites
+	*in the FavouritesViewActivity.
+	*/
+	private MainListViewAdapter favsAdapter;
 
 	/**
 	*The list of all head comments that in turn
@@ -135,6 +140,8 @@ public class ApplicationStateModel {
 	*change.
 	*/
 	private CommentModel commentToEdit;
+	
+	private ArrayList<CommentModel> assortList;
 	
 	/**
 	*A comparator used in sorting comments by location.
@@ -268,6 +275,28 @@ public class ApplicationStateModel {
 		return this.locationList;
 	}
 
+	public MainListViewAdapter getAssortAdapter()
+	{
+
+		return favsAdapter;
+	}
+	
+	public void setAssortAdapter(MainListViewAdapter favsAdapter)
+	{
+		this.favsAdapter = favsAdapter;
+	}
+	
+	public ArrayList<CommentModel> getAssortList()
+	{
+
+		return assortList;
+	}
+	public void setAssortList(ArrayList<CommentModel> assortList)
+	{
+
+		this.assortList = assortList;
+	}
+	
 	/**
 	 * A method for updating the MainListViewAdapter from outside of the
 	 * singleton.
@@ -631,9 +660,6 @@ public class ApplicationStateModel {
 	 public void pushComment(CommentModel comment){
 		 ElasticSearchOperations.pushHeadComment(comment);
 	 }
-
-
-	 
 
 }	
 

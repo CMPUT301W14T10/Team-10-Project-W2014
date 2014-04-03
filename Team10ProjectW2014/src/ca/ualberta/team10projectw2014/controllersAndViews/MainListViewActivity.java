@@ -154,6 +154,7 @@ public class MainListViewActivity extends Activity{
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
+		Intent assortList = new Intent(getApplicationContext(), AssortedListViewActivity.class);
 		switch(item.getItemId()){
 			//open the CreateCommentActivity. The parent comment
 			//is null because CreateCommentActiviy creates a new
@@ -178,14 +179,14 @@ public class MainListViewActivity extends Activity{
 			//Display the list of favourites specified in the user model
 			//when implemented:
 			case R.id.action_favourites_main:
-				this.appState.setCommentList(this.appState.getUserModel().getFavourites());
-				this.appState.updateMainAdapter();
+				this.appState.setAssortList(appState.getUserModel().getFavourites());
+				this.startActivity(assortList);
 				return true;
 			//Display the list of want to read comments specified in the user model
 			//when implemented:
 			case R.id.action_want_to_read_main:
-				this.appState.setCommentList(this.appState.getUserModel().getWantToReadComments());
-				this.appState.updateMainAdapter();
+				this.appState.setAssortList(appState.getUserModel().getWantToReadComments());
+				this.startActivity(assortList);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
