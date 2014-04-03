@@ -5,12 +5,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import ca.ualberta.team10projectw2014.R;
-import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
-import ca.ualberta.team10projectw2014.models.CommentModel;
-import ca.ualberta.team10projectw2014.models.LocationListenerModel;
-import ca.ualberta.team10projectw2014.models.LocationModel;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -27,6 +21,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import ca.ualberta.team10projectw2014.R;
+import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
+import ca.ualberta.team10projectw2014.models.CommentModel;
+import ca.ualberta.team10projectw2014.models.LocationListenerModel;
+import ca.ualberta.team10projectw2014.models.LocationModel;
 
 /**
  * @author      Bradley Poulette <bpoulett@ualberta.ca>

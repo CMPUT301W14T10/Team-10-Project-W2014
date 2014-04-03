@@ -144,6 +144,8 @@ public class ApplicationStateModel {
 	
 	private ArrayList<CommentModel> assortList;
 	
+	private String assortViewTitle;
+	
 	/**
 	*A comparator used in sorting comments by location.
 	*/
@@ -298,6 +300,18 @@ public class ApplicationStateModel {
 		this.assortList = assortList;
 	}
 	
+	public String getAssortViewTitle()
+	{
+
+		return assortViewTitle;
+	}
+	public void setAssortViewTitle(String assortViewTitle)
+	{
+
+		this.assortViewTitle = assortViewTitle;
+	}
+
+	
 	/**
 	 * A method for updating the MainListViewAdapter from outside of the
 	 * singleton.
@@ -397,12 +411,15 @@ public class ApplicationStateModel {
 			//Close the files:
 			isr.close();
 			fis.close();
+			if(userModel != null){
+				updateFavsAndWantReads();
+			}
 			if(this.getSubCommentViewHead() != null){
 				this.subCommentViewHead = this.subCommentViewHead.findInArrayList(commentList);
 				//If the sub comment head exists but is no longer in the list after loading,
 				//something has gone wrong since comments cannot be deleted:
 				if(this.subCommentViewHead == null){
-					Log.e("Comment Missing", "Coouldn't find subCommentViewHead in list of comments after loading.");
+					Log.e("Comment Missing", "Couldn't find subCommentViewHead in list of comments after loading.");
 				}
 			}
 		} catch (FileNotFoundException e)
@@ -670,6 +687,21 @@ public class ApplicationStateModel {
 		 ElasticSearchOperations.pushHeadComment(comment);
 	 }
 
+	 private void updateFavsAndWantReads(){
+		 for(CommentModel loadedComment : this.commentList){
+			 for(CommentModel fav : this.userModel.getFavourites()){
+				 if(fav.compareComments(loadedComment)){
+					 fav = loadedComment;
+				 }
+			 }
+			 for(CommentModel readLater : this.userModel.getWantToReadComments()){
+				 if(readLater.compareComments(loadedComment)){
+					 readLater = loadedComment;
+				 }
+			 }
+			 saveUser();
+		 }
+	 }
 }	
 
 

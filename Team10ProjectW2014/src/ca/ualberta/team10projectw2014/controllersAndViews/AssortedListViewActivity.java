@@ -1,17 +1,15 @@
 package ca.ualberta.team10projectw2014.controllersAndViews;
 
-import ca.ualberta.team10projectw2014.R;
-import ca.ualberta.team10projectw2014.R.layout;
-import ca.ualberta.team10projectw2014.R.menu;
-import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
-import ca.ualberta.team10projectw2014.models.CommentModel;
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import ca.ualberta.team10projectw2014.R;
+import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
+import ca.ualberta.team10projectw2014.models.CommentModel;
 
 public class AssortedListViewActivity extends Activity
 {
@@ -25,7 +23,15 @@ public class AssortedListViewActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_assort_comment_view);
 		appState = ApplicationStateModel.getInstance();
+		String title = appState.getAssortViewTitle();
+		if(title != null){
+			setTitle(title);
+		}
+		else{
+			setTitle("Assorted Comment List");
+		}
 		appState.loadUser();
+		appState.loadComments();
 		appState.setAssortAdapter(new MainListViewAdapter(this, appState.getAssortList()));
 	}
 
@@ -36,14 +42,14 @@ public class AssortedListViewActivity extends Activity
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.assort_view, menu);
 		this.commentView = (ListView) findViewById(R.id.FavCommentList);
-		this.commentView.setAdapter(this.appState.getMLVAdapter());
+		this.commentView.setAdapter(this.appState.getAssortAdapter());
 		//Opens SubCommentViewActivity when a comment is selected:
 		this.commentView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id){
 				//get the comment that was selected
-				CommentModel headComment = appState.getCommentList().get(position);
+				CommentModel headComment = appState.getAssortList().get(position);
 				Intent subCommentView = new Intent(getApplicationContext(), SubCommentViewActivity.class);
 				//Set the appropriate singleton attribute to point to the comment that
 				//SubCommentViewActivity is to represent:

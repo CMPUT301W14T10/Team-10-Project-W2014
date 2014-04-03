@@ -3,8 +3,6 @@ package ca.ualberta.team10projectw2014.models;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.provider.Settings.Secure;
 
 /**

@@ -17,17 +17,12 @@
 package ca.ualberta.team10projectw2014.controllersAndViews;
 import java.util.ArrayList;
 
-import ca.ualberta.team10projectw2014.R;
-import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
-import ca.ualberta.team10projectw2014.models.CommentModel;
-import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,6 +35,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import ca.ualberta.team10projectw2014.R;
+import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
+import ca.ualberta.team10projectw2014.models.CommentModel;
 
 /**
  * This class handles the activity displaying the list view of head comments.
@@ -189,12 +187,14 @@ public class MainListViewActivity extends Activity{
 			//when implemented:
 			case R.id.action_favourites_main:
 				this.appState.setAssortList(appState.getUserModel().getFavourites());
+				this.appState.setAssortViewTitle("Favourites");
 				this.startActivity(assortList);
 				return true;
 			//Display the list of want to read comments specified in the user model
 			//when implemented:
 			case R.id.action_want_to_read_main:
 				this.appState.setAssortList(appState.getUserModel().getWantToReadComments());
+				this.appState.setAssortViewTitle("Want to Read");
 				this.startActivity(assortList);
 				return true;
 			default:

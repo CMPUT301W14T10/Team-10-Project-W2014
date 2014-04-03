@@ -1,6 +1,5 @@
 package ca.ualberta.team10projectw2014.models;
 
-import ca.ualberta.team10projectw2014.R;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,6 +8,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import ca.ualberta.team10projectw2014.R;
 
 /**
  * @author      Bradley Poulette <bpoulett@ualberta.ca>
