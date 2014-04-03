@@ -426,6 +426,9 @@ public class ApplicationStateModel {
 					Log.e("Comment Missing", "Couldn't find subCommentViewHead in list of comments after loading.");
 				}
 			}
+			if(this.MLVAdapter != null){
+				this.updateMainAdapter();
+			}
 		} catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
@@ -434,6 +437,30 @@ public class ApplicationStateModel {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	 private void updateFavsAndWantReads(){
+		 
+		 for(CommentModel loadedComment : this.commentList){
+			 if(this.userModel.getFavourites() != null){
+				 for(CommentModel fav : this.userModel.getFavourites()){
+					 if(fav.compareComments(loadedComment)){
+						 this.userModel.getFavourites().remove(fav);
+						 this.userModel.getFavourites().add(loadedComment);
+					 }
+				 }
+			 }
+			 if(this.userModel.getWantToReadComments() != null){
+				 for(CommentModel readLater : this.userModel.getWantToReadComments()){
+					 if(readLater.compareComments(loadedComment)){
+						 this.userModel.getFavourites().remove(readLater);
+						 this.userModel.getFavourites().add(loadedComment);
+					 }
+				 }
+			 }
+			 saveUser();
+		 }
+	 }
 
 	/**
 	 * A method for saving the user's
@@ -735,21 +762,6 @@ public class ApplicationStateModel {
 		 ElasticSearchOperations.pushHeadComment(comment);
 	 }
 
-	 private void updateFavsAndWantReads(){
-		 for(CommentModel loadedComment : this.commentList){
-			 for(CommentModel fav : this.userModel.getFavourites()){
-				 if(fav.compareComments(loadedComment)){
-					 fav = loadedComment;
-				 }
-			 }
-			 for(CommentModel readLater : this.userModel.getWantToReadComments()){
-				 if(readLater.compareComments(loadedComment)){
-					 readLater = loadedComment;
-				 }
-			 }
-			 saveUser();
-		 }
-	 }
 }	
 
 

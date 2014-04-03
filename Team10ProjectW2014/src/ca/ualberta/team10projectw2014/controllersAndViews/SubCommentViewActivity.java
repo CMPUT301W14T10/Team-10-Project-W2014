@@ -188,6 +188,7 @@ public class SubCommentViewActivity extends Activity {
 				appState.saveUser();
 				appState.saveComments();
 				appState.loadComments();
+				appState.loadUser();
 				item.setIcon(resources.getDrawable(R.drawable.ic_action_star_yellow));
 			}
 			else {
@@ -196,7 +197,8 @@ public class SubCommentViewActivity extends Activity {
 				appState.getSubCommentViewHead().removeFromArrayList(appState.getUserModel().getFavourites());
 				appState.saveUser();
 				appState.saveComments();
-				appState.loadComments();				
+				appState.loadComments();	
+				appState.loadUser();
 				item.setIcon(resources.getDrawable(R.drawable.ic_action_favourite));
 			}
 			return true;

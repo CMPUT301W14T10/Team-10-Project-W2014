@@ -69,8 +69,8 @@ public class SubCommentViewActivityAdapter extends
 		this.layoutResourceId = layoutResourceId;
 		this.commentList = commentList;
 		this.userData = userData;
-
 	}
+	
 	/**
 	 * Gets the view to be displayed by the listView.
 	 * 
