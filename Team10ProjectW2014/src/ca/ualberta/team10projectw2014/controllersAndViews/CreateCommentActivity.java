@@ -282,10 +282,14 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 						// TODO check if name is already in location list
 						stopListeningLocation();
 						String locationNameString = editText.getText().toString();
-						CreateCommentActivity.this.postLocation = new LocationModel(locationNameString, CreateCommentActivity.this.bestKnownLoc.getLatitude(), CreateCommentActivity.this.bestKnownLoc.getLongitude());
-						CreateCommentActivity.this.locationList.add(CreateCommentActivity.this.postLocation);
-						CreateCommentActivity.this.appState.setLocationList(CreateCommentActivity.this.locationList);
-						CreateCommentActivity.this.appState.saveLocations();
+						if (CreateCommentActivity.this.bestKnownLoc == null)
+							Toast.makeText(getBaseContext(), "No current location detected - can't set location", Toast.LENGTH_LONG).show();
+						else {	
+							CreateCommentActivity.this.postLocation = new LocationModel(locationNameString, CreateCommentActivity.this.bestKnownLoc.getLatitude(), CreateCommentActivity.this.bestKnownLoc.getLongitude());
+							CreateCommentActivity.this.locationList.add(CreateCommentActivity.this.postLocation);
+							CreateCommentActivity.this.appState.setLocationList(CreateCommentActivity.this.locationList);
+							CreateCommentActivity.this.appState.saveLocations();
+						}
 					}
 				});
 				alertDialogBuilder2.setNegativeButton("Cancel", null);
