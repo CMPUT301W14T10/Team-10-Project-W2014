@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#FFFFFF"
     android:orientation="vertical"
     tools:context=".SubCommentViewActivity" >
 
@@ -11,7 +10,7 @@
         android:id="@+id/sub_comment_list_view_sub"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:divider="#000000"
+        android:divider="#FFFFFF"
         android:dividerHeight="1px"
         tools:listheader="@layout/subcommentview_head_item"
     	tools:listitem="@layout/subcommentview_sub_item" />

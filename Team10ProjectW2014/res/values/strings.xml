@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<!-- General Strings -->
-    <string name="app_name">Team10ProjectW2014</string>
+    <string name="app_name">Chaddap</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="dash_string">  -  </string>
