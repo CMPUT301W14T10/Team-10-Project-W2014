@@ -126,5 +126,14 @@ public class CommentModel{
 		}
 	}
 	
+	public CommentModel findInArrayList(ArrayList<CommentModel> commentList){
+		for (CommentModel comment : commentList){
+			if(this.compareComments(comment)){
+				return comment;
+			}
+		}
+		return null;
+	}
+	
 
 }

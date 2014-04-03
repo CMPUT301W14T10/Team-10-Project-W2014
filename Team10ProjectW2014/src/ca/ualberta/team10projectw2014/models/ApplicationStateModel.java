@@ -13,6 +13,7 @@ import java.util.Comparator;
 
 import android.content.Context;
 import android.location.Location;
+import android.util.Log;
 import ca.ualberta.team10projectw2014.controllersAndViews.MainListViewAdapter;
 import ca.ualberta.team10projectw2014.controllersAndViews.SubCommentViewActivityAdapter;
 import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
@@ -396,6 +397,14 @@ public class ApplicationStateModel {
 			//Close the files:
 			isr.close();
 			fis.close();
+			if(this.getSubCommentViewHead() != null){
+				this.subCommentViewHead = this.subCommentViewHead.findInArrayList(commentList);
+				//If the sub comment head exists but is no longer in the list after loading,
+				//something has gone wrong since comments cannot be deleted:
+				if(this.subCommentViewHead == null){
+					Log.e("Comment Missing", "Coouldn't find subCommentViewHead in list of comments after loading.");
+				}
+			}
 		} catch (FileNotFoundException e)
 		{
 			e.printStackTrace();

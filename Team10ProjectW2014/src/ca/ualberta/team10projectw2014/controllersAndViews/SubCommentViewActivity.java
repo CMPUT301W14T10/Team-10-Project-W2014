@@ -132,7 +132,6 @@ public class SubCommentViewActivity extends Activity {
 				appState.getUserModel()));
 
 		subListView.setAdapter(appState.getSCVAdapter());
-
 	}
 
 	/**
