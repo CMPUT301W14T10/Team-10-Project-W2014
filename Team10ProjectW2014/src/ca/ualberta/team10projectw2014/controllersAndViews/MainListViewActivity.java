@@ -20,12 +20,14 @@ import java.util.ArrayList;
 import ca.ualberta.team10projectw2014.R;
 import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
+import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -63,8 +65,15 @@ public class MainListViewActivity extends Activity{
 		this.appState = ApplicationStateModel.getInstance();
 		this.appState.setCommentList(new ArrayList<CommentModel>());
 		this.appState.setFileContext(this);
+		
+		
+		
+		
 		this.appState.loadComments();
 		this.appState.loadUser();
+		
+		//ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
+		
 	}
 
 	

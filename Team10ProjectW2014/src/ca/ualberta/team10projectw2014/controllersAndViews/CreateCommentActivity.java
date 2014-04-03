@@ -282,10 +282,36 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 						// TODO check if name is already in location list
 						stopListeningLocation();
 						String locationNameString = editText.getText().toString();
-						CreateCommentActivity.this.postLocation = new LocationModel(locationNameString, CreateCommentActivity.this.bestKnownLoc.getLatitude(), CreateCommentActivity.this.bestKnownLoc.getLongitude());
-						CreateCommentActivity.this.locationList.add(CreateCommentActivity.this.postLocation);
-						CreateCommentActivity.this.appState.setLocationList(CreateCommentActivity.this.locationList);
-						CreateCommentActivity.this.appState.saveLocations();
+						
+						if (CreateCommentActivity.this.bestKnownLoc == null)
+							Toast.makeText(getBaseContext(), "No current location detected - can't set location", Toast.LENGTH_LONG).show();
+						else if (CreateCommentActivity.this.bestKnownLoc != null) {
+							int i;
+							double distance;
+							int closestLocationIndex = -1;
+							
+							for (i=0; i < CreateCommentActivity.this.locationList.size(); i++) {
+								// Determines if there is a location within 50m from location list
+								distance = distFrom(bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude(), CreateCommentActivity.this.locationList.get(i).getLatitude(), CreateCommentActivity.this.locationList.get(i).getLongitude());
+								if (distance < 50) {
+									closestLocationIndex = i;
+									break;
+								}
+							}
+							
+							// If there is a nearby location, do not allow user to create location
+							if (closestLocationIndex != -1) {
+								locationNameString = CreateCommentActivity.this.locationList.get(closestLocationIndex).getName();
+								Toast.makeText(getBaseContext(), "Cannot create new location near " + locationNameString, Toast.LENGTH_LONG).show();
+							}
+							// Otherwise create the location and set it as the comments location
+							else {	
+								CreateCommentActivity.this.postLocation = new LocationModel(locationNameString, CreateCommentActivity.this.bestKnownLoc.getLatitude(), CreateCommentActivity.this.bestKnownLoc.getLongitude());
+								CreateCommentActivity.this.locationList.add(CreateCommentActivity.this.postLocation);
+								CreateCommentActivity.this.appState.setLocationList(CreateCommentActivity.this.locationList);
+								CreateCommentActivity.this.appState.saveLocations();
+							}
+						}
 					}
 				});
 				alertDialogBuilder2.setNegativeButton("Cancel", null);
