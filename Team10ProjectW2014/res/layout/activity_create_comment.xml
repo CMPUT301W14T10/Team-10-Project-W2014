@@ -6,12 +6,11 @@
 
     <EditText
         android:id="@+id/cc_title"
-        android:hint="@string/create_comment_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" />
-    
-    	
+        android:ems="10"
+        android:hint="@string/create_comment_title"
+        android:inputType="textCapWords" />
 
     <EditText
         android:id="@+id/cc_username"
@@ -27,6 +26,7 @@
         android:ems="10"
         android:gravity="top"
         android:hint="@string/create_comment_content"
+        android:inputType="textCapSentences"
         android:singleLine="false" />
     
     <ImageView
