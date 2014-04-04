@@ -7,6 +7,7 @@
     <string name="dash_string">  -  </string>
     <string name="desc">The picture the user posted with this comment.</string>
     <string name="new_location_name_edittext">Enter location name</string>
+    <string name="welcome_msg">Welcome to Chaddap!</string>
     
     <!-- Overlay Description Strings -->
     <string name="overlay_description">Help Overlay</string>
