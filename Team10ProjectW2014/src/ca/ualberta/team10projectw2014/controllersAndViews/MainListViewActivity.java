@@ -26,6 +26,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -212,6 +213,9 @@ public class MainListViewActivity extends Activity{
 				return true;
 			case R.id.refresh_comments:
 				ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
+				//this.appState.saveComments();
+				//this.appState.loadComments();
+				Log.e("Outside ESO",this.appState.getCommentList().toString());
 				return true;
 
 			//Display the list of favourites specified in the user model
