@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.jar.Attributes.Name;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -273,20 +274,21 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 					public void onClick(DialogInterface dialog, int which) {
 						//final EditText editText = (EditText) locationDialogView.findViewById(R.id.enter_location_name);
 						final EditText editText = (EditText) locationNameDialogView.findViewById(R.id.enter_location_name);
-						// TODO check if no name entered
 						// TODO check if name is already in location list
 						stopListeningLocation();
 						String locationNameString = editText.getText().toString();
 						
 						if (CreateCommentActivity.this.bestKnownLoc == null)
 							Toast.makeText(getBaseContext(), "No current location detected - can't set location", Toast.LENGTH_LONG).show();
+						else if (locationNameString.matches(""))
+							Toast.makeText(getBaseContext(), "You must enter a location name", Toast.LENGTH_LONG).show();
 						else if (CreateCommentActivity.this.bestKnownLoc != null) {
 							int i;
 							double distance;
 							int closestLocationIndex = -1;
 							
+							// Determines if there is a location within 50m from location list
 							for (i=0; i < CreateCommentActivity.this.locationList.size(); i++) {
-								// Determines if there is a location within 50m from location list
 								distance = distFrom(bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude(), CreateCommentActivity.this.locationList.get(i).getLatitude(), CreateCommentActivity.this.locationList.get(i).getLongitude());
 								if (distance < 50) {
 									closestLocationIndex = i;
