@@ -451,6 +451,7 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 		int i; 
 		int closestLocationIndex = -1;
 		double distance = 1000; // Min distance set to 1km TODO ask group what they want this set to
+		double distFrom;
 		//locationList = appState.getLocationList();
 		
 		// If current location is known and location list is not empty, look for closest location
@@ -458,8 +459,11 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 			if (this.spinnerFlag == 0){
 				for (i=0; i < this.locationList.size(); i++) {
 					// Determines if there is a nearby location from location list
-					if (distFrom(bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude(), this.locationList.get(i).getLatitude(), this.locationList.get(i).getLongitude()) < distance)
+					distFrom = distFrom(bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude(), this.locationList.get(i).getLatitude(), this.locationList.get(i).getLongitude());
+					if ( distFrom < distance) {
+						distance = distFrom;
 						closestLocationIndex = i;
+					}
 				}
 				// No nearby locations found
 				if (closestLocationIndex == -1)
