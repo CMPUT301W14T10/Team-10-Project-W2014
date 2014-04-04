@@ -5,9 +5,13 @@
 	android:background="@null"
 	android:orientation="vertical"
 	android:id="@+id/overlayLayout">
+
     <ImageView
-    	android:id="@+id/imageView1"
-    	android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	android:src="@drawable/overlay" />
+        android:id="@+id/mlva_imageViewOverlay"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scaleType="fitEnd"
+        android:contentDescription="@string/overlay_description"
+        android:src="@drawable/mlva_ui_overlay" />
+
 </LinearLayout>
