@@ -40,7 +40,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center" >
+        android:gravity="center"
+        android:orientation="horizontal" >
 
         <Button
             android:id="@+id/cc_photo_button"
@@ -49,7 +50,8 @@
             android:onClick="choosePhoto"
             android:drawableTop="@drawable/ic_action_camera"
             android:text="Photo"
-            android:gravity="bottom|center" />
+            android:gravity="bottom|center" 
+            android:layout_weight=".25"/>
 
         <Button
             android:id="@+id/cc_location_button"
@@ -58,7 +60,8 @@
             android:onClick="chooseLocation"
             android:drawableTop="@drawable/ic_location"
             android:text="Location"
-            android:gravity="bottom|center" />
+            android:gravity="bottom|center"
+            android:layout_weight=".25" />
 
         <Button
             android:id="@+id/cc_post_button"
@@ -67,7 +70,8 @@
             android:onClick="attemptCommentCreation"
             android:drawableTop="@drawable/ic_post"
             android:text="Post"
-            android:gravity="bottom|center" />
+            android:gravity="bottom|center"
+            android:layout_weight=".50" />
     </LinearLayout>
     
 
