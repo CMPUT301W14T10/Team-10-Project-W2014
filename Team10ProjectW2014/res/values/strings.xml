@@ -22,6 +22,7 @@
     <string name="action_reply">Reply</string>
     <string name="action_title">Title</string>
     <string name="action_add_head_comment">Add Head Comment</string>
+    <string name="action_refresh_comments">Refresh Comments</string>
 
     <!-- SubCommentView -->
     <string name="title_activity_sub_comment_view">SubCommentViewActivity</string>

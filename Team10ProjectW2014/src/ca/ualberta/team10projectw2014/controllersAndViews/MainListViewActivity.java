@@ -44,6 +44,7 @@ import android.widget.RadioGroup;
 import ca.ualberta.team10projectw2014.R;
 import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
+import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 
 /**
  * This class handles the activity displaying the list view of head comments.
@@ -208,6 +209,9 @@ public class MainListViewActivity extends Activity{
 				return true;
 			case R.id.action_sort_main:
 				sortComments();
+				return true;
+			case R.id.refresh_comments:
+				ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
 				return true;
 
 			//Display the list of favourites specified in the user model
