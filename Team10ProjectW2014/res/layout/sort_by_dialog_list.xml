@@ -30,13 +30,10 @@
         	android:onClick="onRadioButtonClicked"/>
     </RadioGroup>
     
-    <TextView
-        android:id="@+id/sort_subtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:text="@string/sort_subtitle" />
- 
+    <View
+    android:layout_width="fill_parent"
+    android:layout_height="3dp"
+    android:background="@android:color/darker_gray"/>
     
         <CheckBox android:id="@+id/pictures"
         android:layout_width="wrap_content"
