@@ -241,10 +241,13 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO don't let them push set when NO LOCATION is active
-				Log.e("SPINNER INDEX", CreateCommentActivity.this.locationList.get(spinner.getSelectedItemPosition()).getName());
-				CreateCommentActivity.this.postLocation = CreateCommentActivity.this.locationList.get(spinner.getSelectedItemPosition());
-				CreateCommentActivity.this.spinnerFlag = 1;
+				// Checks if no locations have been created and the user is trying to set a location
+				if (spinner.getSelectedItem().toString().matches("No Locations"))
+					Toast.makeText(getBaseContext(), "Please create a new location", Toast.LENGTH_LONG).show();
+				else {
+					CreateCommentActivity.this.postLocation = CreateCommentActivity.this.locationList.get(spinner.getSelectedItemPosition());
+					CreateCommentActivity.this.spinnerFlag = 1;
+				}
 			}
 		});
 		
