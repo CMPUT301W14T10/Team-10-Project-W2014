@@ -272,32 +272,40 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						//final EditText editText = (EditText) locationDialogView.findViewById(R.id.enter_location_name);
 						final EditText editText = (EditText) locationNameDialogView.findViewById(R.id.enter_location_name);
-						// TODO check if name is already in location list
 						stopListeningLocation();
 						String locationNameString = editText.getText().toString();
 						
+						// Check if can detect user's current location
 						if (CreateCommentActivity.this.bestKnownLoc == null)
 							Toast.makeText(getBaseContext(), "No current location detected - can't set location", Toast.LENGTH_LONG).show();
+						// Check if no location name has been entered
 						else if (locationNameString.matches(""))
 							Toast.makeText(getBaseContext(), "You must enter a location name", Toast.LENGTH_LONG).show();
-						else if (CreateCommentActivity.this.bestKnownLoc != null) {
+						else {
 							int i;
 							double distance;
 							int closestLocationIndex = -1;
+							int nameMatchFlag = 0;
 							
-							// Determines if there is a location within 50m from location list
+							// Determines if there is a location within 50m from location list or if location name has already been taken
 							for (i=0; i < CreateCommentActivity.this.locationList.size(); i++) {
 								distance = distFrom(bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude(), CreateCommentActivity.this.locationList.get(i).getLatitude(), CreateCommentActivity.this.locationList.get(i).getLongitude());
 								if (distance < 50) {
 									closestLocationIndex = i;
 									break;
 								}
+								if (CreateCommentActivity.this.locationList.get(i).getName().matches(locationNameString)) {
+									nameMatchFlag = 1;
+									break;
+								}
 							}
 							
+							// If location name entered already exists
+							if (nameMatchFlag == 1)
+								Toast.makeText(getBaseContext(), "Location name " + locationNameString + " already taken", Toast.LENGTH_LONG).show();
 							// If there is a nearby location, do not allow user to create location
-							if (closestLocationIndex != -1) {
+							else if (closestLocationIndex != -1) {
 								locationNameString = CreateCommentActivity.this.locationList.get(closestLocationIndex).getName();
 								Toast.makeText(getBaseContext(), "Cannot create new location near " + locationNameString, Toast.LENGTH_LONG).show();
 							}
