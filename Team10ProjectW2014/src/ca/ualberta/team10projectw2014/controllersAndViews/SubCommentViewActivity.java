@@ -89,7 +89,7 @@ public class SubCommentViewActivity extends Activity {
 		
 		
 		commentList = new ArrayList<CommentModel>();
-		commentList = userSortPreference();
+		userSortPreference();
 		
 		
 		// Gets all the SubComments and all its subComments and put them in a list
@@ -159,6 +159,7 @@ public class SubCommentViewActivity extends Activity {
 				appState.saveUser();
 				appState.saveComments();
 				appState.loadComments();
+				appState.loadUser();
 				item.setIcon(resources.getDrawable(R.drawable.ic_action_star_yellow));
 			}
 			else {
@@ -167,7 +168,8 @@ public class SubCommentViewActivity extends Activity {
 				appState.getSubCommentViewHead().removeFromArrayList(appState.getUserModel().getFavourites());
 				appState.saveUser();
 				appState.saveComments();
-				appState.loadComments();				
+				appState.loadComments();	
+				appState.loadUser();
 				item.setIcon(resources.getDrawable(R.drawable.ic_action_favourite));
 			}
 			return true;
@@ -558,41 +560,34 @@ public class SubCommentViewActivity extends Activity {
 	    }
 	}
 	
-	@SuppressWarnings("unchecked")
-	public ArrayList<? extends CommentModel> userSortPreference(){
+	public void userSortPreference(){
 		
-		ArrayList<? extends CommentModel> comments = appState.getSubCommentViewHead().getSubComments();
+		ArrayList<CommentModel> comments = appState.getSubCommentViewHead().getSubComments();
 
 		if (appState.getUserModel().isSortByPic() == true) {
 			// Sort by picture
 			if (appState.getUserModel().isSortByDate() == true) {
 				// Sort by date
-				return appState.pictureSort((ArrayList<CommentModel>)comments, ApplicationStateModel.dateCompare);
+				CommentModel.pictureSort(comments, ApplicationStateModel.dateCompare);
 			} else if(appState.getUserModel().isSortByLoc() == true) {
 				// Sort by Location
-				return appState.pictureSort((ArrayList<CommentModel>)comments, ApplicationStateModel.locCompare);
+				CommentModel.pictureSort((ArrayList<CommentModel>)comments, ApplicationStateModel.locCompare);
 			} else if(appState.getUserModel().isSortByPopularity())
 				// Sort by number of Favourites
-				return appState.pictureSort((ArrayList<CommentModel>)comments, ApplicationStateModel.popularityCompare);
+				CommentModel.pictureSort((ArrayList<CommentModel>)comments, ApplicationStateModel.popularityCompare);
 		}
 		else {
 			if (appState.getUserModel().isSortByDate() == true) {
 				// Sort by date
-				return appState.sort((ArrayList<CommentModel>) comments, ApplicationStateModel.dateCompare);
+				CommentModel.sort((ArrayList<CommentModel>) comments, ApplicationStateModel.dateCompare);
 			} else if(appState.getUserModel().isSortByLoc() == true) {
 				//Sort by Location 
-				return appState.sort((ArrayList<CommentModel>) comments, ApplicationStateModel.locCompare);
+				CommentModel.sort((ArrayList<CommentModel>) comments, ApplicationStateModel.locCompare);
 			} else if(appState.getUserModel().isSortByPopularity()) {
 				//Sort by number of favourites
-				return appState.sort((ArrayList<CommentModel>) comments, ApplicationStateModel.popularityCompare);
+				CommentModel.sort((ArrayList<CommentModel>) comments, ApplicationStateModel.popularityCompare);
 			}
 		}
-		
-		//No sorting just grab the array as is
-		return appState.getSubCommentViewHead().getSubComments();
-
-		
-		
 	}
 
 

@@ -155,7 +155,7 @@ public class MainListViewActivityTests extends
 		// Sets test comment list
 		appState.setCommentList(commentList);
 		// Sorts list by date
-		appState.sort(commentList, ApplicationStateModel.dateCompare);
+		CommentModel.sort(commentList, ApplicationStateModel.dateCompare);
 		// Saves comments
 		appState.saveComments();
 		
@@ -237,7 +237,7 @@ public class MainListViewActivityTests extends
 		// Sets test comment list
 		appState.setCommentList(commentList);
 		// Sorts list by date
-		appState.pictureSort(commentList, ApplicationStateModel.dateCompare);
+		CommentModel.pictureSort(commentList, ApplicationStateModel.dateCompare);
 		// Saves comments
 		appState.saveComments();
 		
@@ -324,7 +324,7 @@ public class MainListViewActivityTests extends
 		// Sets test comment list
 		appState.setCommentList(commentList);
 		// Sorts list by location
-		appState.sort(commentList, ApplicationStateModel.locCompare);
+		CommentModel.sort(commentList, ApplicationStateModel.locCompare);
 		// Saves comments
 		appState.saveComments();
 		

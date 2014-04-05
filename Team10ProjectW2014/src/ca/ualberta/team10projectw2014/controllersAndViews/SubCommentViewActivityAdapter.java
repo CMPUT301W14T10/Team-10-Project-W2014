@@ -69,8 +69,8 @@ public class SubCommentViewActivityAdapter extends
 		this.layoutResourceId = layoutResourceId;
 		this.commentList = commentList;
 		this.userData = userData;
-
 	}
+	
 	/**
 	 * Gets the view to be displayed by the listView.
 	 * 
@@ -182,6 +182,14 @@ public class SubCommentViewActivityAdapter extends
 		} else {
 			// If View is not empty, set viewholder to this view via tag
 			holder = (ViewHolder) view.getTag();
+			// Add the textviews used in each list entry to the holder
+			holder.textReplyTitle.setText("");
+			holder.textSubTitle.setText("");
+			holder.textUsername.setText("");
+			holder.textLocation.setText("");
+			holder.textTime.setText("");
+			holder.imageView.setVisibility(View.GONE);
+			holder.textContent.setText("");
 		}
 		
 		//Grabs the title of the comment being replied by the getReplyTitle function
