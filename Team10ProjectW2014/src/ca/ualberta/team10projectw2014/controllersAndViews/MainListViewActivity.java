@@ -79,7 +79,7 @@ public class MainListViewActivity extends Activity{
 		showOverlay = setOverlay.getBoolean("MainOverlayPref", true);
 		    if (showOverlay == true) showOverLay();
 		
-		this.appState.loadComments();
+		//this.appState.loadComments();
 		this.appState.loadUser();
 		
 		ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
