@@ -10,9 +10,11 @@ import java.util.ArrayList;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpParams;
 
 import android.graphics.Bitmap;
 import android.util.Log;
@@ -85,6 +87,28 @@ public class ElasticSearchOperations {
 		};
 
 		thread.start();
+	}
+	
+	public static void delCommentModel(final String ID){
+	    Thread thread = new Thread(){
+	        @Override
+	        public void run(){
+	            HttpClient client = new DefaultHttpClient();
+	            HttpDelete delete = new HttpDelete(SERVER_URL + "_query" + "?q=_id:"+ID);
+	            
+	            try {
+	                HttpResponse response = client.execute(delete);
+	                Log.i(LOG_TAG, "Response: "
+                            + response.getStatusLine().toString());
+	            } catch (IOException exception) {
+                    Log.w(LOG_TAG, "Error receiving delete query response: "
+                            + exception.getMessage());
+                    return;
+                }
+	        }
+	    };
+	    
+	    thread.start();
 	}
 
 	/**
