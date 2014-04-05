@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!-- General Strings -->
-    <string name="app_name">Team10ProjectW2014</string>
+	<!-- General Strings -->
+    <string name="app_name">Chaddap</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="dash_string">  -  </string>
     <string name="desc">The picture the user posted with this comment.</string>
     <string name="new_location_name_edittext">Enter location name</string>
+    <string name="welcome_msg">Welcome to Chaddap!</string>
+    
+    <!-- Overlay Description Strings -->
+    <string name="overlay_description">Help Overlay</string>
 
     <!-- ActionBar Strings -->
     <string name="action_settings">Settings</string>
@@ -20,6 +23,7 @@
     <string name="action_reply">Reply</string>
     <string name="action_title">Title</string>
     <string name="action_add_head_comment">Add Head Comment</string>
+    <string name="action_refresh_comments">Refresh Comments</string>
 
     <!-- SubCommentView -->
     <string name="title_activity_sub_comment_view">SubCommentViewActivity</string>
@@ -30,7 +34,7 @@
     <string name="reply_option">Reply</string>
     <string name="written_by">Written By: Username</string>
     <string name="time_string">Time</string>
-    <string name="more_option">More...</string>
+    <string name="more_option">More&#8230;</string>
     <string name="text_body">Some example text. Some example text. Some example text. 
         					 Some example text. Some example text. Some example text. 
         					 Some example text. Some example text. Some example text. 

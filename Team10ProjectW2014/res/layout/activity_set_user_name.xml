@@ -1,8 +1,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
     android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical|center"
+        android:text="@string/welcome_msg"
+        android:textSize="@android:dimen/app_icon_size" />
 
     <EditText
         android:id="@+id/set_username_field"
@@ -10,7 +18,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="75dip"
         android:ems="10"
-        android:hint="@string/set_username" />
+        android:hint="@string/set_username"
+        android:inputType="textPersonName" />
 
     <LinearLayout
         android:layout_width="wrap_content"

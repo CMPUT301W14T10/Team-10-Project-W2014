@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.jar.Attributes.Name;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -240,10 +241,13 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO don't let them push set when NO LOCATION is active
-				Log.e("SPINNER INDEX", CreateCommentActivity.this.locationList.get(spinner.getSelectedItemPosition()).getName());
-				CreateCommentActivity.this.postLocation = CreateCommentActivity.this.locationList.get(spinner.getSelectedItemPosition());
-				CreateCommentActivity.this.spinnerFlag = 1;
+				// Checks if no locations have been created and the user is trying to set a location
+				if (spinner.getSelectedItem().toString().matches("No Locations"))
+					Toast.makeText(getBaseContext(), "Please create a new location", Toast.LENGTH_LONG).show();
+				else {
+					CreateCommentActivity.this.postLocation = CreateCommentActivity.this.locationList.get(spinner.getSelectedItemPosition());
+					CreateCommentActivity.this.spinnerFlag = 1;
+				}
 			}
 		});
 		
@@ -271,31 +275,40 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						//final EditText editText = (EditText) locationDialogView.findViewById(R.id.enter_location_name);
 						final EditText editText = (EditText) locationNameDialogView.findViewById(R.id.enter_location_name);
-						// TODO check if no name entered
-						// TODO check if name is already in location list
 						stopListeningLocation();
 						String locationNameString = editText.getText().toString();
 						
+						// Check if can detect user's current location
 						if (CreateCommentActivity.this.bestKnownLoc == null)
 							Toast.makeText(getBaseContext(), "No current location detected - can't set location", Toast.LENGTH_LONG).show();
-						else if (CreateCommentActivity.this.bestKnownLoc != null) {
+						// Check if no location name has been entered
+						else if (locationNameString.matches(""))
+							Toast.makeText(getBaseContext(), "You must enter a location name", Toast.LENGTH_LONG).show();
+						else {
 							int i;
 							double distance;
 							int closestLocationIndex = -1;
+							int nameMatchFlag = 0;
 							
+							// Determines if there is a location within 50m from location list or if location name has already been taken
 							for (i=0; i < CreateCommentActivity.this.locationList.size(); i++) {
-								// Determines if there is a location within 50m from location list
 								distance = distFrom(bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude(), CreateCommentActivity.this.locationList.get(i).getLatitude(), CreateCommentActivity.this.locationList.get(i).getLongitude());
 								if (distance < 50) {
 									closestLocationIndex = i;
 									break;
 								}
+								if (CreateCommentActivity.this.locationList.get(i).getName().matches(locationNameString)) {
+									nameMatchFlag = 1;
+									break;
+								}
 							}
 							
+							// If location name entered already exists
+							if (nameMatchFlag == 1)
+								Toast.makeText(getBaseContext(), "Location name " + locationNameString + " already taken", Toast.LENGTH_LONG).show();
 							// If there is a nearby location, do not allow user to create location
-							if (closestLocationIndex != -1) {
+							else if (closestLocationIndex != -1) {
 								locationNameString = CreateCommentActivity.this.locationList.get(closestLocationIndex).getName();
 								Toast.makeText(getBaseContext(), "Cannot create new location near " + locationNameString, Toast.LENGTH_LONG).show();
 							}
@@ -451,6 +464,7 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 		int i; 
 		int closestLocationIndex = -1;
 		double distance = 1000; // Min distance set to 1km TODO ask group what they want this set to
+		double distFrom;
 		//locationList = appState.getLocationList();
 		
 		// If current location is known and location list is not empty, look for closest location
@@ -458,8 +472,11 @@ public class CreateCommentActivity extends Activity implements CommentContentEdi
 			if (this.spinnerFlag == 0){
 				for (i=0; i < this.locationList.size(); i++) {
 					// Determines if there is a nearby location from location list
-					if (distFrom(bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude(), this.locationList.get(i).getLatitude(), this.locationList.get(i).getLongitude()) < distance)
+					distFrom = distFrom(bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude(), this.locationList.get(i).getLatitude(), this.locationList.get(i).getLongitude());
+					if ( distFrom < distance) {
+						distance = distFrom;
 						closestLocationIndex = i;
+					}
 				}
 				// No nearby locations found
 				if (closestLocationIndex == -1)
