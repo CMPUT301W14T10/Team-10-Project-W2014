@@ -36,9 +36,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="ca.ualberta.team10projectw2014.controllersAndViews.CreateCommentActivity" >
+        <activity android:name="ca.ualberta.team10projectw2014.controllersAndViews.CreateCommentActivity"
+            	  android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="ca.ualberta.team10projectw2014.controllersAndViews.EditCommentActivity" >
+        <activity android:name="ca.ualberta.team10projectw2014.controllersAndViews.EditCommentActivity"
+                  android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="ca.ualberta.team10projectw2014.controllersAndViews.SubCommentViewActivity"

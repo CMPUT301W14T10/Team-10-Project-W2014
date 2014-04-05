@@ -23,6 +23,7 @@ public class CommentModel{
 	private ArrayList<SubCommentModel> subComments = new ArrayList<SubCommentModel>();
 	private String photoPath;
 	private Uri imageUri;
+	private String parentID;
 	
 	/**
 	 * A method that adds the provided SubCommentModel to the
@@ -90,6 +91,13 @@ public class CommentModel{
 	}
 	public void setNumFavourites(int numFavourites) {
 		this.numFavourites = numFavourites;
+	}
+	public void setParentID(String parentID) {
+		this.parentID = parentID;
+		
+	}
+	public String getParentID(String parentID){
+		return this.parentID;
 	}
 	public String getAuthorAndroidID() {
 		return authorAndroidID;
