@@ -123,6 +123,7 @@ public class CreateCommentActivity extends Activity implements
 		postUsername = appState.getUserModel().getUsername();
 
 		appState.setLocationList(new ArrayList<LocationModel>());
+		// STEVEN: Load location models here
 		appState.loadLocations();
 		locationList = appState.getLocationList();
 		if (locationList == null)
@@ -412,6 +413,7 @@ public class CreateCommentActivity extends Activity implements
 														.setLocationList(CreateCommentActivity.this.locationList);
 												CreateCommentActivity.this.appState
 														.saveLocations();
+												// STEVEN: save location model list here
 											}
 										}
 									}
