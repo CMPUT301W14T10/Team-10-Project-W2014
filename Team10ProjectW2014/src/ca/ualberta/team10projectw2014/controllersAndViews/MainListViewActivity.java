@@ -110,13 +110,6 @@ public class MainListViewActivity extends Activity{
 	public boolean onCreateOptionsMenu(Menu menu){
 		// Inflate the menu; this adds items to the action bar if present.
 		getMenuInflater().inflate(R.menu.head_comment_view, menu);
-		//Tells the ApplicationStateModel singleton to load comments/user 
-		//from network(when implemented)/file and creates a new adapter
-		//in the appState for these values.
-		this.appState.setFileContext(this);
-		this.appState.loadComments();
-		this.appState.loadUser();
-		this.appState.setMLVAdapter(new MainListViewAdapter(this, this.appState.getCommentList()));
 		return true;
 	}
 	
