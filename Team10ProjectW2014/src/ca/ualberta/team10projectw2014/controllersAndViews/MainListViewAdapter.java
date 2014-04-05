@@ -98,6 +98,11 @@ public class MainListViewAdapter extends BaseAdapter {
 		else {
 			// If View is not empty, set viewholder to this view via tag
 			holder = (ViewHolder) convertView.getTag();
+			holder.textLocation.setText("");
+			holder.textUsername.setText("");
+			holder.textLocation.setText("");
+			holder.textTime.setText("");
+			holder.imageView.setVisibility(ImageView.GONE);
 		}
 		
 		// Grabs strings to be displayed for each head comment in the list
@@ -134,6 +139,7 @@ public class MainListViewAdapter extends BaseAdapter {
 
 			Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
 			holder.imageView.setImageBitmap(bitmap);
+			holder.imageView.setVisibility(ImageView.VISIBLE);
 			   
 		}
 		return convertView;

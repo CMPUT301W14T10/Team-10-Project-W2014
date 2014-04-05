@@ -36,8 +36,6 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -68,23 +66,47 @@ public class MainListViewActivity extends Activity{
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_head_comment_view);
-		layoutInflater = LayoutInflater.from(this);
-		this.appState = ApplicationStateModel.getInstance();
-		this.appState.setCommentList(new ArrayList<CommentModel>());
-		this.appState.setFileContext(this);
-		
+
 		// below sharedpref code adapted from
 		// http://stackoverflow.com/a/19232789/2557554
 		setOverlay = PreferenceManager.getDefaultSharedPreferences(this);
 		showOverlay = setOverlay.getBoolean("MainOverlayPref", true);
 		    if (showOverlay == true) showOverLay();
-		
-		//this.appState.loadComments();
+		    
+		setContentView(R.layout.activity_head_comment_view);
+		layoutInflater = LayoutInflater.from(this);
+		this.commentView = (ListView) findViewById(R.id.HeadCommentList);
+		this.appState = ApplicationStateModel.getInstance();
+		this.appState.setCommentList(new ArrayList<CommentModel>());
+		this.appState.setFileContext(this);
 		this.appState.loadUser();
+
+		//this.appState.loadComments();
 		
 		ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
 		//Log.e("Elastic Search MLVA", appState.getCommentList().get(0).getTitle().toString());
+		//Opens SubCommentViewActivity when a comment is selected:
+		this.commentView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id){
+				//get the comment that was selected
+				CommentModel headComment = appState.getCommentList().get(position);
+				Intent subCommentView = new Intent(getApplicationContext(), SubCommentViewActivity.class);
+				//Set the appropriate singleton attribute to point to the comment that
+				//SubCommentViewActivity is to represent:
+				appState.setSubCommentViewHead(headComment);
+				//start the SubCommentViewActivity on top of the activity
+				//containing the view(i.e. this MainListViewActivity):
+				view.getContext().startActivity(subCommentView);
+			}});
+		//Create an adapter to reflect the comments loaded/sorted:
+		this.appState.setMLVAdapter(new MainListViewAdapter(this, this.appState.getCommentList()));
+		//Set the commentView in this activity to reflect the corresponding 
+		//adapter in the ApplicationStateModel:
+		this.commentView.setAdapter(this.appState.getMLVAdapter());
 		
+		sortMainList();
 	}
 
 	// the below method is adapted from 
@@ -113,73 +135,50 @@ public class MainListViewActivity extends Activity{
 		return true;
 	}
 	
-	//In onResume the content view is set and the appState
-	//is told to reload and update the view, in case
-	//this was not done since any changes occurred.
-	protected void onResume(){
-		super.onResume(); 
-		setContentView(R.layout.activity_head_comment_view);
-		this.commentView = (ListView) findViewById(R.id.HeadCommentList);
-		
-		//call the ApplicationStateModel singleton's methods to update
-		//its attributes from file(and/or a network connection when implemented):
-		this.appState.setFileContext(this);
-		this.appState.loadComments();
-		this.appState.loadUser();
-		
+	public void sortMainList(){
 		//Head Comment Sorting:
 		//Checks which selection method is active and sorts the list accordingly.
 		//Sort by picture
 		if (this.appState.getUserModel().isSortByPic() == true) {
 			//Sort by date and picture:
 			if (this.appState.getUserModel().isSortByDate() == true) {
-				this.appState.setCommentList(this.appState.pictureSort(this.appState.getCommentList(), ApplicationStateModel.dateCompare));
+				CommentModel.pictureSort(this.appState.getCommentList(), ApplicationStateModel.dateCompare);
 			}
 			//Sort by location and picture:
 			else if(this.appState.getUserModel().isSortByLoc() == true) {
-				this.appState.setCommentList(this.appState.pictureSort(this.appState.getCommentList(), ApplicationStateModel.locCompare));
+				CommentModel.pictureSort(this.appState.getCommentList(), ApplicationStateModel.locCompare);
 			}
 			//Sort by popularity(i.e. number of times favourited) and picture:
-			else if(this.appState.getUserModel().isSortByPopularity())
-				this.appState.setCommentList(this.appState.pictureSort(this.appState.getCommentList(), ApplicationStateModel.popularityCompare));
+			else if(this.appState.getUserModel().isSortByPopularity()){
+				CommentModel.pictureSort(this.appState.getCommentList(), ApplicationStateModel.popularityCompare);
+			}
 		}
 		//Sort without sorting by picture:
 		else {
 			//Sort by date
 			if (this.appState.getUserModel().isSortByDate() == true) {
-				this.appState.setCommentList(this.appState.sort(this.appState.getCommentList(), ApplicationStateModel.dateCompare));
+				CommentModel.sort(this.appState.getCommentList(), ApplicationStateModel.dateCompare);
 			}
 			//Sort by location:
 			else if(this.appState.getUserModel().isSortByLoc() == true) {
-				this.appState.setCommentList(this.appState.sort(this.appState.getCommentList(), ApplicationStateModel.locCompare));
+				CommentModel.sort(this.appState.getCommentList(), ApplicationStateModel.locCompare);
 			}
 			//Sort by popularity(i.e. number of times favourited):
-			else if(this.appState.getUserModel().isSortByPopularity())
-				this.appState.setCommentList(this.appState.sort(this.appState.getCommentList(), ApplicationStateModel.popularityCompare));
+			else if(this.appState.getUserModel().isSortByPopularity()){
+				CommentModel.sort(this.appState.getCommentList(), ApplicationStateModel.popularityCompare);
+			}
 		}
 		
-		//Create an adapter to reflect the comments loaded/sorted:
-		this.appState.setMLVAdapter(new MainListViewAdapter(this, this.appState.getCommentList()));
+		this.appState.updateMainAdapter();
 		
-		//Set the commentView in this activity to reflect the corresponding 
-		//adapter in the ApplicationStateModel:
-		this.commentView.setAdapter(this.appState.getMLVAdapter());
-
-		//Opens SubCommentViewActivity when a comment is selected:
-		this.commentView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,
-					long id){
-				//get the comment that was selected
-				CommentModel headComment = appState.getCommentList().get(position);
-				Intent subCommentView = new Intent(getApplicationContext(), SubCommentViewActivity.class);
-				//Set the appropriate singleton attribute to point to the comment that
-				//SubCommentViewActivity is to represent:
-				appState.setSubCommentViewHead(headComment);
-				//start the SubCommentViewActivity on top of the activity
-				//containing the view(i.e. this MainListViewActivity):
-				view.getContext().startActivity(subCommentView);
-			}});
+	}
+	
+	//In onResume the content view is set and the appState
+	//is told to reload and update the view, in case
+	//this was not done since any changes occurred.
+	protected void onResume(){
+		super.onResume(); 
+		sortMainList();
 	}	
 	
 	@Override

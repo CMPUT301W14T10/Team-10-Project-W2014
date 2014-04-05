@@ -418,7 +418,8 @@ public class ApplicationStateModel {
 			isr.close();
 			fis.close();
 			if(userModel != null){
-				updateFavsAndWantReads();
+				CommentModel.updateComments(this.commentList, this.userModel.getFavourites());
+				CommentModel.updateComments(this.commentList, this.userModel.getWantToReadComments());
 			}
 			if(this.getSubCommentViewHead() != null){
 				this.subCommentViewHead = this.subCommentViewHead.findInArrayList(commentList);
@@ -439,30 +440,6 @@ public class ApplicationStateModel {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	 private void updateFavsAndWantReads(){
-		 
-		 for(CommentModel loadedComment : this.commentList){
-			 if(this.userModel.getFavourites() != null){
-				 for(CommentModel fav : this.userModel.getFavourites()){
-					 if(fav.compareComments(loadedComment)){
-						 this.userModel.getFavourites().remove(fav);
-						 this.userModel.getFavourites().add(loadedComment);
-					 }
-				 }
-			 }
-			 if(this.userModel.getWantToReadComments() != null){
-				 for(CommentModel readLater : this.userModel.getWantToReadComments()){
-					 if(readLater.compareComments(loadedComment)){
-						 this.userModel.getFavourites().remove(readLater);
-						 this.userModel.getFavourites().add(loadedComment);
-					 }
-				 }
-			 }
-			 saveUser();
-		 }
-	 }
 
 	/**
 	 * A method for saving the user's
@@ -665,100 +642,6 @@ public class ApplicationStateModel {
 		}
 	}
 
-
-	/**
-	 * Selection sort algorithm to sort an array of comments by a given comparator
-	 * 
-	 * @param list - array of CommentModels to sort
-	 * @param cmp - comparator to compare CommentModels when sorting
-	 * @return the sorted array of head comments
-	 */
-	 public ArrayList<CommentModel> sort(ArrayList<CommentModel> list, Comparator<CommentModel> cmp) {
-		 for (int i=0; i < list.size()-1; i++) {
-			 // Sets current comment as the one that should appear first
-			 CommentModel maxComment = list.get(i);
-			 int maxIndex = i;
-			 // Iterates through remaining comments in the list
-			 for (int j=i+1; j < list.size(); j++) {
-				 // If i compared to j = -1, j should be max value
-				 if (cmp.compare(list.get(i), list.get(j)) < 0) {
-					 maxComment = list.get(j);
-					 maxIndex = j;
-				 }
-			 }
-			 // Swap current comment with the maxComment
-			 CommentModel tempComment;
-			 tempComment = list.get(i);
-			 list.set(i, maxComment);
-			 list.set(maxIndex, tempComment);
-		 }
-		 return list;
-	 }
-
-	 /**
-	  * Separates given array into two arrays with one containing comments with
-	  * pictures, and the other without. Sorts each array by given comparator,
-	  * then combines them.
-	  * 
-	  * @param list - the array of CommentModels to sort
-	  * @param cmp - the comparator to compare CommentModels when sorting
-	  * @return the sorted array of head comments
-	  */
-	 public ArrayList<CommentModel> pictureSort(ArrayList<CommentModel> commentList, Comparator<CommentModel> cmp) {
-		 ArrayList<CommentModel> noPicArray = new ArrayList<CommentModel>();
-		 ArrayList<CommentModel> picArray = new ArrayList<CommentModel>();
-		 for (CommentModel comment : commentList) {
-			 // If comment does not have a photo
-			 if (comment.getPhotoPath() == null) {
-				 // Add it to the array containing comments without pictures
-				 noPicArray.add(comment);
-			 }
-			 else{
-				 // Remove it from the array containing comments with pictures
-				 picArray.add(comment);
-			 }
-		 }
-		 // Sort each array
-		 picArray = sort(picArray, cmp);
-		 noPicArray = sort(noPicArray, cmp);
-		 commentList.clear();
-		 // Combine both arrays
-		 commentList.addAll(picArray);
-		 commentList.addAll(noPicArray);
-		 return commentList;
-	 }
-	 
-	 
-	 /**
-	  * Separates given array into two arrays with one containing comments with
-	  * pictures, and the other without. Sorts each array by given comparator,
-	  * then combines them.
-	  * 
-	  * @param list - the array of SubCommentModels to sort.
-	  * @param cmp - the comparator to compare SubCommentModels when sorting.
-	  * @return the sorted array of SubCommentModels.
-	  */
-	 public ArrayList<SubCommentModel> sort2(ArrayList<SubCommentModel> list, Comparator<CommentModel> cmp) {
-		 for (int i=0; i < list.size()-1; i++) {
-			 // Sets current comment as the one that should appear first
-			 SubCommentModel maxComment = list.get(i);
-			 int maxIndex = i;
-			 // Iterates through remaining comments in the list
-			 for (int j=i+1; j < list.size(); j++) {
-				 // If i compared to j = -1, j should be max value
-				 if (cmp.compare(list.get(i), list.get(j)) < 0) {
-					 maxComment = list.get(j);
-					 maxIndex = j;
-				 }
-			 }
-			 // Swap current comment with the maxComment
-			 SubCommentModel tempComment;
-			 tempComment = list.get(i);
-			 list.set(i, maxComment);
-			 list.set(maxIndex, tempComment);
-		 }
-		 return list;
-	 }
 	 
 	 public void pushComment(CommentModel comment){
 		 ElasticSearchOperations.pushHeadComment(comment);
