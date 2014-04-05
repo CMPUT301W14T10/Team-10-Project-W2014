@@ -208,9 +208,16 @@ public class CreateCommentActivity extends Activity implements
 		ueditText.setText(name, TextView.BufferType.EDITABLE);
 	}
 
-	// TODO javadoc this function; custom dialog code modified from
-	// http://www.mkyong.com/android/android-custom-dialog-example/ April 1,
-	// 2014
+	/**
+	 * Allows the user to choose a location by creating the dialogs for the 
+	 * location button where the user to set an existing location or create 
+	 * a new one.
+	 * 
+	 * Custom dialog implementation retrieved from http://www.mkyong.com/
+	 * android/android-custom-dialog-example/ on April 1, 2014
+	 * 
+	 * @param v view from which the method is called
+	 */
 	public void chooseLocation(View v) {
 		int i;
 
@@ -734,9 +741,19 @@ public class CreateCommentActivity extends Activity implements
 		finish();
 	}
 
-	// TODO java doc this method: code modified from
-	// http://stackoverflow.com/questions/837872/calculate-distance-in-meters-when-you-know-longitude-and-latitude-in-java
-	// April 1, 2014
+	/**
+	 * Calculates the distance between two coordinates in meters.
+	 * 
+	 * Implementation retrieved from http://stackoverflow.com/questions/837872/
+	 * calculate-distance-in-meters-when-you-know-longitude-and-latitude-in-java
+	 * on April 1, 2014
+	 * 
+	 * @param lat1 latitude coordinate of location 1
+	 * @param lng1 longitude coordinate of location 1
+	 * @param lat2 latitude coordinate of location 2
+	 * @param lng2 longitude coordinate of location 2
+	 * @return distance between two coordinates in meters
+	 */
 	public static double distFrom(double lat1, double lng1, double lat2,
 			double lng2) {
 		double earthRadius = 3958.75;
