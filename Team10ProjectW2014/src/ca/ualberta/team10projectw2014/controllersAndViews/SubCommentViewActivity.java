@@ -481,7 +481,7 @@ public class SubCommentViewActivity extends Activity {
 		alert.setTitle("Sort By:");
 	
 		//get the dialogue's layout from XML:
-		LinearLayout optionsView = (LinearLayout)layoutInflater.inflate(R.layout.sort_by_dialog_list, 
+		LinearLayout optionsView = (LinearLayout)layoutInflater.inflate(R.layout.dialog_sort_by, 
 				null);
 		
 		//get the group of radio buttons that determine sorting criteria:

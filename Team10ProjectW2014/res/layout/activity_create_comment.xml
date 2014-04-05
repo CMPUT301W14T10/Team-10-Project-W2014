@@ -6,19 +6,19 @@
 
     <EditText
         android:id="@+id/cc_title"
-        android:hint="@string/create_comment_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" />
-    
-    	
+        android:ems="10"
+        android:hint="@string/create_comment_title"
+        android:inputType="textCapWords" />
 
     <EditText
         android:id="@+id/cc_username"
-        android:hint="@string/create_comment_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" />
+        android:ems="10"
+        android:hint="@string/create_comment_username"
+        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/cc_content"
@@ -27,40 +27,51 @@
         android:ems="10"
         android:gravity="top"
         android:hint="@string/create_comment_content"
+        android:inputType="textCapSentences"
         android:singleLine="false" />
     
     <ImageView
         android:id="@+id/cc_image_view"
-        android:layout_width="100dip"
-        android:layout_height="100dip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/ic_action_camera" />
+        android:onClick="choosePhoto" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center" >
+        android:gravity="center"
+        android:orientation="horizontal" >
 
         <Button
             android:id="@+id/cc_photo_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:onClick="choosePhoto"
-            android:text="Photo" />
+            android:drawableTop="@drawable/ic_action_camera"
+            android:text="Photo"
+            android:gravity="bottom|center" 
+            android:layout_weight=".25"/>
 
         <Button
             android:id="@+id/cc_location_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:onClick="chooseLocation"
-            android:text="Location" />
+            android:drawableTop="@drawable/ic_location"
+            android:text="Location"
+            android:gravity="bottom|center"
+            android:layout_weight=".25" />
 
         <Button
             android:id="@+id/cc_post_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:onClick="attemptCommentCreation"
-            android:text="Post" />
+            android:drawableTop="@drawable/ic_post"
+            android:text="Post"
+            android:gravity="bottom|center"
+            android:layout_weight=".50" />
     </LinearLayout>
     
 

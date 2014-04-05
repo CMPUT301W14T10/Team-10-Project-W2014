@@ -133,10 +133,15 @@ public class ElasticSearchOperations {
                     public void run() {
                         model.clear();
                         model.addAll(returnedData.getSources());
-                        Log.e(LOG_TAG, model.toString()); // print out the entire contents of the list
+                        //Log.e(LOG_TAG, model.toString()); // print out the entire contents of the list
                         ApplicationStateModel appState = ApplicationStateModel.getInstance();
                         appState.setCommentList(model);
-                        Log.e(LOG_TAG, appState.getCommentList().get(0).getTitle().toString()); // print out the entire contents of the list
+                        appState.saveComments();
+                        appState.loadComments();
+                        appState.updateMainAdapter();
+                        //Log.e(LOG_TAG, appState.getCommentList().toString()); // print out the entire contents of the list
+                        //appState.getCommentList().addAll(returnedData.getSources());
+                        //Log.e("Inside ESO appState CommentList", appState.getCommentList().toString()); // print out the entire contents of the list
                         //appState.getMLVAdapter().notifyDataSetChanged();
                     }
                 };

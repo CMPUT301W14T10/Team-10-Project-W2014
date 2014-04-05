@@ -16,7 +16,7 @@
         android:layout_width="0dip"
         android:layout_height="match_parent"
         android:layout_weight="11.05"
-        android:src="@drawable/ic_launcher"
+        android:src="@drawable/ic_launcher2"
         android:contentDescription="@string/desc" />
 
 </LinearLayout>

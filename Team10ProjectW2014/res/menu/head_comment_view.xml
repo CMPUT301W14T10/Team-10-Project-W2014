@@ -1,5 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
+    <item android:id="@+id/refresh_comments"
+    	android:icon="@drawable/ic_action_refresh"
+    	android:title="@string/action_refresh_comments"
+		android:showAsAction= "always" />
+    
     <item android:id="@+id/add_comment"
     	android:icon="@drawable/ic_action_new"
     	android:title="@string/action_add_head_comment"
