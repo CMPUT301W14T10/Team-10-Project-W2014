@@ -34,7 +34,7 @@ import com.google.gson.reflect.TypeToken;
  */
 public class ElasticSearchOperations {
 
-	public static final String SERVER_URL = "http://cmput301.softwareprocess.es:8080/testing/team10projectw2014sgiang/";
+	public static final String SERVER_URL = "http://cmput301.softwareprocess.es:8080/testing2/team10projectw2014/";
 	public static final String LOG_TAG = "ElasticSearch";
 	private static Gson GSON = null;
 
@@ -155,6 +155,9 @@ public class ElasticSearchOperations {
         
         //Log.e(LOG_TAG, model.toString()); // print out the entire contents of the list
     }
+    
+    
+    
 
 	/**
 	 * Constructs a Gson with a custom serializer / desserializer registered for Bitmaps.

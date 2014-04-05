@@ -83,7 +83,7 @@ public class MainListViewActivity extends Activity{
 		this.appState.loadUser();
 		
 		ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
-		Log.e("Elastic Search MLVA", appState.getCommentList().get(0).getTitle().toString());
+		//Log.e("Elastic Search MLVA", appState.getCommentList().get(0).getTitle().toString());
 		
 	}
 
