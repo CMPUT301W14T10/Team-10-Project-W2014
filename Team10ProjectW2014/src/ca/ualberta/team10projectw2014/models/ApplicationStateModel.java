@@ -643,10 +643,6 @@ public class ApplicationStateModel {
 	}
 
 	 
-	 public void pushComment(CommentModel comment){
-		 ElasticSearchOperations.pushHeadComment(comment);
-	 }
-	 
 	 public boolean isNetworkAvailable(Context context) {
 		    ConnectivityManager connectivityManager 
 		          = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

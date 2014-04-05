@@ -3,10 +3,13 @@ package ca.ualberta.team10projectw2014.controllersAndViews;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -16,9 +19,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import ca.ualberta.team10projectw2014.R;
@@ -76,6 +82,16 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 	 */
  	private ApplicationStateModel appState;
 	
+	/**
+	 * Temporary list of the location models
+	 */
+	private ArrayList<LocationModel> locationList;
+	
+	/**
+	 * Flag that is set if the user selects a location from the location dialog
+	 * spinner
+	 */
+	private int spinnerFlag;
  	
  	/**
  	 * Initiates application state singleton then sets class variables to comment values
@@ -93,6 +109,12 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 		teditText = (EditText)findViewById(R.id.cc_title);
 		ceditText = (EditText)findViewById(R.id.cc_content);
 		imageView = (ImageView)findViewById(R.id.cc_image_view);
+		
+		appState.setLocationList(new ArrayList<LocationModel>());
+		appState.loadLocations();
+		locationList = appState.getLocationList();
+		if (locationList == null)
+			locationList = new ArrayList<LocationModel>();
 	}
 	
 	/**
@@ -113,7 +135,7 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 		
 
         // Start listening for location information
-        //startListeningLocation();
+        startListeningLocation();
 	}
 	
 	/**
@@ -188,15 +210,210 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 	}
 	
 	/**
-	 * Gives the user a menu from which they can select a new location
-	 * as the default.
+	 * Allows the user to choose a location by creating the dialogs for the 
+	 * location button where the user to set an existing location or create 
+	 * a new one.
 	 * 
-	 * Not implemented as of version 1.
-	 *
-	 * @param v   the view which calls this method (in this case, "Location")
+	 * Custom dialog implementation retrieved from http://www.mkyong.com/
+	 * android/android-custom-dialog-example/ on April 1, 2014
+	 * 
+	 * @param v view from which the method is called
 	 */
 	public void chooseLocation(View v){
-		Toast.makeText(getBaseContext(), "Sorry, this feature is not supported yet", Toast.LENGTH_LONG).show();
+		int i;
+
+		// Sets/resets spinner set flag
+		EditCommentActivity.this.spinnerFlag = 0;
+
+		// Gets the xml custom dialog layout
+		LayoutInflater li = LayoutInflater.from(this);
+		View locationDialogView = li.inflate(R.layout.dialog_location, null);
+
+		// Builds alert dialog
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+		alertDialogBuilder.setView(locationDialogView);
+
+		// Loads up spinner with location names
+		final Spinner spinner = (Spinner) locationDialogView
+				.findViewById(R.id.location_dialog_spinner);
+		ArrayList<String> locationNameList = new ArrayList<String>();
+		if (this.locationList.size() != 0) {
+			for (i = 0; i < this.locationList.size(); i++)
+				locationNameList.add(this.locationList.get(i).getName());
+		} else
+			locationNameList.add("No Locations");
+
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, locationNameList);
+		spinner.setAdapter(adapter);
+
+		// Location dialog title
+		alertDialogBuilder.setTitle("Set Location");
+
+		// Location dialog set button functionality
+		alertDialogBuilder.setPositiveButton("Set",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// Checks if no locations have been created and the user
+						// is trying to set a location
+						if (spinner.getSelectedItem().toString()
+								.matches("No Locations"))
+							Toast.makeText(getBaseContext(),
+									"Please create a new location",
+									Toast.LENGTH_LONG).show();
+						else {
+							EditCommentActivity.this.postLocation = EditCommentActivity.this.locationList
+									.get(spinner.getSelectedItemPosition());
+							EditCommentActivity.this.spinnerFlag = 1;
+						}
+					}
+				});
+
+		// Location dialog cancel button functionality
+		alertDialogBuilder.setNegativeButton("Cancel", null);
+
+		// Location dialog create location button functionality
+		alertDialogBuilder.setNeutralButton("Create Location",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// Gets the xml custom dialog layout
+						LayoutInflater li2 = LayoutInflater
+								.from(EditCommentActivity.this);
+						final View locationNameDialogView = li2.inflate(
+								R.layout.dialog_location_name, null);
+
+						// Build alert dialog
+						AlertDialog.Builder alertDialogBuilder2 = new AlertDialog.Builder(
+								EditCommentActivity.this);
+						alertDialogBuilder2.setView(locationNameDialogView);
+
+						// Location name dialog title
+						alertDialogBuilder2.setTitle("Set Location Name");
+
+						// Location name set button functionality
+						alertDialogBuilder2.setPositiveButton("Set",
+								new DialogInterface.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										final EditText editText = (EditText) locationNameDialogView
+												.findViewById(R.id.enter_location_name);
+										stopListeningLocation();
+										String locationNameString = editText
+												.getText().toString();
+
+										// Check if can detect user's current
+										// location
+										if (EditCommentActivity.this.bestKnownLoc == null)
+											Toast.makeText(
+													getBaseContext(),
+													"No current location detected - can't set location",
+													Toast.LENGTH_LONG).show();
+										// Check if no location name has been
+										// entered
+										else if (locationNameString.matches(""))
+											Toast.makeText(
+													getBaseContext(),
+													"You must enter a location name",
+													Toast.LENGTH_LONG).show();
+										else {
+											int i;
+											double distance;
+											int closestLocationIndex = -1;
+											int nameMatchFlag = 0;
+
+											// Determines if there is a location
+											// within 50m from location list or
+											// if location name has already been
+											// taken
+											for (i = 0; i < EditCommentActivity.this.locationList
+													.size(); i++) {
+												distance = distFrom(
+														bestKnownLoc
+																.getLatitude(),
+														bestKnownLoc
+																.getLongitude(),
+																EditCommentActivity.this.locationList
+																.get(i)
+																.getLatitude(),
+																EditCommentActivity.this.locationList
+																.get(i)
+																.getLongitude());
+												if (distance < 50) {
+													closestLocationIndex = i;
+													break;
+												}
+												if (EditCommentActivity.this.locationList
+														.get(i)
+														.getName()
+														.matches(
+																locationNameString)) {
+													nameMatchFlag = 1;
+													break;
+												}
+											}
+
+											// If location name entered already
+											// exists
+											if (nameMatchFlag == 1)
+												Toast.makeText(
+														getBaseContext(),
+														"Location name "
+																+ locationNameString
+																+ " already taken",
+														Toast.LENGTH_LONG)
+														.show();
+											// If there is a nearby location, do
+											// not allow user to create location
+											else if (closestLocationIndex != -1) {
+												locationNameString = EditCommentActivity.this.locationList
+														.get(closestLocationIndex)
+														.getName();
+												Toast.makeText(
+														getBaseContext(),
+														"Cannot create new location near "
+																+ locationNameString,
+														Toast.LENGTH_LONG)
+														.show();
+											}
+											// Otherwise create the location and
+											// set it as the comments location
+											else {
+												EditCommentActivity.this.postLocation = new LocationModel(
+														locationNameString,
+														EditCommentActivity.this.bestKnownLoc
+																.getLatitude(),
+																EditCommentActivity.this.bestKnownLoc
+																.getLongitude());
+												EditCommentActivity.this.locationList
+														.add(EditCommentActivity.this.postLocation);
+												EditCommentActivity.this.appState
+														.setLocationList(EditCommentActivity.this.locationList);
+												EditCommentActivity.this.appState
+														.saveLocations();
+											}
+										}
+									}
+								});
+						
+						// Location name dialog cancel button functionality
+						alertDialogBuilder2.setNegativeButton("Cancel", null);
+
+						// Creates alert dialog
+						AlertDialog alertDialog2 = alertDialogBuilder2.create();
+						alertDialog2.show();
+					}
+				});
+
+		// Creates alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
+		alertDialog.show();
+		
 	}
 	
 	/**
@@ -331,7 +548,55 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 	 */
 	@SuppressWarnings("unused")
 	private void setLocation(){
-		this.postLocation = new LocationModel(String.valueOf("Lat: " + bestKnownLoc.getLatitude()) + " Long: " + String.valueOf(bestKnownLoc.getLongitude()), bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude());
+		int i;
+		int closestLocationIndex = -1;
+		double distance = 1000; // Set to 1 km
+		double distFrom;
+
+		// If current location is known and location list is not empty, look for
+		// closest location
+		if ((bestKnownLoc != null) && (this.locationList != null)) {
+			if (this.spinnerFlag == 0) {
+				for (i = 0; i < this.locationList.size(); i++) {
+					// Determines if there is a nearby location from location
+					// list
+					distFrom = distFrom(bestKnownLoc.getLatitude(),
+							bestKnownLoc.getLongitude(),
+							this.locationList.get(i).getLatitude(),
+							this.locationList.get(i).getLongitude());
+					if (distFrom < distance) {
+						distance = distFrom;
+						closestLocationIndex = i;
+					}
+				}
+				// No nearby locations found
+				if (closestLocationIndex == -1)
+					Toast.makeText(
+							getBaseContext(),
+							"No nearby locations found. Please select or create a location.",
+							Toast.LENGTH_LONG).show();
+				// Nearby location found in location list
+				else {
+					this.postLocation = this.locationList
+							.get(closestLocationIndex);
+				}
+			}
+		}
+		// Current location is known and location list is empty
+		else if ((bestKnownLoc != null) && (this.locationList == null))
+			Toast.makeText(
+					getBaseContext(),
+					"No nearby locations found. Please select or create a location.",
+					Toast.LENGTH_LONG).show();
+		// Current location is not known and location list is not empty
+		else if ((bestKnownLoc == null) && (this.locationList != null))
+			Toast.makeText(getBaseContext(),
+					"Current location is unknown. Please select a location.",
+					Toast.LENGTH_LONG).show();
+		// Current location is not known and location list is empty
+		else {
+			this.postLocation = new LocationModel("Unknown Location", 1, 2);
+		}
 	}
 	
 	/**
@@ -342,6 +607,9 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 		this.postUsername = ueditText.getText().toString();
 		this.postTitle = teditText.getText().toString();
 		
+		stopListeningLocation();
+		setLocation();
+		
 		if(checkStringIsAllWhiteSpace(this.postContents)){
 			raiseContentsIncompleteError();
 		}
@@ -351,6 +619,10 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 		else if(checkStringIsAllWhiteSpace(this.postUsername)){
 			raiseUsernameIncompleteError();
 		}
+		// Does nothing if no location has been set - error message spawned in
+		// setLocation()
+		else if (this.postLocation == null)
+			;
 		
 		else{
 			
@@ -359,7 +631,7 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 			appState.getCommentToEdit().setContent(this.postContents);
 			appState.getCommentToEdit().setPhoto(this.postPhoto);
 			
-			//appState.getCommentToEdit().setLocation(this.postLocation);
+			appState.getCommentToEdit().setLocation(this.postLocation);
 
 			appState.saveComments();
 			appState.loadComments();
@@ -414,6 +686,36 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 	 */
 	private void goBack(){
 		finish();
+	}
+	
+	/**
+	 * Calculates the distance between two coordinates in meters.
+	 * 
+	 * Implementation retrieved from http://stackoverflow.com/questions/837872/
+	 * calculate-distance-in-meters-when-you-know-longitude-and-latitude-in-java
+	 * on April 1, 2014
+	 * 
+	 * @param lat1 latitude coordinate of location 1
+	 * @param lng1 longitude coordinate of location 1
+	 * @param lat2 latitude coordinate of location 2
+	 * @param lng2 longitude coordinate of location 2
+	 * @return distance between two coordinates in meters
+	 */
+	public static double distFrom(double lat1, double lng1, double lat2,
+			double lng2) {
+		double earthRadius = 3958.75;
+		double dLat = Math.toRadians(lat2 - lat1);
+		double dLng = Math.toRadians(lng2 - lng1);
+		double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+				+ Math.cos(Math.toRadians(lat1))
+				* Math.cos(Math.toRadians(lat2)) * Math.sin(dLng / 2)
+				* Math.sin(dLng / 2);
+		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		double dist = earthRadius * c;
+
+		int meterConversion = 1609;
+
+		return (dist * meterConversion);
 	}
 	
 	
