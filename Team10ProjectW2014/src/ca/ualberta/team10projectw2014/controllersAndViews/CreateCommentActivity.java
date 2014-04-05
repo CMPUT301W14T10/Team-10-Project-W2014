@@ -666,6 +666,7 @@ public class CreateCommentActivity extends Activity implements
 				// subcomments
 				appState.getCreateCommentParent().addSubComment(
 						(SubCommentModel) model);
+				ElasticSearchOperations.pushComment(model,"SubComment");
 				appState.updateSubAdapter();
 			} else {
 				if (checkStringIsAllWhiteSpace(this.postUsername)) {
@@ -690,7 +691,7 @@ public class CreateCommentActivity extends Activity implements
 				model.setAuthorAndroidID(appState.getUserModel().getAndroidID());
 
 				appState.getCommentList().add(model);
-				ElasticSearchOperations.pushHeadComment(model);
+				ElasticSearchOperations.pushComment(model, "HeadComment");
 			}
 
 			model.setLocation(this.postLocation);
