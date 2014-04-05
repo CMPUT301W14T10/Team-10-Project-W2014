@@ -177,7 +177,8 @@ public class MainListViewActivity extends Activity{
 	//is told to reload and update the view, in case
 	//this was not done since any changes occurred.
 	protected void onResume(){
-		super.onResume(); 
+		super.onResume();
+		ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
 		sortMainList();
 	}	
 	
