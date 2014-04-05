@@ -6,8 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.jar.Attributes.Name;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -21,7 +19,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -127,9 +124,6 @@ public class CreateCommentActivity extends Activity implements
 		locationList = appState.getLocationList();
 		if (locationList == null)
 			locationList = new ArrayList<LocationModel>();
-		// TODO crashes when creating a new location and this is uncommented and
-		// appState's location list is empty
-		// locationList = appState.getLocationList();
 	}
 
 	/**
@@ -218,14 +212,7 @@ public class CreateCommentActivity extends Activity implements
 	// http://www.mkyong.com/android/android-custom-dialog-example/ April 1,
 	// 2014
 	public void chooseLocation(View v) {
-		// TODO remove toast
-		// Toast.makeText(getBaseContext(),
-		// "Sorry, this feature is not supported yet.",
-		// Toast.LENGTH_LONG).show();
 		int i;
-		// ArrayList<LocationModel> locationList = new
-		// ArrayList<LocationModel>();
-		// locationList = appState.getLocationList();
 
 		// Sets/resets spinner set flag
 		CreateCommentActivity.this.spinnerFlag = 0;
@@ -405,6 +392,8 @@ public class CreateCommentActivity extends Activity implements
 										}
 									}
 								});
+						
+						// Location name dialog cancel button functionality
 						alertDialogBuilder2.setNegativeButton("Cancel", null);
 
 						// Creates alert dialog
@@ -551,15 +540,10 @@ public class CreateCommentActivity extends Activity implements
 	 * Not used as of version 1.
 	 */
 	private void setLocation() {
-		// Gets the list of already created locations
-		// ArrayList<LocationModel> locationList = new
-		// ArrayList<LocationModel>();
 		int i;
 		int closestLocationIndex = -1;
-		double distance = 1000; // Min distance set to 1km TODO ask group what
-								// they want this set to
+		double distance = 1000; // Set to 1 km
 		double distFrom;
-		// locationList = appState.getLocationList();
 
 		// If current location is known and location list is not empty, look for
 		// closest location
@@ -589,11 +573,6 @@ public class CreateCommentActivity extends Activity implements
 							.get(closestLocationIndex);
 				}
 			}
-			// TODO remove old code
-			// this.postLocation = new LocationModel(String.valueOf("Lat: " +
-			// bestKnownLoc.getLatitude()) + " Long: " +
-			// String.valueOf(bestKnownLoc.getLongitude()),
-			// bestKnownLoc.getLatitude(), bestKnownLoc.getLongitude());
 		}
 		// Current location is known and location list is empty
 		else if ((bestKnownLoc != null) && (this.locationList == null))
