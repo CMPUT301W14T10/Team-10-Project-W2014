@@ -33,12 +33,12 @@ import com.google.gson.reflect.TypeToken;
  * 
  */
 public class ElasticSearchOperations {
-	
+
 	public static final String SERVER_URL = "http://cmput301.softwareprocess.es:8080/testing2/team10projectw2014/";
 	public static final String LOG_TAG = "ElasticSearch";
 	private static Gson GSON = null;
-	
-	
+
+
 	/**
 	 * Sends a Comment to the server.  Does nothing if the request fails.
 	 * @param model a CommentModel
@@ -75,7 +75,7 @@ public class ElasticSearchOperations {
 
 		thread.start();
 	}
-	
+
     /**
      * Searches the server for CommentModels with the given searchTerm in their text.
      * @param searchTerm the single world term to search for
@@ -155,7 +155,10 @@ public class ElasticSearchOperations {
         
         //Log.e(LOG_TAG, model.toString()); // print out the entire contents of the list
     }
-	
+    
+    
+    
+
 	/**
 	 * Constructs a Gson with a custom serializer / desserializer registered for Bitmaps.
 	 */
