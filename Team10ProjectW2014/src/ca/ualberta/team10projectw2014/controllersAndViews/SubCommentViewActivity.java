@@ -579,13 +579,13 @@ public class SubCommentViewActivity extends Activity {
 			// Sort by picture
 			if (appState.getUserModel().isSortByDate() == true) {
 				// Sort by date
-				CommentModel.pictureSort(comments, ApplicationStateModel.dateCompare);
+				appState.pictureSort(comments, ApplicationStateModel.dateCompare);
 			} else if(appState.getUserModel().isSortByLoc() == true) {
 				// Sort by Location
-				CommentModel.pictureSort((ArrayList<CommentModel>)comments, ApplicationStateModel.locCompare);
+				appState.pictureSort((ArrayList<CommentModel>)comments, ApplicationStateModel.locCompare);
 			} else if(appState.getUserModel().isSortByPopularity())
 				// Sort by number of Favourites
-				CommentModel.pictureSort((ArrayList<CommentModel>)comments, ApplicationStateModel.popularityCompare);
+				appState.pictureSort((ArrayList<CommentModel>)comments, ApplicationStateModel.popularityCompare);
 		}
 		else {
 			if (appState.getUserModel().isSortByDate() == true) {
