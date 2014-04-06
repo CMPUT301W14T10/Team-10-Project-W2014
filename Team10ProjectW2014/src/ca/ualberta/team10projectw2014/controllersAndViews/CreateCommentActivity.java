@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -125,12 +126,12 @@ public class CreateCommentActivity extends Activity implements
 
 		appState.setLocationList(new ArrayList<LocationModel>());
 		// STEVEN: Load location models here
-		appState.setLocationList(ElasticSearchLocationOperations.getLocationList(this));
-		appState.saveLocations();
+		ElasticSearchLocationOperations.getLocationList(this);
 		appState.loadLocations();
 		locationList = appState.getLocationList();
 		if (locationList == null)
 			locationList = new ArrayList<LocationModel>();
+		Log.e("LOCATION LIST", appState.getLocationList().toString());
 	}
 	
 	@Override

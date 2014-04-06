@@ -18,6 +18,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.util.Log;
+import ca.ualberta.team10projectw2014.controllersAndViews.CreateCommentActivity;
 import ca.ualberta.team10projectw2014.controllersAndViews.MainListViewActivity;
 import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
@@ -87,7 +88,7 @@ public class ElasticSearchLocationOperations {
 	 * 
 	 * @author zjullion; adapted by dvyee
 	 */
-	public static ArrayList<LocationModel> getLocationList(final Activity activity) {
+	public static void getLocationList(final CreateCommentActivity activity) {
 		final ArrayList<LocationModel> locationList = new ArrayList<LocationModel>();
 		if (GSON == null)
 			constructGson();
@@ -140,6 +141,12 @@ public class ElasticSearchLocationOperations {
 					public void run() {
 						locationList.clear();
 						locationList.addAll(returnedData.getSources());
+						ApplicationStateModel appState = ApplicationStateModel
+                                .getInstance();
+						appState.setLocationList(locationList);
+						appState.saveLocations();
+						
+						
 						Log.e(LOG_TAG, locationList.toString()); // print out the
 						// entire contents of the list
 					}
@@ -150,7 +157,6 @@ public class ElasticSearchLocationOperations {
 		};
 
 		thread.start();
-		return locationList;
 	}
 	
 	
