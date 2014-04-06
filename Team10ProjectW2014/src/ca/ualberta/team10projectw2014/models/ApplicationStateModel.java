@@ -448,6 +448,10 @@ public class ApplicationStateModel {
 	{
 	
 		this.cmpLocation = cmpLocation;
+		if(this.userModel != null){
+			this.userModel.setSortLoc(cmpLocation);
+		}
+		this.saveUser();
 	}
 	
 	/**
@@ -673,7 +677,7 @@ public class ApplicationStateModel {
 				loadedUser = new UserModel(USER_fileContext);
 			}
 			this.userModel = loadedUser;
-
+			cmpLocation = this.userModel.getSortLoc();
 			//close the file:
 			isr.close();
 			fis.close();

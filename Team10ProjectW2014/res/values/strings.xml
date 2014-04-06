@@ -68,5 +68,6 @@
     <string name="title_activity_favourites_view">FavouritesViewActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_">A</string>
+    <string name="userlocation">User Location</string>
 
 </resources>
