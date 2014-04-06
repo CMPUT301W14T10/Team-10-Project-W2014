@@ -128,7 +128,7 @@ public class SubCommentViewActivity extends Activity {
 		else {
 			menu.findItem(R.id.action_favourite).setIcon(resources.getDrawable(R.drawable.ic_action_favourite));
 		}
-		menu.findItem(R.id.action_map).setIcon(resources.getDrawable(R.drawable.ic_map_icon_medium4));
+		menu.findItem(R.id.action_map).setIcon(resources.getDrawable(R.drawable.ic_map_icon_medium3));
 		return super.onCreateOptionsMenu(menu);
 	}
 
