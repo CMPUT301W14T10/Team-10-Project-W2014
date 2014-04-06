@@ -145,9 +145,7 @@ public class ApplicationStateModel {
 	private CommentModel commentToEdit;
 	
 	private ArrayList<CommentModel> assortList;
-	
-	private String assortViewTitle;
-	
+		
 	/**
 	*A comparator used in sorting comments by location.
 	*/
@@ -301,17 +299,6 @@ public class ApplicationStateModel {
 
 		this.assortList = assortList;
 	}
-	
-	public String getAssortViewTitle()
-	{
-		return assortViewTitle;
-	}
-	public void setAssortViewTitle(String assortViewTitle)
-	{
-
-		this.assortViewTitle = assortViewTitle;
-	}
-
 	
 	/**
 	 * A method for updating the MainListViewAdapter from outside of the
@@ -494,7 +481,6 @@ public class ApplicationStateModel {
 		ArrayList<CommentModel> favsReference;
 		ArrayList<CommentModel> readLaterReference;
 		FileInputStream fis;
-		userModel = new UserModel(USER_fileContext);
 		try
 		{
 			//Obtain the file to read:
@@ -519,36 +505,24 @@ public class ApplicationStateModel {
 					readLaterReference = this.userModel.getWantToReadComments();
 					favsReference.clear();
 					readLaterReference.clear();
-					for(CommentModel favourite : loadedUser.getFavourites()){
-						favsReference.add(favourite);
-					}
-					for(CommentModel laterComment : loadedUser.getWantToReadComments()){
-						readLaterReference.add(laterComment);
-					}
+					favsReference.addAll(loadedUser.getFavourites());
+					readLaterReference.addAll(loadedUser.getWantToReadComments());
 					loadedUser.setFavourites(favsReference);
 					loadedUser.setWantToReadComments(readLaterReference);
 				}
-				this.userModel = loadedUser;
 			}
-			
+			else{
+				loadedUser = new UserModel(USER_fileContext);
+			}
+			this.userModel = loadedUser;
+
 			//close the file:
 			isr.close();
 			fis.close();
-//			if(assortIsFavList){
-//				this.assortList = this.userModel.getFavourites();
-//				if(this.assortAdapter != null){
-//					this.updateAssortAdapter();
-//				}
-//			}
-//			if(assortIsWantReadList){
-//				this.assortList = this.userModel.getWantToReadComments();
-//				if(this.assortAdapter != null){
-//					this.updateAssortAdapter();
-//				}			
-//			}
 		} catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
+			this.userModel = new UserModel(USER_fileContext);
 		} catch (IOException e)
 		{
 			e.printStackTrace();
