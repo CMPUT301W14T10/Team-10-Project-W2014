@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -33,6 +34,7 @@ import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationListenerModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
 import ca.ualberta.team10projectw2014.models.SubCommentModel;
+import ca.ualberta.team10projectw2014.network.ElasticSearchLocationOperations;
 import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 
 /**
@@ -124,10 +126,14 @@ public class CreateCommentActivity extends Activity implements
 
 		appState.setLocationList(new ArrayList<LocationModel>());
 		// STEVEN: Load location models here
+		ElasticSearchLocationOperations.getLocationList(this);
 		appState.loadLocations();
+		locationList = new ArrayList<LocationModel>();
 		locationList = appState.getLocationList();
-		if (locationList == null)
-			locationList = new ArrayList<LocationModel>();
+		Log.e("LOCATION LIST", appState.getLocationList().toString());
+	
+			
+		
 	}
 	
 	@Override
@@ -409,11 +415,11 @@ public class CreateCommentActivity extends Activity implements
 																.getLongitude());
 												CreateCommentActivity.this.locationList
 														.add(CreateCommentActivity.this.postLocation);
-												CreateCommentActivity.this.appState
-														.setLocationList(CreateCommentActivity.this.locationList);
+												appState.getLocationList().add(CreateCommentActivity.this.postLocation);
 												CreateCommentActivity.this.appState
 														.saveLocations();
 												// STEVEN: save location model list here
+												ElasticSearchLocationOperations.pushLocationList(CreateCommentActivity.this.postLocation);
 											}
 										}
 									}

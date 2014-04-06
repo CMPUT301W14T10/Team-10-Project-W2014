@@ -27,14 +27,14 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 /**
- * Handles sending CommentModels to the server and executing searches on the
- * server. Most of the code in this class is based on:
- * https://github.com/rayzhangcl/ESDemo and
- * https://github.com/zjullion/PicPosterComplete
- * 
- * @author zjullion. Edited by sgiang92
- * 
- */
+* Handles sending CommentModels to the server and executing searches on the
+* server. Most of the code in this class is based on:
+* https://github.com/rayzhangcl/ESDemo and
+* https://github.com/zjullion/PicPosterComplete
+*
+* @author zjullion. Edited by sgiang92
+*
+*/
 public class ElasticSearchOperations {
 
     // public static final String SERVER_URL =
@@ -46,11 +46,11 @@ public class ElasticSearchOperations {
     private static Gson GSON = null;
 
     /**
-     * Sends a Comment to the server. Does nothing if the request fails.
-     * 
-     * @param model
-     *            a CommentModel
-     */
+* Sends a Comment to the server. Does nothing if the request fails.
+*
+* @param model
+* a CommentModel
+*/
     public static void pushComment(final CommentModel comment, final String type) {
         if (GSON == null)
             constructGson();
@@ -116,19 +116,19 @@ public class ElasticSearchOperations {
     }
 
     /**
-     * Searches the server for CommentModels with the given searchTerm in their
-     * text.
-     * 
-     * @param searchTerm
-     *            the single world term to search for
-     * @param model
-     *            the ArrayList of CommentModels to clear and then fill with the
-     *            new data
-     * @param activity
-     *            a MainListViewActivity
-     * 
-     * @author zjullion; adapted by dvyee
-     */
+* Searches the server for CommentModels with the given searchTerm in their
+* text.
+*
+* @param searchTerm
+* the single world term to search for
+* @param model
+* the ArrayList of CommentModels to clear and then fill with the
+* new data
+* @param activity
+* a MainListViewActivity
+*
+* @author zjullion; adapted by dvyee
+*/
     public static void searchForCommentModels(final String searchTerm,
             final ArrayList<CommentModel> model,
             final MainListViewActivity activity) {
@@ -215,9 +215,9 @@ public class ElasticSearchOperations {
     }
 
     /**
-     * Constructs a Gson with a custom serializer / desserializer registered for
-     * Bitmaps.
-     */
+* Constructs a Gson with a custom serializer / desserializer registered for
+* Bitmaps.
+*/
     private static void constructGson() {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Bitmap.class, new BitmapJsonConverter());
