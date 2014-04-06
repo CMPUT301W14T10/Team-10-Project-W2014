@@ -159,6 +159,7 @@ public class ApplicationStateModel {
 	
 	private static Gson GSON = null;
 	
+	private ArrayList<CommentModel> replyList = new ArrayList<CommentModel>();
 		
 	private static Location cmpLocation;
 	
@@ -429,6 +430,14 @@ public class ApplicationStateModel {
 		this.assortList = assortList;
 	}
 	
+
+	public ArrayList<CommentModel> getReplyList() {
+		return replyList;
+	}
+	public void setReplyList(ArrayList<CommentModel> replyList) {
+		this.replyList = replyList;
+	}
+
 	public Location getCmpLocation()
 	{
 	
@@ -483,14 +492,14 @@ public class ApplicationStateModel {
 					Context.MODE_PRIVATE); // TODO REMEMBER TO SET THE CONTEXT BEFORE YOU USE THIS
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
 			
-			//Gson gson = new Gson();
+			Gson gson = new Gson();
 			
 			//A type token to pass GSON, indicating that we want to load
 			//a list of CommentModels:
 			Type fooType = new TypeToken<ArrayList<CommentModel>>() {}.getType();
 			
 			//Conver the list to a JSON string, saving it to file:
-			GSON.toJson(commentList, fooType, osw); 
+			gson.toJson(commentList, fooType, osw); 
 			
 			//close the file:
 			osw.close();
@@ -528,14 +537,14 @@ public class ApplicationStateModel {
 			fis = ApplicationStateModel.COMMENT_fileContext.openFileInput(COMMENT_FILE_NAME);
 			InputStreamReader isr = new InputStreamReader(fis);
 			
-			//Gson gson = new Gson();
+			Gson gson = new Gson();
 
 			//create a type token to tell GSON what type of object it is saving:
 			Type fooType = new TypeToken<ArrayList<CommentModel>>() {}.getType();
 			
 			//use GSON object, type token and file stream to get list of
 			//head comments from file:
-			ArrayList<CommentModel> list_temp = GSON.fromJson(isr, fooType);
+			ArrayList<CommentModel> list_temp = gson.fromJson(isr, fooType);
 			
 			//if the comments in the file were null, we can't call list_temp.size()
 			//or list_temp.get(i)
@@ -590,12 +599,12 @@ public class ApplicationStateModel {
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
 			
 			//Create a GSON object and type token:
-			//Gson gson = new Gson();
+			Gson gson = new Gson();
 			Type fooType = new TypeToken<UserModel>() {}.getType();
 			
 			//Obtain the JSON string for the object/type provided
 			//and save it to file:
-			GSON.toJson(userModel, fooType, osw);
+			gson.toJson(userModel, fooType, osw);
 			
 			//Close the files:
 			osw.close();
@@ -637,11 +646,11 @@ public class ApplicationStateModel {
 			InputStreamReader isr = new InputStreamReader(fis);
 
 			//Create the GSON object and type token:
-			//Gson gson = new Gson();
+			Gson gson = new Gson();
 			Type fooType = new TypeToken<UserModel>() {}.getType();
 			
 			//Get the UserModel from the File using the GSON object
-			UserModel loadedUser = GSON.fromJson(isr, fooType);
+			UserModel loadedUser = gson.fromJson(isr, fooType);
 			
 			//if the file was empty, keep an empty list, not null.
 			//Otherwise, set the user to whatever was in the file:
@@ -694,14 +703,14 @@ public class ApplicationStateModel {
 					Context.MODE_PRIVATE); // TODO REMEMBER TO SET THE CONTEXT BEFORE YOU USE THIS
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
 			
-			//Gson gson = new Gson();
+			Gson gson = new Gson();
 			
 			//A type token to pass GSON, indicating that we want to load
 			//a list of CommentModels:
 			Type fooType = new TypeToken<ArrayList<LocationModel>>() {}.getType();
 			
 			//Convert the list to a JSON string, saving it to file:
-			GSON.toJson(locationList, fooType, osw); 
+			gson.toJson(locationList, fooType, osw); 
 			
 			//close the file:
 			osw.close();
@@ -744,14 +753,14 @@ public class ApplicationStateModel {
 			fis = ApplicationStateModel.LOCATION_fileContext.openFileInput(LOCATION_FILE_NAME);
 			InputStreamReader isr = new InputStreamReader(fis);
 			
-			//Gson gson = new Gson();
+			Gson gson = new Gson();
 
 			//create a type token to tell GSON what type of object it is saving:
 			Type fooType = new TypeToken<ArrayList<LocationModel>>() {}.getType();
 			
 			//use GSON object, type token and file stream to get list of
 			//head comments from file:
-			ArrayList<LocationModel> list_temp = GSON.fromJson(isr, fooType);
+			ArrayList<LocationModel> list_temp = gson.fromJson(isr, fooType);
 			
 			//if the comments in the file were null, we can't call list_temp.size()
 			//or list_temp.get(i)
