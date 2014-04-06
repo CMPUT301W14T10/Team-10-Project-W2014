@@ -13,13 +13,17 @@ import android.net.Uri;
 
 /**
  * This class acts as the super class model for comments.
- * @author David Yee <dvyee@ualberta.ca>
- * @version     1                (current version number of program)
+ * @author  David Yee <dvyee@ualberta.ca>
+ * @version      1                (current version number of program)
  */
 public class CommentModel{
 	private String title;
 	private String content;
 	private String author;
+	/**
+	 * @uml.property  name="location"
+	 * @uml.associationEnd  
+	 */
 	private LocationModel location;
 	private Bitmap photo;
 	private Calendar timestamp;
@@ -33,10 +37,18 @@ public class CommentModel{
 	private String uniqueID;
 	private String parentTitle = "";
 	
+	/**
+	 * @return
+	 * @uml.property  name="uniqueID"
+	 */
 	public String getUniqueID() {
         return uniqueID;
     }
 
+    /**
+	 * @param uniqueID
+	 * @uml.property  name="uniqueID"
+	 */
     public void setUniqueID(String uniqueID) {
         this.uniqueID = uniqueID;
     }
@@ -51,54 +63,122 @@ public class CommentModel{
 		subComments.add(model);
 	}
 	
+	/**
+	 * @return
+	 * @uml.property  name="imageUri"
+	 */
 	public Uri getImageUri() {
 		return imageUri;
 	}
+	/**
+	 * @param imageUri
+	 * @uml.property  name="imageUri"
+	 */
 	public void setImageUri(Uri imageUri) {
 		this.imageUri = imageUri;
 	}
+	/**
+	 * @return
+	 * @uml.property  name="photoPath"
+	 */
 	public String getPhotoPath() {
 		return photoPath;
 	}
+	/**
+	 * @param photoPath
+	 * @uml.property  name="photoPath"
+	 */
 	public void setPhotoPath(String photoPath) {
 		this.photoPath = photoPath;
 	}
+	/**
+	 * @return
+	 * @uml.property  name="subComments"
+	 */
 	public ArrayList<CommentModel> getSubComments() {
 		return subComments;
 	}
+	/**
+	 * @return
+	 * @uml.property  name="title"
+	 */
 	public String getTitle() {
 		return title;
 	}
+	/**
+	 * @param title
+	 * @uml.property  name="title"
+	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	/**
+	 * @return
+	 * @uml.property  name="content"
+	 */
 	public String getContent() {
 		return content;
 	}
+	/**
+	 * @param content
+	 * @uml.property  name="content"
+	 */
 	public void setContent(String content) {
 		this.content = content;
 	}
+	/**
+	 * @return
+	 * @uml.property  name="author"
+	 */
 	public String getAuthor() {
 		return author;
 	}
+	/**
+	 * @param author
+	 * @uml.property  name="author"
+	 */
 	public void setAuthor(String author) {
 		this.author = author;
 	}
+	/**
+	 * @return
+	 * @uml.property  name="location"
+	 */
 	public LocationModel getLocation() {
 		return location;
 	}
+	/**
+	 * @param location
+	 * @uml.property  name="location"
+	 */
 	public void setLocation(LocationModel location) {
 		this.location = location;
 	}
+	/**
+	 * @return
+	 * @uml.property  name="photo"
+	 */
 	public Bitmap getPhoto() {
 		return photo;
 	}
+	/**
+	 * @param photo
+	 * @uml.property  name="photo"
+	 */
 	public void setPhoto(Bitmap photo) {
 		this.photo = photo;
 	}
+	/**
+	 * @return
+	 * @uml.property  name="timestamp"
+	 */
 	public Calendar getTimestamp() {
 		return timestamp;
 	}
+	/**
+	 * @param timestamp
+	 * @uml.property  name="timestamp"
+	 */
 	public void setTimestamp(Calendar timestamp) {
 		this.timestamp = timestamp;
 		this.timestamp_str = timeToInt(timestamp);
@@ -117,15 +197,31 @@ public class CommentModel{
         return timeString;
     }
 	
+	/**
+	 * @return
+	 * @uml.property  name="timestamp_str"
+	 */
 	public String getTimestamp_str() {
 	    return timestamp_str;
 	}
+	/**
+	 * @return
+	 * @uml.property  name="numFavourites"
+	 */
 	public int getNumFavourites() {
 		return numFavourites;
 	}
+	/**
+	 * @param numFavourites
+	 * @uml.property  name="numFavourites"
+	 */
 	public void setNumFavourites(int numFavourites) {
 		this.numFavourites = numFavourites;
 	}
+	/**
+	 * @param parentID
+	 * @uml.property  name="parentID"
+	 */
 	public void setParentID(String parentID) {
 		this.parentID = parentID;
 		
@@ -133,9 +229,17 @@ public class CommentModel{
 	public String getParentID(){
 		return this.parentID;
 	}
+	/**
+	 * @return
+	 * @uml.property  name="authorAndroidID"
+	 */
 	public String getAuthorAndroidID() {
 		return authorAndroidID;
 	}
+	/**
+	 * @param authorAndroidID
+	 * @uml.property  name="authorAndroidID"
+	 */
 	public void setAuthorAndroidID(String authorAndroidID) {
 		this.authorAndroidID = authorAndroidID;
 	}

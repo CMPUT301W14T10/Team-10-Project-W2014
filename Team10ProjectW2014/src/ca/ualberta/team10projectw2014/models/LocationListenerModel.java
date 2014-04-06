@@ -11,12 +11,8 @@ import android.os.Bundle;
 import ca.ualberta.team10projectw2014.R;
 
 /**
- * @author      Bradley Poulette <bpoulett@ualberta.ca>
- * @version     1                (current version number of program)
- * 
- * This class is used to deal with listening for the user's most accurate current location and
- * returning that location upon request.
- * 
+ * @author       Bradley Poulette <bpoulett@ualberta.ca>
+ * @version      1                (current version number of program)  This class is used to deal with listening for the user's most accurate current location and  returning that location upon request.
  */
 public class LocationListenerModel implements LocationListener {
 
@@ -161,6 +157,10 @@ public class LocationListenerModel implements LocationListener {
 		mLocationManager.removeUpdates(this);
 	}
 	
+	/**
+	 * @return
+	 * @uml.property  name="currentBestLocation"
+	 */
 	public Location getCurrentBestLocation(){
 		return currentBestLocation;
 	}

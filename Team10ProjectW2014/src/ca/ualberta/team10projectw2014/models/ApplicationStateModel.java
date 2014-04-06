@@ -19,27 +19,31 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import ca.ualberta.team10projectw2014.controllersAndViews.MainListViewAdapter;
 import ca.ualberta.team10projectw2014.controllersAndViews.SubCommentViewActivityAdapter;
-import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 /**
-* This class is used as a singleton to contain data
-* available to all activities.
-* The code for setting up a singleton structure was
-* borrowed from http://www.javaworld.com/article/2073352/core-java/simply-singleton.html
-* @author Cole Fudge <cfudge@ualberta.ca>
-* @version     1                (current version number of program)
-*/
+ * This class is used as a singleton to contain data available to all activities. The code for setting up a singleton structure was borrowed from http://www.javaworld.com/article/2073352/core-java/simply-singleton.html
+ * @author  Cole Fudge <cfudge@ualberta.ca>
+ * @version      1                (current version number of program)
+ */
 public class ApplicationStateModel {
 
 	//to set up this class as a singleton:
+	/**
+	 * @uml.property  name="instance"
+	 * @uml.associationEnd  
+	 */
 	private static ApplicationStateModel instance = null;
 
 	protected ApplicationStateModel() {
 		// Exists only to defeat instantiation.		
 	}
+	/**
+	 * @return
+	 * @uml.property  name="instance"
+	 */
 	public static ApplicationStateModel getInstance() {
 		if(instance == null) {
 			instance = new ApplicationStateModel();
@@ -86,21 +90,24 @@ public class ApplicationStateModel {
 	private String LOCATION_FILE_NAME = "locations.sav";
 
 	/**
-	*Adapter for displaying the list of comments
-	*in the MainListViewActivity.
-	*/
+	 * Adapter for displaying the list of comments in the MainListViewActivity.
+	 * @uml.property  name="mLVAdapter"
+	 * @uml.associationEnd  
+	 */
 	private MainListViewAdapter MLVAdapter;
 	
 	/**
-	*Adapter for displaying the list of comments
-	*in the SubCommentViewActivity.
-	*/
+	 * Adapter for displaying the list of comments in the SubCommentViewActivity.
+	 * @uml.property  name="sCVAdapter"
+	 * @uml.associationEnd  
+	 */
 	private SubCommentViewActivityAdapter SCVAdapter;
 	
 	/**
-	*Adapter for displaying the list of favourites
-	*in the FavouritesViewActivity.
-	*/
+	 * Adapter for displaying the list of favourites in the FavouritesViewActivity.
+	 * @uml.property  name="assortAdapter"
+	 * @uml.associationEnd  
+	 */
 	private MainListViewAdapter assortAdapter;
 
 	/**
@@ -118,35 +125,39 @@ public class ApplicationStateModel {
 	private ArrayList<LocationModel> locationList;
 	
 	/**
-	*Holds all of the user's preferences and cached
-	*comments. Can be accessed from any activity.
-	*/
+	 * Holds all of the user's preferences and cached comments. Can be accessed from any activity.
+	 * @uml.property  name="userModel"
+	 * @uml.associationEnd  
+	 */
 	private UserModel userModel;
 	
 	/**
-	*The head comment that is to be displayed by
-	*the SubCommentViewActivity. The activity
-	*will show this head comment in full, followed
-	*by its subcomments in list form.
-	*/
+	 * The head comment that is to be displayed by the SubCommentViewActivity. The activity will show this head comment in full, followed by its subcomments in list form.
+	 * @uml.property  name="subCommentViewHead"
+	 * @uml.associationEnd  
+	 */
 	private CommentModel subCommentViewHead;
 	
 	/**
-	*The comment that CreateComment is to
-	*create a subcomment for. This will
-	*be null if CreateComment is to create
-	*a new head comment.
-	*/
+	 * The comment that CreateComment is to create a subcomment for. This will be null if CreateComment is to create a new head comment.
+	 * @uml.property  name="createCommentParent"
+	 * @uml.associationEnd  
+	 */
 	private CommentModel createCommentParent;
 	
 	/**
-	*The comment that EditComment is to
-	*change.
-	*/
+	 * The comment that EditComment is to change.
+	 * @uml.property  name="commentToEdit"
+	 * @uml.associationEnd  
+	 */
 	private CommentModel commentToEdit;
 	
 	private ArrayList<CommentModel> assortList;
+	
 		
+	private static Location cmpLocation;
+	
+
 	/**
 	*A comparator used in sorting comments by location.
 	*/
@@ -154,11 +165,8 @@ public class ApplicationStateModel {
 		
 		public int compare(CommentModel comment1, CommentModel comment2){
 			
-			//Get the user's current location:
-			final LocationListenerModel locationListener = new LocationListenerModel(COMMENT_fileContext);
-			Location userLocation = locationListener.getLastBestLocation();
 			//If the user's location is unavailable, simply set all of the comparisons to equal:
-			if(userLocation == null){
+			if(cmpLocation == null){
 				return 0;
 			}
 			//create a location with the latitude and longitude each of the comments under consideration:
@@ -171,7 +179,7 @@ public class ApplicationStateModel {
 			loc2.setLongitude(comment2.getLocation().getLongitude());
 			
 			//get the difference in their distance from the user:
-			double difference = (loc2.distanceTo(userLocation) - loc1.distanceTo(userLocation));
+			double difference = (loc2.distanceTo(cmpLocation) - loc1.distanceTo(cmpLocation));
 			
 			//The difference in distances is a double and the precision is lost if it is cast
 			//to an integer, which is what the comparator needs to return. Since the difference 
@@ -198,7 +206,6 @@ public class ApplicationStateModel {
 			Location userLocation = locationListener.getLastBestLocation();
 			//If the user's location is unavailable, simply set all of the comparisons to equal:
 			if(userLocation == null){
-				Log.e("COMPARATOR", "RETURNING 0");
 				return 0;
 			}
 			//create a location object with the latitude and longitude each location under consideration:
@@ -249,30 +256,54 @@ public class ApplicationStateModel {
 	};
 
 	//Getters and Setters:
+	/**
+	 * @return
+	 * @uml.property  name="commentToEdit"
+	 */
 	public CommentModel getCommentToEdit()
 	{
 	
 		return this.commentToEdit;
 	}
 	
+	/**
+	 * @param commentToEdit
+	 * @uml.property  name="commentToEdit"
+	 */
 	public void setCommentToEdit(CommentModel commentToEdit)
 	{
 	
 		this.commentToEdit = commentToEdit;
 	}
 	
+	/**
+	 * @return
+	 * @uml.property  name="mLVAdapter"
+	 */
 	public MainListViewAdapter getMLVAdapter() {
 		return this.MLVAdapter;
 	}
 
+	/**
+	 * @param mLVAdapter
+	 * @uml.property  name="mLVAdapter"
+	 */
 	public void setMLVAdapter(MainListViewAdapter mLVAdapter) {
 		this.MLVAdapter = mLVAdapter;
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="sCVAdapter"
+	 */
 	public SubCommentViewActivityAdapter getSCVAdapter() {
 		return this.SCVAdapter;
 	}
 
+	/**
+	 * @param sCVAdapter
+	 * @uml.property  name="sCVAdapter"
+	 */
 	public void setSCVAdapter(SubCommentViewActivityAdapter sCVAdapter) {
 		this.SCVAdapter = sCVAdapter;
 	}
@@ -283,62 +314,126 @@ public class ApplicationStateModel {
 		ApplicationStateModel.LOCATION_fileContext = fileContext;
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="createCommentParent"
+	 */
 	public CommentModel getCreateCommentParent() {
 		return this.createCommentParent;
 	}
 
+	/**
+	 * @param createCommentParent
+	 * @uml.property  name="createCommentParent"
+	 */
 	public void setCreateCommentParent(CommentModel createCommentParent) {
 		this.createCommentParent = createCommentParent;
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="subCommentViewHead"
+	 */
 	public CommentModel getSubCommentViewHead() {
 		return this.subCommentViewHead;
 	}
 
+	/**
+	 * @param subCommentViewHead
+	 * @uml.property  name="subCommentViewHead"
+	 */
 	public void setSubCommentViewHead(CommentModel subCommentViewHead) {
 		this.subCommentViewHead = subCommentViewHead;
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="commentList"
+	 */
 	public ArrayList<CommentModel> getCommentList() {
 		return this.commentList;
 	}
 
+	/**
+	 * @param commentList
+	 * @uml.property  name="commentList"
+	 */
 	public void setCommentList(ArrayList<CommentModel> commentList) {
 		this.commentList = commentList;
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="userModel"
+	 */
 	public UserModel getUserModel() {
 		return this.userModel;
 	}
 	
+	/**
+	 * @param locationList
+	 * @uml.property  name="locationList"
+	 */
 	public void setLocationList(ArrayList<LocationModel> locationList) {
 		this.locationList = locationList;
 	}
 	
+	/**
+	 * @return
+	 * @uml.property  name="locationList"
+	 */
 	public ArrayList<LocationModel> getLocationList(){
 		return this.locationList;
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="assortAdapter"
+	 */
 	public MainListViewAdapter getAssortAdapter()
 	{
 
 		return assortAdapter;
 	}
 	
+	/**
+	 * @param favsAdapter
+	 * @uml.property  name="assortAdapter"
+	 */
 	public void setAssortAdapter(MainListViewAdapter favsAdapter)
 	{
 		this.assortAdapter = favsAdapter;
 	}
 	
+	/**
+	 * @return
+	 * @uml.property  name="assortList"
+	 */
 	public ArrayList<CommentModel> getAssortList()
 	{
 
 		return assortList;
 	}
+	/**
+	 * @param assortList
+	 * @uml.property  name="assortList"
+	 */
 	public void setAssortList(ArrayList<CommentModel> assortList)
 	{
 
 		this.assortList = assortList;
+	}
+	
+	public Location getCmpLocation()
+	{
+	
+		return cmpLocation;
+	}
+	
+	public void setCmpLocation(Location cmpLocation)
+	{
+	
+		this.cmpLocation = cmpLocation;
 	}
 	
 	/**
@@ -620,7 +715,12 @@ public class ApplicationStateModel {
 		//clear the comment list so that their
 		//are no duplicates and we have only 
 		//comments from file:
-		this.locationList.clear();
+		if(this.locationList != null){
+			this.locationList.clear();
+		}
+		else{
+			this.locationList = new ArrayList<LocationModel>();
+		}
 		try
 		{
 			//Get the file for reading:
@@ -688,9 +788,11 @@ public class ApplicationStateModel {
 				 picArray.add(comment);
 			 }
 		 }
-		 // Sort each array
-		 Collections.sort(picArray, cmp);
-		 Collections.sort(noPicArray, cmp);
+		 if(cmp != null){
+			 // Sort each array
+			 Collections.sort(picArray, cmp);
+			 Collections.sort(noPicArray, cmp);
+		 }
 		 commentList.clear();
 		 // Combine both arrays
 		 commentList.addAll(picArray);

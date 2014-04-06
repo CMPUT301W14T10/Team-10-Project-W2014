@@ -7,8 +7,8 @@ import android.provider.Settings.Secure;
 
 /**
  * This class acts as the model for the User.
- * @author Steven Giang <giang2@ualberta.ca>, David Yee <
- * @version     1                (current version number of program)
+ * @author  Steven Giang <giang2@ualberta.ca>, David Yee <
+ * @version      1                (current version number of program)
  */
 public class UserModel{
 	private String androidID;
@@ -53,34 +53,66 @@ public class UserModel{
 		this.userName = userName;
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="androidID"
+	 */
 	public String getAndroidID() {
 		return androidID;
 	}
 
+	/**
+	 * @param androidID
+	 * @uml.property  name="androidID"
+	 */
 	public void setAndroidID(String androidID) {
 		this.androidID = androidID;
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="favourites"
+	 */
 	public ArrayList<CommentModel> getFavourites() {
 		return favourites;
 	}
 
+	/**
+	 * @param favourites
+	 * @uml.property  name="favourites"
+	 */
 	public void setFavourites(ArrayList<CommentModel> favourites) {
 		this.favourites = favourites;
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="readComments"
+	 */
 	public ArrayList<CommentModel> getReadComments() {
 		return readComments;
 	}
 
+	/**
+	 * @param readComments
+	 * @uml.property  name="readComments"
+	 */
 	public void setReadComments(ArrayList<CommentModel> readComments) {
 		this.readComments = readComments;
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="wantToReadComments"
+	 */
 	public ArrayList<CommentModel> getWantToReadComments() {
 		return wantToReadComments;
 	}
 
+	/**
+	 * @param wantToReadComments
+	 * @uml.property  name="wantToReadComments"
+	 */
 	public void setWantToReadComments(ArrayList<CommentModel> wantToReadComments) {
 		this.wantToReadComments = wantToReadComments;
 	}
@@ -93,18 +125,34 @@ public class UserModel{
 		userName = username;
 	}
 
+	/**
+	 * @return
+	 * @uml.property  name="sortByPic"
+	 */
 	public boolean isSortByPic() {
 		return sortByPic;
 	}
 	
+	/**
+	 * @param sortByPic
+	 * @uml.property  name="sortByPic"
+	 */
 	public void setSortByPic(boolean sortByPic) {
 		this.sortByPic = sortByPic;
 	}
 	
+	/**
+	 * @return
+	 * @uml.property  name="sortByDate"
+	 */
 	public boolean isSortByDate() {
 		return sortByDate;
 	}
 	
+	/**
+	 * @param sortByDate
+	 * @uml.property  name="sortByDate"
+	 */
 	public void setSortByDate(boolean sortByDate) {
 		this.sortByDate = sortByDate;
 		if(this.sortByDate){
@@ -113,10 +161,18 @@ public class UserModel{
 		}
 	}
 	
+	/**
+	 * @return
+	 * @uml.property  name="sortByLoc"
+	 */
 	public boolean isSortByLoc() {
 		return sortByLoc;
 	}
 	
+	/**
+	 * @param sortByLoc
+	 * @uml.property  name="sortByLoc"
+	 */
 	public void setSortByLoc(boolean sortByLoc) {
 		this.sortByLoc = sortByLoc;
 		if(this.sortByLoc){
@@ -125,10 +181,18 @@ public class UserModel{
 		}
 	}
 	
+	/**
+	 * @return
+	 * @uml.property  name="sortByPopularity"
+	 */
 	public boolean isSortByPopularity() {
 		return sortByPopularity;
 	}
 	
+	/**
+	 * @param sortByPopularity
+	 * @uml.property  name="sortByPopularity"
+	 */
 	public void setSortByPopularity(boolean sortByPopularity) {
 		this.sortByPopularity = sortByPopularity;
 		if(this.sortByPopularity){

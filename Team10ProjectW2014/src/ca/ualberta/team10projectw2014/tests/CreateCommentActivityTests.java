@@ -11,16 +11,20 @@ import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
 
 /**
- * @author      Bradley Poulette <bpoulett@ualberta.ca>
- * @version     1                (current version number of program)
- * 
- * <p>
- * Runs tests for CreateCommentActivity
- * 
-*/
+ * @author       Bradley Poulette <bpoulett@ualberta.ca>
+ * @version      1                (current version number of program)  <p>  Runs tests for CreateCommentActivity
+ */
 public class CreateCommentActivityTests extends ActivityInstrumentationTestCase2<CreateCommentActivity> {
 	
+	/**
+	 * @uml.property  name="activity"
+	 * @uml.associationEnd  
+	 */
 	CreateCommentActivity activity;
+	/**
+	 * @uml.property  name="appState"
+	 * @uml.associationEnd  
+	 */
 	ApplicationStateModel appState;
 	EditText usernameText;
 	EditText contentText;
@@ -108,7 +112,7 @@ public class CreateCommentActivityTests extends ActivityInstrumentationTestCase2
 		titleText = (EditText) activity.findViewById(R.id.cc_title);
 		contentText = (EditText) activity.findViewById(R.id.cc_content);
 		
-		assertEquals(usernameText.getText().toString(), "Anonymous");
+		assertEquals(usernameText.getText().toString(), "");
 		assertEquals("", titleText.getText().toString());
 		assertEquals("", contentText.getText().toString());
 		
@@ -128,7 +132,7 @@ public class CreateCommentActivityTests extends ActivityInstrumentationTestCase2
 		titleText = (EditText) activity.findViewById(R.id.cc_title);
 		contentText = (EditText) activity.findViewById(R.id.cc_content);
 		
-		assertEquals(usernameText.getText().toString(), "Anonymous");
+		assertEquals(usernameText.getText().toString(), "");
 		assertEquals("", titleText.getText().toString());
 		assertEquals("", contentText.getText().toString());
 		

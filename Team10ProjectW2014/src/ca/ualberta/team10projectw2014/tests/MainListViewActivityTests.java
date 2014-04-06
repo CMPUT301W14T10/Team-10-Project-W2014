@@ -21,13 +21,17 @@ import ca.ualberta.team10projectw2014.models.LocationModel;
 
 /**
  * This class tests various aspects of the MainListViewActivity
- * @author      Costa Zervos <czervos@ualberta.ca>
- * @version     1            (current version number of program)
+ * @author       Costa Zervos <czervos@ualberta.ca>
+ * @version      1            (current version number of program)
  */
 public class MainListViewActivityTests extends
 		ActivityInstrumentationTestCase2<MainListViewActivity> {
 	
 	Activity activity;
+	/**
+	 * @uml.property  name="appState"
+	 * @uml.associationEnd  
+	 */
 	ApplicationStateModel appState; // Application singleton
 	ArrayList<CommentModel> backupList = new ArrayList<CommentModel>(); // Backs up original comment list
 	

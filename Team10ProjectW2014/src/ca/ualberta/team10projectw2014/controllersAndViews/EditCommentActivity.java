@@ -35,13 +35,8 @@ import ca.ualberta.team10projectw2014.models.LocationModel;
 import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 
 /**
- * @author      Bradley Poulette <bpoulett@ualberta.ca>
- * @version     1                (current version number of program)
- * 
- * This class deals with a comment which has already been created in the system, but
- * the user wants to change. 
- * 
- * As of version 1, this class will not change the location of the comment.
+ * @author       Bradley Poulette <bpoulett@ualberta.ca>
+ * @version      1                (current version number of program)  This class deals with a comment which has already been created in the system, but  the user wants to change.   As of version 1, this class will not change the location of the comment.
  */
 public class EditCommentActivity extends Activity implements CommentContentEditing{
 
@@ -52,6 +47,10 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 	private String postTitle;
 	private String postUsername;
 	private String postContents;
+	/**
+	 * @uml.property  name="postLocation"
+	 * @uml.associationEnd  
+	 */
 	@SuppressWarnings("unused")
 	private LocationModel postLocation;
 	private Bitmap postPhoto;
@@ -73,13 +72,16 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 	private Location bestKnownLoc = null;
 	
 	/**
-	 *  A custom class used to get the user's location
+	 * A custom class used to get the user's location
+	 * @uml.property  name="locationListener"
+	 * @uml.associationEnd  
 	 */
 	private LocationListenerModel locationListener;
 	
 	/**
-	 *  Our singleton, which allows us to pass application state
-	 *  between activities
+	 * Our singleton, which allows us to pass application state between activities
+	 * @uml.property  name="appState"
+	 * @uml.associationEnd  
 	 */
  	private ApplicationStateModel appState;
 	

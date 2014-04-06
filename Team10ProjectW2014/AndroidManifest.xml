@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="ca.ualberta.team10projectw2014"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ca.ualberta.team10projectw2014"
     android:versionCode="1"
-    android:versionName="1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    android:versionName="1.0" >
 
     <uses-sdk
         android:minSdkVersion="11"
         android:targetSdkVersion="16" />
 
-	 <uses-feature android:name="android.hardware.camera"
-                  android:required="false" />
-    
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -37,9 +39,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="ca.ualberta.team10projectw2014.controllersAndViews.CreateCommentActivity">
+        <activity android:name="ca.ualberta.team10projectw2014.controllersAndViews.CreateCommentActivity" >
         </activity>
-        <activity android:name="ca.ualberta.team10projectw2014.controllersAndViews.EditCommentActivity">
+        <activity android:name="ca.ualberta.team10projectw2014.controllersAndViews.EditCommentActivity" >
         </activity>
         <activity
             android:name="ca.ualberta.team10projectw2014.controllersAndViews.SubCommentViewActivity"
@@ -50,6 +52,10 @@
             android:label="@string/title_activity_favourites_view" >
         </activity>
         <activity android:name="ca.ualberta.team10projectw2014.controllersAndViews.MapsViewActivity" >
+        </activity>
+        <activity
+            android:name="ca.ualberta.team10projectw2014.A"
+            android:label="@string/title_activity_" >
         </activity>
     </application>
 

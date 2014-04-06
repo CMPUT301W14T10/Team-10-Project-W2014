@@ -12,18 +12,24 @@ import ca.ualberta.team10projectw2014.R;
 import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.UserModel;
 /**
- * Called from mainListViewActivity the first time the app is run in order
- * for the user to set a username. Currently unused.
- * @author      Steven Giang <giang2@ualberta.ca>
- * @version     1            (current version number of program)
- * 
+ * Called from mainListViewActivity the first time the app is run in order for the user to set a username. Currently unused.
+ * @author       Steven Giang <giang2@ualberta.ca>
+ * @version      1            (current version number of program)
  */
 public class SetUserNameActivity extends Activity {
 	
+	/**
+	 * @uml.property  name="userData"
+	 * @uml.associationEnd  
+	 */
 	private UserModel userData;
 	private EditText userNameField;
 	private Button setButton;
 	private Button skipButton;
+	/**
+	 * @uml.property  name="appState"
+	 * @uml.associationEnd  
+	 */
 	private ApplicationStateModel appState;
 	//private UserDataController userDataController;
 
