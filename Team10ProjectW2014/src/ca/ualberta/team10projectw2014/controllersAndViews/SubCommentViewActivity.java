@@ -369,7 +369,8 @@ public class SubCommentViewActivity extends Activity {
 			bmOptions.inSampleSize = scaleFactor;
 			bmOptions.inPurgeable = true;
 
-			Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
+			//Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
+			Bitmap bitmap = headComment.getPhoto();
 			imageView.setImageBitmap(bitmap);
 
 		}
