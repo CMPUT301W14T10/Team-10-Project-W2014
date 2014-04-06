@@ -27,7 +27,7 @@
         android:ems="10"
         android:gravity="top"
         android:hint="@string/create_comment_content"
-        android:inputType="textCapSentences"
+        android:inputType="textCapSentences|textMultiLine"
         android:singleLine="false" />
     
     <ImageView
