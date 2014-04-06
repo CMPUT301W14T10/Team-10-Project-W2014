@@ -33,6 +33,7 @@ import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationListenerModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
 import ca.ualberta.team10projectw2014.models.SubCommentModel;
+import ca.ualberta.team10projectw2014.network.ElasticSearchLocationOperations;
 import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 
 /**
@@ -124,6 +125,8 @@ public class CreateCommentActivity extends Activity implements
 
 		appState.setLocationList(new ArrayList<LocationModel>());
 		// STEVEN: Load location models here
+		appState.setLocationList(ElasticSearchLocationOperations.getLocationList(this));
+		appState.saveLocations();
 		appState.loadLocations();
 		locationList = appState.getLocationList();
 		if (locationList == null)
@@ -414,6 +417,7 @@ public class CreateCommentActivity extends Activity implements
 												CreateCommentActivity.this.appState
 														.saveLocations();
 												// STEVEN: save location model list here
+												ElasticSearchLocationOperations.pushLocationList(CreateCommentActivity.this.postLocation);
 											}
 										}
 									}

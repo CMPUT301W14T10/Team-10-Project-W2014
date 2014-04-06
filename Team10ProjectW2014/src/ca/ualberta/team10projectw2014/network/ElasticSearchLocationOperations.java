@@ -14,34 +14,22 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpParams;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.util.Log;
 import ca.ualberta.team10projectw2014.controllersAndViews.MainListViewActivity;
 import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
+import ca.ualberta.team10projectw2014.models.LocationModel;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-/**
- * Handles sending CommentModels to the server and executing searches on the
- * server. Most of the code in this class is based on:
- * https://github.com/rayzhangcl/ESDemo and
- * https://github.com/zjullion/PicPosterComplete
- * 
- * @author zjullion. Edited by sgiang92
- * 
- */
-public class ElasticSearchOperations {
-
-	//public static final String SERVER_URL = "http://cmput301.softwareprocess.es:8080/testing2/team10projectw2014/";
-	public static final String SERVER_URL = "http://cmput301.softwareprocess.es:8080/testing/team10projectw2014push/";
-	public static final String SERVER_URL_SUBCOMMENTS = "http://cmput301.softwareprocess.es:8080/testing/team10projectw2014sub/";
-	public static final String SERVER_URL_LOCATIONS = "http://cmput301.softwareprocess.es:8080/testing/team10projectw2014location/";
-	public static final String LOG_TAG = "ElasticSearch";
+public class ElasticSearchLocationOperations {
+	public static final String SERVER_URL = "http://cmput301.softwareprocess.es:8080/testing/team10projectw2014location/";
+	public static final String LOG_TAG = "ElasticSearchLocation";
 	private static Gson GSON = null;
 
 	/**
@@ -50,7 +38,7 @@ public class ElasticSearchOperations {
 	 * @param model
 	 *            a CommentModel
 	 */
-	public static void pushComment(final CommentModel comment,final String type) {
+	public static void pushLocationList(final LocationModel location) {
 		if (GSON == null)
 			constructGson();
 
@@ -59,18 +47,13 @@ public class ElasticSearchOperations {
 			@Override
 			public void run() {
 				HttpClient client = new DefaultHttpClient();
-				HttpPost request = null;
-				if (type.contains("SubComment")) {
-					 request = new HttpPost(SERVER_URL_SUBCOMMENTS);
-				}else{
-					 request = new HttpPost(SERVER_URL);
-				}
+				HttpPost request = new HttpPost(SERVER_URL);
 
 				try {
-					request.setEntity(new StringEntity(GSON.toJson(comment)));
+					request.setEntity(new StringEntity(GSON.toJson(location)));
 				} catch (UnsupportedEncodingException exception) {
 					Log.w(LOG_TAG,
-							"Error encoding Comment: " + exception.getMessage());
+							"Error encoding Location List: " + exception.getMessage());
 					return;
 				}
 
@@ -81,35 +64,14 @@ public class ElasticSearchOperations {
 							+ response.getStatusLine().toString());
 				} catch (IOException exception) {
 					Log.w(LOG_TAG,
-							"Error sending Comment: " + exception.getMessage());
+							"Error sending Location List: " + exception.getMessage());
 				}
 			}
 		};
 
 		thread.start();
 	}
-	
-	public static void delCommentModel(final String ID){
-	    Thread thread = new Thread(){
-	        @Override
-	        public void run(){
-	            HttpClient client = new DefaultHttpClient();
-	            HttpDelete delete = new HttpDelete(SERVER_URL + "_query" + "?q=_id:"+ID);
-	            
-	            try {
-	                HttpResponse response = client.execute(delete);
-	                Log.i(LOG_TAG, "Response: "
-                            + response.getStatusLine().toString());
-	            } catch (IOException exception) {
-                    Log.w(LOG_TAG, "Error receiving delete query response: "
-                            + exception.getMessage());
-                    return;
-                }
-	        }
-	    };
-	    
-	    thread.start();
-	}
+
 
 	/**
 	 * Searches the server for CommentModels with the given searchTerm in their
@@ -125,9 +87,8 @@ public class ElasticSearchOperations {
 	 * 
 	 * @author zjullion; adapted by dvyee
 	 */
-	public static void searchForCommentModels(final String searchTerm,
-			final ArrayList<CommentModel> model,
-			final MainListViewActivity activity) {
+	public static ArrayList<LocationModel> getLocationList(final Activity activity) {
+		final ArrayList<LocationModel> locationList = new ArrayList<LocationModel>();
 		if (GSON == null)
 			constructGson();
 
@@ -137,9 +98,6 @@ public class ElasticSearchOperations {
 			public void run() {
 				HttpClient client = new DefaultHttpClient();
 				HttpPost request = new HttpPost(SERVER_URL + "_search");
-				// String query =
-				// "{\"query\": {\"query_string\": {\"default_field\": \"content\",\"query\": \"*"
-				// + searchTerm + "*\"}}}";
 				String query = "{\"query\": {\"match_all\": {}}}";
 				String responseJson = "";
 
@@ -172,31 +130,18 @@ public class ElasticSearchOperations {
 					return;
 				}
 
-				Type elasticSearchSearchResponseType = new TypeToken<ElasticSearchSearchResponse<CommentModel>>() {
+				Type elasticSearchSearchResponseType = new TypeToken<ElasticSearchSearchResponse<LocationModel>>() {
 				}.getType();
-				final ElasticSearchSearchResponse<CommentModel> returnedData = GSON
+				final ElasticSearchSearchResponse<LocationModel> returnedData = GSON
 						.fromJson(responseJson, elasticSearchSearchResponseType);
 
 				Runnable updateModel = new Runnable() {
 					@Override
 					public void run() {
-						model.clear();
-						model.addAll(returnedData.getSources());
-						// Log.e(LOG_TAG, model.toString()); // print out the
+						locationList.clear();
+						locationList.addAll(returnedData.getSources());
+						Log.e(LOG_TAG, locationList.toString()); // print out the
 						// entire contents of the list
-						ApplicationStateModel appState = ApplicationStateModel
-								.getInstance();
-						appState.setCommentList(model);
-						appState.saveComments();
-						appState.loadComments();
-						appState.updateMainAdapter();
-						// Log.e(LOG_TAG, appState.getCommentList().toString());
-						// // print out the entire contents of the list
-						// appState.getCommentList().addAll(returnedData.getSources());
-						// Log.e("Inside ESO appState CommentList",
-						// appState.getCommentList().toString()); // print out
-						// the entire contents of the list
-						// appState.getMLVAdapter().notifyDataSetChanged();
 					}
 				};
 
@@ -205,9 +150,7 @@ public class ElasticSearchOperations {
 		};
 
 		thread.start();
-
-		// Log.e(LOG_TAG, model.toString()); // print out the entire contents of
-		// the list
+		return locationList;
 	}
 	
 	
@@ -218,7 +161,6 @@ public class ElasticSearchOperations {
 	 */
 	private static void constructGson() {
 		GsonBuilder builder = new GsonBuilder();
-		builder.registerTypeAdapter(Bitmap.class, new BitmapJsonConverter());
 		GSON = builder.create();
 	}
 
