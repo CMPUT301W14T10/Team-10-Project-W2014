@@ -251,7 +251,7 @@ public class CreateCommentActivity extends Activity implements
 	 * @param v view from which the method is called
 	 */
 	public void chooseLocation(View v) {
-		int i;
+		int i = 0;
 
 		// Gets the xml custom dialog layout
 		LayoutInflater li = LayoutInflater.from(this);
@@ -284,11 +284,23 @@ public class CreateCommentActivity extends Activity implements
 						tempLocationList.get(i).getName());
 		} else
 			locationNameList.add("No Locations");
+		
+		// If a location was set, finds its position in the spinner
+		if (CreateCommentActivity.this.postLocation != null) {
+			for (i = 0; i < CreateCommentActivity.this.tempLocationList.size(); i++)
+				if (CreateCommentActivity.this.tempLocationList.get(i).getName().matches(CreateCommentActivity.this.postLocation.getName())) {
+					break;
+				}
+		}
 
 		// Shows spinner
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, locationNameList);
 		spinner.setAdapter(adapter);
+		// If a position was already set, makes that position the active item in the spinner
+		if (CreateCommentActivity.this.postLocation != null)
+			spinner.setSelection(i);
+
 
 		// Location dialog title
 		alertDialogBuilder.setTitle("Set Location");
