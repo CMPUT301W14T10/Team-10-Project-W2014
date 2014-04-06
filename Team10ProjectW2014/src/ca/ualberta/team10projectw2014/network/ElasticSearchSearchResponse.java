@@ -4,15 +4,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Represents a search response from ElasticSearch.
- * Taken from https://github.com/rayzhangcl/ESDemo
+ * Represents a search response from ElasticSearch. Taken from https://github.com/rayzhangcl/ESDemo
  */
 public class ElasticSearchSearchResponse<T> {
     int took;
     boolean timed_out;
     transient Object _shards;
+    /**
+	 * @uml.property  name="hits"
+	 * @uml.associationEnd  
+	 */
     Hits<T> hits;
     boolean exists;    
+    /**
+	 * @return
+	 * @uml.property  name="hits"
+	 */
     public Collection<ElasticSearchResponse<T>> getHits() {
         return hits.getHits();        
     }

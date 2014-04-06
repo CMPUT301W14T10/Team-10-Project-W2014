@@ -24,11 +24,18 @@ import com.mapquest.android.maps.OverlayItem;
 import com.mapquest.android.maps.PolygonOverlay;
 
 
+/**
+ * @author  cfudge
+ */
 public class MapsViewActivity extends MapActivity{
 
 	protected MapView map;
     private AnnotationView annotation;
     private List<GeoPoint> poiLocs;
+    /**
+	 * @uml.property  name="appState"
+	 * @uml.associationEnd  
+	 */
     private ApplicationStateModel appState;
     private ArrayList<CommentModel> flattenedList = new ArrayList<CommentModel>();
 
