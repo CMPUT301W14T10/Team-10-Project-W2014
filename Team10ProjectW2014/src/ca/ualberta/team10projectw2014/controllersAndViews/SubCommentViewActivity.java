@@ -171,10 +171,8 @@ public class SubCommentViewActivity extends Activity {
 			menu.findItem(R.id.action_favourite).setIcon(
 					resources.getDrawable(R.drawable.ic_action_favourite));
 		}
-<<<<<<< HEAD
-=======
 		menu.findItem(R.id.action_map).setIcon(resources.getDrawable(R.drawable.ic_map_icon_medium3));
->>>>>>> 9a8a200313fe6d15dabcd54a30b9301558944c18
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -617,45 +615,4 @@ public class SubCommentViewActivity extends Activity {
 
 		}
 	}
-
-<<<<<<< HEAD
 }
-=======
-	public void userSortPreference() {
-
-		ArrayList<CommentModel> comments = appState.getSubCommentViewHead()
-				.getSubComments();
-
-		if (appState.getUserModel().isSortByPic() == true) {
-			// Sort by picture
-			if (appState.getUserModel().isSortByDate() == true) {
-				// Sort by date
-				appState.pictureSort(comments,
-						ApplicationStateModel.dateCompare);
-			} else if (appState.getUserModel().isSortByLoc() == true) {
-				// Sort by Location
-				appState.pictureSort((ArrayList<CommentModel>) comments,
-						ApplicationStateModel.locCompare);
-			} else if (appState.getUserModel().isSortByPopularity())
-				// Sort by number of Favourites
-				appState.pictureSort((ArrayList<CommentModel>) comments,
-						ApplicationStateModel.popularityCompare);
-		} else {
-			if (appState.getUserModel().isSortByDate() == true) {
-				// Sort by date
-				Collections.sort((ArrayList<CommentModel>) comments,
-						ApplicationStateModel.dateCompare);
-			} else if (appState.getUserModel().isSortByLoc() == true) {
-				// Sort by Location
-				Collections.sort((ArrayList<CommentModel>) comments,
-						ApplicationStateModel.locCompare);
-			} else if (appState.getUserModel().isSortByPopularity()) {
-				// Sort by number of favourites
-				Collections.sort((ArrayList<CommentModel>) comments,
-						ApplicationStateModel.popularityCompare);
-			}
-		}
-	}
-
-}
->>>>>>> 9a8a200313fe6d15dabcd54a30b9301558944c18
