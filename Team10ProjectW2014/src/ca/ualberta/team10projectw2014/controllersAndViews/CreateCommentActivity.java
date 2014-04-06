@@ -35,7 +35,6 @@ import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationListenerModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
-import ca.ualberta.team10projectw2014.models.SubCommentModel;
 import ca.ualberta.team10projectw2014.network.ElasticSearchLocationOperations;
 import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 
@@ -682,15 +681,16 @@ public class CreateCommentActivity extends Activity implements
 				}
 				// This should be edited so that the model handles all the
 				// getting and setting
-				model = new SubCommentModel(appState.getCreateCommentParent());
+				model = new CommentModel();
 				model.setAuthor(this.postUsername);
 				model.setContent(this.postContents);
 				model.setLocation(this.postLocation);
 				model.setPhoto(this.postPhoto);
 				model.setTitle(this.postTitle);
 				model.setPhotoPath(photoPath);
+				model.setParentID(appState.getCreateCommentParent().getUniqueID());
 				model.setAuthorAndroidID(appState.getUserModel().getAndroidID());
-				((SubCommentModel) model).setParentTitle("RE: "
+				model.setParentTitle("RE: "
 						+ appState.getCreateCommentParent().getTitle());
 
 				// Sets the current date and time for the comment
@@ -710,8 +710,7 @@ public class CreateCommentActivity extends Activity implements
 
 				// Adds the newly created model to its referrent's list of
 				// subcomments
-				appState.getCreateCommentParent().addSubComment(
-						(SubCommentModel) model);
+				appState.getCreateCommentParent().addSubComment(model);
 				ElasticSearchOperations.pushComment(model,"SubComment");
 				appState.updateSubAdapter();
 			} else {

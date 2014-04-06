@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -192,13 +193,12 @@ public class SubCommentViewActivityAdapter extends
 			holder.textContent.setText("");
 		}
 		
-		//Grabs the title of the comment being replied by the getReplyTitle function
-		if(commentList.get(position).getClass() == SubCommentModel.class){
-			//TO-DO get reply title from comment model.
-			holder.textReplyTitle.setText(((SubCommentModel) commentList.get(position)).getParentTitle());
-		}else{
-			holder.textReplyTitle.setText("");
-		}
+		
+		
+
+		holder.textReplyTitle.setText(commentList.get(position).getParentTitle());
+
+		
 		
 		//Grabs the Time.
 		holder.textTime.setText(this.timeToString(commentList.get(position).getTimestamp()));
