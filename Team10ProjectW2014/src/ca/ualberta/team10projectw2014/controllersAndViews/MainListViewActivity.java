@@ -16,6 +16,7 @@
 
 package ca.ualberta.team10projectw2014.controllersAndViews;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -31,8 +32,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -157,15 +158,15 @@ public class MainListViewActivity extends Activity{
 		else {
 			//Sort by date
 			if (this.appState.getUserModel().isSortByDate() == true) {
-				CommentModel.sort(this.appState.getCommentList(), ApplicationStateModel.dateCompare);
+				Collections.sort(this.appState.getCommentList(), ApplicationStateModel.dateCompare);
 			}
 			//Sort by location:
 			else if(this.appState.getUserModel().isSortByLoc() == true) {
-				CommentModel.sort(this.appState.getCommentList(), ApplicationStateModel.locCompare);
+				Collections.sort(this.appState.getCommentList(), ApplicationStateModel.locCompare);
 			}
 			//Sort by popularity(i.e. number of times favourited):
 			else if(this.appState.getUserModel().isSortByPopularity()){
-				CommentModel.sort(this.appState.getCommentList(), ApplicationStateModel.popularityCompare);
+				Collections.sort(this.appState.getCommentList(), ApplicationStateModel.popularityCompare);
 			}
 		}
 		
@@ -178,7 +179,7 @@ public class MainListViewActivity extends Activity{
 	//this was not done since any changes occurred.
 	protected void onResume(){
 		super.onResume();
-		ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
+		//ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
 		sortMainList();
 	}	
 	
@@ -210,6 +211,7 @@ public class MainListViewActivity extends Activity{
 				//this.appState.saveComments();
 				//this.appState.loadComments();
 				Log.e("Outside ESO",this.appState.getCommentList().toString());
+				sortMainList();
 				return true;
 
 			//Display the list of favourites specified in the user model

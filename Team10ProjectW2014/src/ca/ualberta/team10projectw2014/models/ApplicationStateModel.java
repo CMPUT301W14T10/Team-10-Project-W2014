@@ -194,7 +194,7 @@ public class ApplicationStateModel {
 		public int compare(CommentModel comment1, CommentModel comment2){
 			Calendar time1 = comment1.getTimestamp();
 			Calendar time2 = comment2.getTimestamp();
-			return time1.compareTo(time2);
+			return time2.compareTo(time1);
 		}
 	};
 

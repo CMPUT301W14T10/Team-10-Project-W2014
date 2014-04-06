@@ -2,9 +2,11 @@ package ca.ualberta.team10projectw2014.models;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Comparator;
 
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.net.Uri;
 
 /**
@@ -165,33 +167,6 @@ public class CommentModel{
 		 }
 	 }
 	
-	/**
-	 * Selection sort algorithm to sort an array of comments by a given comparator
-	 * 
-	 * @param list - array of CommentModels to sort
-	 * @param cmp - comparator to compare CommentModels when sorting
-	 * @return the sorted array of head comments
-	 */
-	 public static void sort(ArrayList<CommentModel> list, Comparator<CommentModel> cmp) {
-		 for (int i=0; i < list.size()-1; i++) {
-			 // Sets current comment as the one that should appear first
-			 CommentModel maxComment = list.get(i);
-			 int maxIndex = i;
-			 // Iterates through remaining comments in the list
-			 for (int j=i+1; j < list.size(); j++) {
-				 // If i compared to j = -1, j should be max value
-				 if (cmp.compare(list.get(i), list.get(j)) < 0) {
-					 maxComment = list.get(j);
-					 maxIndex = j;
-				 }
-			 }
-			 // Swap current comment with the maxComment
-			 CommentModel tempComment;
-			 tempComment = list.get(i);
-			 list.set(i, maxComment);
-			 list.set(maxIndex, tempComment);
-		 }
-	 }
 
 	 /**
 	  * Separates given array into two arrays with one containing comments with
@@ -217,12 +192,12 @@ public class CommentModel{
 			 }
 		 }
 		 // Sort each array
-		 sort(picArray, cmp);
-		 sort(noPicArray, cmp);
+		 Collections.sort(picArray, cmp);
+		 Collections.sort(noPicArray, cmp);
 		 commentList.clear();
 		 // Combine both arrays
 		 commentList.addAll(picArray);
 		 commentList.addAll(noPicArray);
 	 }
-	
+	 
 }

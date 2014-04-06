@@ -3,6 +3,7 @@ package ca.ualberta.team10projectw2014.controllersAndViews;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -15,7 +16,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -579,13 +579,13 @@ public class SubCommentViewActivity extends Activity {
 		else {
 			if (appState.getUserModel().isSortByDate() == true) {
 				// Sort by date
-				CommentModel.sort((ArrayList<CommentModel>) comments, ApplicationStateModel.dateCompare);
+				Collections.sort((ArrayList<CommentModel>) comments, ApplicationStateModel.dateCompare);
 			} else if(appState.getUserModel().isSortByLoc() == true) {
 				//Sort by Location 
-				CommentModel.sort((ArrayList<CommentModel>) comments, ApplicationStateModel.locCompare);
+				Collections.sort((ArrayList<CommentModel>) comments, ApplicationStateModel.locCompare);
 			} else if(appState.getUserModel().isSortByPopularity()) {
 				//Sort by number of favourites
-				CommentModel.sort((ArrayList<CommentModel>) comments, ApplicationStateModel.popularityCompare);
+				Collections.sort((ArrayList<CommentModel>) comments, ApplicationStateModel.popularityCompare);
 			}
 		}
 	}

@@ -3,6 +3,7 @@ package ca.ualberta.team10projectw2014.tests;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import android.annotation.SuppressLint;
@@ -155,7 +156,7 @@ public class MainListViewActivityTests extends
 		// Sets test comment list
 		appState.setCommentList(commentList);
 		// Sorts list by date
-		CommentModel.sort(commentList, ApplicationStateModel.dateCompare);
+		Collections.sort(commentList, ApplicationStateModel.dateCompare);
 		// Saves comments
 		appState.saveComments();
 		
@@ -324,7 +325,7 @@ public class MainListViewActivityTests extends
 		// Sets test comment list
 		appState.setCommentList(commentList);
 		// Sorts list by location
-		CommentModel.sort(commentList, ApplicationStateModel.locCompare);
+		Collections.sort(commentList, ApplicationStateModel.locCompare);
 		// Saves comments
 		appState.saveComments();
 		
