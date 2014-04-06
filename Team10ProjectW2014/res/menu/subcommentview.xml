@@ -4,6 +4,11 @@
           android:title="@string/action_reply"
           android:showAsAction="ifRoom" />
     
+    <!-- Map, should appear as action button -->
+    <item android:id="@+id/action_map"
+          android:title="@string/action_map"
+          android:showAsAction="ifRoom" />
+    
     <!-- Favourite -->
     <item
         android:id="@+id/action_favourite"

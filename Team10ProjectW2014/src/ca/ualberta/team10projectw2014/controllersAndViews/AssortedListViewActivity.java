@@ -3,6 +3,7 @@ package ca.ualberta.team10projectw2014.controllersAndViews;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,7 +24,8 @@ public class AssortedListViewActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_assort_comment_view);
 		appState = ApplicationStateModel.getInstance();
-		String title = appState.getAssortViewTitle();
+		Intent intent = getIntent();
+		String title = intent.getStringExtra("title");
 		if(title != null){
 			setTitle(title);
 		}
@@ -31,6 +33,8 @@ public class AssortedListViewActivity extends Activity
 			setTitle("Assorted Comment List");
 		}
 		appState.loadUser();
+		if(appState.getAssortList() != appState.getUserModel().getFavourites())
+			Log.e("LOOKIE HERE!", "assort list is not faves");
 		appState.loadComments();
 		appState.setAssortAdapter(new MainListViewAdapter(this, appState.getAssortList()));
 	}

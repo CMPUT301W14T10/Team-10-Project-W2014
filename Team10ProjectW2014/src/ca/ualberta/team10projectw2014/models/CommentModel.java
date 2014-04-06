@@ -3,10 +3,12 @@ package ca.ualberta.team10projectw2014.models;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Comparator;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.net.Uri;
 
 /**
@@ -202,65 +204,5 @@ public class CommentModel{
 			 sourceComment.updateInArrayList(destination);
 		 }
 	 }
-	
-	/**
-	 * Selection sort algorithm to sort an array of comments by a given comparator
-	 * 
-	 * @param list - array of CommentModels to sort
-	 * @param cmp - comparator to compare CommentModels when sorting
-	 * @return the sorted array of head comments
-	 */
-	 public static void sort(ArrayList<CommentModel> list, Comparator<CommentModel> cmp) {
-		 for (int i=0; i < list.size()-1; i++) {
-			 // Sets current comment as the one that should appear first
-			 CommentModel maxComment = list.get(i);
-			 int maxIndex = i;
-			 // Iterates through remaining comments in the list
-			 for (int j=i+1; j < list.size(); j++) {
-				 // If i compared to j = -1, j should be max value
-				 if (cmp.compare(list.get(i), list.get(j)) < 0) {
-					 maxComment = list.get(j);
-					 maxIndex = j;
-				 }
-			 }
-			 // Swap current comment with the maxComment
-			 CommentModel tempComment;
-			 tempComment = list.get(i);
-			 list.set(i, maxComment);
-			 list.set(maxIndex, tempComment);
-		 }
-	 }
-
-	 /**
-	  * Separates given array into two arrays with one containing comments with
-	  * pictures, and the other without. Sorts each array by given comparator,
-	  * then combines them.
-	  * 
-	  * @param list - the array of CommentModels to sort
-	  * @param cmp - the comparator to compare CommentModels when sorting
-	  * @return the sorted array of head comments
-	  */
-	 public static void pictureSort(ArrayList<CommentModel> commentList, Comparator<CommentModel> cmp) {
-		 ArrayList<CommentModel> noPicArray = new ArrayList<CommentModel>();
-		 ArrayList<CommentModel> picArray = new ArrayList<CommentModel>();
-		 for (CommentModel comment : commentList) {
-			 // If comment does not have a photo
-			 if (comment.getPhotoPath() == null) {
-				 // Add it to the array containing comments without pictures
-				 noPicArray.add(comment);
-			 }
-			 else{
-				 // Remove it from the array containing comments with pictures
-				 picArray.add(comment);
-			 }
-		 }
-		 // Sort each array
-		 sort(picArray, cmp);
-		 sort(noPicArray, cmp);
-		 commentList.clear();
-		 // Combine both arrays
-		 commentList.addAll(picArray);
-		 commentList.addAll(noPicArray);
-	 }
-	
+	 
 }
