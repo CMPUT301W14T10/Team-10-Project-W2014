@@ -72,33 +72,11 @@ public class MapsViewActivity extends MapActivity{
     	}
     	
         locationsList.add(new OverlayItem(new GeoPoint (headComment.getLocation().getLatitude(), headComment.getLocation().getLongitude()), headComment.getLocation().getName().toString(), ""));
-    	/*for(int i = 0; i < headComment.getSubComments().size(); i++){
-    		for (int j = 0; j < headComment.getSubComments().get(i).getSubComments().size(); j++){
-    			locationsList.add(new OverlayItem(new GeoPoint (headComment.getSubComments().get(i).getSubComments().get(j).getLocation().getLatitude(), headComment.getSubComments().get(i).getSubComments().get(j).getLocation().getLongitude()), headComment.getSubComments().get(i).getSubComments().get(j).getLocation().getName().toString(), ""));
-    		}
-    		locationsList.add(new OverlayItem(new GeoPoint (headComment.getSubComments().get(i).getLocation().getLatitude(), headComment.getSubComments().get(i).getLocation().getLongitude()), headComment.getSubComments().get(i).getLocation().getName().toString(), ""));
-    	}*/
         
     	return locationsList;
     }
     
- // Taken from http://rosettacode.org/wiki/Flatten_a_list#Java on April 5
-    public static List<CommentModel> flatten(List<CommentModel> arrayList) {
-        List<CommentModel> newList = new LinkedList<CommentModel>();
-
-        for (Object i : arrayList) {
-                // If it's not a list, just add it to the return list.
-                if (!(i instanceof List)) {
-                        newList.add((CommentModel) i);
-                } else {
-                        // It's a list, so add each item to the return list.
-                        newList.addAll(flatten((List<CommentModel>) i));
-                }
-        }
-
-        return newList;
-    }
-    
+    //Taken from SCVA
     private void addCommentToList(
 			ArrayList<? extends CommentModel> subCommentList) {
 		if (subCommentList.size() == 0) {
