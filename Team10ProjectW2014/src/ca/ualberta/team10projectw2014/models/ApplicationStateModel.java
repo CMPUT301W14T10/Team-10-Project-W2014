@@ -153,6 +153,7 @@ public class ApplicationStateModel {
 	private CommentModel commentToEdit;
 	
 	private ArrayList<CommentModel> assortList;
+	
 		
 	private static Location cmpLocation;
 	

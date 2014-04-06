@@ -120,8 +120,6 @@ public class MainListViewActivity extends Activity{
 		//Set the commentView in this activity to reflect the corresponding 
 		//adapter in the ApplicationStateModel:
 		this.commentView.setAdapter(this.appState.getMLVAdapter());
-
-		sortMainList();
 	}
 
 	// the below method is adapted from 

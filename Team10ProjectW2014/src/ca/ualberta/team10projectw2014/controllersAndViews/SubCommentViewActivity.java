@@ -73,9 +73,14 @@ public class SubCommentViewActivity extends Activity {
 		appState.loadUser();
 		//appState.loadComments();
 		
-		esList = new ArrayList<CommentModel>();
-		ElasticSearchOperations.searchForReplies(this, this.esList, appState.getSubCommentViewHead().getUniqueID());
-		
+		//if user has network connection, the app will try to pull comments from server
+		if(appState.isNetworkAvailable(this)){
+			esList = new ArrayList<CommentModel>();
+			ElasticSearchOperations.searchForReplies(this, this.esList, appState.getSubCommentViewHead().getUniqueID());
+		} else{
+			appState.loadComments();
+		}
+
 
 		// Set the layout
 		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
@@ -104,13 +109,9 @@ public class SubCommentViewActivity extends Activity {
 		// Set the Title in the Actionbar to the title of the head comment
 		actionbar.setTitle(appState.getSubCommentViewHead().getTitle());
 
-		if(appState.isNetworkAvailable(this)){
-			Log.e("ESLIST",esList.toString());
-			commentList = esList;
-		}else{
+	
 			commentList = appState
 					.getSubCommentViewHead().getSubComments();
-		}
 		
 
 		// Gets all the SubComments and all its subComments and put them in a
