@@ -142,15 +142,15 @@ public class MainListViewActivity extends Activity{
 		if (this.appState.getUserModel().isSortByPic() == true) {
 			//Sort by date and picture:
 			if (this.appState.getUserModel().isSortByDate() == true) {
-				CommentModel.pictureSort(this.appState.getCommentList(), ApplicationStateModel.dateCompare);
+				appState.pictureSort(this.appState.getCommentList(), ApplicationStateModel.dateCompare);
 			}
 			//Sort by location and picture:
 			else if(this.appState.getUserModel().isSortByLoc() == true) {
-				CommentModel.pictureSort(this.appState.getCommentList(), ApplicationStateModel.locCompare);
+				appState.pictureSort(this.appState.getCommentList(), ApplicationStateModel.locCompare);
 			}
 			//Sort by popularity(i.e. number of times favourited) and picture:
 			else if(this.appState.getUserModel().isSortByPopularity()){
-				CommentModel.pictureSort(this.appState.getCommentList(), ApplicationStateModel.popularityCompare);
+				appState.pictureSort(this.appState.getCommentList(), ApplicationStateModel.popularityCompare);
 			}
 		}
 		//Sort without sorting by picture:

@@ -9,6 +9,7 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Comparator;
 
 import android.content.Context;
@@ -624,6 +625,38 @@ public class ApplicationStateModel {
 		    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 		}
 
+	 /**
+	  * Separates given array into two arrays with one containing comments with
+	  * pictures, and the other without. Sorts each array by given comparator,
+	  * then combines them.
+	  * 
+	  * @param list - the array of CommentModels to sort
+	  * @param cmp - the comparator to compare CommentModels when sorting
+	  * @return the sorted array of head comments
+	  */
+	 public void pictureSort(ArrayList<CommentModel> commentList, Comparator<CommentModel> cmp) {
+		 ArrayList<CommentModel> noPicArray = new ArrayList<CommentModel>();
+		 ArrayList<CommentModel> picArray = new ArrayList<CommentModel>();
+		 for (CommentModel comment : commentList) {
+			 // If comment does not have a photo
+			 if (comment.getPhotoPath() == null) {
+				 // Add it to the array containing comments without pictures
+				 noPicArray.add(comment);
+			 }
+			 else{
+				 // Remove it from the array containing comments with pictures
+				 picArray.add(comment);
+			 }
+		 }
+		 // Sort each array
+		 Collections.sort(picArray, cmp);
+		 Collections.sort(noPicArray, cmp);
+		 commentList.clear();
+		 // Combine both arrays
+		 commentList.addAll(picArray);
+		 commentList.addAll(noPicArray);
+	 }
+	 
 }	
 
 
