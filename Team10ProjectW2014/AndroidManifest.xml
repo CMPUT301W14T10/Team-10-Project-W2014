@@ -13,6 +13,7 @@
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <instrumentation
@@ -36,11 +37,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="ca.ualberta.team10projectw2014.controllersAndViews.CreateCommentActivity"
-            	  android:screenOrientation="portrait" >
+        <activity android:name="ca.ualberta.team10projectw2014.controllersAndViews.CreateCommentActivity">
         </activity>
-        <activity android:name="ca.ualberta.team10projectw2014.controllersAndViews.EditCommentActivity"
-                  android:screenOrientation="portrait" >
+        <activity android:name="ca.ualberta.team10projectw2014.controllersAndViews.EditCommentActivity">
         </activity>
         <activity
             android:name="ca.ualberta.team10projectw2014.controllersAndViews.SubCommentViewActivity"
@@ -49,6 +48,8 @@
         <activity
             android:name="ca.ualberta.team10projectw2014.controllersAndViews.AssortedListViewActivity"
             android:label="@string/title_activity_favourites_view" >
+        </activity>
+        <activity android:name="ca.ualberta.team10projectw2014.controllersAndViews.MapsViewActivity">
         </activity>
     </application>
 
