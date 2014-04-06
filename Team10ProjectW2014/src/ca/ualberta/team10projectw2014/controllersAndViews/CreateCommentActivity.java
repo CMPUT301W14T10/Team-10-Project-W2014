@@ -129,9 +129,10 @@ public class CreateCommentActivity extends Activity implements
 		ElasticSearchLocationOperations.getLocationList(this);
 		appState.loadLocations();
 		locationList = appState.getLocationList();
+		Log.e("LOCATION LIST", appState.getLocationList().toString());
 		if (locationList == null)
 			locationList = new ArrayList<LocationModel>();
-		Log.e("LOCATION LIST", appState.getLocationList().toString());
+		
 	}
 	
 	@Override
