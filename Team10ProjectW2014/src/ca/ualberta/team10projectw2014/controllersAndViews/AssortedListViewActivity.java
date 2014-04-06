@@ -12,8 +12,15 @@ import ca.ualberta.team10projectw2014.R;
 import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
 
+/**
+ * @author  cfudge
+ */
 public class AssortedListViewActivity extends Activity
 {
+	/**
+	 * @uml.property  name="appState"
+	 * @uml.associationEnd  
+	 */
 	private ApplicationStateModel appState;
 	private ListView commentView;
 

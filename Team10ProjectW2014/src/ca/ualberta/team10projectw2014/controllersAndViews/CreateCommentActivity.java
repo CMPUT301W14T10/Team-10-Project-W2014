@@ -39,15 +39,8 @@ import ca.ualberta.team10projectw2014.network.ElasticSearchLocationOperations;
 import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 
 /**
- * @author Bradley Poulette <bpoulett@ualberta.ca>
- * @version 1 (current version number of program)
- * 
- *          <p>
- *          This class deals with creating comments by talking with the app's
- *          singleton.
- * 
- *          This is where the location of a comment, its picture, and any
- *          textual contents will be set.
+ * @author  Bradley Poulette <bpoulett@ualberta.ca>
+ * @version  1 (current version number of program)  <p>  This class deals with creating comments by talking with the app's  singleton.  This is where the location of a comment, its picture, and any  textual contents will be set.
  */
 public class CreateCommentActivity extends Activity implements
 		CommentContentEditing {
@@ -59,6 +52,10 @@ public class CreateCommentActivity extends Activity implements
 	private String postTitle;
 	private String postUsername;
 	private String postContents;
+	/**
+	 * @uml.property  name="postLocation"
+	 * @uml.associationEnd  
+	 */
 	private LocationModel postLocation;
 	private Bitmap postPhoto;
 
@@ -81,17 +78,22 @@ public class CreateCommentActivity extends Activity implements
 
 	/**
 	 * A temporary comment model to be stored when created
+	 * @uml.property  name="model"
+	 * @uml.associationEnd  
 	 */
 	private CommentModel model;
 
 	/**
 	 * A custom class used to get the user's location
+	 * @uml.property  name="locationListener"
+	 * @uml.associationEnd  
 	 */
 	private LocationListenerModel locationListener;
 
 	/**
-	 * Our singleton, which allows us to pass application state between
-	 * activities
+	 * Our singleton, which allows us to pass application state between activities
+	 * @uml.property  name="appState"
+	 * @uml.associationEnd  
 	 */
 	private ApplicationStateModel appState;
 
