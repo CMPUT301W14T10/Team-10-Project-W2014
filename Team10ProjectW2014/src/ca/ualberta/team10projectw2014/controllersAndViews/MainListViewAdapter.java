@@ -139,9 +139,9 @@ public class MainListViewAdapter extends BaseAdapter {
 
 			Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
 			holder.imageView.setImageBitmap(bitmap);
-			holder.imageView.setVisibility(ImageView.VISIBLE);
 			   
 		}
+        holder.imageView.setVisibility(ImageView.VISIBLE);
 		return convertView;
 	}
 	
