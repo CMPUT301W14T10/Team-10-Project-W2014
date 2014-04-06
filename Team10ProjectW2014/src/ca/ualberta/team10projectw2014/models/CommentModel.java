@@ -19,6 +19,7 @@ public class CommentModel{
 	private LocationModel location;
 	private Bitmap photo;
 	private Calendar timestamp;
+	private String timestamp_str;
 	private int numFavourites;
 	private String authorAndroidID;
 	private ArrayList<CommentModel> subComments = new ArrayList<CommentModel>();
@@ -86,6 +87,10 @@ public class CommentModel{
 	}
 	public void setTimestamp(Calendar timestamp) {
 		this.timestamp = timestamp;
+		this.timestamp_str = timestamp.toString();
+	}
+	public String getTimestamp_str() {
+	    return timestamp_str;
 	}
 	public int getNumFavourites() {
 		return numFavourites;
