@@ -199,7 +199,7 @@ public class CreateCommentActivity extends Activity implements
 		} else {
 			if (checkStringIsAllWhiteSpace(this.postUsername)) {
 				this.postUsername = "Anonymous";
-				setUsernameView(this.postUsername);
+				setUsernameView("");
 			}
 		}
 		if (this.postTitle == null) {
