@@ -136,8 +136,8 @@ public class MainListViewAdapter extends BaseAdapter {
 			bmOptions.inSampleSize = scaleFactor;
 			bmOptions.inPurgeable = true;
 
-
-			Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
+			//Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
+			Bitmap bitmap = headCommentList.get(position).getPhoto();
 			holder.imageView.setImageBitmap(bitmap);
 			   
 		}

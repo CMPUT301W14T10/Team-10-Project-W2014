@@ -3,6 +3,7 @@ package ca.ualberta.team10projectw2014.models;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.location.Location;
 import android.provider.Settings.Secure;
 
 /**
@@ -22,6 +23,25 @@ public class UserModel{
 	private boolean sortByDate = false;
 	private boolean sortByLoc = false;
 	private boolean sortByPopularity = false;
+	private boolean sortByUserLoc = false;
+
+	private Location sortLoc;
+
+	
+	public Location getSortLoc()
+	{
+	
+		return sortLoc;
+	}
+
+
+	
+	public void setSortLoc(Location sortLoc)
+	{
+	
+		this.sortLoc = sortLoc;
+	}
+
 
 	// Constructor for new user
 	public UserModel(Context context) {
@@ -158,6 +178,7 @@ public class UserModel{
 		if(this.sortByDate){
 			this.sortByLoc = false;
 			this.sortByPopularity = false;
+			this.sortByUserLoc = false;
 		}
 	}
 	
@@ -178,6 +199,7 @@ public class UserModel{
 		if(this.sortByLoc){
 			this.sortByDate = false;
 			this.sortByPopularity = false;
+			this.sortByUserLoc = false;
 		}
 	}
 	
@@ -198,6 +220,24 @@ public class UserModel{
 		if(this.sortByPopularity){
 			this.sortByLoc = false;
 			this.sortByDate = false;
+			this.sortByUserLoc = false;
+		}
+	}
+	
+	public boolean isSortByUserLoc()
+	{
+	
+		return sortByUserLoc;
+	}
+
+	
+	public void setSortByUserLoc(boolean sortByUserLoc)
+	{
+		this.sortByUserLoc = sortByUserLoc;
+		if(this.sortByUserLoc){
+			this.sortByLoc = false;
+			this.sortByDate = false;
+			this.sortByPopularity = false;
 		}
 	}
 	
