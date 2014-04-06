@@ -35,7 +35,6 @@ import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationListenerModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
-import ca.ualberta.team10projectw2014.models.SubCommentModel;
 import ca.ualberta.team10projectw2014.network.ElasticSearchLocationOperations;
 import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 
@@ -141,6 +140,8 @@ public class CreateCommentActivity extends Activity implements
 		// Retrieve location list from appstate
 		locationList = new ArrayList<LocationModel>();
 		CreateCommentActivity.this.locationList = appState.getLocationList();
+		
+		spinnerFlag = 0;
 	}
 	
 	@Override
@@ -252,10 +253,7 @@ public class CreateCommentActivity extends Activity implements
 	 * @param v view from which the method is called
 	 */
 	public void chooseLocation(View v) {
-		int i;
-
-		// Sets/resets spinner set flag
-		CreateCommentActivity.this.spinnerFlag = 0;
+		int i = 0;
 
 		// Gets the xml custom dialog layout
 		LayoutInflater li = LayoutInflater.from(this);
@@ -288,11 +286,23 @@ public class CreateCommentActivity extends Activity implements
 						tempLocationList.get(i).getName());
 		} else
 			locationNameList.add("No Locations");
+		
+		// If a location was set, finds its position in the spinner
+		if (CreateCommentActivity.this.postLocation != null) {
+			for (i = 0; i < CreateCommentActivity.this.tempLocationList.size(); i++)
+				if (CreateCommentActivity.this.tempLocationList.get(i).getName().matches(CreateCommentActivity.this.postLocation.getName())) {
+					break;
+				}
+		}
 
 		// Shows spinner
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, locationNameList);
 		spinner.setAdapter(adapter);
+		// If a position was already set, makes that position the active item in the spinner
+		if (CreateCommentActivity.this.postLocation != null)
+			spinner.setSelection(i);
+
 
 		// Location dialog title
 		alertDialogBuilder.setTitle("Set Location");
@@ -446,6 +456,8 @@ public class CreateCommentActivity extends Activity implements
 														.saveLocations();
 												// Saves location list to elastic search
 												ElasticSearchLocationOperations.pushLocationList(CreateCommentActivity.this.postLocation);
+												// Sets/resets spinner set flag
+												CreateCommentActivity.this.spinnerFlag = 0;
 											}
 										}
 									}
@@ -644,14 +656,17 @@ public class CreateCommentActivity extends Activity implements
 					getBaseContext(),
 					"No nearby locations found. Please select or create a location.",
 					Toast.LENGTH_LONG).show();
-		// Current location is not known and location list is not empty
-		else if ((bestKnownLoc == null) && (this.locationList != null))
+		// Current location is not known and location list is not empty and spinner wasn't set
+		else if ((bestKnownLoc == null) && (this.locationList != null) && (CreateCommentActivity.this.spinnerFlag != 1))
 			Toast.makeText(getBaseContext(),
 					"Current location is unknown. Please select a location.",
 					Toast.LENGTH_LONG).show();
+		// Current location is not known and location list is not empty and spinner was set
+		else if ((bestKnownLoc == null) && (this.locationList != null) && (CreateCommentActivity.this.spinnerFlag == 1))
+			; // Doesn't change anything, allows attemtCommentCreation to post the comment set in the spinner
 		// Current location is not known and location list is empty
 		else {
-			this.postLocation = new LocationModel("Unknown Location", 1, 2);
+			this.postLocation = new LocationModel("Unknown Location", 0, 0);
 		}
 	}
 
@@ -684,15 +699,16 @@ public class CreateCommentActivity extends Activity implements
 				}
 				// This should be edited so that the model handles all the
 				// getting and setting
-				model = new SubCommentModel(appState.getCreateCommentParent());
+				model = new CommentModel();
 				model.setAuthor(this.postUsername);
 				model.setContent(this.postContents);
 				model.setLocation(this.postLocation);
 				model.setPhoto(this.postPhoto);
 				model.setTitle(this.postTitle);
 				model.setPhotoPath(photoPath);
+				model.setParentID(appState.getCreateCommentParent().getUniqueID());
 				model.setAuthorAndroidID(appState.getUserModel().getAndroidID());
-				((SubCommentModel) model).setParentTitle("RE: "
+				model.setParentTitle("RE: "
 						+ appState.getCreateCommentParent().getTitle());
 
 				// Sets the current date and time for the comment
@@ -712,8 +728,7 @@ public class CreateCommentActivity extends Activity implements
 
 				// Adds the newly created model to its referrent's list of
 				// subcomments
-				appState.getCreateCommentParent().addSubComment(
-						(SubCommentModel) model);
+				appState.getCreateCommentParent().addSubComment(model);
 				ElasticSearchOperations.pushComment(model,"SubComment");
 				appState.updateSubAdapter();
 			} else {

@@ -35,6 +35,7 @@ public class CommentModel{
 	private Uri imageUri;
 	private String parentID;
 	private String uniqueID;
+	private String parentTitle = "";
 	
 	/**
 	 * @return
@@ -55,11 +56,11 @@ public class CommentModel{
     /**
 	 * A method that adds the provided SubCommentModel to the
 	 * CommentModel's list of SubCommentModels.
-	 * @param  subComment - the SubCommentModel to add.
+	 * @param  model - the SubCommentModel to add.
 	 * @return      void, no return value.
 	 */
-	public void addSubComment(SubCommentModel subComment){
-		subComments.add(subComment);
+	public void addSubComment(CommentModel model){
+		subComments.add(model);
 	}
 	
 	/**
@@ -241,6 +242,13 @@ public class CommentModel{
 	 */
 	public void setAuthorAndroidID(String authorAndroidID) {
 		this.authorAndroidID = authorAndroidID;
+	}
+	
+	public void setParentTitle(String parentTitle){
+		this.parentTitle = parentTitle;
+	}
+	public String getParentTitle(){
+		return this.parentTitle;
 	}
 	public boolean compareComments(CommentModel otherComment){
 		if((this.getAuthorAndroidID().equals(otherComment.getAuthorAndroidID())) &&

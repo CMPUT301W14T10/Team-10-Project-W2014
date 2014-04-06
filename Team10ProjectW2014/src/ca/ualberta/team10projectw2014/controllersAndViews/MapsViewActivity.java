@@ -65,11 +65,11 @@ public class MapsViewActivity extends MapActivity{
     	//Get list of current stuff from AppState
     	//Take coordinates and descriptions from that list to create new GeoPoints
     	
-    	List<CommentModel> commentList = appState.getSubCommentViewHead().getSubComments();
+    	CommentModel headComment = appState.getSubCommentViewHead();
+    	List<CommentModel> commentList = headComment.getSubComments();
     	List<OverlayItem> locationsList = new ArrayList<OverlayItem>();
     	
     	
-    	CommentModel headComment = appState.getSubCommentViewHead();
     	map.getController().setCenter(new GeoPoint(headComment.getLocation().getLatitude(),headComment.getLocation().getLongitude()));
     	
     	addCommentToList(headComment.getSubComments());
