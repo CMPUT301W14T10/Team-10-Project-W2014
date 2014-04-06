@@ -130,7 +130,7 @@ public class CommentModel{
 		this.parentID = parentID;
 		
 	}
-	public String getParentID(String parentID){
+	public String getParentID(){
 		return this.parentID;
 	}
 	public String getAuthorAndroidID() {
