@@ -138,6 +138,8 @@ public class CreateCommentActivity extends Activity implements
 		// Retrieve location list from appstate
 		locationList = new ArrayList<LocationModel>();
 		CreateCommentActivity.this.locationList = appState.getLocationList();
+		
+		spinnerFlag = 0;
 	}
 	
 	@Override
@@ -250,9 +252,6 @@ public class CreateCommentActivity extends Activity implements
 	 */
 	public void chooseLocation(View v) {
 		int i;
-
-		// Sets/resets spinner set flag
-		CreateCommentActivity.this.spinnerFlag = 0;
 
 		// Gets the xml custom dialog layout
 		LayoutInflater li = LayoutInflater.from(this);
@@ -443,6 +442,8 @@ public class CreateCommentActivity extends Activity implements
 														.saveLocations();
 												// Saves location list to elastic search
 												ElasticSearchLocationOperations.pushLocationList(CreateCommentActivity.this.postLocation);
+												// Sets/resets spinner set flag
+												CreateCommentActivity.this.spinnerFlag = 0;
 											}
 										}
 									}
