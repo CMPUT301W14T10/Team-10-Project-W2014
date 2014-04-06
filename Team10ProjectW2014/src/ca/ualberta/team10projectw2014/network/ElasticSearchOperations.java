@@ -95,7 +95,6 @@ public class ElasticSearchOperations {
             @Override
             public void run() {
                 HttpClient client = new DefaultHttpClient();
-                Log.e("Delete", "Input: "+uniqueID);
                 HttpDelete delete = new HttpDelete(SERVER_URL + "_query"
                         + "?q=uniqueID:" +uniqueID);
 
