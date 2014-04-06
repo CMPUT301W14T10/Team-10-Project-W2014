@@ -216,8 +216,8 @@ public class ElasticSearchOperations {
 	
 	
 	
-	public static void searchForReplies(final SubCommentViewActivity activity,final ArrayList<CommentModel> replyCommentList, final String parentID) {
-
+	public static void searchForReplies(final SubCommentViewActivity activity,final String parentID) {
+		final ArrayList<CommentModel> replyCommentList = new ArrayList<CommentModel>();
 		
 		if (GSON == null)
 			constructGson();
@@ -271,7 +271,7 @@ public class ElasticSearchOperations {
 						ApplicationStateModel appState = ApplicationStateModel.getInstance();
 						replyCommentList.clear();
 						replyCommentList.addAll(returnedData.getSources());
-						
+						appState.setReplyList(replyCommentList);
 						Log.e("REPLY COMMENT PULL",replyCommentList.toString());
 					}
 				};
