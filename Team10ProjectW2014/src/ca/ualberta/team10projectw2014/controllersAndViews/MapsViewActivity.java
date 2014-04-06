@@ -36,7 +36,7 @@ public class MapsViewActivity extends MapActivity{
       setContentView(R.layout.activity_map_view);
 
       map = (MapView) findViewById(R.id.map);
-      map.getController().setZoom(4);
+      map.getController().setZoom(6);
       map.getController().setCenter(new GeoPoint(53.52676,-113.52715));
       map.setBuiltInZoomControls(true);
 
