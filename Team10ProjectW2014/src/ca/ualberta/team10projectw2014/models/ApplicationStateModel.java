@@ -146,6 +146,7 @@ public class ApplicationStateModel {
 	private CommentModel commentToEdit;
 	
 	private ArrayList<CommentModel> assortList;
+	
 		
 	/**
 	*A comparator used in sorting comments by location.
