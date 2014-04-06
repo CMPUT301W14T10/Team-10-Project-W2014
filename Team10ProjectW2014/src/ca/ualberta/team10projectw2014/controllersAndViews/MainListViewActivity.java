@@ -411,7 +411,13 @@ public class MainListViewActivity extends Activity{
 	            	this.appState.getUserModel().setSortByLoc(false);
 	            }
 	            break;
-	            
+	        case R.id.userlocation:
+	        	if(checked){
+					appState.setCmpLocation(locationListener.getLastBestLocation());
+					this.appState.getUserModel().setSortLoc(appState.getCmpLocation());
+	        		this.appState.getUserModel().setSortByUserLoc(true);
+	        		buttonPressed.toggle();
+	        	}
 	        case R.id.number_of_favourites:
 	            if (checked){
 	            	this.appState.getUserModel().setSortByPopularity(true);
