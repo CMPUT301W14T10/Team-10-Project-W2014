@@ -24,6 +24,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
@@ -35,29 +36,42 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.Toast;
 import ca.ualberta.team10projectw2014.R;
 import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
+import ca.ualberta.team10projectw2014.models.LocationListenerModel;
+import ca.ualberta.team10projectw2014.models.LocationModel;
 import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 
 /**
  * This class handles the activity displaying the list view of head comments.
- * @author Cole Fudge <cfudge@ualberta.ca>
- * @version     1                (current version number of program)
+ * @author  Cole Fudge <cfudge@ualberta.ca>
+ * @version      1                (current version number of program)
  */
 public class MainListViewActivity extends Activity{
 	private ListView commentView;
+	private LocationListenerModel locationListener;
 	private static LayoutInflater layoutInflater;
+	/**
+	 * @uml.property  name="appState"
+	 * @uml.associationEnd  
+	 */
 	private ApplicationStateModel appState;
 
 	SharedPreferences setOverlay;
 	boolean showOverlay;
+	private int spinnerFlag;
+	private ArrayList<LocationModel> locationList;
+	private ArrayList<LocationModel> tempLocationList;
 	
 	// In onCreate we will prepare the view to 
 	//display the activity and set up the 
@@ -67,6 +81,7 @@ public class MainListViewActivity extends Activity{
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_head_comment_view);
+		locationListener = new LocationListenerModel(this);
 
 		// below sharedpref code adapted from
 		// http://stackoverflow.com/a/19232789/2557554
@@ -146,11 +161,15 @@ public class MainListViewActivity extends Activity{
 			}
 			//Sort by location and picture:
 			else if(this.appState.getUserModel().isSortByLoc() == true) {
+				appState.setCmpLocation(locationListener.getLastBestLocation());
 				appState.pictureSort(this.appState.getCommentList(), ApplicationStateModel.locCompare);
 			}
 			//Sort by popularity(i.e. number of times favourited) and picture:
 			else if(this.appState.getUserModel().isSortByPopularity()){
 				appState.pictureSort(this.appState.getCommentList(), ApplicationStateModel.popularityCompare);
+			}
+			else{
+				appState.pictureSort(this.appState.getCommentList(), null);
 			}
 		}
 		//Sort without sorting by picture:
@@ -161,6 +180,7 @@ public class MainListViewActivity extends Activity{
 			}
 			//Sort by location:
 			else if(this.appState.getUserModel().isSortByLoc() == true) {
+				appState.setCmpLocation(locationListener.getLastBestLocation());
 				Collections.sort(this.appState.getCommentList(), ApplicationStateModel.locCompare);
 			}
 			//Sort by popularity(i.e. number of times favourited):
@@ -317,6 +337,75 @@ public class MainListViewActivity extends Activity{
 	            
 	        case R.id.location:
 	            if (checked){
+	            	appState.loadLocations();
+	        		int i;
+
+	        		// Sets/resets spinner set flag
+	        		MainListViewActivity.this.spinnerFlag = 0;
+
+	        		// Gets the xml custom dialog layout
+	        		LayoutInflater li = LayoutInflater.from(this);
+	        		View locationDialogView = li.inflate(R.layout.dialog_location, null);
+
+	        		// Builds alert dialog
+	        		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+	        		alertDialogBuilder.setView(locationDialogView);
+	        		
+	        		//get location list from app state fixes spinner lag
+	        		MainListViewActivity.this.locationList = appState.getLocationList();
+	        		
+	                // Gets best known location
+	                //stopListeningLocation();
+	                
+	                // Create tempt list to sort
+	                MainListViewActivity.this.tempLocationList = MainListViewActivity.
+	        				this.locationList;
+	                if(MainListViewActivity.this.tempLocationList == null)
+	                	Log.e("the null value is:", "tempLocationList");
+	        		// Sort list by proximity
+	        		Collections.sort(MainListViewActivity.this.tempLocationList, ApplicationStateModel.locationModelCompare);
+	        		// Loads up spinner with location names
+	        		final Spinner spinner = (Spinner) locationDialogView
+	        				.findViewById(R.id.location_dialog_spinner);
+	        		// Creates and populates a list of the location names for displaying
+	        		// in the spinner
+	        		ArrayList<String> locationNameList = new ArrayList<String>();
+	        		if (MainListViewActivity.this.tempLocationList.size() != 0) {
+	        			for (i = 0; i < MainListViewActivity.this.tempLocationList.size(); i++)
+	        				locationNameList.add(MainListViewActivity.this.
+	        						tempLocationList.get(i).getName());
+	        		} else
+	        			locationNameList.add("No Locations");
+
+	        		// Shows spinner
+	        		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+	        				android.R.layout.simple_spinner_item, locationNameList);
+	        		spinner.setAdapter(adapter);
+
+	        		// Location dialog title
+	        		alertDialogBuilder.setTitle("Set Location");
+
+	        		// Location dialog set button functionality
+	        		alertDialogBuilder.setPositiveButton("Set",
+	        				new DialogInterface.OnClickListener() {
+
+	        					@Override
+	        					public void onClick(DialogInterface dialog, int which) {
+	        						// Checks if no locations have been created and the user
+	        						// is trying to set a location
+	        						if (spinner.getSelectedItem().toString()
+	        								.matches("No Locations"))
+	        							Toast.makeText(getBaseContext(),
+	        									"Please create a new location",
+	        									Toast.LENGTH_LONG).show();
+	        						else {
+	        							appState.setCmpLocation(MainListViewActivity.
+	        									this.tempLocationList.get(spinner.getSelectedItemPosition()).generateLocation());
+	        							MainListViewActivity.this.spinnerFlag = 1;
+	        						}
+	        					}
+	        				});
+	        		alertDialogBuilder.show();
 	            	this.appState.getUserModel().setSortByLoc(true);
 	            	buttonPressed.toggle();
 	            }

@@ -23,10 +23,9 @@ import ca.ualberta.team10projectw2014.models.SubCommentModel;
 import ca.ualberta.team10projectw2014.models.UserModel;
 
 /**
- * Creates a custom adapter for displaying a comment's infomation in
- * SubCommentListViewActivity's listview.
- * @author      Steven Giang <giang2@ualberta.ca>
- * @version     1            (current version number of program)
+ * Creates a custom adapter for displaying a comment's infomation in SubCommentListViewActivity's listview.
+ * @author       Steven Giang <giang2@ualberta.ca>
+ * @version      1            (current version number of program)
  */
 public class SubCommentViewActivityAdapter extends
 		ArrayAdapter<CommentModel> {
@@ -34,7 +33,15 @@ public class SubCommentViewActivityAdapter extends
 	private Context context;
 	private int layoutResourceId;
 	private ArrayList<CommentModel> commentList;
+	/**
+	 * @uml.property  name="userData"
+	 * @uml.associationEnd  
+	 */
 	private UserModel userData;
+	/**
+	 * @uml.property  name="appState"
+	 * @uml.associationEnd  
+	 */
 	private ApplicationStateModel appState;
 
 	

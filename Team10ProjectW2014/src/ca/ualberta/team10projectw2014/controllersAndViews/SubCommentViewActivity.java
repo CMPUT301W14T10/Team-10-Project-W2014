@@ -37,15 +37,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * Called from mainListViewActivity when a head comment is selected. displays
- * that head comment and all of its replies(recursively, so that replies to
- * replies at any nesting are shown).
- * 
- * @author David Yee <dvyee@ualberta.ca>
- * @version 1 (current version number of program)
+ * Called from mainListViewActivity when a head comment is selected. displays that head comment and all of its replies(recursively, so that replies to replies at any nesting are shown).
+ * @author  David Yee <dvyee@ualberta.ca>
+ * @version  1 (current version number of program)
  */
 public class SubCommentViewActivity extends Activity {
 	private ListView subListView;
+	/**
+	 * @uml.property  name="appState"
+	 * @uml.associationEnd  
+	 */
 	private ApplicationStateModel appState;
 	private ArrayList<? extends CommentModel> commentList;
 	private ArrayList<CommentModel> sortedList;
