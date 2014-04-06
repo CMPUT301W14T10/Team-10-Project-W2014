@@ -642,14 +642,17 @@ public class CreateCommentActivity extends Activity implements
 					getBaseContext(),
 					"No nearby locations found. Please select or create a location.",
 					Toast.LENGTH_LONG).show();
-		// Current location is not known and location list is not empty
-		else if ((bestKnownLoc == null) && (this.locationList != null))
+		// Current location is not known and location list is not empty and spinner wasn't set
+		else if ((bestKnownLoc == null) && (this.locationList != null) && (CreateCommentActivity.this.spinnerFlag != 1))
 			Toast.makeText(getBaseContext(),
 					"Current location is unknown. Please select a location.",
 					Toast.LENGTH_LONG).show();
+		// Current location is not known and location list is not empty and spinner was set
+		else if ((bestKnownLoc == null) && (this.locationList != null) && (CreateCommentActivity.this.spinnerFlag == 1))
+			; // Doesn't change anything, allows attemtCommentCreation to post the comment set in the spinner
 		// Current location is not known and location list is empty
 		else {
-			this.postLocation = new LocationModel("Unknown Location", 1, 2);
+			this.postLocation = new LocationModel("Unknown Location", 0, 0);
 		}
 	}
 
