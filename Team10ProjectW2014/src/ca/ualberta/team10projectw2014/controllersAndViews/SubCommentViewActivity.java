@@ -4,6 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import ca.ualberta.team10projectw2014.R;
+import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
+import ca.ualberta.team10projectw2014.models.CommentModel;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,7 +19,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,15 +35,14 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-import ca.ualberta.team10projectw2014.R;
-import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
-import ca.ualberta.team10projectw2014.models.CommentModel;
+
 /**
- * Called from mainListViewActivity when a head comment is selected.
- * displays that head comment and all of its replies(recursively, so
- * that replies to replies at any nesting are shown).
- * @author      David Yee <dvyee@ualberta.ca>
- * @version     1            (current version number of program)
+ * Called from mainListViewActivity when a head comment is selected. displays
+ * that head comment and all of its replies(recursively, so that replies to
+ * replies at any nesting are shown).
+ * 
+ * @author David Yee <dvyee@ualberta.ca>
+ * @version 1 (current version number of program)
  */
 public class SubCommentViewActivity extends Activity {
 	private ListView subListView;
@@ -58,53 +60,89 @@ public class SubCommentViewActivity extends Activity {
 		setContentView(R.layout.activity_sub_comment_view);
 		layoutInflater = LayoutInflater.from(this);
 
-		//Get an instance of the ApplicationStateModel singleton
+		// Get an instance of the ApplicationStateModel singleton
 		appState = ApplicationStateModel.getInstance();
 		appState.setFileContext(this);
 		appState.loadUser();
 		appState.loadComments();
 
-		//Set the layout 
+		// Set the layout
 		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
-		
+
 		// Disable the Home Icon on the Actionbar
-	    actionbar = getActionBar();
+		actionbar = getActionBar();
 		actionbar.setDisplayShowHomeEnabled(false);
 		resources = getResources();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void onResume() {
 		super.onResume();
 
-		//Remove any already displayed head comment and display an new one
-		//old one may be updated.
+		// Remove any already displayed head comment and display an new one
+		// old one may be updated.
 		subListView.removeHeaderView(headerView);
 		headerView = (View) setHeader(appState.getSubCommentViewHead());
 		subListView.addHeaderView(headerView);
 
-		
 		// Set the Title in the Actionbar to the title of the head comment
 		actionbar.setTitle(appState.getSubCommentViewHead().getTitle());
-		
-		
-		commentList = new ArrayList<CommentModel>();
-		userSortPreference();
-		
-		
-		// Gets all the SubComments and all its subComments and put them in a list
+
+		ArrayList<? extends CommentModel> commentList = appState
+				.getSubCommentViewHead().getSubComments();
+
+		if (appState.getUserModel().isSortByPic() == true) {
+			// Sort by picture
+			if (appState.getUserModel().isSortByDate() == true) {
+				// Sort by date
+				 appState.pictureSort(
+						(ArrayList<CommentModel>) commentList,
+						ApplicationStateModel.dateCompare);
+			} else if (appState.getUserModel().isSortByLoc() == true) {
+				// Sort by Location
+				appState.pictureSort(
+						(ArrayList<CommentModel>) commentList,
+						ApplicationStateModel.locCompare);
+			} else if (appState.getUserModel().isSortByPopularity())
+				// Sort by number of Favourites
+				appState.pictureSort(
+						(ArrayList<CommentModel>) commentList,
+						ApplicationStateModel.popularityCompare);
+		} else {
+			if (appState.getUserModel().isSortByDate() == true) {
+				// Sort by date
+				appState.sort((ArrayList<CommentModel>) commentList,
+						ApplicationStateModel.dateCompare);
+			} else if (appState.getUserModel().isSortByLoc() == true) {
+				// Sort by Location
+				appState.sort((ArrayList<CommentModel>) commentList,
+						ApplicationStateModel.locCompare);
+			} else if (appState.getUserModel().isSortByPopularity())
+				// Sort by number of favourites
+				 appState.sort((ArrayList<CommentModel>) commentList,
+						ApplicationStateModel.popularityCompare);
+			else {
+				// No sorting just grab the array as is
+				appState.getSubCommentViewHead().getSubComments();
+			}
+
+		}
+
+		// Gets all the SubComments and all its subComments and put them in a
+		// list
 		sortedList = new ArrayList<CommentModel>();
 		addCommentToList(commentList);
-		
-		//Add the list of comments to the adapter to be displayed to list view
+
+		// Add the list of comments to the adapter to be displayed to list view
 		appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
-				R.layout.subcommentview_sub_item, sortedList,
-				appState.getUserModel()));
+				R.layout.subcommentview_sub_item, sortedList, appState
+						.getUserModel()));
 
 		subListView.setAdapter(appState.getSCVAdapter());
+
 	}
 
-	
 	/**
 	 * Inflate the menu.
 	 * 
@@ -122,13 +160,14 @@ public class SubCommentViewActivity extends Activity {
 		// Inflate the menu items for use in the action bar
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.subcommentview, menu);
-		if (appState.getSubCommentViewHead().isInArrayList(appState.getUserModel().getFavourites())) {
-			menu.findItem(R.id.action_favourite).setIcon(resources.getDrawable(R.drawable.ic_action_star_yellow));
+		if (appState.getSubCommentViewHead().isInArrayList(
+				appState.getUserModel().getFavourites())) {
+			menu.findItem(R.id.action_favourite).setIcon(
+					resources.getDrawable(R.drawable.ic_action_star_yellow));
+		} else {
+			menu.findItem(R.id.action_favourite).setIcon(
+					resources.getDrawable(R.drawable.ic_action_favourite));
 		}
-		else {
-			menu.findItem(R.id.action_favourite).setIcon(resources.getDrawable(R.drawable.ic_action_favourite));
-		}
-		menu.findItem(R.id.action_map).setIcon(resources.getDrawable(R.drawable.ic_map_icon_medium4));
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -148,33 +187,39 @@ public class SubCommentViewActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
 		switch (item.getItemId()) {
-		case R.id.action_map:
-			openMap();
-			return true;
 		case R.id.action_reply:
 			openReply();
 			return true;
 		case R.id.action_favourite:
 			// Add the head comment to the users favourite list
-			if (!appState.getSubCommentViewHead().isInArrayList(appState.getUserModel().getFavourites())) {
-				Toast.makeText(this, "Comment added to favourites", Toast.LENGTH_SHORT).show();
-				appState.getSubCommentViewHead().setNumFavourites(appState.getSubCommentViewHead().getNumFavourites() + 1);
+			if (!appState.getSubCommentViewHead().isInArrayList(
+					appState.getUserModel().getFavourites())) {
+				Toast.makeText(this, "Comment added to favourites",
+						Toast.LENGTH_SHORT).show();
+				appState.getSubCommentViewHead()
+						.setNumFavourites(
+								appState.getSubCommentViewHead()
+										.getNumFavourites() + 1);
 				addFavourite(appState.getSubCommentViewHead());
 				appState.saveUser();
 				appState.saveComments();
 				appState.loadComments();
-				appState.loadUser();
-				item.setIcon(resources.getDrawable(R.drawable.ic_action_star_yellow));
-			}
-			else {
-				Toast.makeText(this, "Comment removed from favourites", Toast.LENGTH_SHORT).show();
-				appState.getSubCommentViewHead().setNumFavourites(appState.getSubCommentViewHead().getNumFavourites() - 1);
-				appState.getSubCommentViewHead().removeFromArrayList(appState.getUserModel().getFavourites());
+				item.setIcon(resources
+						.getDrawable(R.drawable.ic_action_star_yellow));
+			} else {
+				Toast.makeText(this, "Comment removed from favourites",
+						Toast.LENGTH_SHORT).show();
+				appState.getSubCommentViewHead()
+						.setNumFavourites(
+								appState.getSubCommentViewHead()
+										.getNumFavourites() - 1);
+				appState.getSubCommentViewHead().removeFromArrayList(
+						appState.getUserModel().getFavourites());
 				appState.saveUser();
 				appState.saveComments();
-				appState.loadComments();	
-				appState.loadUser();
-				item.setIcon(resources.getDrawable(R.drawable.ic_action_favourite));
+				appState.loadComments();
+				item.setIcon(resources
+						.getDrawable(R.drawable.ic_action_favourite));
 			}
 			return true;
 		case R.id.action_edit_username:
@@ -194,14 +239,7 @@ public class SubCommentViewActivity extends Activity {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-	
-	}
-	
-	private void openMap(){
-		// Get the coordinates of each comment in the current list and send them to MapsViewActivity
-		Intent mapThread = new Intent(getApplicationContext(),
-				MapsViewActivity.class);
-		this.startActivity(mapThread);
+
 	}
 
 	/**
@@ -232,7 +270,7 @@ public class SubCommentViewActivity extends Activity {
 	 * 
 	 * @author dvyee, sgiang92
 	 * @return
-	 * @param 
+	 * @param
 	 */
 	private void addFavourite(CommentModel comment) {
 		appState.getUserModel().getFavourites().add(comment);
@@ -281,7 +319,7 @@ public class SubCommentViewActivity extends Activity {
 	 * head comment.
 	 * 
 	 * @author sgiang92, dvyee
-	 * @param 
+	 * @param
 	 * @return View
 	 */
 	private View setHeader(CommentModel headComment) {
@@ -304,7 +342,6 @@ public class SubCommentViewActivity extends Activity {
 		ImageView imageView = (ImageView) header
 				.findViewById(R.id.head_comment_image);
 
-
 		// Set the items to the contents of the Head Comment
 		textTitle.setText(headComment.getTitle());
 		textAuthor.setText(headComment.getAuthor());
@@ -316,7 +353,7 @@ public class SubCommentViewActivity extends Activity {
 		if (headComment.getPhotoPath() != null) {
 
 			String imagePath = headComment.getPhotoPath();
-			
+
 			// Get the dimensions of the bitmap
 			BitmapFactory.Options bmOptions = new BitmapFactory.Options();
 			bmOptions.inJustDecodeBounds = true;
@@ -340,7 +377,7 @@ public class SubCommentViewActivity extends Activity {
 		moreButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//Open More Dialog
+				// Open More Dialog
 				openMoreDialog(appState.getSubCommentViewHead());
 			}
 		});
@@ -352,7 +389,8 @@ public class SubCommentViewActivity extends Activity {
 	 * Takes in the timestamp as a Calendar object and converts it to a string
 	 * that can be used in a textView.
 	 * 
-	 * @param calendar - object to retrieve string from
+	 * @param calendar
+	 *            - object to retrieve string from
 	 * @return timeString - string of the formatted date of the timestamp
 	 */
 	private String timeToString(Calendar calendar) {
@@ -367,14 +405,16 @@ public class SubCommentViewActivity extends Activity {
 	 * in the listView. Uses recursion to get all the subComment's subcomments
 	 * 
 	 * @author sgiang92
-	 * @param subCommentList - A list to be iterated through to 
-	 * add all its subComments to the list to be displayed on the ListView
+	 * @param subCommentList
+	 *            - A list to be iterated through to add all its subComments to
+	 *            the list to be displayed on the ListView
 	 */
-	private void addCommentToList(ArrayList<? extends CommentModel> subCommentList) {
+	private void addCommentToList(
+			ArrayList<? extends CommentModel> subCommentList) {
 		if (subCommentList.size() == 0) {
 			return;
 		} else {
-			for (int i = 0; i < subCommentList.size();i++) {
+			for (int i = 0; i < subCommentList.size(); i++) {
 				sortedList.add(subCommentList.get(i));
 				if (subCommentList.get(i).getSubComments().size() > 0) {
 					addCommentToList(subCommentList.get(i).getSubComments());
@@ -423,8 +463,11 @@ public class SubCommentViewActivity extends Activity {
 							// TODO Auto-generated method stub
 							// Open CreateComment Activity
 							appState.setCommentToEdit(commentData);
-							Intent editComment = new Intent(getApplicationContext(), EditCommentActivity.class);
-							//subCommentView.putExtra("comment", (Object) headComment);
+							Intent editComment = new Intent(
+									getApplicationContext(),
+									EditCommentActivity.class);
+							// subCommentView.putExtra("comment", (Object)
+							// headComment);
 							editCommentContext.startActivity(editComment);
 						}
 					});
@@ -436,72 +479,70 @@ public class SubCommentViewActivity extends Activity {
 
 	}
 
-	//Adapted from the android developer page 
-	//http://developer.android.com/guide/topics/ui/controls/checkbox.html
+	// Adapted from the android developer page
+	// http://developer.android.com/guide/topics/ui/controls/checkbox.html
 	public void onCheckboxClicked(View view) {
-	    // Is the view now checked?
-	    boolean checked = ((CheckBox) view).isChecked();
-	    
-	    // Check which checkbox was clicked
-	    switch(view.getId()) {
-	    	//Set user preferences according
-	    	//to whether the pictures checkbox is checked:
-	        case R.id.pictures:
-	            if (checked)
-	            	this.appState.getUserModel().setSortByPic(true);
-	            else
-	            	this.appState.getUserModel().setSortByPic(false);
-	            break;
-	    }
+		// Is the view now checked?
+		boolean checked = ((CheckBox) view).isChecked();
+
+		// Check which checkbox was clicked
+		switch (view.getId()) {
+		// Set user preferences according
+		// to whether the pictures checkbox is checked:
+		case R.id.pictures:
+			if (checked)
+				this.appState.getUserModel().setSortByPic(true);
+			else
+				this.appState.getUserModel().setSortByPic(false);
+			break;
+		}
 	}
-	
+
 	/**
 	 * Brings up a dialog box to prompt user for sorting criteria:
 	 */
-	private void sortComments(){
+	private void sortComments() {
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-		//set the fields of the dialog:
+		// set the fields of the dialog:
 		alert.setTitle("Sort By:");
-	
-		//get the dialogue's layout from XML:
-		LinearLayout optionsView = (LinearLayout)layoutInflater.inflate(R.layout.dialog_sort_by, 
-				null);
-		
-		//get the group of radio buttons that determine sorting criteria:
+
+		// get the dialogue's layout from XML:
+		LinearLayout optionsView = (LinearLayout) layoutInflater.inflate(
+				R.layout.sort_by_dialog_list, null);
+
+		// get the group of radio buttons that determine sorting criteria:
 		ViewGroup sortRadioGroup = (ViewGroup) optionsView.getChildAt(0);
-		
+
 		RadioButton button;
 		CheckBox box;
-		
-		//if/else statements that set the correct radio button
-		//and check the sort by picture box if appropriate:
-		if(this.appState.getUserModel().isSortByDate()){
-			//Set the date radio button:
+
+		// if/else statements that set the correct radio button
+		// and check the sort by picture box if appropriate:
+		if (this.appState.getUserModel().isSortByDate()) {
+			// Set the date radio button:
 			button = (RadioButton) sortRadioGroup.getChildAt(0);
 			button.toggle();
-		}
-		else if(this.appState.getUserModel().isSortByLoc()){
-			//Set the location radio button:
+		} else if (this.appState.getUserModel().isSortByLoc()) {
+			// Set the location radio button:
 			button = (RadioButton) sortRadioGroup.getChildAt(1);
 			button.toggle();
-		}
-		else if(this.appState.getUserModel().isSortByPopularity()){
-			//Set the Popularity radio button:
+		} else if (this.appState.getUserModel().isSortByPopularity()) {
+			// Set the Popularity radio button:
 			button = (RadioButton) sortRadioGroup.getChildAt(2);
 			button.toggle();
 		}
 
-		if(this.appState.getUserModel().isSortByPic()){
-			//Set the sort by picture check box:
+		if (this.appState.getUserModel().isSortByPic()) {
+			// Set the sort by picture check box:
 			box = (CheckBox) optionsView.getChildAt(2);
 			box.setChecked(true);
 		}
-		
+
 		alert.setView(optionsView);
 
-		//set the positive button with its text and set up an on click listener
-		//that saves the changes:
+		// set the positive button with its text and set up an on click listener
+		// that saves the changes:
 		alert.setPositiveButton("Set", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				appState.saveUser();
@@ -509,97 +550,65 @@ public class SubCommentViewActivity extends Activity {
 			}
 		});
 
-		//also set a cancel negative button that loads the old user so that the
-		//changes are not applied:
-		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				appState.loadUser();
-				onResume();
-			}
-		});
+		// also set a cancel negative button that loads the old user so that the
+		// changes are not applied:
+		alert.setNegativeButton("Cancel",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						appState.loadUser();
+						onResume();
+					}
+				});
 
 		alert.show();
 	}
-	
-	
+
 	/**
-	 * Responds to clicks on a radio button in the sort by alert
-	 * dialog. Adapted from the android developer website
+	 * Responds to clicks on a radio button in the sort by alert dialog. Adapted
+	 * from the android developer website
 	 * http://developer.android.com/guide/topics/ui/controls/radiobutton.html
-	 * @param view - the radio button that was clicked.
+	 * 
+	 * @param view
+	 *            - the radio button that was clicked.
 	 * @return void, no return value.
 	 */
 	public void onRadioButtonClicked(View view) {
 		RadioButton buttonPressed = (RadioButton) view;
 		RadioGroup buttonGroup = (RadioGroup) buttonPressed.getParent();
-	    // Is the button now checked?
-	    boolean checked = ((RadioButton) view).isChecked();
-	    buttonGroup.clearCheck();
-	    //Check which radio button was clicked and set the
-	    //preferences and checked radio button as appropriate:
-	    switch(view.getId()) {
-	        case R.id.date:
-	            if (checked){
-	            	this.appState.getUserModel().setSortByDate(true);
-	            	buttonPressed.toggle();
-	            }
-	            else{
-	        		this.appState.getUserModel().setSortByDate(false);
-	            }
-	            break;
-	            
-	        case R.id.location:
-	            if (checked){
-	            	this.appState.getUserModel().setSortByLoc(true);
-	            	buttonPressed.toggle();
-	            }
-	            else{
-	            	this.appState.getUserModel().setSortByLoc(false);
-	            }
-	            break;
-	            
-	        case R.id.number_of_favourites:
-	            if (checked){
-	            	this.appState.getUserModel().setSortByPopularity(true);
-	            	buttonPressed.toggle();
-	            }
-	            else{
-	            	this.appState.getUserModel().setSortByPopularity(false);
-	            }
-	            break;
-	            
-	    }
-	}
-	
-	public void userSortPreference(){
-		
-		ArrayList<CommentModel> comments = appState.getSubCommentViewHead().getSubComments();
-
-		if (appState.getUserModel().isSortByPic() == true) {
-			// Sort by picture
-			if (appState.getUserModel().isSortByDate() == true) {
-				// Sort by date
-				CommentModel.pictureSort(comments, ApplicationStateModel.dateCompare);
-			} else if(appState.getUserModel().isSortByLoc() == true) {
-				// Sort by Location
-				CommentModel.pictureSort((ArrayList<CommentModel>)comments, ApplicationStateModel.locCompare);
-			} else if(appState.getUserModel().isSortByPopularity())
-				// Sort by number of Favourites
-				CommentModel.pictureSort((ArrayList<CommentModel>)comments, ApplicationStateModel.popularityCompare);
-		}
-		else {
-			if (appState.getUserModel().isSortByDate() == true) {
-				// Sort by date
-				CommentModel.sort((ArrayList<CommentModel>) comments, ApplicationStateModel.dateCompare);
-			} else if(appState.getUserModel().isSortByLoc() == true) {
-				//Sort by Location 
-				CommentModel.sort((ArrayList<CommentModel>) comments, ApplicationStateModel.locCompare);
-			} else if(appState.getUserModel().isSortByPopularity()) {
-				//Sort by number of favourites
-				CommentModel.sort((ArrayList<CommentModel>) comments, ApplicationStateModel.popularityCompare);
+		// Is the button now checked?
+		boolean checked = ((RadioButton) view).isChecked();
+		buttonGroup.clearCheck();
+		// Check which radio button was clicked and set the
+		// preferences and checked radio button as appropriate:
+		switch (view.getId()) {
+		case R.id.date:
+			if (checked) {
+				this.appState.getUserModel().setSortByDate(true);
+				buttonPressed.toggle();
+			} else {
+				this.appState.getUserModel().setSortByDate(false);
 			}
+			break;
+
+		case R.id.location:
+			if (checked) {
+				this.appState.getUserModel().setSortByLoc(true);
+				buttonPressed.toggle();
+			} else {
+				this.appState.getUserModel().setSortByLoc(false);
+			}
+			break;
+
+		case R.id.number_of_favourites:
+			if (checked) {
+				this.appState.getUserModel().setSortByPopularity(true);
+				buttonPressed.toggle();
+			} else {
+				this.appState.getUserModel().setSortByPopularity(false);
+			}
+			break;
+
 		}
 	}
-
 
 }
