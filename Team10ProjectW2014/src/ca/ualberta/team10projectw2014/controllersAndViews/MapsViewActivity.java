@@ -2,6 +2,7 @@ package ca.ualberta.team10projectw2014.controllersAndViews;
 
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import android.graphics.Color;
@@ -63,15 +64,39 @@ public class MapsViewActivity extends MapActivity{
     	CommentModel headComment = appState.getSubCommentViewHead();
     	map.getController().setCenter(new GeoPoint(headComment.getLocation().getLatitude(),headComment.getLocation().getLongitude()));
     	
+    	List<CommentModel> flattenedList;
+    	flattenedList = flatten(headComment.getSubComments());
+    	
+    	for (int i = 0; i < flattenedList.size(); i++){
+    		locationsList.add(new OverlayItem(new GeoPoint ((flattenedList.get(i)).getLocation().getLatitude(), (flattenedList.get(i)).getLocation().getLongitude()), flattenedList.get(i).getLocation().getName().toString(), ""));
+    	}
+    	
         locationsList.add(new OverlayItem(new GeoPoint (headComment.getLocation().getLatitude(), headComment.getLocation().getLongitude()), headComment.getLocation().getName().toString(), ""));
-    	for(int i = 0; i < headComment.getSubComments().size(); i++){
+    	/*for(int i = 0; i < headComment.getSubComments().size(); i++){
     		for (int j = 0; j < headComment.getSubComments().get(i).getSubComments().size(); j++){
     			locationsList.add(new OverlayItem(new GeoPoint (headComment.getSubComments().get(i).getSubComments().get(j).getLocation().getLatitude(), headComment.getSubComments().get(i).getSubComments().get(j).getLocation().getLongitude()), headComment.getSubComments().get(i).getSubComments().get(j).getLocation().getName().toString(), ""));
     		}
     		locationsList.add(new OverlayItem(new GeoPoint (headComment.getSubComments().get(i).getLocation().getLatitude(), headComment.getSubComments().get(i).getLocation().getLongitude()), headComment.getSubComments().get(i).getLocation().getName().toString(), ""));
-    	}
+    	}*/
         
     	return locationsList;
+    }
+    
+ // Taken from http://rosettacode.org/wiki/Flatten_a_list#Java on April 5
+    public static List<CommentModel> flatten(List<CommentModel> arrayList) {
+        List<CommentModel> newList = new LinkedList<CommentModel>();
+
+        for (Object i : arrayList) {
+                // If it's not a list, just add it to the return list.
+                if (!(i instanceof List)) {
+                        newList.add((CommentModel) i);
+                } else {
+                        // It's a list, so add each item to the return list.
+                        newList.addAll(flatten((List<CommentModel>) i));
+                }
+        }
+
+        return newList;
     }
 
     // add an itemized overlay to map 
