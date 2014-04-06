@@ -30,6 +30,7 @@ public class MapsViewActivity extends MapActivity{
     private AnnotationView annotation;
     private List<GeoPoint> poiLocs;
     private ApplicationStateModel appState;
+    private ArrayList<CommentModel> flattenedList = new ArrayList<CommentModel>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,8 +65,7 @@ public class MapsViewActivity extends MapActivity{
     	CommentModel headComment = appState.getSubCommentViewHead();
     	map.getController().setCenter(new GeoPoint(headComment.getLocation().getLatitude(),headComment.getLocation().getLongitude()));
     	
-    	List<CommentModel> flattenedList;
-    	flattenedList = flatten(headComment.getSubComments());
+    	addCommentToList(headComment.getSubComments());
     	
     	for (int i = 0; i < flattenedList.size(); i++){
     		locationsList.add(new OverlayItem(new GeoPoint ((flattenedList.get(i)).getLocation().getLatitude(), (flattenedList.get(i)).getLocation().getLongitude()), flattenedList.get(i).getLocation().getName().toString(), ""));
@@ -98,6 +98,20 @@ public class MapsViewActivity extends MapActivity{
 
         return newList;
     }
+    
+    private void addCommentToList(
+			ArrayList<? extends CommentModel> subCommentList) {
+		if (subCommentList.size() == 0) {
+			return;
+		} else {
+			for (int i = 0; i < subCommentList.size(); i++) {
+				flattenedList.add(subCommentList.get(i));
+				if (subCommentList.get(i).getSubComments().size() > 0) {
+					addCommentToList(subCommentList.get(i).getSubComments());
+				}
+			}
+		}
+	}
 
     // add an itemized overlay to map 
     private void addPoiOverlay(List<OverlayItem> locationList) {
