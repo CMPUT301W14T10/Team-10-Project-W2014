@@ -227,6 +227,10 @@ public class SubCommentViewActivity extends Activity {
 						.getDrawable(R.drawable.ic_action_favourite));
 			}
 			return true;
+			
+		case R.id.action_map:
+			openMap();
+			return true;
 		case R.id.action_edit_username:
 			// Bring up dialog box for the user to edit username
 			editUserName();
@@ -245,6 +249,13 @@ public class SubCommentViewActivity extends Activity {
 			return super.onOptionsItemSelected(item);
 		}
 
+	}
+	
+	private void openMap(){
+		// Get the coordinates of each comment in the current list and send them to MapsViewActivity
+		Intent mapThread = new Intent(getApplicationContext(),
+		MapsViewActivity.class);
+		this.startActivity(mapThread);
 	}
 
 	/**
