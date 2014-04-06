@@ -147,6 +147,8 @@ public class ApplicationStateModel {
 	
 	private ArrayList<CommentModel> assortList;
 	
+	private ArrayList<CommentModel> replyList = new ArrayList<CommentModel>();
+	
 		
 	/**
 	*A comparator used in sorting comments by location.
@@ -342,6 +344,12 @@ public class ApplicationStateModel {
 		this.assortList = assortList;
 	}
 	
+	public ArrayList<CommentModel> getReplyList() {
+		return replyList;
+	}
+	public void setReplyList(ArrayList<CommentModel> replyList) {
+		this.replyList = replyList;
+	}
 	/**
 	 * A method for updating the MainListViewAdapter from outside of the
 	 * singleton.

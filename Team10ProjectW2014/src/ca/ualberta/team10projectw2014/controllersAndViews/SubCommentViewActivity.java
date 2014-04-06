@@ -63,7 +63,7 @@ public class SubCommentViewActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sub_comment_view);
 		layoutInflater = LayoutInflater.from(this);
-
+		
 
 		
 		// Get an instance of the ApplicationStateModel singleton
@@ -72,13 +72,6 @@ public class SubCommentViewActivity extends Activity {
 		appState.loadUser();
 		//appState.loadComments();
 		
-		//if user has network connection, the app will try to pull comments from server
-		if(appState.isNetworkAvailable(this)){
-			esList = new ArrayList<CommentModel>();
-			ElasticSearchOperations.searchForReplies(this, this.esList, appState.getSubCommentViewHead().getUniqueID());
-		} else{
-			appState.loadComments();
-		}
 
 
 		// Set the layout
@@ -88,7 +81,8 @@ public class SubCommentViewActivity extends Activity {
 		actionbar = getActionBar();
 		actionbar.setDisplayShowHomeEnabled(false);
 		resources = getResources();
-		commentList = new ArrayList<CommentModel>();
+		
+		
 		
 	
 		
@@ -107,11 +101,18 @@ public class SubCommentViewActivity extends Activity {
 
 		// Set the Title in the Actionbar to the title of the head comment
 		actionbar.setTitle(appState.getSubCommentViewHead().getTitle());
-
+		commentList = new ArrayList<CommentModel>();
 	
-			commentList = appState
-					.getSubCommentViewHead().getSubComments();
-		
+		//if user has network connection, the app will try to pull comments from server
+		if(appState.isNetworkAvailable(this)){
+			ElasticSearchOperations.searchForReplies(this, appState.getSubCommentViewHead().getUniqueID());
+			
+			commentList = appState.getReplyList();
+			Log.e("ee",commentList.toString());
+		} else{
+			appState.loadComments();
+			commentList = appState.getSubCommentViewHead().getSubComments();
+		}
 
 		// Gets all the SubComments and all its subComments and put them in a
 		// list
