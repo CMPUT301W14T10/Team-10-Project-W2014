@@ -123,15 +123,15 @@ public class CreateCommentActivity extends Activity implements
 		imageView = (ImageView) findViewById(R.id.cc_image_view);
 		
 		postUsername = appState.getUserModel().getUsername();
+		
+		// Load location list from elastic search into appstate
 		appState.setLocationList(new ArrayList<LocationModel>());
-		// STEVEN: Load location models here
-		locationList = new ArrayList<LocationModel>();
 		ElasticSearchLocationOperations.getLocationList(this);
 		appState.loadLocations();
-
-	
-			
 		
+		// Retrieve location list from appstate
+		locationList = new ArrayList<LocationModel>();
+		CreateCommentActivity.this.locationList = appState.getLocationList();
 	}
 	
 	@Override
@@ -255,11 +255,11 @@ public class CreateCommentActivity extends Activity implements
 		// Builds alert dialog
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setView(locationDialogView);
-		//get location list from app state
-		CreateCommentActivity.this.locationList = appState.getLocationList();
 		// Loads up spinner with location names
 		final Spinner spinner = (Spinner) locationDialogView
 				.findViewById(R.id.location_dialog_spinner);
+		// Creates and populates a list of the location names for displaying
+		// in the spinner
 		ArrayList<String> locationNameList = new ArrayList<String>();
 		if (this.locationList.size() != 0) {
 			for (i = 0; i < this.locationList.size(); i++)
@@ -267,6 +267,7 @@ public class CreateCommentActivity extends Activity implements
 		} else
 			locationNameList.add("No Locations");
 
+		// Shows spinner
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, locationNameList);
 		spinner.setAdapter(adapter);
@@ -336,7 +337,7 @@ public class CreateCommentActivity extends Activity implements
 										if (CreateCommentActivity.this.bestKnownLoc == null)
 											Toast.makeText(
 													getBaseContext(),
-													"No current location detected - can't set location",
+													"No current location detected - can't create location",
 													Toast.LENGTH_LONG).show();
 										// Check if no location name has been
 										// entered
@@ -414,12 +415,15 @@ public class CreateCommentActivity extends Activity implements
 																.getLatitude(),
 														CreateCommentActivity.this.bestKnownLoc
 																.getLongitude());
+												// Adds new location to the local location list
 												CreateCommentActivity.this.locationList
 														.add(CreateCommentActivity.this.postLocation);
-												appState.getLocationList().add(CreateCommentActivity.this.postLocation);
+												// Adds the new location to the appstate location list
+												appState.setLocationList(CreateCommentActivity.this.locationList);
+												// Sets appstate location list to the newly updated one
 												CreateCommentActivity.this.appState
 														.saveLocations();
-												// STEVEN: save location model list here
+												// Saves location list to elastic search
 												ElasticSearchLocationOperations.pushLocationList(CreateCommentActivity.this.postLocation);
 											}
 										}
