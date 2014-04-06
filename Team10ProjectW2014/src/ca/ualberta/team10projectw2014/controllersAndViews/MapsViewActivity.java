@@ -58,15 +58,22 @@ public class MapsViewActivity extends MapActivity{
     	
     	List<CommentModel> commentList = appState.getSubCommentViewHead().getSubComments();
     	List<OverlayItem> locationsList = new ArrayList<OverlayItem>();
+    	
+    	
     	CommentModel headComment = appState.getSubCommentViewHead();
     	map.getController().setCenter(new GeoPoint(headComment.getLocation().getLatitude(),headComment.getLocation().getLongitude()));
-    	locationsList.add(new OverlayItem(new GeoPoint (headComment.getLocation().getLatitude(), headComment.getLocation().getLongitude()), headComment.getLocation().getName().toString(), ""));
-    	for(int i = 0; i < commentList.size();i++){
-    		locationsList.add(new OverlayItem(new GeoPoint (commentList.get(i).getLocation().getLatitude(), commentList.get(i).getLocation().getLongitude()), commentList.get(i).getLocation().getName().toString(), ""));
+    	
+        locationsList.add(new OverlayItem(new GeoPoint (headComment.getLocation().getLatitude(), headComment.getLocation().getLongitude()), headComment.getLocation().getName().toString(), ""));
+    	for(int i = 0; i < headComment.getSubComments().size(); i++){
+    		for (int j = 0; j < headComment.getSubComments().get(i).getSubComments().size(); j++){
+    			locationsList.add(new OverlayItem(new GeoPoint (headComment.getSubComments().get(i).getSubComments().get(j).getLocation().getLatitude(), headComment.getSubComments().get(i).getSubComments().get(j).getLocation().getLongitude()), headComment.getSubComments().get(i).getSubComments().get(j).getLocation().getName().toString(), ""));
+    		}
+    		locationsList.add(new OverlayItem(new GeoPoint (headComment.getSubComments().get(i).getLocation().getLatitude(), headComment.getSubComments().get(i).getLocation().getLongitude()), headComment.getSubComments().get(i).getLocation().getName().toString(), ""));
     	}
+        
     	return locationsList;
     }
-	
+
     // add an itemized overlay to map 
     private void addPoiOverlay(List<OverlayItem> locationList) {
     	
