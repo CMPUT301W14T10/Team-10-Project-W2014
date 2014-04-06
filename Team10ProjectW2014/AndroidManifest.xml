@@ -49,7 +49,7 @@
             android:name="ca.ualberta.team10projectw2014.controllersAndViews.AssortedListViewActivity"
             android:label="@string/title_activity_favourites_view" >
         </activity>
-        <activity android:name="ca.ualberta.team10projectw2014.controllersAndViews.MapsViewActivity">
+        <activity android:name="ca.ualberta.team10projectw2014.controllersAndViews.MapsViewActivity" >
         </activity>
     </application>
 

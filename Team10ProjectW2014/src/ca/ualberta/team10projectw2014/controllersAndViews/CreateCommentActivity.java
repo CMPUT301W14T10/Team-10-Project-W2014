@@ -123,15 +123,14 @@ public class CreateCommentActivity extends Activity implements
 		imageView = (ImageView) findViewById(R.id.cc_image_view);
 		
 		postUsername = appState.getUserModel().getUsername();
-
 		appState.setLocationList(new ArrayList<LocationModel>());
 		// STEVEN: Load location models here
+		locationList = new ArrayList<LocationModel>();
 		ElasticSearchLocationOperations.getLocationList(this);
 		appState.loadLocations();
-		locationList = appState.getLocationList();
-		Log.e("LOCATION LIST", appState.getLocationList().toString());
-		if (locationList == null)
-			locationList = new ArrayList<LocationModel>();
+
+	
+			
 		
 	}
 	
@@ -151,6 +150,8 @@ public class CreateCommentActivity extends Activity implements
 	protected void onResume() {
 		super.onResume();
 		appState.setFileContext(this);
+	
+		
 
 		fillContents();
 
@@ -254,7 +255,8 @@ public class CreateCommentActivity extends Activity implements
 		// Builds alert dialog
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setView(locationDialogView);
-
+		//get location list from app state
+		CreateCommentActivity.this.locationList = appState.getLocationList();
 		// Loads up spinner with location names
 		final Spinner spinner = (Spinner) locationDialogView
 				.findViewById(R.id.location_dialog_spinner);
@@ -414,8 +416,7 @@ public class CreateCommentActivity extends Activity implements
 																.getLongitude());
 												CreateCommentActivity.this.locationList
 														.add(CreateCommentActivity.this.postLocation);
-												CreateCommentActivity.this.appState
-														.setLocationList(CreateCommentActivity.this.locationList);
+												appState.getLocationList().add(CreateCommentActivity.this.postLocation);
 												CreateCommentActivity.this.appState
 														.saveLocations();
 												// STEVEN: save location model list here

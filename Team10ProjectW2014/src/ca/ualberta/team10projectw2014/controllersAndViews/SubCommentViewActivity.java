@@ -128,6 +128,7 @@ public class SubCommentViewActivity extends Activity {
 		else {
 			menu.findItem(R.id.action_favourite).setIcon(resources.getDrawable(R.drawable.ic_action_favourite));
 		}
+		menu.findItem(R.id.action_map).setIcon(resources.getDrawable(R.drawable.ic_map_icon_medium4));
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -147,6 +148,9 @@ public class SubCommentViewActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
 		switch (item.getItemId()) {
+		case R.id.action_map:
+			openMap();
+			return true;
 		case R.id.action_reply:
 			openReply();
 			return true;
@@ -191,6 +195,13 @@ public class SubCommentViewActivity extends Activity {
 			return super.onOptionsItemSelected(item);
 		}
 	
+	}
+	
+	private void openMap(){
+		// Get the coordinates of each comment in the current list and send them to MapsViewActivity
+		Intent mapThread = new Intent(getApplicationContext(),
+				MapsViewActivity.class);
+		this.startActivity(mapThread);
 	}
 
 	/**
