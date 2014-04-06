@@ -1,10 +1,12 @@
 package ca.ualberta.team10projectw2014.models;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.Uri;
@@ -21,11 +23,13 @@ public class CommentModel{
 	private LocationModel location;
 	private Bitmap photo;
 	private Calendar timestamp;
+	private String timestamp_str;
 	private int numFavourites;
 	private String authorAndroidID;
 	private ArrayList<CommentModel> subComments = new ArrayList<CommentModel>();
 	private String photoPath;
 	private Uri imageUri;
+	private String parentID;
 	
 	/**
 	 * A method that adds the provided SubCommentModel to the
@@ -87,12 +91,37 @@ public class CommentModel{
 	}
 	public void setTimestamp(Calendar timestamp) {
 		this.timestamp = timestamp;
+		this.timestamp_str = timeToString(timestamp);
+	}
+	
+	 /**
+     * Takes in the timestamp as a Calendar object and converts it to a string
+     * that can be used in a textView.
+     * @param calendar object to retrieve string from
+     * @return string of the formatted date of the timestamp
+     */
+    @SuppressLint("SimpleDateFormat")
+    private String timeToString (Calendar calendar) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:mm:ss aa");
+        String timeString = sdf.format(calendar.getTime());
+        return timeString;
+    }
+	
+	public String getTimestamp_str() {
+	    return timestamp_str;
 	}
 	public int getNumFavourites() {
 		return numFavourites;
 	}
 	public void setNumFavourites(int numFavourites) {
 		this.numFavourites = numFavourites;
+	}
+	public void setParentID(String parentID) {
+		this.parentID = parentID;
+		
+	}
+	public String getParentID(String parentID){
+		return this.parentID;
 	}
 	public String getAuthorAndroidID() {
 		return authorAndroidID;

@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -33,6 +34,7 @@ import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationListenerModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
 import ca.ualberta.team10projectw2014.models.SubCommentModel;
+import ca.ualberta.team10projectw2014.network.ElasticSearchLocationOperations;
 import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 
 /**
@@ -68,6 +70,7 @@ public class CreateCommentActivity extends Activity implements
 	private ImageView imageView;
 	private String photoPath = null;
 	private Uri imageUri = null;
+	private File photoFile;
 
 	/**
 	 * This is changed multiple times in order to store the most accurate
@@ -118,12 +121,26 @@ public class CreateCommentActivity extends Activity implements
 		teditText = (EditText) findViewById(R.id.cc_title);
 		ceditText = (EditText) findViewById(R.id.cc_content);
 		imageView = (ImageView) findViewById(R.id.cc_image_view);
+		
+		postUsername = appState.getUserModel().getUsername();
 
 		appState.setLocationList(new ArrayList<LocationModel>());
+		// STEVEN: Load location models here
+		ElasticSearchLocationOperations.getLocationList(this);
 		appState.loadLocations();
 		locationList = appState.getLocationList();
+		Log.e("LOCATION LIST", appState.getLocationList().toString());
 		if (locationList == null)
 			locationList = new ArrayList<LocationModel>();
+		
+	}
+	
+	@Override
+	protected void onStop() {
+		super.onPause();
+		this.postUsername = ueditText.getText().toString();
+		this.postTitle = teditText.getText().toString();
+		this.postContents = ceditText.getText().toString();
 	}
 
 	/**
@@ -135,8 +152,7 @@ public class CreateCommentActivity extends Activity implements
 		super.onResume();
 		appState.setFileContext(this);
 
-		String receivedUsername = appState.getUserModel().getUsername();
-		fillContents(receivedUsername);
+		fillContents();
 
 		setPic();
 
@@ -176,18 +192,25 @@ public class CreateCommentActivity extends Activity implements
 	 * @param username
 	 *            username taken from UserModel in singleton
 	 */
-	public void fillContents(String username) {
-		if (!checkStringIsAllWhiteSpace(username)) {
-			this.postUsername = username;
-			setUsernameView(username);
+	public void fillContents() {
+		if (!checkStringIsAllWhiteSpace(this.postUsername)) {
+			setUsernameView(this.postUsername);
 		} else {
-			if (checkStringIsAllWhiteSpace(username)) {
+			if (checkStringIsAllWhiteSpace(this.postUsername)) {
 				this.postUsername = "Anonymous";
 				setUsernameView(this.postUsername);
 			}
 		}
 		if (this.postTitle == null) {
 			this.postTitle = null;
+		}
+		if (this.postContents != null){
+			//Set post contents view to postContents
+			ceditText.setText(postContents, TextView.BufferType.EDITABLE);
+		}
+		if (this.postTitle != null){
+			//Set post title view to postTitle
+			teditText.setText(postTitle, TextView.BufferType.EDITABLE);
 		}
 	}
 
@@ -395,6 +418,8 @@ public class CreateCommentActivity extends Activity implements
 														.setLocationList(CreateCommentActivity.this.locationList);
 												CreateCommentActivity.this.appState
 														.saveLocations();
+												// STEVEN: save location model list here
+												ElasticSearchLocationOperations.pushLocationList(CreateCommentActivity.this.postLocation);
 											}
 										}
 									}
@@ -432,17 +457,22 @@ public class CreateCommentActivity extends Activity implements
 			// Ensure that there's a camera activity to handle the intent
 			if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 				// Create the File where the photo should go
-				File photoFile = null;
-				try {
-					photoFile = createImageFile();
-				} catch (IOException ex) {
-					Toast.makeText(getBaseContext(), "Could not write to file",
-							Toast.LENGTH_LONG).show();
-
+				if (photoFile == null){
+					try {
+						photoFile = createImageFile();
+					} catch (IOException ex) {
+						Toast.makeText(getBaseContext(), "Could not write to file",
+								Toast.LENGTH_LONG).show();
+					}
+					// Continue only if the File was successfully created
+					if (photoFile != null) {
+						imageUri = Uri.fromFile(photoFile);
+						takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+								imageUri);
+						startActivityForResult(takePictureIntent, 1);
+					}
 				}
-				// Continue only if the File was successfully created
-				if (photoFile != null) {
-					imageUri = Uri.fromFile(photoFile);
+				else if (photoFile != null){
 					takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
 							imageUri);
 					startActivityForResult(takePictureIntent, 1);
@@ -481,7 +511,8 @@ public class CreateCommentActivity extends Activity implements
 				// user cancelled Image capture
 				Toast.makeText(getApplicationContext(),
 						"User cancelled image capture", Toast.LENGTH_SHORT)
-						.show();
+					.show();
+				setPic();
 			} else {
 				// failed to capture image
 				Toast.makeText(getApplicationContext(),
@@ -534,7 +565,7 @@ public class CreateCommentActivity extends Activity implements
 			final Bitmap bitmap = BitmapFactory.decodeFile(imageUri.getPath(),
 					options);
 			this.postPhoto = bitmap;
-			imageView.setImageBitmap(bitmap);
+			imageView.setImageBitmap(this.postPhoto);
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
