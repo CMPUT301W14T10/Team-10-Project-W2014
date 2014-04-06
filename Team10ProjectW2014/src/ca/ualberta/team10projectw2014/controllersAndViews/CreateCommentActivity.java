@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -95,9 +97,14 @@ public class CreateCommentActivity extends Activity implements
 	private ApplicationStateModel appState;
 
 	/**
-	 * Temporary list of the location models
+	 * List of the location models
 	 */
 	private ArrayList<LocationModel> locationList;
+	
+	/**
+	 * Temporary list of the location models used for spinner sorting
+	 */
+	private ArrayList<LocationModel> tempLocationList;
 
 	/**
 	 * Flag that is set if the user selects a location from the location dialog
@@ -255,15 +262,28 @@ public class CreateCommentActivity extends Activity implements
 		// Builds alert dialog
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setView(locationDialogView);
+		
+		//get location list from app state fixes spinner lag
+		CreateCommentActivity.this.locationList = appState.getLocationList();
+		
+        // Gets best known location
+        stopListeningLocation();
+        
+        // Create tempt list to sort
+		CreateCommentActivity.this.tempLocationList = CreateCommentActivity.
+				this.locationList;
+		// Sort list by proximity
+		Collections.sort(CreateCommentActivity.this.tempLocationList, ApplicationStateModel.locationModelCompare);
 		// Loads up spinner with location names
 		final Spinner spinner = (Spinner) locationDialogView
 				.findViewById(R.id.location_dialog_spinner);
 		// Creates and populates a list of the location names for displaying
 		// in the spinner
 		ArrayList<String> locationNameList = new ArrayList<String>();
-		if (this.locationList.size() != 0) {
-			for (i = 0; i < this.locationList.size(); i++)
-				locationNameList.add(this.locationList.get(i).getName());
+		if (CreateCommentActivity.this.tempLocationList.size() != 0) {
+			for (i = 0; i < CreateCommentActivity.this.tempLocationList.size(); i++)
+				locationNameList.add(CreateCommentActivity.this.
+						tempLocationList.get(i).getName());
 		} else
 			locationNameList.add("No Locations");
 
@@ -289,8 +309,8 @@ public class CreateCommentActivity extends Activity implements
 									"Please create a new location",
 									Toast.LENGTH_LONG).show();
 						else {
-							CreateCommentActivity.this.postLocation = CreateCommentActivity.this.locationList
-									.get(spinner.getSelectedItemPosition());
+							CreateCommentActivity.this.postLocation = CreateCommentActivity.
+									this.tempLocationList.get(spinner.getSelectedItemPosition());
 							CreateCommentActivity.this.spinnerFlag = 1;
 						}
 					}
@@ -328,7 +348,6 @@ public class CreateCommentActivity extends Activity implements
 											int which) {
 										final EditText editText = (EditText) locationNameDialogView
 												.findViewById(R.id.enter_location_name);
-										stopListeningLocation();
 										String locationNameString = editText
 												.getText().toString();
 

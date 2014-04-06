@@ -185,6 +185,46 @@ public class ApplicationStateModel {
 			return (int) difference;
 		}
 	};
+	
+	/**
+	*A comparator used in sorting locationModels.
+	*/
+	public static Comparator<LocationModel> locationModelCompare = new Comparator<LocationModel>(){
+		
+		public int compare(LocationModel location1, LocationModel location2){
+			
+			//Get the user's current location:
+			final LocationListenerModel locationListener = new LocationListenerModel(COMMENT_fileContext);
+			Location userLocation = locationListener.getLastBestLocation();
+			//If the user's location is unavailable, simply set all of the comparisons to equal:
+			if(userLocation == null){
+				Log.e("COMPARATOR", "RETURNING 0");
+				return 0;
+			}
+			//create a location object with the latitude and longitude each location under consideration:
+			Location loc1 = new Location("provider");
+			loc1.setLatitude(location1.getLatitude());
+			loc1.setLongitude(location1.getLongitude());
+
+			Location loc2 = new Location("provider");
+			loc2.setLatitude(location2.getLatitude());
+			loc2.setLongitude(location2.getLongitude());
+			
+			//get the difference in their distance from the user:
+			double difference = (loc1.distanceTo(userLocation) - loc2.distanceTo(userLocation));
+			
+			//The difference in distances is a double and the precision is lost if it is cast
+			//to an integer, which is what the comparator needs to return. Since the difference 
+			//might be between -1 and 1, I call floor or ceiling respectively in order to maintain 
+			//their ordering(e.g. the t is still negative if the difference is -0.11, it will be
+			//floored to -1.0 so that it remains negative when cast to an int).
+			if(difference < 0)
+					difference = Math.floor(difference);
+			else if(difference > 0)
+					difference = Math.ceil(difference);
+			return (int) difference;
+		}
+	};
 
 	/**
 	*A comparator used in sorting comments by date.
