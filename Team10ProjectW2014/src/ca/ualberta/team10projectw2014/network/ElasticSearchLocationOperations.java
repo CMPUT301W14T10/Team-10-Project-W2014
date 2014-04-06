@@ -145,8 +145,6 @@ public class ElasticSearchLocationOperations {
                                 .getInstance();
 						appState.setLocationList(locationList);
 						appState.saveLocations();
-						appState.loadLocations();
-						
 						
 						Log.e(LOG_TAG, locationList.toString()); // print out the
 						// entire contents of the list
