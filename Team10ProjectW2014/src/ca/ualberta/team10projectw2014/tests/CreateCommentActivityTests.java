@@ -108,7 +108,7 @@ public class CreateCommentActivityTests extends ActivityInstrumentationTestCase2
 		titleText = (EditText) activity.findViewById(R.id.cc_title);
 		contentText = (EditText) activity.findViewById(R.id.cc_content);
 		
-		assertEquals(usernameText.getText().toString(), "Anonymous");
+		assertEquals(usernameText.getText().toString(), "");
 		assertEquals("", titleText.getText().toString());
 		assertEquals("", contentText.getText().toString());
 		
@@ -128,7 +128,7 @@ public class CreateCommentActivityTests extends ActivityInstrumentationTestCase2
 		titleText = (EditText) activity.findViewById(R.id.cc_title);
 		contentText = (EditText) activity.findViewById(R.id.cc_content);
 		
-		assertEquals(usernameText.getText().toString(), "Anonymous");
+		assertEquals(usernameText.getText().toString(), "");
 		assertEquals("", titleText.getText().toString());
 		assertEquals("", contentText.getText().toString());
 		
