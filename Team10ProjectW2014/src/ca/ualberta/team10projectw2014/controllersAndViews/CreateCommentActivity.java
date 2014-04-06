@@ -128,10 +128,11 @@ public class CreateCommentActivity extends Activity implements
 		// STEVEN: Load location models here
 		ElasticSearchLocationOperations.getLocationList(this);
 		appState.loadLocations();
+		locationList = new ArrayList<LocationModel>();
 		locationList = appState.getLocationList();
 		Log.e("LOCATION LIST", appState.getLocationList().toString());
-		if (locationList == null)
-			locationList = new ArrayList<LocationModel>();
+	
+			
 		
 	}
 	
@@ -414,8 +415,7 @@ public class CreateCommentActivity extends Activity implements
 																.getLongitude());
 												CreateCommentActivity.this.locationList
 														.add(CreateCommentActivity.this.postLocation);
-												CreateCommentActivity.this.appState
-														.setLocationList(CreateCommentActivity.this.locationList);
+												appState.getLocationList().add(CreateCommentActivity.this.postLocation);
 												CreateCommentActivity.this.appState
 														.saveLocations();
 												// STEVEN: save location model list here
