@@ -679,6 +679,11 @@ public class CreateCommentActivity extends Activity implements
 				calendar.setTimeInMillis(timestamp);
 				model.setTimestamp(calendar);
 				model.setNumFavourites(0);
+				
+				String uniqueID = new String(model.getAuthorAndroidID());
+                uniqueID = uniqueID.concat(model.getTimestamp_str());
+                uniqueID = uniqueID.replaceAll(" ", "");
+                model.setUniqueID(uniqueID);
 
 				// Adds the newly created model to its referrent's list of
 				// subcomments
@@ -707,6 +712,11 @@ public class CreateCommentActivity extends Activity implements
 				model.setTimestamp(calendar);
 				model.setNumFavourites(0);
 				model.setAuthorAndroidID(appState.getUserModel().getAndroidID());
+				
+				String uniqueID = new String(model.getAuthorAndroidID());
+				uniqueID = uniqueID.concat(model.getTimestamp_str());
+				uniqueID = uniqueID.replaceAll(" ", "");
+				model.setUniqueID(uniqueID);
 
 				appState.getCommentList().add(model);
 				ElasticSearchOperations.pushComment(model, "HeadComment");

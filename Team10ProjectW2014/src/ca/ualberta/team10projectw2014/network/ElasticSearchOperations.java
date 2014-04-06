@@ -90,15 +90,13 @@ public class ElasticSearchOperations {
         thread.start();
     }
 
-    public static void delCommentModel(final String androidID,
-            final String timestamp_str) {
+    public static void delCommentModel(final String uniqueID) {
         Thread thread = new Thread() {
             @Override
             public void run() {
                 HttpClient client = new DefaultHttpClient();
                 HttpDelete delete = new HttpDelete(SERVER_URL + "_query"
-                        + "?q=authorAndroidID:" + androidID
-                        + "&q=timestamp_str:" + timestamp_str);
+                        + "?q=uniqueID:" +uniqueID);
 
                 try {
                     HttpResponse response = client.execute(delete);

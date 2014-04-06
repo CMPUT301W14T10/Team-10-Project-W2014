@@ -30,8 +30,17 @@ public class CommentModel{
 	private String photoPath;
 	private Uri imageUri;
 	private String parentID;
+	private String uniqueID;
 	
-	/**
+	public String getUniqueID() {
+        return uniqueID;
+    }
+
+    public void setUniqueID(String uniqueID) {
+        this.uniqueID = uniqueID;
+    }
+
+    /**
 	 * A method that adds the provided SubCommentModel to the
 	 * CommentModel's list of SubCommentModels.
 	 * @param  subComment - the SubCommentModel to add.
@@ -91,7 +100,7 @@ public class CommentModel{
 	}
 	public void setTimestamp(Calendar timestamp) {
 		this.timestamp = timestamp;
-		this.timestamp_str = timeToString(timestamp);
+		this.timestamp_str = timeToInt(timestamp);
 	}
 	
 	 /**
@@ -101,8 +110,8 @@ public class CommentModel{
      * @return string of the formatted date of the timestamp
      */
     @SuppressLint("SimpleDateFormat")
-    private String timeToString (Calendar calendar) {
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:mm:ss aa");
+    private String timeToInt (Calendar calendar) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMddyyyyHHmmss");
         String timeString = sdf.format(calendar.getTime());
         return timeString;
     }

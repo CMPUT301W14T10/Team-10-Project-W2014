@@ -207,9 +207,6 @@ public class MainListViewActivity extends Activity{
 				return true;
 			case R.id.refresh_comments:
 				ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
-				//this.appState.saveComments();
-				//this.appState.loadComments();
-				Log.e("Outside ESO",this.appState.getCommentList().toString());
 				sortMainList();
 				return true;
 
