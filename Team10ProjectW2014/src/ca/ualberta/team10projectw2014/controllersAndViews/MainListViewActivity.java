@@ -187,6 +187,8 @@ public class MainListViewActivity extends Activity{
 			}
 		}
 		
+		this.appState.setMLVAdapter(new MainListViewAdapter(this, appState.getCommentList()));
+		this.commentView.setAdapter(appState.getMLVAdapter());
 		this.appState.updateMainAdapter();
 		
 	}
