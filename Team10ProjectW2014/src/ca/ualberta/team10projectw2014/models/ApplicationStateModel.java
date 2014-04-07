@@ -185,7 +185,7 @@ public class ApplicationStateModel {
 			loc2.setLongitude(comment2.getLocation().getLongitude());
 			
 			//get the difference in their distance from the user:
-			double difference = (loc2.distanceTo(cmpLocation) - loc1.distanceTo(cmpLocation));
+			double difference = (loc1.distanceTo(cmpLocation) - loc2.distanceTo(cmpLocation));
 			
 			//The difference in distances is a double and the precision is lost if it is cast
 			//to an integer, which is what the comparator needs to return. Since the difference 

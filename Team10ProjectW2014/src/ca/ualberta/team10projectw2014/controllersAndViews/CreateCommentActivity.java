@@ -39,8 +39,11 @@ import ca.ualberta.team10projectw2014.network.ElasticSearchLocationOperations;
 import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 
 /**
+ * This class deals with creating comments by talking with the app's  singleton.  
+ * This is where the location of a comment, its picture, and any 
+ * textual contents will be set.
  * @author  Bradley Poulette <bpoulett@ualberta.ca>
- * @version  1 (current version number of program)  <p>  This class deals with creating comments by talking with the app's  singleton.  This is where the location of a comment, its picture, and any  textual contents will be set.
+ * @version  1 (current version number of program)
  */
 public class CreateCommentActivity extends Activity implements
 		CommentContentEditing {
@@ -52,9 +55,10 @@ public class CreateCommentActivity extends Activity implements
 	private String postTitle;
 	private String postUsername;
 	private String postContents;
+
 	/**
-	 * @uml.property  name="postLocation"
-	 * @uml.associationEnd  
+	 * Variables to represent the location the post was made along with the 
+	 * photo that was created with the post.
 	 */
 	private LocationModel postLocation;
 	private Bitmap postPhoto;
@@ -77,39 +81,34 @@ public class CreateCommentActivity extends Activity implements
 	private Location bestKnownLoc = null;
 
 	/**
-	 * A temporary comment model to be stored when created
-	 * @uml.property  name="model"
-	 * @uml.associationEnd  
+	 * A temporary comment model to be stored when created.
 	 */
 	private CommentModel model;
 
 	/**
-	 * A custom class used to get the user's location
-	 * @uml.property  name="locationListener"
-	 * @uml.associationEnd  
+	 * A custom class used to get the user's location.
 	 */
 	private LocationListenerModel locationListener;
 
 	/**
-	 * Our singleton, which allows us to pass application state between activities
-	 * @uml.property  name="appState"
-	 * @uml.associationEnd  
+	 * Our singleton, which allows us to pass application state between 
+	 * activities.
 	 */
 	private ApplicationStateModel appState;
 
 	/**
-	 * List of the location models
+	 * List of the location models.
 	 */
 	private ArrayList<LocationModel> locationList;
 	
 	/**
-	 * Temporary list of the location models used for spinner sorting
+	 * Temporary list of the location models used for spinner sorting.
 	 */
 	private ArrayList<LocationModel> tempLocationList;
 
 	/**
 	 * Flag that is set if the user selects a location from the location dialog
-	 * spinner
+	 * spinner.
 	 */
 	private int spinnerFlag;
 
@@ -165,7 +164,6 @@ public class CreateCommentActivity extends Activity implements
 	/**
 	 * Creates a LocationListenerController to start keeping track of the user's
 	 * location
-	 * 
 	 */
 	private void startListeningLocation() {
 		Toast.makeText(getBaseContext(), "Starting to listen for location...",
@@ -191,9 +189,6 @@ public class CreateCommentActivity extends Activity implements
 	/**
 	 * Sets the view to show the data provided by application state in
 	 * {@link #onCreate(Bundle)}
-	 * 
-	 * @param username
-	 *            username taken from UserModel in singleton
 	 */
 	public void fillContents() {
 		if (!checkStringIsAllWhiteSpace(this.postUsername)) {
@@ -220,8 +215,7 @@ public class CreateCommentActivity extends Activity implements
 	/**
 	 * Checks if a string contains all whitespace using REGEX
 	 * 
-	 * @param string
-	 *            string to be checked
+	 * @param string to be checked
 	 * @return true if the string is all whitespace or empty, otherwise false
 	 */
 	public boolean checkStringIsAllWhiteSpace(String string) {
@@ -475,8 +469,7 @@ public class CreateCommentActivity extends Activity implements
 	 * Calls {@link #createImageFile()} to create a file to which the photo will
 	 * be stored
 	 * 
-	 * @param v
-	 *            the view from which the method is called
+	 * @param v the view from which the method is called
 	 */
 	public void choosePhoto(View v) {
 		PackageManager packageManager = this.getPackageManager();
@@ -605,7 +598,6 @@ public class CreateCommentActivity extends Activity implements
 	 * Sets the temporary comment location to the location of the user from
 	 * {@link #locationListener}
 	 * 
-	 * Not used as of version 1.
 	 */
 	private void setLocation() {
 		int i;
@@ -664,6 +656,8 @@ public class CreateCommentActivity extends Activity implements
 
 	/**
 	 * Creates a new subComment or headComment based on the information passed.
+	 * 
+	 * @param v the view being used
 	 */
 	public void attemptCommentCreation(View v) {
 		this.postContents = ceditText.getText().toString();
@@ -766,8 +760,6 @@ public class CreateCommentActivity extends Activity implements
 
 	/**
 	 * Tells the locationListener to stop listening for the user's location
-	 * 
-	 * Not used as of version 1
 	 */
 	private void stopListeningLocation() {
 		getLastBestLocation();

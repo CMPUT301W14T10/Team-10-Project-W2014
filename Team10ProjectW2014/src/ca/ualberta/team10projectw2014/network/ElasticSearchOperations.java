@@ -46,6 +46,7 @@ public class ElasticSearchOperations {
 	public static final String LOG_TAG = "ElasticSearch";
 	private static Gson GSON = null;
 
+	
 	/**
 	 * Sends a Comment to the server. Does nothing if the request fails.
 	 * 
