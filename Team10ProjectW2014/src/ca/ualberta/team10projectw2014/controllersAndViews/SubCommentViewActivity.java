@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -339,7 +340,8 @@ public class SubCommentViewActivity extends Activity {
 				.findViewById(R.id.head_comment_time_sub);
 		TextView textContent = (TextView) header
 				.findViewById(R.id.head_comment_text_body_sub);
-		Button moreButton = (Button) header.findViewById(R.id.head_more_option);
+		ImageButton wantToReadButton = (ImageButton) header.findViewById(R.id.head_want_to_read_option);
+		ImageButton editButton = (ImageButton) header.findViewById(R.id.head_edit_option);
 		ImageView imageView = (ImageView) header
 				.findViewById(R.id.head_comment_image);
 
@@ -376,11 +378,10 @@ public class SubCommentViewActivity extends Activity {
 
 		}
 
-		moreButton.setOnClickListener(new View.OnClickListener() {
+		wantToReadButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// Open More Dialog
-				openMoreDialog(appState.getSubCommentViewHead());
+				appState.getUserModel().getWantToReadComments().add(appState.getSubCommentViewHead());
 			}
 		});
 
