@@ -6,6 +6,7 @@ import java.util.Calendar;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -36,6 +37,7 @@ public class MainListViewAdapter extends BaseAdapter {
 	private ArrayList<CommentModel> headCommentList;
 	private SimpleDateFormat sdf; // Object used for formatting date of Calendar objects
 	private String timeString; // Contains timestamp in string format
+	private Context context;
 	
 	/**
 	 * Initializes textview objects to be added to the ListView.
@@ -59,6 +61,7 @@ public class MainListViewAdapter extends BaseAdapter {
 			ArrayList<CommentModel> commentList) {
 		inflater = LayoutInflater.from(context);
 		this.headCommentList = commentList;
+		this.context = context;
 	}
 	
 	/**
@@ -118,28 +121,31 @@ public class MainListViewAdapter extends BaseAdapter {
 		// Sets the image attached to the comment
 		if(headCommentList.get(position).getPhotoPath() != null){
 			
-			// Gets the filepath for the image
-			String imagePath = headCommentList.get(position).getPhotoPath();
-
-			// Get the dimensions of the bitmap
-			BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-			bmOptions.inJustDecodeBounds = true;
-			BitmapFactory.decodeFile(imagePath, bmOptions);
-			int photoW = bmOptions.outWidth;
-			int photoH = bmOptions.outHeight;
-
-			// Determine how much to scale down the image
-			int scaleFactor = Math.min(photoW/50, photoH/50);
-
-			// Decode the image file into a Bitmap sized to fill the View
-			bmOptions.inJustDecodeBounds = false;
-			bmOptions.inSampleSize = scaleFactor;
-			bmOptions.inPurgeable = true;
+//			// Gets the filepath for the image
+//			String imagePath = headCommentList.get(position).getPhotoPath();
+//
+//			// Get the dimensions of the bitmap
+//			BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+//			bmOptions.inJustDecodeBounds = true;
+//			BitmapFactory.decodeFile(imagePath, bmOptions);
+//			int photoW = bmOptions.outWidth;
+//			int photoH = bmOptions.outHeight;
+//
+//			// Determine how much to scale down the image
+//			int scaleFactor = Math.min(photoW/50, photoH/50);
+//
+//			// Decode the image file into a Bitmap sized to fill the View
+//			bmOptions.inJustDecodeBounds = false;
+//			bmOptions.inSampleSize = scaleFactor;
+//			bmOptions.inPurgeable = true;
 
 			//Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
 			Bitmap bitmap = headCommentList.get(position).getPhoto();
 			holder.imageView.setImageBitmap(bitmap);
 			   
+		}
+		else{
+			holder.imageView.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_action_camera));
 		}
         holder.imageView.setVisibility(ImageView.VISIBLE);
 		return convertView;

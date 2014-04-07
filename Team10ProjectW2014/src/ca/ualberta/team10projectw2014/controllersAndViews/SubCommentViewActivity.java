@@ -224,12 +224,6 @@ public class SubCommentViewActivity extends Activity {
 			// Bring up the dialog box for the user to sort comments by
 			sortComments();
 			return true;
-		case R.id.action_favourites:
-			// Bring up the user's favourite list
-			return true;
-		case R.id.action_want_to_read:
-			// Bring up the user's want to read list
-			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
