@@ -149,6 +149,7 @@ public class MainListViewActivity extends Activity{
 	}
 	
 	public void sortMainList(){
+		appStateSortChecker();
 		//Head Comment Sorting:
 		//Checks which selection method is active and sorts the list accordingly.
 		//Sort by picture
@@ -159,11 +160,9 @@ public class MainListViewActivity extends Activity{
 			}
 			//Sort by location and picture:
 			else if(this.appState.getUserModel().isSortByUserLoc() == true) {
-				appState.setCmpLocation(locationListener.getLastBestLocation());
 				appState.pictureSort(this.appState.getCommentList(), ApplicationStateModel.locCompare);
 			}
 			else if(this.appState.getUserModel().isSortByLoc()){
-				appState.setCmpLocation(appState.getUserModel().getSortLoc());
 				Collections.sort(this.appState.getCommentList(), ApplicationStateModel.locCompare);
 			}
 			//Sort by popularity(i.e. number of times favourited) and picture:
@@ -182,11 +181,9 @@ public class MainListViewActivity extends Activity{
 			}
 			//Sort by location:
 			else if(this.appState.getUserModel().isSortByUserLoc() == true) {
-				appState.setCmpLocation(locationListener.getLastBestLocation());
 				Collections.sort(this.appState.getCommentList(), ApplicationStateModel.locCompare);
 			}
 			else if(this.appState.getUserModel().isSortByLoc()){
-				appState.setCmpLocation(appState.getUserModel().getSortLoc());
 				Collections.sort(this.appState.getCommentList(), ApplicationStateModel.locCompare);
 			}
 			//Sort by popularity(i.e. number of times favourited):
@@ -197,6 +194,36 @@ public class MainListViewActivity extends Activity{
 
 		this.appState.updateMainAdapter();
 		
+	}
+
+	private void appStateSortChecker() {
+		if (this.appState.getUserModel().isSortByPic() == true) {
+			if (this.appState.getUserModel().isSortByDate() == true) {
+			} else {
+				if (this.appState.getUserModel().isSortByUserLoc() == true) {
+					appState.setCmpLocation(locationListener
+							.getLastBestLocation());
+				} else {
+					if (this.appState.getUserModel().isSortByLoc()) {
+						appState.setCmpLocation(appState.getUserModel()
+								.getSortLoc());
+					}
+				}
+			}
+		} else {
+			if (this.appState.getUserModel().isSortByDate() == true) {
+			} else {
+				if (this.appState.getUserModel().isSortByUserLoc() == true) {
+					appState.setCmpLocation(locationListener
+							.getLastBestLocation());
+				} else {
+					if (this.appState.getUserModel().isSortByLoc()) {
+						appState.setCmpLocation(appState.getUserModel()
+								.getSortLoc());
+					}
+				}
+			}
+		}
 	}
 	
 	//In onResume the content view is set and the appState
