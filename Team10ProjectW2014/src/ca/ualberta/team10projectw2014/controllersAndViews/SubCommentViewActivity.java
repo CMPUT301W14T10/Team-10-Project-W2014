@@ -65,6 +65,7 @@ public class SubCommentViewActivity extends Activity {
 	private LayoutInflater layoutInflater;
 	private Resources resources;
 	private ArrayList<CommentModel> tempReplyList;
+	private ArrayList<CommentModel> tempCommentList;
 	private CommentModel tempCommentModel;
 	private ArrayList<LocationModel> locationList;
 	private ArrayList<LocationModel> tempLocationList;
@@ -126,8 +127,8 @@ public class SubCommentViewActivity extends Activity {
 			// Add the sub Comments to the head comment
 			appState.getSubCommentViewHead().setSubComments(
 					appState.getReplyList());
-
-
+			
+			
 
 		} else {
 			appState.loadComments();
@@ -140,11 +141,12 @@ public class SubCommentViewActivity extends Activity {
 
 		appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
 				R.layout.subcommentview_sub_item, sortedList, appState
-				.getUserModel()));
+						.getUserModel()));
 
 		subListView.setAdapter(appState.getSCVAdapter());
 
 	}
+
 
 	/**
 	 * Inflate the menu.
@@ -193,62 +195,66 @@ public class SubCommentViewActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
 		switch (item.getItemId()) {
-			case R.id.action_reply:
-				openReply();
-				return true;
-			case R.id.action_favourite:
-				// Add the head comment to the users favourite list
-				if (!appState.getSubCommentViewHead().isInArrayList(
-						appState.getUserModel().getFavourites())) {
-					Toast.makeText(this, "Comment added to favourites",
-							Toast.LENGTH_SHORT).show();
-					appState.getSubCommentViewHead()
-					.setNumFavourites(
-							appState.getSubCommentViewHead()
-							.getNumFavourites() + 1);
-					addFavourite(appState.getSubCommentViewHead());
-					ElasticSearchOperations.delCommentModel(appState.getSubCommentViewHead().getUniqueID());
-					ElasticSearchOperations.pushComment(appState.getSubCommentViewHead(), "head");
-					appState.saveUser();
-					appState.saveComments();
-					appState.loadComments();
-					item.setIcon(resources
-							.getDrawable(R.drawable.ic_action_star_yellow));
-				} else {
-					Toast.makeText(this, "Comment removed from favourites",
-							Toast.LENGTH_SHORT).show();
-					appState.getSubCommentViewHead()
-					.setNumFavourites(
-							appState.getSubCommentViewHead()
-							.getNumFavourites() - 1);
-					ElasticSearchOperations.delCommentModel(appState.getSubCommentViewHead().getUniqueID());
-					ElasticSearchOperations.pushComment(appState.getSubCommentViewHead(), "head");
-					appState.getSubCommentViewHead().removeFromArrayList(
-							appState.getUserModel().getFavourites());
-					appState.saveUser();
-					appState.saveComments();
-					appState.loadComments();
-					item.setIcon(resources
-							.getDrawable(R.drawable.ic_action_favourite));
+		case R.id.action_reply:
+			openReply();
+			return true;
+		case R.id.action_favourite:
+			// Add the head comment to the users favourite list
+			if (!appState.getSubCommentViewHead().isInArrayList(
+					appState.getUserModel().getFavourites())) {
+				Toast.makeText(this, "Comment added to favourites",
+						Toast.LENGTH_SHORT).show();
+				appState.getSubCommentViewHead()
+						.setNumFavourites(
+								appState.getSubCommentViewHead()
+										.getNumFavourites() + 1);
+				addFavourite(appState.getSubCommentViewHead());
+				ElasticSearchOperations.delCommentModel(appState
+						.getSubCommentViewHead().getUniqueID());
+				ElasticSearchOperations.pushComment(
+						appState.getSubCommentViewHead(), "head");
+				appState.saveUser();
+				appState.saveComments();
+				appState.loadComments();
+				item.setIcon(resources
+						.getDrawable(R.drawable.ic_action_star_yellow));
+			} else {
+				Toast.makeText(this, "Comment removed from favourites",
+						Toast.LENGTH_SHORT).show();
+				appState.getSubCommentViewHead()
+						.setNumFavourites(
+								appState.getSubCommentViewHead()
+										.getNumFavourites() - 1);
+				ElasticSearchOperations.delCommentModel(appState
+						.getSubCommentViewHead().getUniqueID());
+				ElasticSearchOperations.pushComment(
+						appState.getSubCommentViewHead(), "head");
+				appState.getSubCommentViewHead().removeFromArrayList(
+						appState.getUserModel().getFavourites());
+				appState.saveUser();
+				appState.saveComments();
+				appState.loadComments();
+				item.setIcon(resources
+						.getDrawable(R.drawable.ic_action_favourite));
 
-				}
-				return true;
+			}
+			return true;
 
-			case R.id.action_map:
-				openMap();
-				return true;
-			case R.id.action_edit_username:
-				// Bring up dialog box for the user to edit username
-				editUserName();
-				return true;
-			case R.id.action_sort:
-				// Bring up the dialog box for the user to sort comments by
-				sortComments();
-				return true;
-			case R.id.refresh_comments_sub:
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
+		case R.id.action_map:
+			openMap();
+			return true;
+		case R.id.action_edit_username:
+			// Bring up dialog box for the user to edit username
+			editUserName();
+			return true;
+		case R.id.action_sort:
+			// Bring up the dialog box for the user to sort comments by
+			sortComments();
+			return true;
+		case R.id.refresh_comments_sub:
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 
 	}
@@ -325,9 +331,9 @@ public class SubCommentViewActivity extends Activity {
 		// dialog window:
 		alert.setNegativeButton("Cancel",
 				new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-			}
-		});
+					public void onClick(DialogInterface dialog, int whichButton) {
+					}
+				});
 
 		alert.show();
 	}
@@ -376,7 +382,7 @@ public class SubCommentViewActivity extends Activity {
 		else{
 			imageView.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_action_camera));
 		}
-
+		
 		wantToReadButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -393,7 +399,8 @@ public class SubCommentViewActivity extends Activity {
 			}
 		});
 
-		if(!appState.getSubCommentViewHead().isInArrayList(appState.getUserModel().getWantToReadComments())){
+		if (!appState.getSubCommentViewHead().isInArrayList(
+				appState.getUserModel().getWantToReadComments())) {
 			wantToReadButton.setImageResource(R.drawable.ic_action_bookmark);
 		}
 		else{
@@ -460,14 +467,14 @@ public class SubCommentViewActivity extends Activity {
 		moreDialog.setNeutralButton("Add to Read Later",
 				new DialogInterface.OnClickListener() {
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				appState.getUserModel().getFavourites()
-				.add(commentData);
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						appState.getUserModel().getFavourites()
+								.add(commentData);
 
-			}
-		});
+					}
+				});
 
 		final Context editCommentContext = this;
 		// User will only have the option if the
@@ -476,19 +483,19 @@ public class SubCommentViewActivity extends Activity {
 			moreDialog.setNeutralButton("Edit Comment",
 					new DialogInterface.OnClickListener() {
 
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
-					// Open CreateComment Activity
-					appState.setCommentToEdit(commentData);
-					Intent editComment = new Intent(
-							getApplicationContext(),
-							EditCommentActivity.class);
-					// subCommentView.putExtra("comment", (Object)
-					// headComment);
-					editCommentContext.startActivity(editComment);
-				}
-			});
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							// Open CreateComment Activity
+							appState.setCommentToEdit(commentData);
+							Intent editComment = new Intent(
+									getApplicationContext(),
+									EditCommentActivity.class);
+							// subCommentView.putExtra("comment", (Object)
+							// headComment);
+							editCommentContext.startActivity(editComment);
+						}
+					});
 		}
 
 		moreDialog.setNegativeButton("Cancel", null);
@@ -511,14 +518,14 @@ public class SubCommentViewActivity extends Activity {
 
 		// Check which checkbox was clicked
 		switch (view.getId()) {
-			// Set user preferences according
-			// to whether the pictures checkbox is checked:
-			case R.id.pictures:
-				if (checked)
-					this.appState.getUserModel().setSortByPic(true);
-				else
-					this.appState.getUserModel().setSortByPic(false);
-				break;
+		// Set user preferences according
+		// to whether the pictures checkbox is checked:
+		case R.id.pictures:
+			if (checked)
+				this.appState.getUserModel().setSortByPic(true);
+			else
+				this.appState.getUserModel().setSortByPic(false);
+			break;
 		}
 	}
 
@@ -530,17 +537,17 @@ public class SubCommentViewActivity extends Activity {
 
 		//set the fields of the dialog:
 		alert.setTitle("Sort By:");
-
+	
 		//get the dialogue's layout from XML:
 		LinearLayout optionsView = (LinearLayout)layoutInflater.inflate(R.layout.dialog_sort_by, 
 				null);
-
+		
 		//get the group of radio buttons that determine sorting criteria:
 		ViewGroup sortRadioGroup = (ViewGroup) optionsView.getChildAt(0);
-
+		
 		RadioButton button;
 		CheckBox box;
-
+		
 		//if/else statements that set the correct radio button
 		//and check the sort by picture box if appropriate:
 		if(this.appState.getUserModel().isSortByDate()){
@@ -571,7 +578,7 @@ public class SubCommentViewActivity extends Activity {
 			box = (CheckBox) optionsView.getChildAt(2);
 			box.setChecked(true);
 		}
-
+		
 		alert.setView(optionsView);
 
 		//set the positive button with its text and set up an on click listener
