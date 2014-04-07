@@ -27,7 +27,10 @@ public class UserModel{
 
 	private Location sortLoc;
 
-	
+
+	/**
+	 * @return sort location
+	 */
 	public Location getSortLoc()
 	{
 	
@@ -35,7 +38,9 @@ public class UserModel{
 	}
 
 
-	
+	/**
+	 * @param sortLoc
+	 */
 	public void setSortLoc(Location sortLoc)
 	{
 	
@@ -43,7 +48,10 @@ public class UserModel{
 	}
 
 
-	// Constructor for new user
+	/**
+	 * Constructor for new user
+	 * @param context
+	 */
 	public UserModel(Context context) {
 		super();
 		
@@ -59,7 +67,15 @@ public class UserModel{
 	}
 
 
-	// Constructor for old user (load from file)
+	/**
+	 * Constructor for old user (load from file)
+	 * 
+	 * @param androidID
+	 * @param favourites
+	 * @param readComments
+	 * @param wantToReadComments
+	 * @param userName
+	 */
 	public UserModel(String androidID, 
 			ArrayList<CommentModel> favourites,
 			ArrayList<CommentModel> readComments,
@@ -137,16 +153,22 @@ public class UserModel{
 		this.wantToReadComments = wantToReadComments;
 	}
 
+	/**
+	 * @return string username
+	 */
 	public String getUsername() {
 		return userName;
 	}
 
+	/**
+	 * @param username
+	 */
 	public void setUsername(String username) {
 		userName = username;
 	}
 
 	/**
-	 * @return
+	 * @return boolean value
 	 * @uml.property  name="sortByPic"
 	 */
 	public boolean isSortByPic() {
@@ -162,7 +184,7 @@ public class UserModel{
 	}
 	
 	/**
-	 * @return
+	 * @return boolean value
 	 * @uml.property  name="sortByDate"
 	 */
 	public boolean isSortByDate() {
@@ -183,7 +205,7 @@ public class UserModel{
 	}
 	
 	/**
-	 * @return
+	 * @return boolean value
 	 * @uml.property  name="sortByLoc"
 	 */
 	public boolean isSortByLoc() {
@@ -204,7 +226,7 @@ public class UserModel{
 	}
 	
 	/**
-	 * @return
+	 * @return boolean value
 	 * @uml.property  name="sortByPopularity"
 	 */
 	public boolean isSortByPopularity() {
@@ -224,13 +246,18 @@ public class UserModel{
 		}
 	}
 	
+	/**
+	 * @return boolean value
+	 */
 	public boolean isSortByUserLoc()
 	{
 	
 		return sortByUserLoc;
 	}
 
-	
+	/**
+	 * @param sortByUserLoc
+	 */
 	public void setSortByUserLoc(boolean sortByUserLoc)
 	{
 		this.sortByUserLoc = sortByUserLoc;

@@ -8,6 +8,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.Settings;
 
+/**
+ * @author       Bradley Poulette <bpoulett@ualberta.ca>
+ * @version      1                (current version number of program)  This class is used to deal with error handling of the location listener
+ */
 public class LocationListenerModelErrorHandler {
 	private Context context;
 

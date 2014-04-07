@@ -65,6 +65,11 @@ public class LocationModel{
 		this.longitude = longitude;
 	}
 	
+	/**
+	 * Generates a location
+	 * 
+	 * @return location
+	 */
 	public Location generateLocation(){
 		Location loc = new Location("provider");
 		loc.setLatitude(this.latitude);
