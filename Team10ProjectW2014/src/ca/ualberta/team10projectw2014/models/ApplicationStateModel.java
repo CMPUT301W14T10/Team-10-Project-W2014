@@ -663,7 +663,7 @@ public class ApplicationStateModel {
 				loadedUser = new UserModel(USER_fileContext);
 			}
 			this.userModel = loadedUser;
-			cmpLocation = this.userModel.getSortLoc().generateLocation();
+			//cmpLocation = this.userModel.getSortLoc().generateLocation();
 			//close the file:
 			isr.close();
 			fis.close();

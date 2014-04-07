@@ -714,7 +714,7 @@ public class CreateCommentActivity extends Activity implements
 				// subcomments
 				appState.getCreateCommentParent().addSubComment(model);
 				ElasticSearchOperations.pushComment(model,"SubComment");
-				appState.updateSubAdapter();
+				//appState.updateSubAdapter();
 			} else {
 				if (checkStringIsAllWhiteSpace(this.postUsername)) {
 					raiseUsernameIncompleteError();

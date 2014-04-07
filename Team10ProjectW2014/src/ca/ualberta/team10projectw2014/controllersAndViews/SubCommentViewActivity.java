@@ -98,6 +98,10 @@ public class SubCommentViewActivity extends Activity {
 		actionbar = getActionBar();
 		actionbar.setDisplayShowHomeEnabled(false);
 		resources = getResources();
+		
+		// Set the Title in the Actionbar to the title of the head comment
+		actionbar.setTitle(appState.getSubCommentViewHead().getTitle());
+		
 	}
 
 	/**
@@ -113,8 +117,7 @@ public class SubCommentViewActivity extends Activity {
 		headerView = (View) setHeader(appState.getSubCommentViewHead());
 		subListView.addHeaderView(headerView);
 
-		// Set the Title in the Actionbar to the title of the head comment
-		actionbar.setTitle(appState.getSubCommentViewHead().getTitle());
+
 		commentList = new ArrayList<CommentModel>();
 
 		// if user has network connection, the app will try to pull comments
@@ -146,7 +149,6 @@ public class SubCommentViewActivity extends Activity {
 		subListView.setAdapter(appState.getSCVAdapter());
 
 	}
-
 
 	/**
 	 * Inflate the menu.
@@ -252,6 +254,7 @@ public class SubCommentViewActivity extends Activity {
 			sortComments();
 			return true;
 		case R.id.refresh_comments_sub:
+			onResume();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -287,6 +290,7 @@ public class SubCommentViewActivity extends Activity {
 		createComment.putExtra("username", appState.getUserModel()
 				.getUsername());
 		this.startActivity(createComment);
+		onResume();
 
 	}
 
