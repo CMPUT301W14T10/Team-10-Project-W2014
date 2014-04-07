@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,8 +61,9 @@ public class SubCommentViewActivityAdapter extends
 		ImageView imageView;
 		
 		Button replyButton;
-		Button favouriteButton;
-		Button moreButton;
+		ImageButton favouriteButton;
+		ImageButton editButton;
+		ImageButton wantToReadButton;
 	}
 
 	
@@ -122,11 +124,14 @@ public class SubCommentViewActivityAdapter extends
 			
 			// Add buttons used in each list entry to the holder
 			holder.replyButton = (Button) view.findViewById(R.id.reply_option);
-			holder.favouriteButton = (Button) view.findViewById(R.id.favourite_option);
-			holder.moreButton = (Button) view.findViewById(R.id.more_option);
+			holder.favouriteButton = (ImageButton) view.findViewById(R.id.favourite_option);
+			holder.wantToReadButton = (ImageButton) view.findViewById(R.id.want_to_read_option);
+			holder.editButton = (ImageButton) view.findViewById(R.id.edit_option);
 			holder.replyButton.setTag(position);
 			holder.favouriteButton.setTag(position);
-			holder.moreButton.setTag(position);
+			holder.wantToReadButton.setTag(position);
+			holder.editButton.setTag(position);
+			
 			
 			// Add the holder data to the view
 						view.setTag(holder);
@@ -134,7 +139,7 @@ public class SubCommentViewActivityAdapter extends
 			final int pos = position;
 			
 			if(commentList.get(pos).isInArrayList(appState.getUserModel().getFavourites())){
-				holder.favouriteButton.setText("UnFavourite");
+				//holder.favouriteButton.setText("UnFavourite");
 			}
 			
 			holder.replyButton.setOnClickListener(new View.OnClickListener() {
@@ -184,12 +189,12 @@ public class SubCommentViewActivityAdapter extends
 			
 			
 			//Open the More... dialog box for the selected comment 
-			holder.moreButton.setOnClickListener(new View.OnClickListener() {
+			holder.wantToReadButton.setOnClickListener(new View.OnClickListener() {
 				
 				@Override
-				public void onClick(View v) {
-					((SubCommentViewActivity)context).openMoreDialog(commentList.get(pos));
-					
+				public void onClick(View v){
+					appState.getUserModel().getWantToReadComments().add(commentList.get(pos));
+					appState.saveUser();
 				}
 			});
 			
