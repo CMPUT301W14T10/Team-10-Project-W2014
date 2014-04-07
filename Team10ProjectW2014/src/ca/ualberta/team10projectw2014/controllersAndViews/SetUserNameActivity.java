@@ -18,21 +18,17 @@ import ca.ualberta.team10projectw2014.models.UserModel;
  */
 public class SetUserNameActivity extends Activity {
 	
-	/**
-	 * @uml.property  name="userData"
-	 * @uml.associationEnd  
-	 */
 	private UserModel userData;
 	private EditText userNameField;
 	private Button setButton;
 	private Button skipButton;
-	/**
-	 * @uml.property  name="appState"
-	 * @uml.associationEnd  
-	 */
+
 	private ApplicationStateModel appState;
 	//private UserDataController userDataController;
 
+	/**
+	 * Initializes appstate and sets the buttons for the activity.
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
