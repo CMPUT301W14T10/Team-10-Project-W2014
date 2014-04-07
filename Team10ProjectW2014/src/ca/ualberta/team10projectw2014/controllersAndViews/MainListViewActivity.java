@@ -204,7 +204,7 @@ public class MainListViewActivity extends Activity{
 	//this was not done since any changes occurred.
 	protected void onResume(){
 		super.onResume();
-		//ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
+		ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
 		sortMainList();
 	}	
 	
@@ -232,8 +232,7 @@ public class MainListViewActivity extends Activity{
 				sortComments();
 				return true;
 			case R.id.refresh_comments:
-				ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
-				sortMainList();
+				onResume();
 				return true;
 
 			//Display the list of favourites specified in the user model
