@@ -37,8 +37,10 @@ import ca.ualberta.team10projectw2014.network.ElasticSearchLocationOperations;
 import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 
 /**
+ * This class deals with a comment which has already been created in the system, 
+ * but the user wants to change.
  * @author       Bradley Poulette <bpoulett@ualberta.ca>
- * @version      1                (current version number of program)  This class deals with a comment which has already been created in the system, but  the user wants to change.   As of version 1, this class will not change the location of the comment.
+ * @version      1                (current version number of program)
  */
 public class EditCommentActivity extends Activity implements CommentContentEditing{
 
@@ -49,10 +51,7 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 	private String postTitle;
 	private String postUsername;
 	private String postContents;
-	/**
-	 * @uml.property  name="postLocation"
-	 * @uml.associationEnd  
-	 */
+
 	@SuppressWarnings("unused")
 	private LocationModel postLocation;
 	private Bitmap postPhoto;
@@ -75,15 +74,11 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 	
 	/**
 	 * A custom class used to get the user's location
-	 * @uml.property  name="locationListener"
-	 * @uml.associationEnd  
 	 */
 	private LocationListenerModel locationListener;
 	
 	/**
 	 * Our singleton, which allows us to pass application state between activities
-	 * @uml.property  name="appState"
-	 * @uml.associationEnd  
 	 */
  	private ApplicationStateModel appState;
 	
@@ -155,7 +150,6 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 	
 	/**
 	 * Creates a LocationListenerController to start keeping track of the user's location
-	 *
 	 */
 	@SuppressWarnings("unused")
 	private void startListeningLocation(){
@@ -587,7 +581,6 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 	 * Sets the temporary comment location to the location of the user from
 	 * {@link #locationListener}
 	 * 
-	 * Not used as of version 1.
 	 */
 	@SuppressWarnings("unused")
 	private void setLocation() {
@@ -647,6 +640,8 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 	
 	/**
 	 * Updates the current comment and saves it to file if all the views are filled in appropriately.
+	 * 
+	 * @param v the view being used
 	 */
 	public void attemptCommentCreation(View v){
 		this.postContents = ceditText.getText().toString();
@@ -694,8 +689,6 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 	
 	/**
 	 * Tells the locationListener to stop listening for the user's location
-	 * 
-	 * Not used as of version 1
 	 */
 	@SuppressWarnings("unused")
 	private void stopListeningLocation(){

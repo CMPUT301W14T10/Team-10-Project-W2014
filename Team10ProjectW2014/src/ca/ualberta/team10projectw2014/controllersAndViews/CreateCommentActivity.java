@@ -664,6 +664,8 @@ public class CreateCommentActivity extends Activity implements
 
 	/**
 	 * Creates a new subComment or headComment based on the information passed.
+	 * 
+	 * @param v the view being used
 	 */
 	public void attemptCommentCreation(View v) {
 		this.postContents = ceditText.getText().toString();
