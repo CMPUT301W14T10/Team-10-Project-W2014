@@ -32,18 +32,21 @@ import com.mapquest.android.maps.PolygonOverlay;
  */
 public class MapsViewActivity extends MapActivity{
 
+	private MapsViewActivityListManager mapsViewActivityListManager = new MapsViewActivityListManager();
 	protected MapView map;
     private AnnotationView annotation;
     private List<GeoPoint> poiLocs;
 
+	/**
+	 * @uml.property  name="appState"
+	 * @uml.associationEnd  
+	 */
     private ApplicationStateModel appState;
-    private ArrayList<CommentModel> flattenedList = new ArrayList<CommentModel>();
 
-
-    /**
+	/**
      * Initializes the map
      */
-	@Override
+    @Override
     public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_map_view);
@@ -65,57 +68,10 @@ public class MapsViewActivity extends MapActivity{
     public void onResume(){
     	super.onResume();
     	appState = ApplicationStateModel.getInstance();
-    	List<OverlayItem> locationList = generateCoords();
+    	List<OverlayItem> locationList = mapsViewActivityListManager.generateCoords(appState, map);
         addPoiOverlay(locationList);
     }
     
-    /**
-     * Generates the coordinates form a list of locations to be used in
-     * {@link #onResume()}
-     * 
-     * @return locationlist the list of location coordinates
-     */
-    private List<OverlayItem> generateCoords(){
-    	//Get list of current stuff from AppState
-    	//Take coordinates and descriptions from that list to create new GeoPoints
-    	
-    	CommentModel headComment = appState.getSubCommentViewHead();
-    	List<CommentModel> commentList = headComment.getSubComments();
-    	List<OverlayItem> locationsList = new ArrayList<OverlayItem>();
-    	
-    	
-    	map.getController().setCenter(new GeoPoint(headComment.getLocation().getLatitude(),headComment.getLocation().getLongitude()));
-    	
-    	addCommentToList(headComment.getSubComments());
-    	
-    	for (int i = 0; i < flattenedList.size(); i++){
-    		locationsList.add(new OverlayItem(new GeoPoint ((flattenedList.get(i)).getLocation().getLatitude(), (flattenedList.get(i)).getLocation().getLongitude()), flattenedList.get(i).getLocation().getName().toString(), ""));
-    	}
-    	
-        locationsList.add(new OverlayItem(new GeoPoint (headComment.getLocation().getLatitude(), headComment.getLocation().getLongitude()), headComment.getLocation().getName().toString(), ""));
-        
-    	return locationsList;
-    }
-    
-    /**
-     * Adds comments to the flattened list of comments.
-     * Taken from SCVA.
-     * 
-     * @param subCommentList the list of subcomments
-     */
-    private void addCommentToList(
-			ArrayList<? extends CommentModel> subCommentList) {
-		if (subCommentList.size() == 0) {
-			return;
-		} else {
-			for (int i = 0; i < subCommentList.size(); i++) {
-				flattenedList.add(subCommentList.get(i));
-				if (subCommentList.get(i).getSubComments().size() > 0) {
-					addCommentToList(subCommentList.get(i).getSubComments());
-				}
-			}
-		}
-	}
 
     /**
      * Add an itemized overlay to map
@@ -178,21 +134,11 @@ public class MapsViewActivity extends MapActivity{
 		this.poiLocs = poiLocs;
 	}
 	
-	/**
-	 * Returns the flattened list of comments.
-	 * 
-	 * @return list of comments
-	 */
 	public ArrayList<CommentModel> getFlattenedList() {
-		return flattenedList;
+		return mapsViewActivityListManager.getFlattenedList();
 	}
 
-	/**
-	 * Sets the list of comments
-	 * 
-	 * @param flattenedList
-	 */
 	public void setFlattenedList(ArrayList<CommentModel> flattenedList) {
-		this.flattenedList = flattenedList;
+		mapsViewActivityListManager.setFlattenedList(flattenedList);
 	}
 }
