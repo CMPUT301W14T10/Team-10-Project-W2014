@@ -151,7 +151,7 @@ public class ElasticSearchOperations {
 			@Override
 			public void run() {
 				HttpClient client = new DefaultHttpClient();
-				HttpPost request = new HttpPost(SERVER_URL + "_search");
+				HttpPost request = new HttpPost(SERVER_URL + "_search"); //?size=100
 				// String query =
 				// "{\"query\": {\"query_string\": {\"default_field\": \"content\",\"query\": \"*"
 				// + searchTerm + "*\"}}}";

@@ -25,13 +25,13 @@ public class UserModel{
 	private boolean sortByPopularity = false;
 	private boolean sortByUserLoc = false;
 
-	private Location sortLoc;
+	private LocationModel sortLoc;
 
 
 	/**
 	 * @return sort location
 	 */
-	public Location getSortLoc()
+	public LocationModel getSortLoc()
 	{
 	
 		return sortLoc;
@@ -39,12 +39,12 @@ public class UserModel{
 
 
 	/**
-	 * @param sortLoc
+	 * @param locationModel
 	 */
-	public void setSortLoc(Location sortLoc)
+	public void setSortLoc(LocationModel locationModel)
 	{
 	
-		this.sortLoc = sortLoc;
+		this.sortLoc = locationModel;
 	}
 
 
