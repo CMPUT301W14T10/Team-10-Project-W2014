@@ -183,7 +183,9 @@ public class ApplicationStateModel {
 			Location loc2 = new Location("provider");
 			loc2.setLatitude(comment2.getLocation().getLatitude());
 			loc2.setLongitude(comment2.getLocation().getLongitude());
-			
+			Log.e("Location of "+comment1.getTitle(), comment1.getLocation().getName());
+			Log.e("Location of "+ comment1.getTitle(), comment1.getLocation().getName());
+			Log.e("Current location:", "");
 			//get the difference in their distance from the user:
 			double difference = (loc1.distanceTo(cmpLocation) - loc2.distanceTo(cmpLocation));
 			
