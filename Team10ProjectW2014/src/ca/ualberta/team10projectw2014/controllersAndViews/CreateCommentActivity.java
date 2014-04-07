@@ -143,14 +143,6 @@ public class CreateCommentActivity extends Activity implements
 		
 		spinnerFlag = 0;
 	}
-	
-	@Override
-	protected void onStop() {
-		super.onPause();
-		this.postUsername = ueditText.getText().toString();
-		this.postTitle = teditText.getText().toString();
-		this.postContents = ceditText.getText().toString();
-	}
 
 	/**
 	 * Sets the views using data set in {@link #onCreate()} and tells
