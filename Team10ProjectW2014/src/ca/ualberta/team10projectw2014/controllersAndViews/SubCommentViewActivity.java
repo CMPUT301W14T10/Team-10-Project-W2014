@@ -49,10 +49,7 @@ import android.widget.Toast;
  */
 public class SubCommentViewActivity extends Activity {
 	private ListView subListView;
-	/**
-	 * @uml.property name="appState"
-	 * @uml.associationEnd
-	 */
+
 	private ApplicationStateModel appState;
 	private ArrayList<CommentModel> sortedList;
 	private ArrayList<CommentModel> commentList;
@@ -63,6 +60,9 @@ public class SubCommentViewActivity extends Activity {
 	private ArrayList<CommentModel> tempReplyList;
 	private CommentModel tempCommentModel;
 
+	/**
+	 * Initializes the appstate and the actionbar
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -84,6 +84,9 @@ public class SubCommentViewActivity extends Activity {
 		resources = getResources();
 	}
 
+	/**
+	 * Sets the views in the activity and attempts to retrieve the comment data 
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -235,6 +238,9 @@ public class SubCommentViewActivity extends Activity {
 
 	}
 
+	/**
+	 * Get the coordinates of each comment in the current list and send them to MapsViewActivity
+	 */
 	private void openMap() {
 		// Get the coordinates of each comment in the current list and send them
 		// to MapsViewActivity
@@ -248,8 +254,6 @@ public class SubCommentViewActivity extends Activity {
 	 * Can be called via ActionBar or reply buttons in Head or Sub comments.
 	 * 
 	 * @author dvyee, sgiang92
-	 * @return
-	 * @param
 	 */
 	private void openReply() {
 		// send an intent to CreateCommentActivity
@@ -270,8 +274,6 @@ public class SubCommentViewActivity extends Activity {
 	 * for later review. Can only be called via ActionBar.
 	 * 
 	 * @author dvyee, sgiang92
-	 * @return
-	 * @param
 	 */
 	private void addFavourite(CommentModel comment) {
 		appState.getUserModel().getFavourites().add(comment);
@@ -320,7 +322,7 @@ public class SubCommentViewActivity extends Activity {
 	 * head comment.
 	 * 
 	 * @author sgiang92, dvyee
-	 * @param
+	 * @param headcomment
 	 * @return View
 	 */
 	private View setHeader(CommentModel headComment) {
@@ -481,8 +483,14 @@ public class SubCommentViewActivity extends Activity {
 
 	}
 
-	// Adapted from the android developer page
-	// http://developer.android.com/guide/topics/ui/controls/checkbox.html
+	/**
+	 * Checkbox functionality
+	 * 
+	 * Adapted from the android developer page
+	 * http://developer.android.com/guide/topics/ui/controls/checkbox.html
+	 * 
+	 * @param view
+	 */
 	public void onCheckboxClicked(View view) {
 		// Is the view now checked?
 		boolean checked = ((CheckBox) view).isChecked();
