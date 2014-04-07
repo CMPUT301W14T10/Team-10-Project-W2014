@@ -65,7 +65,14 @@ public class SubCommentViewActivityAdapter extends
 	}
 
 	
-	//SubCommentViewActivityAdapter Contructor
+	/**
+	 * SubCommentViewActivityAdapter Contructor
+	 * 
+	 * @param context
+	 * @param layoutResourceId
+	 * @param commentList
+	 * @param userData
+	 */
 	public SubCommentViewActivityAdapter(
 			Context context, 
 			int layoutResourceId,
