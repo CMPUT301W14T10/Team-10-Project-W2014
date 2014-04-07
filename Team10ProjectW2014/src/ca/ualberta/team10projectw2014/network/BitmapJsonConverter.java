@@ -27,7 +27,8 @@ public class BitmapJsonConverter implements JsonDeserializer<Bitmap>,
 	@Override
 	public JsonElement serialize(Bitmap src, Type typeOfSrc, JsonSerializationContext context) {
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		src.compress(Bitmap.CompressFormat.JPEG, 1, stream);
+		src = Bitmap.createScaledBitmap(src, 100, 100, true);
+		src.compress(Bitmap.CompressFormat.JPEG, 30, stream);
 		String base64Encoded = Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP);
 		return new JsonPrimitive(base64Encoded);
 	}
