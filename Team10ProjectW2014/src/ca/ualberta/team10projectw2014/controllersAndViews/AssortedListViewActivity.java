@@ -13,17 +13,19 @@ import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
 
 /**
+ * This class deals with generating the list of favourite comments and the
+ * want to read comments.
  * @author  cfudge
+ * @version 1
  */
 public class AssortedListViewActivity extends Activity
 {
-	/**
-	 * @uml.property  name="appState"
-	 * @uml.associationEnd  
-	 */
 	private ApplicationStateModel appState;
 	private ListView commentView;
 
+	/**
+	 * Initiates application state singleton and sets activity components
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -46,6 +48,10 @@ public class AssortedListViewActivity extends Activity
 		appState.setAssortAdapter(new MainListViewAdapter(this, appState.getAssortList()));
 	}
 	
+	/**
+	 * Loads user and comments from singleton and updates the adapter associated
+	 * with this activity
+	 */
 	protected void onResume(){
 		super.onResume(); 
 		appState.loadUser();
@@ -53,6 +59,9 @@ public class AssortedListViewActivity extends Activity
 		appState.updateAssortAdapter();
 	}
 
+	/**
+	 * Generates listview and populates it with the comments
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{

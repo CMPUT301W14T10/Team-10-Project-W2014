@@ -99,6 +99,7 @@ public class MainListViewActivityTests extends
 		        // Gets layout of head comment list item
 		        View commentLayout = (View) activity.findViewById(R.id.head_comment_list_item_layout);
 		        
+		        fail();
 		        // Identifies list item objects required for the test
 		        TextView title = (TextView) commentLayout.findViewById(R.id.head_comment_title);
 		        TextView userName = (TextView) commentLayout.findViewById(R.id.head_comment_username);

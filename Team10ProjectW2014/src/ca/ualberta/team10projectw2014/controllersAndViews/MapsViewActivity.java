@@ -25,21 +25,25 @@ import com.mapquest.android.maps.PolygonOverlay;
 
 
 /**
- * @author  cfudge
+ * Displays the map with the points displaying the locations of each of sub
+ * comments.
+ * @author  bpoulett
+ * @version 1
  */
 public class MapsViewActivity extends MapActivity{
 
 	protected MapView map;
     private AnnotationView annotation;
     private List<GeoPoint> poiLocs;
-    /**
-	 * @uml.property  name="appState"
-	 * @uml.associationEnd  
-	 */
+
     private ApplicationStateModel appState;
     private ArrayList<CommentModel> flattenedList = new ArrayList<CommentModel>();
 
-    @Override
+
+    /**
+     * Initializes the map
+     */
+	@Override
     public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_map_view);
@@ -53,6 +57,10 @@ public class MapsViewActivity extends MapActivity{
       annotation = new AnnotationView(map);
     }
     
+	/**
+	 * Gets an instance of the singleton and generates coordinates from the 
+	 * list of locations
+	 */
     @Override
     public void onResume(){
     	super.onResume();
@@ -61,6 +69,12 @@ public class MapsViewActivity extends MapActivity{
         addPoiOverlay(locationList);
     }
     
+    /**
+     * Generates the coordinates form a list of locations to be used in
+     * {@link #onResume()}
+     * 
+     * @return locationlist the list of location coordinates
+     */
     private List<OverlayItem> generateCoords(){
     	//Get list of current stuff from AppState
     	//Take coordinates and descriptions from that list to create new GeoPoints
@@ -83,7 +97,12 @@ public class MapsViewActivity extends MapActivity{
     	return locationsList;
     }
     
-    //Taken from SCVA
+    /**
+     * Adds comments to the flattened list of comments.
+     * Taken from SCVA.
+     * 
+     * @param subCommentList the list of subcomments
+     */
     private void addCommentToList(
 			ArrayList<? extends CommentModel> subCommentList) {
 		if (subCommentList.size() == 0) {
@@ -98,7 +117,11 @@ public class MapsViewActivity extends MapActivity{
 		}
 	}
 
-    // add an itemized overlay to map 
+    /**
+     * Add an itemized overlay to map
+     *  
+     * @param locationList list of locations
+     */
     private void addPoiOverlay(List<OverlayItem> locationList) {
     	
       List<OverlayItem> locList = locationList;
@@ -129,11 +152,47 @@ public class MapsViewActivity extends MapActivity{
       map.getOverlays().add(poiOverlay);
     }
 
-    // return false since no route is being displayed 
+    /**
+     * Method that returns false since no route is being displayed 
+     */
     @Override
     public boolean isRouteDisplayed() {
       return false;
     }
 	
+    /**
+     * Returns the geopoints to be displayed on the map.
+     * 
+     * @return poiLocs the points of each location
+     */
+    public List<GeoPoint> getPoiLocs() {
+		return poiLocs;
+	}
+
+    /**
+     * Sets the points of each location.
+     * 
+     * @param poiLocs
+     */
+	public void setPoiLocs(List<GeoPoint> poiLocs) {
+		this.poiLocs = poiLocs;
+	}
 	
+	/**
+	 * Returns the flattened list of comments.
+	 * 
+	 * @return list of comments
+	 */
+	public ArrayList<CommentModel> getFlattenedList() {
+		return flattenedList;
+	}
+
+	/**
+	 * Sets the list of comments
+	 * 
+	 * @param flattenedList
+	 */
+	public void setFlattenedList(ArrayList<CommentModel> flattenedList) {
+		this.flattenedList = flattenedList;
+	}
 }

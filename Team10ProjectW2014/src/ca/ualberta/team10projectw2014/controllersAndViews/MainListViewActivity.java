@@ -61,10 +61,7 @@ public class MainListViewActivity extends Activity{
 	private ListView commentView;
 	private LocationListenerModel locationListener;
 	private static LayoutInflater layoutInflater;
-	/**
-	 * @uml.property  name="appState"
-	 * @uml.associationEnd  
-	 */
+
 	private ApplicationStateModel appState;
 
 	SharedPreferences setOverlay;
@@ -73,10 +70,11 @@ public class MainListViewActivity extends Activity{
 	private ArrayList<LocationModel> locationList;
 	private ArrayList<LocationModel> tempLocationList;
 	
-	// In onCreate we will prepare the view to 
-	//display the activity and set up the 
-	//ApplicationStateModel, which is a singleton 
-	//used throughout the application
+	/**
+	 * In onCreate we will prepare the view to display the activity and set up 
+	 * the ApplicationStateModel, which is a singleton used throughout the 
+	 * application
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -122,8 +120,11 @@ public class MainListViewActivity extends Activity{
 		this.commentView.setAdapter(this.appState.getMLVAdapter());
 	}
 
-	// the below method is adapted from 
-	// https://github.com/pranayairan/AndroidExamples/tree/master/AndroidHelpOverlay
+	/**
+	 * Displays the main overlay
+	 * the below method is adapted from 
+	 * https://github.com/pranayairan/AndroidExamples/tree/master/AndroidHelpOverlay
+	 */
     private void showOverLay(){
         final Dialog dialog = new Dialog(MainListViewActivity.this, 
                 android.R.style.Theme_Translucent_NoTitleBar);
@@ -148,6 +149,11 @@ public class MainListViewActivity extends Activity{
 		return true;
 	}
 	
+	/**
+	 * Determines which sorting algorithm should be used on the list of 
+	 * head comments, sorts the list, then updates the adapter to 
+	 * display the newly sorted comments
+	 */
 	public void sortMainList(){
 		//Head Comment Sorting:
 		//Checks which selection method is active and sorts the list accordingly.
@@ -158,9 +164,13 @@ public class MainListViewActivity extends Activity{
 				appState.pictureSort(this.appState.getCommentList(), ApplicationStateModel.dateCompare);
 			}
 			//Sort by location and picture:
-			else if(this.appState.getUserModel().isSortByLoc() == true) {
+			else if(this.appState.getUserModel().isSortByUserLoc() == true) {
 				appState.setCmpLocation(locationListener.getLastBestLocation());
 				appState.pictureSort(this.appState.getCommentList(), ApplicationStateModel.locCompare);
+			}
+			else if(this.appState.getUserModel().isSortByLoc()){
+				appState.setCmpLocation(appState.getUserModel().getSortLoc());
+				Collections.sort(this.appState.getCommentList(), ApplicationStateModel.locCompare);
 			}
 			//Sort by popularity(i.e. number of times favourited) and picture:
 			else if(this.appState.getUserModel().isSortByPopularity()){
@@ -177,8 +187,12 @@ public class MainListViewActivity extends Activity{
 				Collections.sort(this.appState.getCommentList(), ApplicationStateModel.dateCompare);
 			}
 			//Sort by location:
-			else if(this.appState.getUserModel().isSortByLoc() == true) {
+			else if(this.appState.getUserModel().isSortByUserLoc() == true) {
 				appState.setCmpLocation(locationListener.getLastBestLocation());
+				Collections.sort(this.appState.getCommentList(), ApplicationStateModel.locCompare);
+			}
+			else if(this.appState.getUserModel().isSortByLoc()){
+				appState.setCmpLocation(appState.getUserModel().getSortLoc());
 				Collections.sort(this.appState.getCommentList(), ApplicationStateModel.locCompare);
 			}
 			//Sort by popularity(i.e. number of times favourited):
@@ -186,22 +200,28 @@ public class MainListViewActivity extends Activity{
 				Collections.sort(this.appState.getCommentList(), ApplicationStateModel.popularityCompare);
 			}
 		}
-		
-//		this.appState.setMLVAdapter(new MainListViewAdapter(this, appState.getCommentList()));
-//		this.commentView.setAdapter(appState.getMLVAdapter());
+
 		this.appState.updateMainAdapter();
 		
 	}
 	
-	//In onResume the content view is set and the appState
-	//is told to reload and update the view, in case
-	//this was not done since any changes occurred.
+
+	/**
+	 * In onResume the content view is set and the appState
+	 * is told to reload and update the view, in case
+	 * this was not done since any changes occurred.
+	 */
 	protected void onResume(){
 		super.onResume();
-		//ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
+		ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
 		sortMainList();
 	}	
 	
+	/**
+	 * Sets functionality for buttons apparing on the actionbar
+	 * 
+	 * @param item selected on the actionbar
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		Intent assortList = new Intent(getApplicationContext(), AssortedListViewActivity.class);
@@ -226,8 +246,7 @@ public class MainListViewActivity extends Activity{
 				sortComments();
 				return true;
 			case R.id.refresh_comments:
-				ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
-				sortMainList();
+				onResume();
 				return true;
 
 			//Display the list of favourites specified in the user model
@@ -289,9 +308,14 @@ public class MainListViewActivity extends Activity{
 	}
 	
 
-	
-	//Adapted from the android developer page 
-	//http://developer.android.com/guide/topics/ui/controls/checkbox.html
+	/**
+	 * Sets functionality of checkbox
+	 * 
+	 * Adapted from the android developer page 
+	 * http://developer.android.com/guide/topics/ui/controls/checkbox.html
+	 * 
+	 * @param view of checkbox being clicked
+	 */
 	public void onCheckboxClicked(View view) {
 	    // Is the view now checked?
 	    boolean checked = ((CheckBox) view).isChecked();
@@ -314,7 +338,6 @@ public class MainListViewActivity extends Activity{
 	 * dialog. Adapted from the android developer website
 	 * http://developer.android.com/guide/topics/ui/controls/radiobutton.html
 	 * @param view - the radio button that was clicked.
-	 * @return void, no return value.
 	 */
 	public void onRadioButtonClicked(View view) {
 		RadioButton buttonPressed = (RadioButton) view;
