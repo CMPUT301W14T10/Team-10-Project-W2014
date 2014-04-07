@@ -90,6 +90,14 @@ public class ElasticSearchOperations {
 		};
 
 		thread.start();
+		try
+		{
+			thread.join();
+		} catch (InterruptedException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -124,6 +132,14 @@ public class ElasticSearchOperations {
 		};
 
 		thread.start();
+		try
+		{
+			thread.join();
+		} catch (InterruptedException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -222,6 +238,14 @@ public class ElasticSearchOperations {
 
 		thread.start();
 
+		try
+		{
+			thread.join();
+		} catch (InterruptedException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// Log.e(LOG_TAG, model.toString()); // print out the entire contents of
 		// the list
 	}
@@ -286,7 +310,7 @@ public class ElasticSearchOperations {
 
 						replyCommentList.clear();
 						appState.addCommentsToReplyList(returnedData.getSources());
-						appState.getSubCommentViewHead().setSubComments(appState.getReplyList());
+						Log.e("COMMENTS PULLED",returnedData.getSources().toString());
 
 			}
 		};

@@ -181,9 +181,7 @@ public class CreateCommentActivity extends Activity implements
 	 * at 5:00
 	 */
 	private void getLastBestLocation() {
-
 		bestKnownLoc = locationListener.getLastBestLocation();
-
 	}
 
 	/**

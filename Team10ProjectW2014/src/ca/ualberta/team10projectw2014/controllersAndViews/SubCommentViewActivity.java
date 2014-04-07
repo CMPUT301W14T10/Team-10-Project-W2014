@@ -65,6 +65,7 @@ public class SubCommentViewActivity extends Activity {
 	private LayoutInflater layoutInflater;
 	private Resources resources;
 	private ArrayList<CommentModel> tempReplyList;
+	private ArrayList<CommentModel> tempCommentList;
 	private CommentModel tempCommentModel;
 	private ArrayList<LocationModel> locationList;
 	private ArrayList<LocationModel> tempLocationList;
@@ -97,6 +98,10 @@ public class SubCommentViewActivity extends Activity {
 		actionbar = getActionBar();
 		actionbar.setDisplayShowHomeEnabled(false);
 		resources = getResources();
+		
+		// Set the Title in the Actionbar to the title of the head comment
+		actionbar.setTitle(appState.getSubCommentViewHead().getTitle());
+		
 	}
 
 	/**
@@ -112,8 +117,7 @@ public class SubCommentViewActivity extends Activity {
 		headerView = (View) setHeader(appState.getSubCommentViewHead());
 		subListView.addHeaderView(headerView);
 
-		// Set the Title in the Actionbar to the title of the head comment
-		actionbar.setTitle(appState.getSubCommentViewHead().getTitle());
+
 		commentList = new ArrayList<CommentModel>();
 
 		// if user has network connection, the app will try to pull comments
@@ -246,6 +250,7 @@ public class SubCommentViewActivity extends Activity {
 			sortComments();
 			return true;
 		case R.id.refresh_comments_sub:
+			onResume();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -281,6 +286,7 @@ public class SubCommentViewActivity extends Activity {
 		createComment.putExtra("username", appState.getUserModel()
 				.getUsername());
 		this.startActivity(createComment);
+		onResume();
 
 	}
 
@@ -392,8 +398,9 @@ public class SubCommentViewActivity extends Activity {
 				}
 			}
 		});
-		
-		if(!appState.getSubCommentViewHead().isInArrayList(appState.getUserModel().getWantToReadComments())){
+
+		if (!appState.getSubCommentViewHead().isInArrayList(
+				appState.getUserModel().getWantToReadComments())) {
 			wantToReadButton.setImageResource(R.drawable.ic_action_bookmark);
 		}
 		else{
@@ -607,122 +614,155 @@ public class SubCommentViewActivity extends Activity {
 	public void onRadioButtonClicked(View view) {
 		final RadioButton buttonPressed = (RadioButton) view;
 		RadioGroup buttonGroup = (RadioGroup) buttonPressed.getParent();
-	    // Is the button now checked?
-	    boolean checked = ((RadioButton) view).isChecked();
-	    buttonGroup.clearCheck();
-	    //Check which radio button was clicked and set the
-	    //preferences and checked radio button as appropriate:
-	    switch(view.getId()) {
-	        case R.id.date:
-	            if (checked){
-	            	this.appState.getUserModel().setSortByDate(true);
-	            	buttonPressed.toggle();
-	            }
-	            else{
-	        		this.appState.getUserModel().setSortByDate(false);
-	            }
-	            break;
-	            
-	        case R.id.location:
-	            if (checked){
-	            	appState.loadLocations();
-	        		int i;
+		// Is the button now checked?
+		boolean checked = ((RadioButton) view).isChecked();
+		//Check which radio button was clicked and set the
+		//preferences and checked radio button as appropriate:
+		switch(view.getId()) {
+			case R.id.date:
+				if (checked){
+					this.appState.getUserModel().setSortByDate(true);
+					buttonPressed.toggle();
+				}
+				else{
+					this.appState.getUserModel().setSortByDate(false);
+				}
+				break;
 
-	        		// Sets/resets spinner set flag
-	        		SubCommentViewActivity.this.spinnerFlag = 0;
+			case R.id.location:
+				if (checked){
+					appState.loadLocations();
+					if(appState.getLocationList().isEmpty()){
+						Toast.makeText(getBaseContext(),
+								"No other locations available.",
+								Toast.LENGTH_LONG).show();
+						RadioButton button;
+						//if/else statements that set the correct radio button
+						//and check the sort by picture box if appropriate:
+						if(this.appState.getUserModel().isSortByDate()){
+							//Set the date radio button:
+							button = (RadioButton) buttonGroup.getChildAt(0);
+							button.toggle();
+						}
+						else if(this.appState.getUserModel().isSortByLoc()){
+							//Set the location radio button:
+							button = (RadioButton) buttonGroup.getChildAt(1);
+							button.setText("Location: " + appState.getUserModel().getSortLoc().getName());
+							button.toggle();
+						}
+						else if(this.appState.getUserModel().isSortByUserLoc()){
+							//Set the Popularity radio button:
+							button = (RadioButton) buttonGroup.getChildAt(2);
+							button.toggle();
+						}
+						else if(this.appState.getUserModel().isSortByPopularity()){
+							//Set the Popularity radio button:
+							button = (RadioButton) buttonGroup.getChildAt(3);
+							button.toggle();
+						}
+						else{
+							buttonGroup.clearCheck();
+						}
+					}
+					else{
+						int i;
 
-	        		// Gets the xml custom dialog layout
-	        		LayoutInflater li = LayoutInflater.from(this);
-	        		View locationDialogView = li.inflate(R.layout.dialog_location, null);
+						// Sets/resets spinner set flag
+						SubCommentViewActivity.this.spinnerFlag = 0;
 
-	        		// Builds alert dialog
-	        		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-	        		alertDialogBuilder.setView(locationDialogView);
-	        		
-	        		//get location list from app state fixes spinner lag
-	        		SubCommentViewActivity.this.locationList = appState.getLocationList();
-	        		
-	                // Gets best known location
-	                //stopListeningLocation();
-	                
-	                // Create tempt list to sort
-	        		SubCommentViewActivity.this.tempLocationList = SubCommentViewActivity.
-	        				this.locationList;
-	                if(SubCommentViewActivity.this.tempLocationList == null)
-	                	Log.e("the null value is:", "tempLocationList");
-	        		// Sort list by proximity
-	        		Collections.sort(SubCommentViewActivity.this.tempLocationList, ApplicationStateModel.locationModelCompare);
-	        		// Loads up spinner with location names
-	        		final Spinner spinner = (Spinner) locationDialogView
-	        				.findViewById(R.id.location_dialog_spinner);
-	        		// Creates and populates a list of the location names for displaying
-	        		// in the spinner
-	        		ArrayList<String> locationNameList = new ArrayList<String>();
-	        		if (SubCommentViewActivity.this.tempLocationList.size() != 0) {
-	        			for (i = 0; i < SubCommentViewActivity.this.tempLocationList.size(); i++)
-	        				locationNameList.add(SubCommentViewActivity.this.
-	        						tempLocationList.get(i).getName());
-	        		} else
-	        			locationNameList.add("No Locations");
+						// Gets the xml custom dialog layout
+						LayoutInflater li = LayoutInflater.from(this);
+						View locationDialogView = li.inflate(R.layout.dialog_location, null);
 
-	        		// Shows spinner
-	        		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-	        				android.R.layout.simple_spinner_item, locationNameList);
-	        		spinner.setAdapter(adapter);
+						// Builds alert dialog
+						AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+						alertDialogBuilder.setView(locationDialogView);
 
-	        		// Location dialog title
-	        		alertDialogBuilder.setTitle("Set Location");
+						//get location list from app state fixes spinner lag
+						SubCommentViewActivity.this.locationList = appState.getLocationList();
 
-	        		// Location dialog set button functionality
-	        		alertDialogBuilder.setPositiveButton("Set",
-	        				new DialogInterface.OnClickListener() {
+						// Gets best known location
+						//stopListeningLocation();
 
-	        					@Override
-	        					public void onClick(DialogInterface dialog, int which) {
-	        						// Checks if no locations have been created and the user
-	        						// is trying to set a location
-	        						if (spinner.getSelectedItem().toString()
-	        								.matches("No Locations"))
-	        							Toast.makeText(getBaseContext(),
-	        									"No other locations available.",
-	        									Toast.LENGTH_LONG).show();
-	        						else {
-	        							appState.setCmpLocation(SubCommentViewActivity.
-	        									this.tempLocationList.get(spinner.getSelectedItemPosition()).generateLocation(), 
-	        									SubCommentViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()).getName());
-	        							SubCommentViewActivity.this.spinnerFlag = 1;
-	        			            	appState.getUserModel().setSortByLoc(true);
-	        			            	appState.getUserModel().setSortLoc(SubCommentViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()));
-	        			            	buttonPressed.setText("Location: "+appState.getUserModel().getSortLoc().getName());
-	        			            	buttonPressed.toggle();
-	        						}
-	        					}
-	        				});
-	        		alertDialogBuilder.show();
-	            }
-	            else{
-	            	this.appState.getUserModel().setSortByLoc(false);
-	            }
-	            break;
-	        case R.id.userlocation:
-	        	if(checked){
+						// Create tempt list to sort
+						SubCommentViewActivity.this.tempLocationList = SubCommentViewActivity.
+								this.locationList;
+						if(SubCommentViewActivity.this.tempLocationList == null)
+							Log.e("the null value is:", "tempLocationList");
+						// Sort list by proximity
+						Collections.sort(SubCommentViewActivity.this.tempLocationList, ApplicationStateModel.locationModelCompare);
+						// Loads up spinner with location names
+						final Spinner spinner = (Spinner) locationDialogView
+								.findViewById(R.id.location_dialog_spinner);
+						// Creates and populates a list of the location names for displaying
+						// in the spinner
+						ArrayList<String> locationNameList = new ArrayList<String>();
+						if (SubCommentViewActivity.this.tempLocationList.size() != 0) {
+							for (i = 0; i < SubCommentViewActivity.this.tempLocationList.size(); i++)
+								locationNameList.add(SubCommentViewActivity.this.
+										tempLocationList.get(i).getName());
+						} else
+							locationNameList.add("No Locations");
+
+						// Shows spinner
+						ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+								android.R.layout.simple_spinner_item, locationNameList);
+						spinner.setAdapter(adapter);
+
+						// Location dialog title
+						alertDialogBuilder.setTitle("Set Location");
+
+						// Location dialog set button functionality
+						alertDialogBuilder.setPositiveButton("Set",
+								new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// Checks if no locations have been created and the user
+								// is trying to set a location
+								if (spinner.getSelectedItem().toString()
+										.matches("No Locations"))
+									Toast.makeText(getBaseContext(),
+											"No other locations available.",
+											Toast.LENGTH_LONG).show();
+								else {
+									appState.setCmpLocation(SubCommentViewActivity.
+											this.tempLocationList.get(spinner.getSelectedItemPosition()).generateLocation(), 
+											SubCommentViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()).getName());
+									SubCommentViewActivity.this.spinnerFlag = 1;
+									appState.getUserModel().setSortByLoc(true);
+									appState.getUserModel().setSortLoc(SubCommentViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()));
+									buttonPressed.setText("Location: "+appState.getUserModel().getSortLoc().getName());
+									buttonPressed.toggle();
+								}
+							}
+						});
+						alertDialogBuilder.show();
+					}
+				}
+				else{
+					this.appState.getUserModel().setSortByLoc(false);
+				}
+				break;
+			case R.id.userlocation:
+				if(checked){
 					appState.setCmpLocation(locationListener.getLastBestLocation(), "Current Location");
 					this.appState.getUserModel().setSortLoc(new LocationModel(appState.getCmpLocation(), "Current Location"));
-	        		this.appState.getUserModel().setSortByUserLoc(true);
-	        		buttonPressed.toggle();
-	        	}
-	        	break;
-	        case R.id.number_of_favourites:
-	            if (checked){
-	            	this.appState.getUserModel().setSortByPopularity(true);
-	            	buttonPressed.toggle();
-	            }
-	            else{
-	            	this.appState.getUserModel().setSortByPopularity(false);
-	            }
-	            break;
-	            
-	    }
+					this.appState.getUserModel().setSortByUserLoc(true);
+					buttonPressed.toggle();
+				}
+				break;
+			case R.id.number_of_favourites:
+				if (checked){
+					this.appState.getUserModel().setSortByPopularity(true);
+					buttonPressed.toggle();
+				}
+				else{
+					this.appState.getUserModel().setSortByPopularity(false);
+				}
+				break;
+
+		}
 	}
 
 
