@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 import android.annotation.SuppressLint;
@@ -32,6 +33,7 @@ import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationListenerModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
+import ca.ualberta.team10projectw2014.network.ElasticSearchLocationOperations;
 import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 
 /**
@@ -91,6 +93,11 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 	private ArrayList<LocationModel> locationList;
 	
 	/**
+	 * Temporary list of the location models used for spinner sorting
+	 */
+	private ArrayList<LocationModel> tempLocationList;
+	
+	/**
 	 * Flag that is set if the user selects a location from the location dialog
 	 * spinner
 	 */
@@ -113,11 +120,16 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 		ceditText = (EditText)findViewById(R.id.cc_content);
 		imageView = (ImageView)findViewById(R.id.cc_image_view);
 		
+		// Load location list from elastic search into appstate
 		appState.setLocationList(new ArrayList<LocationModel>());
+		ElasticSearchLocationOperations.getLocationList(this);
 		appState.loadLocations();
-		locationList = appState.getLocationList();
-		if (locationList == null)
-			locationList = new ArrayList<LocationModel>();
+		
+		// Retrieve location list from appstate
+		locationList = new ArrayList<LocationModel>();
+		EditCommentActivity.this.locationList = appState.getLocationList();
+		
+		spinnerFlag = 0;
 	}
 	
 	/**
@@ -222,11 +234,8 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 	 * 
 	 * @param v view from which the method is called
 	 */
-	public void chooseLocation(View v){
-		int i;
-
-		// Sets/resets spinner set flag
-		EditCommentActivity.this.spinnerFlag = 0;
+	public void chooseLocation(View v) {
+		int i = 0;
 
 		// Gets the xml custom dialog layout
 		LayoutInflater li = LayoutInflater.from(this);
@@ -235,20 +244,47 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 		// Builds alert dialog
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 		alertDialogBuilder.setView(locationDialogView);
-
+		
+		//get location list from app state fixes spinner lag
+		EditCommentActivity.this.locationList = appState.getLocationList();
+		
+        // Gets best known location
+        stopListeningLocation();
+        
+        // Create tempt list to sort
+        EditCommentActivity.this.tempLocationList = EditCommentActivity.
+				this.locationList;
+		// Sort list by proximity
+		Collections.sort(EditCommentActivity.this.tempLocationList, ApplicationStateModel.locationModelCompare);
 		// Loads up spinner with location names
 		final Spinner spinner = (Spinner) locationDialogView
 				.findViewById(R.id.location_dialog_spinner);
+		// Creates and populates a list of the location names for displaying
+		// in the spinner
 		ArrayList<String> locationNameList = new ArrayList<String>();
-		if (this.locationList.size() != 0) {
-			for (i = 0; i < this.locationList.size(); i++)
-				locationNameList.add(this.locationList.get(i).getName());
+		if (EditCommentActivity.this.tempLocationList.size() != 0) {
+			for (i = 0; i < EditCommentActivity.this.tempLocationList.size(); i++)
+				locationNameList.add(EditCommentActivity.this.
+						tempLocationList.get(i).getName());
 		} else
 			locationNameList.add("No Locations");
+		
+		// If a location was set, finds its position in the spinner
+		if (EditCommentActivity.this.postLocation != null) {
+			for (i = 0; i < EditCommentActivity.this.tempLocationList.size(); i++)
+				if (EditCommentActivity.this.tempLocationList.get(i).getName().matches(EditCommentActivity.this.postLocation.getName())) {
+					break;
+				}
+		}
 
+		// Shows spinner
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, locationNameList);
 		spinner.setAdapter(adapter);
+		// If a position was already set, makes that position the active item in the spinner
+		if (EditCommentActivity.this.postLocation != null)
+			spinner.setSelection(i);
+
 
 		// Location dialog title
 		alertDialogBuilder.setTitle("Set Location");
@@ -267,8 +303,8 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 									"Please create a new location",
 									Toast.LENGTH_LONG).show();
 						else {
-							EditCommentActivity.this.postLocation = EditCommentActivity.this.locationList
-									.get(spinner.getSelectedItemPosition());
+							EditCommentActivity.this.postLocation = EditCommentActivity.
+									this.tempLocationList.get(spinner.getSelectedItemPosition());
 							EditCommentActivity.this.spinnerFlag = 1;
 						}
 					}
@@ -306,7 +342,6 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 											int which) {
 										final EditText editText = (EditText) locationNameDialogView
 												.findViewById(R.id.enter_location_name);
-										stopListeningLocation();
 										String locationNameString = editText
 												.getText().toString();
 
@@ -315,7 +350,7 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 										if (EditCommentActivity.this.bestKnownLoc == null)
 											Toast.makeText(
 													getBaseContext(),
-													"No current location detected - can't set location",
+													"No current location detected - can't create location",
 													Toast.LENGTH_LONG).show();
 										// Check if no location name has been
 										// entered
@@ -393,12 +428,18 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 																.getLatitude(),
 																EditCommentActivity.this.bestKnownLoc
 																.getLongitude());
+												// Adds new location to the local location list
 												EditCommentActivity.this.locationList
 														.add(EditCommentActivity.this.postLocation);
-												EditCommentActivity.this.appState
-														.setLocationList(EditCommentActivity.this.locationList);
+												// Adds the new location to the appstate location list
+												appState.setLocationList(EditCommentActivity.this.locationList);
+												// Sets appstate location list to the newly updated one
 												EditCommentActivity.this.appState
 														.saveLocations();
+												// Saves location list to elastic search
+												ElasticSearchLocationOperations.pushLocationList(EditCommentActivity.this.postLocation);
+												// Sets/resets spinner set flag
+												EditCommentActivity.this.spinnerFlag = 0;
 											}
 										}
 									}
@@ -416,7 +457,6 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 		// Creates alert dialog
 		AlertDialog alertDialog = alertDialogBuilder.create();
 		alertDialog.show();
-		
 	}
 	
 	/**
@@ -550,7 +590,7 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 	 * Not used as of version 1.
 	 */
 	@SuppressWarnings("unused")
-	private void setLocation(){
+	private void setLocation() {
 		int i;
 		int closestLocationIndex = -1;
 		double distance = 1000; // Set to 1 km
@@ -591,14 +631,17 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 					getBaseContext(),
 					"No nearby locations found. Please select or create a location.",
 					Toast.LENGTH_LONG).show();
-		// Current location is not known and location list is not empty
-		else if ((bestKnownLoc == null) && (this.locationList != null))
+		// Current location is not known and location list is not empty and spinner wasn't set
+		else if ((bestKnownLoc == null) && (this.locationList != null) && (EditCommentActivity.this.spinnerFlag != 1))
 			Toast.makeText(getBaseContext(),
 					"Current location is unknown. Please select a location.",
 					Toast.LENGTH_LONG).show();
+		// Current location is not known and location list is not empty and spinner was set
+		else if ((bestKnownLoc == null) && (this.locationList != null) && (EditCommentActivity.this.spinnerFlag == 1))
+			; // Doesn't change anything, allows attemtCommentCreation to post the comment set in the spinner
 		// Current location is not known and location list is empty
 		else {
-			this.postLocation = new LocationModel("Unknown Location", 1, 2);
+			this.postLocation = new LocationModel("Unknown Location", 0, 0);
 		}
 	}
 	
