@@ -28,13 +28,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 /**
- * Handles sending CommentModels to the server and executing searches on the
+ * This class handles sending CommentModels to the server and executing searches on the
  * server. Most of the code in this class is based on:
  * https://github.com/rayzhangcl/ESDemo and
  * https://github.com/zjullion/PicPosterComplete
  * 
  * @author zjullion. Edited by sgiang92
- * 
+ * @version      1                (current version number of program)
  */
 public class ElasticSearchOperations {
 
@@ -92,6 +92,11 @@ public class ElasticSearchOperations {
 		thread.start();
 	}
 
+	/**
+	 * Deletes a comment model in the server
+	 * 
+	 * @param uniqueID
+	 */
 	public static void delCommentModel(final String uniqueID) {
 		Thread thread = new Thread() {
 			@Override
@@ -216,7 +221,13 @@ public class ElasticSearchOperations {
 	
 	
 	
-	
+	/**
+	 * Searches for replies in the server
+	 * 
+	 * @param activity
+	 * @param appState
+	 * @param parentID
+	 */
 	public static void searchForReplies(final SubCommentViewActivity activity,final ApplicationStateModel appState, final String parentID) {
 		final ArrayList<CommentModel> replyCommentList = new ArrayList<CommentModel>();
 		

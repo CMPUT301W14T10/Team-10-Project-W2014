@@ -28,6 +28,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+/**
+ * This class provides the methods to interact location data in the server.
+ * 
+ * @author David Yee
+ * @version      1                (current version number of program)
+ */
 public class ElasticSearchLocationOperations {
 	public static final String SERVER_URL = "http://cmput301.softwareprocess.es:8080/testing/team10projectw2014location/";
 	public static final String LOG_TAG = "ElasticSearchLocation";

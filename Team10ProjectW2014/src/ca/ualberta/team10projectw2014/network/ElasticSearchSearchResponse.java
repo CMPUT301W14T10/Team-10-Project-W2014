@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Represents a search response from ElasticSearch. Taken from https://github.com/rayzhangcl/ESDemo
+ * This class represents a search response from ElasticSearch. 
+ * Taken from https://github.com/rayzhangcl/ESDemo
+ * 
+ * @version      1                (current version number of program)
  */
 public class ElasticSearchSearchResponse<T> {
     int took;
