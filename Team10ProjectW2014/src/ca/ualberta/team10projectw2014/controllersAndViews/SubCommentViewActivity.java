@@ -58,7 +58,7 @@ public class SubCommentViewActivity extends Activity {
 	private View headerView;
 	private LayoutInflater layoutInflater;
 	private Resources resources;
-	private ArrayList<CommentModel> tempReplyList;
+	private ArrayList<CommentModel> tempCommentList;
 	private CommentModel tempCommentModel;
 
 	/**
@@ -113,8 +113,6 @@ public class SubCommentViewActivity extends Activity {
 			appState.getSubCommentViewHead().setSubComments(
 					appState.getReplyList());
 			
-			
-
 		} else {
 			appState.loadComments();
 		}
@@ -130,6 +128,8 @@ public class SubCommentViewActivity extends Activity {
 
 		subListView.setAdapter(appState.getSCVAdapter());
 
+	}
+	public void pullSubComments(CommentModel model){
 	}
 
 	/**

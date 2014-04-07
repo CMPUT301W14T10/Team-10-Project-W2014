@@ -338,6 +338,7 @@ public class ApplicationStateModel {
 	public void setSubCommentViewHead(CommentModel subCommentViewHead) {
 		this.subCommentViewHead = subCommentViewHead;
 	}
+	
 
 	/**
 	 * @return comment list
