@@ -131,6 +131,11 @@ public class SubCommentViewActivity extends Activity {
 			appState.getSubCommentViewHead().setSubComments(
 					appState.getReplyList());
 			
+			//LOAD SUBCOMMENTS FROM ES
+			
+			//Save all comments to local copy after getting all sub comments
+			appState.saveComments();
+			
 			
 
 		} else {
