@@ -61,6 +61,7 @@ public class SubCommentViewActivity extends Activity {
 	private LayoutInflater layoutInflater;
 	private Resources resources;
 	private ArrayList<CommentModel> tempReplyList;
+	private CommentModel tempCommentModel;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +108,7 @@ public class SubCommentViewActivity extends Activity {
 			// Add the sub Comments to the head comment
 			appState.getSubCommentViewHead().setSubComments(
 					appState.getReplyList());
+			
 			
 
 		} else {
