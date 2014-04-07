@@ -693,6 +693,7 @@ public class SubCommentViewActivity extends Activity {
 	        							SubCommentViewActivity.this.spinnerFlag = 1;
 	        			            	appState.getUserModel().setSortByLoc(true);
 	        			            	appState.getUserModel().setSortLoc(SubCommentViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()));
+	        			            	buttonPressed.setText("Location: "+appState.getUserModel().getSortLoc().getName());
 	        			            	buttonPressed.toggle();
 	        						}
 	        					}

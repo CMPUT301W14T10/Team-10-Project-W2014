@@ -457,6 +457,7 @@ public class MainListViewActivity extends Activity{
 	        							MainListViewActivity.this.spinnerFlag = 1;
 	        			            	appState.getUserModel().setSortByLoc(true);
 	        			            	appState.getUserModel().setSortLoc(MainListViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()));
+	        			            	buttonPressed.setText("Location: "+appState.getUserModel().getSortLoc().getName());
 	        			            	buttonPressed.toggle();
 	        						}
 	        					}
