@@ -19,6 +19,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -39,16 +41,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * Called from mainListViewActivity when a head comment is selected. displays that head comment and all of its replies(recursively, so that replies to replies at any nesting are shown).
- * @author  David Yee <dvyee@ualberta.ca>
- * @version  1 (current version number of program)
+ * Called from mainListViewActivity when a head comment is selected. displays
+ * that head comment and all of its replies(recursively, so that replies to
+ * replies at any nesting are shown).
+ * 
+ * @author David Yee <dvyee@ualberta.ca>
+ * @version 1 (current version number of program)
  */
 public class SubCommentViewActivity extends Activity {
 	private ListView subListView;
-	/**
-	 * @uml.property  name="appState"
-	 * @uml.associationEnd  
-	 */
+
 	private ApplicationStateModel appState;
 	private ArrayList<CommentModel> sortedList;
 	private ArrayList<CommentModel> commentList;
@@ -56,24 +58,23 @@ public class SubCommentViewActivity extends Activity {
 	private View headerView;
 	private LayoutInflater layoutInflater;
 	private Resources resources;
-	private ArrayList<CommentModel> esList;
+	private ArrayList<CommentModel> tempReplyList;
+	private CommentModel tempCommentModel;
 
-
+	/**
+	 * Initializes the appstate and the actionbar
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sub_comment_view);
 		layoutInflater = LayoutInflater.from(this);
-		
 
-		
 		// Get an instance of the ApplicationStateModel singleton
 		appState = ApplicationStateModel.getInstance();
 		appState.setFileContext(this);
 		appState.loadUser();
-		//appState.loadComments();
-		
-
+		// appState.loadComments();
 
 		// Set the layout
 		subListView = (ListView) findViewById(R.id.sub_comment_list_view_sub);
@@ -81,9 +82,12 @@ public class SubCommentViewActivity extends Activity {
 		// Disable the Home Icon on the Actionbar
 		actionbar = getActionBar();
 		actionbar.setDisplayShowHomeEnabled(false);
-		resources = getResources();		
+		resources = getResources();
 	}
-	
+
+	/**
+	 * Sets the views in the activity and attempts to retrieve the comment data 
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -97,34 +101,34 @@ public class SubCommentViewActivity extends Activity {
 		// Set the Title in the Actionbar to the title of the head comment
 		actionbar.setTitle(appState.getSubCommentViewHead().getTitle());
 		commentList = new ArrayList<CommentModel>();
-	
-		//if user has network connection, the app will try to pull comments from server
-		if(appState.isNetworkAvailable(this)){
-			ElasticSearchOperations.searchForReplies(this, appState,appState.getSubCommentViewHead().getUniqueID());
-			appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
-					R.layout.subcommentview_sub_item, appState.getReplyList(), appState
-							.getUserModel()));
 
+		// if user has network connection, the app will try to pull comments
+		// from server
+		if (appState.isNetworkAvailable(this)) {
+			// Get SubComments of the head comment from server
+			ElasticSearchOperations.searchForReplies(this, this.appState,
+					appState.getSubCommentViewHead().getUniqueID());
+
+			// Add the sub Comments to the head comment
+			appState.getSubCommentViewHead().setSubComments(
+					appState.getReplyList());
 			
-		} else{
+			
+
+		} else {
 			appState.loadComments();
-			commentList = appState.getSubCommentViewHead().getSubComments();
-		
-			// Gets all the SubComments and all its subComments and put them in a
-			// list
-			sortedList = new ArrayList<CommentModel>();
-			addCommentToList(commentList);
-
-			// Add the list of comments to the adapter to be displayed to list view
-			appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
-					R.layout.subcommentview_sub_item, sortedList, appState
-							.getUserModel()));
-
 		}
 
+		commentList = appState.getSubCommentViewHead().getSubComments();
+
+		sortedList = new ArrayList<CommentModel>();
+		addCommentToList(commentList);
+
+		appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
+				R.layout.subcommentview_sub_item, sortedList, appState
+						.getUserModel()));
 
 		subListView.setAdapter(appState.getSCVAdapter());
-		
 
 	}
 
@@ -153,7 +157,8 @@ public class SubCommentViewActivity extends Activity {
 			menu.findItem(R.id.action_favourite).setIcon(
 					resources.getDrawable(R.drawable.ic_action_favourite));
 		}
-		menu.findItem(R.id.action_map).setIcon(resources.getDrawable(R.drawable.ic_map_icon_medium3));
+		menu.findItem(R.id.action_map).setIcon(
+				resources.getDrawable(R.drawable.ic_map_icon_medium3));
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -211,10 +216,10 @@ public class SubCommentViewActivity extends Activity {
 				appState.loadComments();
 				item.setIcon(resources
 						.getDrawable(R.drawable.ic_action_favourite));
-				
+
 			}
 			return true;
-			
+
 		case R.id.action_map:
 			openMap();
 			return true;
@@ -233,11 +238,15 @@ public class SubCommentViewActivity extends Activity {
 		}
 
 	}
-	
-	private void openMap(){
-		// Get the coordinates of each comment in the current list and send them to MapsViewActivity
+
+	/**
+	 * Get the coordinates of each comment in the current list and send them to MapsViewActivity
+	 */
+	private void openMap() {
+		// Get the coordinates of each comment in the current list and send them
+		// to MapsViewActivity
 		Intent mapThread = new Intent(getApplicationContext(),
-		MapsViewActivity.class);
+				MapsViewActivity.class);
 		this.startActivity(mapThread);
 	}
 
@@ -246,8 +255,6 @@ public class SubCommentViewActivity extends Activity {
 	 * Can be called via ActionBar or reply buttons in Head or Sub comments.
 	 * 
 	 * @author dvyee, sgiang92
-	 * @return
-	 * @param
 	 */
 	private void openReply() {
 		// send an intent to CreateCommentActivity
@@ -268,8 +275,6 @@ public class SubCommentViewActivity extends Activity {
 	 * for later review. Can only be called via ActionBar.
 	 * 
 	 * @author dvyee, sgiang92
-	 * @return
-	 * @param
 	 */
 	private void addFavourite(CommentModel comment) {
 		appState.getUserModel().getFavourites().add(comment);
@@ -318,7 +323,7 @@ public class SubCommentViewActivity extends Activity {
 	 * head comment.
 	 * 
 	 * @author sgiang92, dvyee
-	 * @param
+	 * @param headcomment
 	 * @return View
 	 */
 	private View setHeader(CommentModel headComment) {
@@ -337,7 +342,8 @@ public class SubCommentViewActivity extends Activity {
 				.findViewById(R.id.head_comment_time_sub);
 		TextView textContent = (TextView) header
 				.findViewById(R.id.head_comment_text_body_sub);
-		Button moreButton = (Button) header.findViewById(R.id.head_more_option);
+		ImageButton wantToReadButton = (ImageButton) header.findViewById(R.id.head_want_to_read_option);
+		ImageButton editButton = (ImageButton) header.findViewById(R.id.head_edit_option);
 		ImageView imageView = (ImageView) header
 				.findViewById(R.id.head_comment_image);
 
@@ -368,17 +374,16 @@ public class SubCommentViewActivity extends Activity {
 			bmOptions.inSampleSize = scaleFactor;
 			bmOptions.inPurgeable = true;
 
-			//Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
+			// Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
 			Bitmap bitmap = headComment.getPhoto();
 			imageView.setImageBitmap(bitmap);
 
 		}
 
-		moreButton.setOnClickListener(new View.OnClickListener() {
+		wantToReadButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// Open More Dialog
-				openMoreDialog(appState.getSubCommentViewHead());
+				appState.getUserModel().getWantToReadComments().add(appState.getSubCommentViewHead());
 			}
 		});
 
@@ -479,8 +484,14 @@ public class SubCommentViewActivity extends Activity {
 
 	}
 
-	// Adapted from the android developer page
-	// http://developer.android.com/guide/topics/ui/controls/checkbox.html
+	/**
+	 * Checkbox functionality
+	 * 
+	 * Adapted from the android developer page
+	 * http://developer.android.com/guide/topics/ui/controls/checkbox.html
+	 * 
+	 * @param view
+	 */
 	public void onCheckboxClicked(View view) {
 		// Is the view now checked?
 		boolean checked = ((CheckBox) view).isChecked();
@@ -610,43 +621,30 @@ public class SubCommentViewActivity extends Activity {
 
 		}
 	}
-	
-	/*
-	if (appState.getUserModel().isSortByPic() == true) {
-		// Sort by picture
-		if (appState.getUserModel().isSortByDate() == true) {
-			// Sort by date
-			appState.pictureSort(
-					(ArrayList<CommentModel>) commentList,
-					ApplicationStateModel.dateCompare);
-		} else if (appState.getUserModel().isSortByLoc() == true) {
-			// Sort by Location
-			 appState.pictureSort(
-					(ArrayList<CommentModel>) commentList,
-					ApplicationStateModel.locCompare);
-		} else if (appState.getUserModel().isSortByPopularity())
-			// Sort by number of Favourites
-			appState.pictureSort(
-					(ArrayList<CommentModel>) commentList,
-					ApplicationStateModel.popularityCompare);
-	} else {
-		if (appState.getUserModel().isSortByDate() == true) {
-			// Sort by date
-			appState.sort((ArrayList<CommentModel>) commentList,
-					ApplicationStateModel.dateCompare);
-		} else if (appState.getUserModel().isSortByLoc() == true) {
-			// Sort by Location
-			appState.sort((ArrayList<CommentModel>) commentList,
-					ApplicationStateModel.locCompare);
-		} else if (appState.getUserModel().isSortByPopularity())
-			// Sort by number of favourites
-			appState.sort((ArrayList<CommentModel>) commentList,
-					ApplicationStateModel.popularityCompare);
-		else {
-			// No sorting just grab the array as is
-			appState.getSubCommentViewHead().getSubComments();
-		}
 
-	}
-	*/
+
+	/*
+	 * if (appState.getUserModel().isSortByPic() == true) { // Sort by picture
+	 * if (appState.getUserModel().isSortByDate() == true) { // Sort by date
+	 * appState.pictureSort( (ArrayList<CommentModel>) commentList,
+	 * ApplicationStateModel.dateCompare); } else if
+	 * (appState.getUserModel().isSortByLoc() == true) { // Sort by Location
+	 * appState.pictureSort( (ArrayList<CommentModel>) commentList,
+	 * ApplicationStateModel.locCompare); } else if
+	 * (appState.getUserModel().isSortByPopularity()) // Sort by number of
+	 * Favourites appState.pictureSort( (ArrayList<CommentModel>) commentList,
+	 * ApplicationStateModel.popularityCompare); } else { if
+	 * (appState.getUserModel().isSortByDate() == true) { // Sort by date
+	 * appState.sort((ArrayList<CommentModel>) commentList,
+	 * ApplicationStateModel.dateCompare); } else if
+	 * (appState.getUserModel().isSortByLoc() == true) { // Sort by Location
+	 * appState.sort((ArrayList<CommentModel>) commentList,
+	 * ApplicationStateModel.locCompare); } else if
+	 * (appState.getUserModel().isSortByPopularity()) // Sort by number of
+	 * favourites appState.sort((ArrayList<CommentModel>) commentList,
+	 * ApplicationStateModel.popularityCompare); else { // No sorting just grab
+	 * the array as is appState.getSubCommentViewHead().getSubComments(); }
+	 * 
+	 * }
+	 */
 }

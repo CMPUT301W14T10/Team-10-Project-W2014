@@ -16,10 +16,10 @@ import ca.ualberta.team10projectw2014.R;
  */
 public class LocationListenerModel implements LocationListener {
 
+	private LocationListenerModelErrorHandler locationListenerModelErrorHandler = new LocationListenerModelErrorHandler();
 	private Location currentBestLocation = null;
 	private boolean gpsEnabled;
 	private boolean netEnabled;
-	private Context context;
 	private LocationManager mLocationManager;
 	private Location locationGPS;
  	private Location locationNet;
@@ -29,16 +29,18 @@ public class LocationListenerModel implements LocationListener {
  	
  	/**
  	 * Checks to see if either network or GPS are enabled, and asks user to turn GPS on if it is disabled.
+ 	 * 
+ 	 * @param context
  	 */
 	public LocationListenerModel(Context context) {
-		this.context = context;
+		locationListenerModelErrorHandler.setContext(context);
 		mLocationManager = (LocationManager)
 				context.getSystemService(Context.LOCATION_SERVICE);
 		
 		if (!mLocationManager.isProviderEnabled(
 				LocationManager.GPS_PROVIDER)) {
 	    	gpsEnabled = false;
-	        noGPSError();
+	        locationListenerModelErrorHandler.noGPSError();
 	    }
 	    
 	    else{
@@ -68,43 +70,8 @@ public class LocationListenerModel implements LocationListener {
 
 	
 	/**
-	 * Tells the user to turn on the GPS 
-	 * Called in {@link #LocationListenerController(Context)} 
-	 * 
- 	 * This is a direct copy from 
-	 * http://stackoverflow.com/a/843716/2557554 accessed on March 9 at 2:00PM
- 	 */
-	protected void noGPSError(){
-		final AlertDialog.Builder builder = 
-				new AlertDialog.Builder(context);
-	    builder.setMessage(R.string.gps_appears_disabled)
-	           .setCancelable(false)
-	           .setPositiveButton(
-	        		   R.string.yes, 
-	        		   new DialogInterface.OnClickListener() {
-	        			   public void onClick(
-	        					   final DialogInterface dialog, 
-	        					   final int id) {
-	        				   			context.startActivity(
-		   						new Intent(android.provider.Settings.
-		   								ACTION_LOCATION_SOURCE_SETTINGS));
-	        			   }
-	           })
-	           .setNegativeButton(
-	        		   R.string.no, 
-	        		   new DialogInterface.OnClickListener() {
-			               public void onClick(
-			            		   final DialogInterface dialog, 
-			            		   final int id) {
-			                    dialog.cancel();
-			               }
-	           });
-	    final AlertDialog alert = builder.create();
-	    alert.show();
-	}
-	
-	/**
 	 * Returns the best location between GPS and network, then returns the result.
+	 * 
 	 * @return the current location, null if networks are not on
  	 */
 	public Location getLastBestLocation() {
@@ -146,6 +113,8 @@ public class LocationListenerModel implements LocationListener {
 	/**
 	 * Checks to see if the current location is a better one than what is known, and sets the known location to it
 	 * if this is true.
+	 * 
+	 * @param location
  	 */
 	private void makeUseOfNewLocation(Location location){
 		if ( isBetterLocation(location, currentBestLocation) ) {
@@ -158,8 +127,9 @@ public class LocationListenerModel implements LocationListener {
 	}
 	
 	/**
-	 * @return
-	 * @uml.property  name="currentBestLocation"
+	 * Gets the current location of the user
+	 * 
+	 * @return location
 	 */
 	public Location getCurrentBestLocation(){
 		return currentBestLocation;

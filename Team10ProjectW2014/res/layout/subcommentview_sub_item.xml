@@ -69,30 +69,32 @@
         android:layout_marginTop="1dip"
         android:text="@string/location"
         android:textSize="12sp" />
-    
-	<!-- dash seperating location and time -->
+
+    <!-- dash seperating location and time -->
+
     <TextView
         android:id="@+id/sub_comment_dash_sub"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/sub_comment_author"
-  		android:layout_toRightOf="@id/sub_comment_location_sub"
-        android:layout_marginTop="1dip"
         android:layout_marginLeft="1dip"
+        android:layout_marginTop="1dip"
+        android:layout_toRightOf="@id/sub_comment_location_sub"
         android:text="@string/dash_string"
         android:textSize="12sp" />
 
     <!-- Time -->
+
     <TextView
         android:id="@+id/sub_comment_time_sub"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-  		android:layout_below="@id/sub_comment_author"
-  		android:layout_toRightOf="@id/sub_comment_dash_sub"
+        android:layout_below="@id/sub_comment_author"
         android:layout_marginTop="1dip"
+        android:layout_toRightOf="@id/sub_comment_dash_sub"
         android:text="@string/time_string"
         android:textSize="12sp" />
-    
+
     <!-- Head comment text body -->
 
     <TextView
@@ -127,25 +129,36 @@
 
         <!-- favourite Button -->
 
-        <Button
+        <ImageButton
             android:id="@+id/favourite_option"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_toLeftOf="@+id/want_to_read_option"
             android:background="?android:attr/selectableItemBackground"
-            android:text="@string/action_favourite"
-            android:textSize="12sp" />
+            android:padding="10dp"
+            android:src="@drawable/ic_action_favourite" />
 
-        <!-- More Button -->
+        <!-- Want to Read Button -->
 
-        <Button
-            android:id="@+id/more_option"
+        <ImageButton
+            android:id="@+id/want_to_read_option"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/edit_option"
+            android:background="?android:attr/selectableItemBackground"
+            android:padding="10dp"
+            android:src="@drawable/ic_action_bookmark" />
+
+        <!-- Edit Button -->
+
+        <ImageButton
+            android:id="@+id/edit_option"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:background="?android:attr/selectableItemBackground"
-            android:text="@string/more_option"
-            android:textSize="12sp" />
+            android:padding="10dp"
+            android:src="@drawable/ic_action_edit" />
     </RelativeLayout>
 
 </RelativeLayout>

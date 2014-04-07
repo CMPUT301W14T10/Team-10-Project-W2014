@@ -1,8 +1,10 @@
 package ca.ualberta.team10projectw2014.network;
 
 /**
- * Represents a response from ElasticSearch.
+ * This class represents a response from ElasticSearch.
  * Taken from https://github.com/rayzhangcl/ESDemo
+ * 
+ * @version      1                (current version number of program)
  */
 public class ElasticSearchResponse<T> {
     String _index;

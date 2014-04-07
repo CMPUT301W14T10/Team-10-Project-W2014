@@ -3,7 +3,10 @@ package ca.ualberta.team10projectw2014.network;
 import java.util.Collection;
 
 /**
- * Represents part of a response from ElasticSearch. Taken from https://github.com/rayzhangcl/ESDemo
+ * This class represents part of a response from ElasticSearch. 
+ * Taken from https://github.com/rayzhangcl/ESDemo
+ * 
+ * @version      1                (current version number of program)
  */
 public class Hits<T> {
     int total;

@@ -9,6 +9,7 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -34,18 +35,16 @@ import com.google.gson.reflect.TypeToken;
 public class ApplicationStateModel {
 
 	//to set up this class as a singleton:
-	/**
-	 * @uml.property  name="instance"
-	 * @uml.associationEnd  
-	 */
+
 	private static ApplicationStateModel instance = null;
 
 	protected ApplicationStateModel() {
 		// Exists only to defeat instantiation.		
 	}
 	/**
-	 * @return
-	 * @uml.property  name="instance"
+	 * Returns the instance of the application state
+	 * 
+	 * @return instance of appstate
 	 */
 	public static ApplicationStateModel getInstance() {
 		if(instance == null) {
@@ -94,22 +93,16 @@ public class ApplicationStateModel {
 
 	/**
 	 * Adapter for displaying the list of comments in the MainListViewActivity.
-	 * @uml.property  name="mLVAdapter"
-	 * @uml.associationEnd  
 	 */
 	private MainListViewAdapter MLVAdapter;
 	
 	/**
 	 * Adapter for displaying the list of comments in the SubCommentViewActivity.
-	 * @uml.property  name="sCVAdapter"
-	 * @uml.associationEnd  
 	 */
 	private SubCommentViewActivityAdapter SCVAdapter;
 	
 	/**
 	 * Adapter for displaying the list of favourites in the FavouritesViewActivity.
-	 * @uml.property  name="assortAdapter"
-	 * @uml.associationEnd  
 	 */
 	private MainListViewAdapter assortAdapter;
 
@@ -129,36 +122,34 @@ public class ApplicationStateModel {
 	
 	/**
 	 * Holds all of the user's preferences and cached comments. Can be accessed from any activity.
-	 * @uml.property  name="userModel"
-	 * @uml.associationEnd  
 	 */
 	private UserModel userModel;
 	
 	/**
 	 * The head comment that is to be displayed by the SubCommentViewActivity. The activity will show this head comment in full, followed by its subcomments in list form.
-	 * @uml.property  name="subCommentViewHead"
-	 * @uml.associationEnd  
 	 */
 	private CommentModel subCommentViewHead;
 	
 	/**
 	 * The comment that CreateComment is to create a subcomment for. This will be null if CreateComment is to create a new head comment.
-	 * @uml.property  name="createCommentParent"
-	 * @uml.associationEnd  
 	 */
 	private CommentModel createCommentParent;
 	
 	/**
 	 * The comment that EditComment is to change.
-	 * @uml.property  name="commentToEdit"
-	 * @uml.associationEnd  
 	 */
 	private CommentModel commentToEdit;
 	
+	/**
+	 * List of comments for displaying favourites or want to read
+	 */
 	private ArrayList<CommentModel> assortList;
 	
 	private static Gson GSON = null;
 	
+	/**
+	 * Reply list of comments
+	 */
 	private ArrayList<CommentModel> replyList = new ArrayList<CommentModel>();
 		
 	private static Location cmpLocation;
@@ -265,8 +256,7 @@ public class ApplicationStateModel {
 
 	//Getters and Setters:
 	/**
-	 * @return
-	 * @uml.property  name="commentToEdit"
+	 * @return comment to edit
 	 */
 	public CommentModel getCommentToEdit()
 	{
@@ -276,7 +266,6 @@ public class ApplicationStateModel {
 	
 	/**
 	 * @param commentToEdit
-	 * @uml.property  name="commentToEdit"
 	 */
 	public void setCommentToEdit(CommentModel commentToEdit)
 	{
@@ -285,8 +274,7 @@ public class ApplicationStateModel {
 	}
 	
 	/**
-	 * @return
-	 * @uml.property  name="mLVAdapter"
+	 * @return adapter
 	 */
 	public MainListViewAdapter getMLVAdapter() {
 		return this.MLVAdapter;
@@ -294,15 +282,13 @@ public class ApplicationStateModel {
 
 	/**
 	 * @param mLVAdapter
-	 * @uml.property  name="mLVAdapter"
 	 */
 	public void setMLVAdapter(MainListViewAdapter mLVAdapter) {
 		this.MLVAdapter = mLVAdapter;
 	}
 
 	/**
-	 * @return
-	 * @uml.property  name="sCVAdapter"
+	 * @return adapter
 	 */
 	public SubCommentViewActivityAdapter getSCVAdapter() {
 		return this.SCVAdapter;
@@ -310,12 +296,15 @@ public class ApplicationStateModel {
 
 	/**
 	 * @param sCVAdapter
-	 * @uml.property  name="sCVAdapter"
 	 */
 	public void setSCVAdapter(SubCommentViewActivityAdapter sCVAdapter) {
 		this.SCVAdapter = sCVAdapter;
 	}
 
+	/**
+	 * 
+	 * @param fileContext
+	 */
 	public void setFileContext(Context fileContext) {
 		this.USER_fileContext = fileContext;
 		ApplicationStateModel.COMMENT_fileContext = fileContext;
@@ -323,8 +312,7 @@ public class ApplicationStateModel {
 	}
 
 	/**
-	 * @return
-	 * @uml.property  name="createCommentParent"
+	 * @return comment to be created as parent
 	 */
 	public CommentModel getCreateCommentParent() {
 		return this.createCommentParent;
@@ -332,15 +320,13 @@ public class ApplicationStateModel {
 
 	/**
 	 * @param createCommentParent
-	 * @uml.property  name="createCommentParent"
 	 */
 	public void setCreateCommentParent(CommentModel createCommentParent) {
 		this.createCommentParent = createCommentParent;
 	}
 
 	/**
-	 * @return
-	 * @uml.property  name="subCommentViewHead"
+	 * @return sub comment head
 	 */
 	public CommentModel getSubCommentViewHead() {
 		return this.subCommentViewHead;
@@ -348,15 +334,13 @@ public class ApplicationStateModel {
 
 	/**
 	 * @param subCommentViewHead
-	 * @uml.property  name="subCommentViewHead"
 	 */
 	public void setSubCommentViewHead(CommentModel subCommentViewHead) {
 		this.subCommentViewHead = subCommentViewHead;
 	}
 
 	/**
-	 * @return
-	 * @uml.property  name="commentList"
+	 * @return comment list
 	 */
 	public ArrayList<CommentModel> getCommentList() {
 		return this.commentList;
@@ -364,15 +348,13 @@ public class ApplicationStateModel {
 
 	/**
 	 * @param commentList
-	 * @uml.property  name="commentList"
 	 */
 	public void setCommentList(ArrayList<CommentModel> commentList) {
 		this.commentList = commentList;
 	}
 
 	/**
-	 * @return
-	 * @uml.property  name="userModel"
+	 * @return user model
 	 */
 	public UserModel getUserModel() {
 		return this.userModel;
@@ -380,23 +362,20 @@ public class ApplicationStateModel {
 	
 	/**
 	 * @param locationList
-	 * @uml.property  name="locationList"
 	 */
 	public void setLocationList(ArrayList<LocationModel> locationList) {
 		this.locationList = locationList;
 	}
 	
 	/**
-	 * @return
-	 * @uml.property  name="locationList"
+	 * @return location list
 	 */
 	public ArrayList<LocationModel> getLocationList(){
 		return this.locationList;
 	}
 
 	/**
-	 * @return
-	 * @uml.property  name="assortAdapter"
+	 * @return adapter
 	 */
 	public MainListViewAdapter getAssortAdapter()
 	{
@@ -406,7 +385,6 @@ public class ApplicationStateModel {
 	
 	/**
 	 * @param favsAdapter
-	 * @uml.property  name="assortAdapter"
 	 */
 	public void setAssortAdapter(MainListViewAdapter favsAdapter)
 	{
@@ -414,8 +392,7 @@ public class ApplicationStateModel {
 	}
 	
 	/**
-	 * @return
-	 * @uml.property  name="assortList"
+	 * @return list of comments
 	 */
 	public ArrayList<CommentModel> getAssortList()
 	{
@@ -424,7 +401,6 @@ public class ApplicationStateModel {
 	}
 	/**
 	 * @param assortList
-	 * @uml.property  name="assortList"
 	 */
 	public void setAssortList(ArrayList<CommentModel> assortList)
 	{
@@ -433,19 +409,39 @@ public class ApplicationStateModel {
 	}
 	
 
+	/**
+	 * @return reply list comments
+	 */
 	public ArrayList<CommentModel> getReplyList() {
 		return replyList;
 	}
+	/**
+	 * @param replyList
+	 */
 	public void setReplyList(ArrayList<CommentModel> replyList) {
 		this.replyList = replyList;
 	}
+	
+	/**
+	 * @param commentCollection
+	 */
+	public void addCommentsToReplyList(Collection<? extends CommentModel> commentCollection){
+		this.replyList.clear();
+		this.replyList.addAll(commentCollection);
+	}
 
+	/**
+	 * @return location
+	 */
 	public Location getCmpLocation()
 	{
 	
 		return cmpLocation;
 	}
 	
+	/**
+	 * @param cmpLocation
+	 */
 	public void setCmpLocation(Location cmpLocation)
 	{
 	
@@ -459,8 +455,6 @@ public class ApplicationStateModel {
 	/**
 	 * A method for updating the MainListViewAdapter from outside of the
 	 * singleton.
-	 * @param  void no arguments
-	 * @return      void, no return value.
 	 */
 	public void updateMainAdapter(){
 		this.MLVAdapter.notifyDataSetChanged();
@@ -469,14 +463,15 @@ public class ApplicationStateModel {
 	/**
 	 * A method for updating the SubCommentViewActivtyAdapter
 	 * from outside of the singleton.
-	 * @param  void, no arguments
-	 * @return      void, no return value.
 	 */
 	public void updateSubAdapter()
 	{
 		this.SCVAdapter.notifyDataSetChanged();
 	}
 	
+	/**
+	 * Updates the adapter for the assortedlistview
+	 */
 	public void updateAssortAdapter()
 	{
 		this.assortAdapter.notifyDataSetChanged();
@@ -485,8 +480,6 @@ public class ApplicationStateModel {
 	/**
 	 * A method for saving the list of head
 	 * comments(i.e. commentList) to file
-	 * @param  void, no arguments
-	 * @return      void, no return value.
 	 * @see #commentList
 	 */
 	public void saveComments(){
@@ -525,8 +518,6 @@ public class ApplicationStateModel {
 	 * The commentList is changed in place,
 	 * i.e. the reference is not changed, in
 	 * order to avoid conflicting references.
-	 * @param  void, no arguments
-	 * @return      void, no return value.
 	 * @see #commentList
 	 */
 	public void loadComments(){
@@ -591,8 +582,6 @@ public class ApplicationStateModel {
 	/**
 	 * A method for saving the user's
 	 * preferences to file.
-	 * @param  void, no arguments
-	 * @return      void, no return value.
 	 * @see #userModel
 	 */
 	public void saveUser(){
@@ -627,8 +616,6 @@ public class ApplicationStateModel {
 	/**
 	 * A method for loading the user's
 	 * preferences from file.
-	 * @param  void, no arguments
-	 * @return      void, no return value.
 	 * @see #userModel
 	 */
 	public void loadUser(){
@@ -696,8 +683,6 @@ public class ApplicationStateModel {
 	/**
 	 * A method for saving the list of location
 	 * models(i.e. locationList) to file
-	 * @param  void, no arguments
-	 * @return      void, no return value.
 	 * @see #locationList
 	 */
 	public void saveLocations(){
@@ -736,8 +721,6 @@ public class ApplicationStateModel {
 	 * The locationList is changed in place,
 	 * i.e. the reference is not changed, in
 	 * order to avoid conflicting references.
-	 * @param  void, no arguments
-	 * @return      void, no return value.
 	 * @see #commentList
 	 */
 	public void loadLocations(){
@@ -789,7 +772,11 @@ public class ApplicationStateModel {
 		}
 	}
 
-	 
+	 /**
+	  * Checks if the network is avaiable
+	  * @param context
+	  * @return network info
+	  */
 	 public boolean isNetworkAvailable(Context context) {
 		    ConnectivityManager connectivityManager 
 		          = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

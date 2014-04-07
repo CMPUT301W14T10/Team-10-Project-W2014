@@ -14,7 +14,9 @@ import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationListenerModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
 
-
+/**
+ * @version      1                (current version number of program)  <p>  Runs tests for ApplicationStateModel
+ */
 public class ApplicationStateModelTests extends ActivityInstrumentationTestCase2<MainListViewActivity> {
 	
 	Activity activity;
@@ -74,6 +76,7 @@ public class ApplicationStateModelTests extends ActivityInstrumentationTestCase2
 			closerLoc.setLongitude(closerComment.getLocation().getLongitude());
 			fartherLoc.setLatitude(fartherComment.getLocation().getLatitude());
 			fartherLoc.setLongitude(fartherComment.getLocation().getLongitude());
+			fail();
 			assertTrue("Comment with smaller index should be closer to user location.", (closerLoc.distanceTo(userLocation) <= fartherLoc.distanceTo(userLocation)));
 		}
 		activity.finish();
@@ -119,6 +122,7 @@ public class ApplicationStateModelTests extends ActivityInstrumentationTestCase2
 			closerLoc.setLongitude(closerComment.getLocation().getLongitude());
 			fartherLoc.setLatitude(fartherComment.getLocation().getLatitude());
 			fartherLoc.setLongitude(fartherComment.getLocation().getLongitude());
+			fail();
 			assertTrue("Comment with smaller index should be closer to user location.", (closerLoc.distanceTo(userLocation) > fartherLoc.distanceTo(userLocation)));
 		}
 		activity.finish();

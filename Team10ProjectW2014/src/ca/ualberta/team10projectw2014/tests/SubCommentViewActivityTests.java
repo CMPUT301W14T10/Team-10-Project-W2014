@@ -52,7 +52,7 @@ public class SubCommentViewActivityTests extends
 	 */
 	
 	public void testSortByProximity() throws Exception{
-		
+		fail();
 	}
 
 
@@ -76,6 +76,7 @@ public class SubCommentViewActivityTests extends
 
 	public void testShowHeadComment() throws Exception {
 	
+		fail();
 		CommentModel headComment = new CommentModel();
 		headComment.setAuthor("test author");
 		headComment.setTitle("test title");
@@ -122,7 +123,7 @@ public class SubCommentViewActivityTests extends
 	 * @throws Exception
 	 */
 	public void testHeadCommentText() throws Exception {
-		
+		fail();
 		CommentModel headComment = new CommentModel();
 		headComment.setAuthor("test author");
 		headComment.setTitle("test title");
@@ -174,6 +175,7 @@ public class SubCommentViewActivityTests extends
 
 	public void testShowSubComment() throws Exception {
 
+		fail();
 		CommentModel headComment = new CommentModel();
 		headComment.setAuthor("test author");
 		headComment.setTitle("test title");
@@ -214,6 +216,7 @@ public class SubCommentViewActivityTests extends
 		ImageView image = (ImageView) subCommentViewActivity
 				.findViewById(R.id.sub_comment_image);
 
+		fail();
 		ViewAsserts.assertOnScreen(subCommentView, textAuthor);
 		ViewAsserts.assertOnScreen(subCommentView, textReplyTitle);
 		ViewAsserts.assertOnScreen(subCommentView, textTitle);
@@ -231,7 +234,7 @@ public class SubCommentViewActivityTests extends
 	 */
 
 	public void testSubCommentText() throws Exception {
-
+		fail();
 		CommentModel headComment = new CommentModel();
 		headComment.setAuthor("test author");
 		headComment.setTitle("test title");
@@ -241,7 +244,7 @@ public class SubCommentViewActivityTests extends
 		headComment.setLocation(new LocationModel("Test Location name", 10.4,
 				10.4));
 
-		SubCommentModel subComment = new SubCommentModel(headComment);
+		CommentModel subComment = new CommentModel();
 		subComment.setAuthor("test author");
 		subComment.setTitle("test sub title");
 		subComment.setTimestamp(Calendar.getInstance());
@@ -275,6 +278,7 @@ public class SubCommentViewActivityTests extends
 		SimpleDateFormat sdf = new SimpleDateFormat("MMM. dd, yyyy - hh:mm aa",java.util.Locale.getDefault());
 		String timeString = sdf.format(headComment.getTimestamp().getTime());
 
+		fail();
 		assertEquals("Sub comment displays correct Reply Title",
 				subComment.getParentTitle(), textReplyTitle.getText());
 		assertEquals("Sub comment displays correct Title",

@@ -94,14 +94,28 @@
         android:text="@string/text_body"
         android:textSize="12sp" />
 
-    <Button
-        android:id="@+id/head_more_option"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/head_comment_text_body_sub"
-        android:background="?android:attr/selectableItemBackground"
-        android:text="@string/more_option"
-        android:textSize="14sp" />
+        <!-- Want to Read Button -->
+
+        <ImageButton
+            android:id="@+id/head_want_to_read_option"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_below="@+id/head_comment_text_body_sub"
+            android:layout_toLeftOf="@+id/head_edit_option"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_action_bookmark"/>
+        
+       	<!-- Edit Button -->
+
+        <ImageButton
+            android:id="@+id/head_edit_option"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_below="@+id/head_comment_text_body_sub"
+            android:layout_alignParentRight="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_action_edit"/>
 
 </RelativeLayout>
