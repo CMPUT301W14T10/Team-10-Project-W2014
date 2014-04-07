@@ -138,6 +138,10 @@ public class SubCommentViewActivityAdapter extends
 			//Required to be used in an inner method
 			final int pos = position;
 			
+			if(!commentList.get(pos).getAuthorAndroidID().contains(userData.getAndroidID())){
+				holder.editButton.setVisibility(View.GONE);
+			}
+			
 			holder.replyButton.setOnClickListener(new View.OnClickListener() {
 				
 				@Override

@@ -366,6 +366,10 @@ public class SubCommentViewActivity extends Activity {
 		ImageButton editButton = (ImageButton) header.findViewById(R.id.head_edit_option);
 		ImageView imageView = (ImageView) header
 				.findViewById(R.id.head_comment_image);
+		
+		if(!headComment.getAuthorAndroidID().contains(appState.getUserModel().getAndroidID())){
+			editButton.setVisibility(View.GONE);
+		}
 
 		// Set the items to the contents of the Head Comment
 		textTitle.setText(headComment.getTitle());
@@ -373,6 +377,7 @@ public class SubCommentViewActivity extends Activity {
 		textLocation.setText(headComment.getLocation().getName());
 		textTime.setText(timeToString(headComment.getTimestamp()));
 		textContent.setText(headComment.getContent());
+		
 
 		// Sets the image attached to the comment
 		if (headComment.getPhoto() != null) {

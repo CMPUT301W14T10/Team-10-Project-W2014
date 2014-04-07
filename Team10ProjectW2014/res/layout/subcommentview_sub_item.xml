@@ -127,38 +127,44 @@
             android:text="@string/reply_option"
             android:textSize="12sp" />
 
-        <!-- favourite Button -->
-
-        <ImageButton
-            android:id="@+id/favourite_option"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/want_to_read_option"
-            android:background="?android:attr/selectableItemBackground"
-            android:padding="10dp"
-            android:src="@drawable/ic_action_favourite" />
+            android:layout_alignParentRight="true" >
 
-        <!-- Want to Read Button -->
+            <!-- favourite Button -->
 
-        <ImageButton
-            android:id="@+id/want_to_read_option"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/edit_option"
-            android:background="?android:attr/selectableItemBackground"
-            android:padding="10dp"
-            android:src="@drawable/ic_action_bookmark" />
+            <ImageButton
+                android:id="@+id/favourite_option"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/want_to_read_option"
+                android:background="?android:attr/selectableItemBackground"
+                android:padding="10dp"
+                android:src="@drawable/ic_action_favourite" />
 
-        <!-- Edit Button -->
+            <!-- Want to Read Button -->
 
-        <ImageButton
-            android:id="@+id/edit_option"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:padding="10dp"
-            android:src="@drawable/ic_action_edit" />
+            <ImageButton
+                android:id="@+id/want_to_read_option"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/edit_option"
+                android:background="?android:attr/selectableItemBackground"
+                android:padding="10dp"
+                android:src="@drawable/ic_action_bookmark" />
+
+            <!-- Edit Button -->
+
+            <ImageButton
+                android:id="@+id/edit_option"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:padding="10dp"
+                android:src="@drawable/ic_action_edit" />
+        </LinearLayout>
     </RelativeLayout>
 
 </RelativeLayout>
