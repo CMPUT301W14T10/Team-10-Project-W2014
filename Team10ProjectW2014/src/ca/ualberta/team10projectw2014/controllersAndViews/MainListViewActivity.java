@@ -49,6 +49,7 @@ import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationListenerModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
+import ca.ualberta.team10projectw2014.network.ElasticSearchLocationOperations;
 import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 
 /**
@@ -94,7 +95,9 @@ public class MainListViewActivity extends Activity{
 		this.appState.setFileContext(this);
 		this.appState.loadUser();
 		//this.appState.loadComments();
-	
+		appState.setLocationList(new ArrayList<LocationModel>());
+		ElasticSearchLocationOperations.getLocationList(this);
+		appState.loadLocations();
 		//Log.e("Elastic Search MLVA", appState.getCommentList().get(0).getTitle().toString());
 		//Opens SubCommentViewActivity when a comment is selected:
 		this.commentView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -469,6 +472,7 @@ public class MainListViewActivity extends Activity{
 	        		this.appState.getUserModel().setSortByUserLoc(true);
 	        		buttonPressed.toggle();
 	        	}
+	        	break;
 	        case R.id.number_of_favourites:
 	            if (checked){
 	            	this.appState.getUserModel().setSortByPopularity(true);

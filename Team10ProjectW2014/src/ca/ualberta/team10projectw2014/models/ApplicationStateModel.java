@@ -161,9 +161,9 @@ public class ApplicationStateModel {
 	public static Comparator<CommentModel> locCompare = new Comparator<CommentModel>(){
 		
 		public int compare(CommentModel comment1, CommentModel comment2){
-			
 			//If the user's location is unavailable, simply set all of the comparisons to equal:
 			if(cmpLocation == null){
+				Log.e("location null?", "Location null.");
 				return 0;
 			}
 			//create a location with the latitude and longitude each of the comments under consideration:
@@ -175,8 +175,10 @@ public class ApplicationStateModel {
 			loc2.setLatitude(comment2.getLocation().getLatitude());
 			loc2.setLongitude(comment2.getLocation().getLongitude());
 			Log.e("Location of "+comment1.getTitle(), comment1.getLocation().getName());
+			Log.e("Coordinates:", Double.toString(comment1.getLocation().getLatitude()) +","+ Double.toString(comment1.getLocation().getLongitude()));
 			Log.e("Location of "+ comment1.getTitle(), comment1.getLocation().getName());
-			Log.e("Current location:", "");
+			Log.e("Coordinates:", Double.toString(comment2.getLocation().getLatitude()) +","+ Double.toString(comment2.getLocation().getLongitude()));
+			Log.e("Compare location:", Double.toString(cmpLocation.getLatitude()) +","+ Double.toString(cmpLocation.getLongitude()));
 			//get the difference in their distance from the user:
 			double difference = (loc1.distanceTo(cmpLocation) - loc2.distanceTo(cmpLocation));
 			
