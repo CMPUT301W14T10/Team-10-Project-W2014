@@ -25,21 +25,23 @@ import com.mapquest.android.maps.PolygonOverlay;
 
 
 /**
- * @author  cfudge
+ * @author  bpoulett
  */
 public class MapsViewActivity extends MapActivity{
 
 	protected MapView map;
     private AnnotationView annotation;
     private List<GeoPoint> poiLocs;
-    /**
+
+	/**
 	 * @uml.property  name="appState"
 	 * @uml.associationEnd  
 	 */
     private ApplicationStateModel appState;
     private ArrayList<CommentModel> flattenedList = new ArrayList<CommentModel>();
 
-    @Override
+
+	@Override
     public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_map_view);
@@ -135,5 +137,19 @@ public class MapsViewActivity extends MapActivity{
       return false;
     }
 	
+    public List<GeoPoint> getPoiLocs() {
+		return poiLocs;
+	}
+
+	public void setPoiLocs(List<GeoPoint> poiLocs) {
+		this.poiLocs = poiLocs;
+	}
 	
+	public ArrayList<CommentModel> getFlattenedList() {
+		return flattenedList;
+	}
+
+	public void setFlattenedList(ArrayList<CommentModel> flattenedList) {
+		this.flattenedList = flattenedList;
+	}
 }
