@@ -14,6 +14,10 @@ import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
 import junit.framework.TestCase;
 
+/**
+ * @author       Bradley Poulette <bpoulett@ualberta.ca>
+ * @version      1                (current version number of program)  <p>  Runs tests for MapsViewActivity
+ */
 public class MapsViewActivityTests extends ActivityInstrumentationTestCase2<MapsViewActivity> {
 
 	MapsViewActivity activity;

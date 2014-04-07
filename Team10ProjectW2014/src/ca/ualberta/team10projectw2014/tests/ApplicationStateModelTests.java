@@ -14,7 +14,9 @@ import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationListenerModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
 
-
+/**
+ * @version      1                (current version number of program)  <p>  Runs tests for ApplicationStateModel
+ */
 public class ApplicationStateModelTests extends ActivityInstrumentationTestCase2<MainListViewActivity> {
 	
 	Activity activity;
