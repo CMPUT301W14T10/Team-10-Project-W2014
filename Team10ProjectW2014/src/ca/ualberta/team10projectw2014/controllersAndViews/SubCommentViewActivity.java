@@ -357,35 +357,54 @@ public class SubCommentViewActivity extends Activity {
 		// Sets the image attached to the comment
 		if (headComment.getPhotoPath() != null) {
 
-			String imagePath = headComment.getPhotoPath();
-
-			// Get the dimensions of the bitmap
-			BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-			bmOptions.inJustDecodeBounds = true;
-			BitmapFactory.decodeFile(imagePath, bmOptions);
-			int photoW = bmOptions.outWidth;
-			int photoH = bmOptions.outHeight;
-
-			// Determine how much to scale down the image
-			int scaleFactor = Math.min(photoW / 50, photoH / 50);
-
-			// Decode the image file into a Bitmap sized to fill the View
-			bmOptions.inJustDecodeBounds = false;
-			bmOptions.inSampleSize = scaleFactor;
-			bmOptions.inPurgeable = true;
+//			String imagePath = headComment.getPhotoPath();
+//
+//			// Get the dimensions of the bitmap
+//			BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+//			bmOptions.inJustDecodeBounds = true;
+//			BitmapFactory.decodeFile(imagePath, bmOptions);
+//			int photoW = bmOptions.outWidth;
+//			int photoH = bmOptions.outHeight;
+//
+//			// Determine how much to scale down the image
+//			int scaleFactor = Math.min(photoW / 50, photoH / 50);
+//
+//			// Decode the image file into a Bitmap sized to fill the View
+//			bmOptions.inJustDecodeBounds = false;
+//			bmOptions.inSampleSize = scaleFactor;
+//			bmOptions.inPurgeable = true;
 
 			// Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
 			Bitmap bitmap = headComment.getPhoto();
 			imageView.setImageBitmap(bitmap);
 
 		}
-
+		else{
+			imageView.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_action_camera));
+		}
+		
 		wantToReadButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				appState.getUserModel().getWantToReadComments().add(appState.getSubCommentViewHead());
+				if(!appState.getSubCommentViewHead().isInArrayList(appState.getUserModel().getWantToReadComments())){
+					appState.getUserModel().getWantToReadComments().add(appState.getSubCommentViewHead());
+					appState.saveUser();
+					((ImageButton) v).setImageResource(R.drawable.ic_action_bookmark_red);
+				}
+				else{
+					appState.getSubCommentViewHead().removeFromArrayList(appState.getUserModel().getWantToReadComments());
+					appState.saveUser();
+					((ImageButton) v).setImageResource(R.drawable.ic_action_bookmark);
+				}
 			}
 		});
+		
+		if(!appState.getSubCommentViewHead().isInArrayList(appState.getUserModel().getWantToReadComments())){
+			wantToReadButton.setImageResource(R.drawable.ic_action_bookmark);
+		}
+		else{
+			wantToReadButton.setImageResource(R.drawable.ic_action_bookmark_red);
+		}
 
 		return header;
 	}

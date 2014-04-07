@@ -24,7 +24,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
@@ -95,8 +94,7 @@ public class MainListViewActivity extends Activity{
 		this.appState.setFileContext(this);
 		this.appState.loadUser();
 		//this.appState.loadComments();
-		
-		ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
+	
 		//Log.e("Elastic Search MLVA", appState.getCommentList().get(0).getTitle().toString());
 		//Opens SubCommentViewActivity when a comment is selected:
 		this.commentView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -118,6 +116,8 @@ public class MainListViewActivity extends Activity{
 		//Set the commentView in this activity to reflect the corresponding 
 		//adapter in the ApplicationStateModel:
 		this.commentView.setAdapter(this.appState.getMLVAdapter());
+		ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
+		sortMainList();
 	}
 
 	/**
@@ -197,9 +197,8 @@ public class MainListViewActivity extends Activity{
 				Collections.sort(this.appState.getCommentList(), ApplicationStateModel.popularityCompare);
 			}
 		}
-
+		this.appState.saveComments();
 		this.appState.updateMainAdapter();
-		
 	}
 
 	private void appStateSortChecker() {

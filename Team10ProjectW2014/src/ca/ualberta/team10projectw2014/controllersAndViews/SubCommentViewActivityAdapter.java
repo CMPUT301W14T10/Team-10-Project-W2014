@@ -138,10 +138,6 @@ public class SubCommentViewActivityAdapter extends
 			//Required to be used in an inner method
 			final int pos = position;
 			
-			if(commentList.get(pos).isInArrayList(appState.getUserModel().getFavourites())){
-				//holder.favouriteButton.setText("UnFavourite");
-			}
-			
 			holder.replyButton.setOnClickListener(new View.OnClickListener() {
 				
 				@Override
@@ -170,7 +166,7 @@ public class SubCommentViewActivityAdapter extends
 						appState.saveUser();
 						appState.saveComments();
 						appState.loadComments();
-						((Button) v).setText("UnFavourite");
+						((ImageButton) v).setImageResource(R.drawable.ic_action_star_yellow);
 						Toast.makeText(getContext(), "Comment added to favourites", Toast.LENGTH_SHORT).show();
 					}
 					else {
@@ -179,7 +175,7 @@ public class SubCommentViewActivityAdapter extends
 						appState.saveUser();
 						appState.saveComments();
 						appState.loadComments();
-						((Button) v).setText("Favourite");
+						((ImageButton) v).setImageResource(R.drawable.ic_action_favourite);
 						Toast.makeText(context, "Comment removed from Favourite List", Toast.LENGTH_LONG).show();
 					}
 					
@@ -190,11 +186,19 @@ public class SubCommentViewActivityAdapter extends
 			
 			//Open the More... dialog box for the selected comment 
 			holder.wantToReadButton.setOnClickListener(new View.OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v){
-					appState.getUserModel().getWantToReadComments().add(commentList.get(pos));
-					appState.saveUser();
+					if(!commentList.get(pos).isInArrayList(appState.getUserModel().getWantToReadComments())){
+						appState.getUserModel().getWantToReadComments().add(commentList.get(pos));
+						appState.saveUser();
+						((ImageButton) v).setImageResource(R.drawable.ic_action_bookmark_red);
+					}
+					else{
+						commentList.get(pos).removeFromArrayList(appState.getUserModel().getWantToReadComments());
+						appState.saveUser();
+						((ImageButton) v).setImageResource(R.drawable.ic_action_bookmark);
+					}
 				}
 			});
 			
@@ -229,35 +233,49 @@ public class SubCommentViewActivityAdapter extends
 		holder.textSubTitle.setText(commentList.get(position).getTitle());
 		holder.textUsername.setText(commentList.get(position).getAuthor());
 		holder.textContent.setText(commentList.get(position).getContent());
-	
+
+		if(!commentList.get(position).isInArrayList(appState.getUserModel().getFavourites())){
+			holder.favouriteButton.setImageResource(R.drawable.ic_action_favourite);
+		}
+		else{
+			holder.favouriteButton.setImageResource(R.drawable.ic_action_star_yellow);
+		}
 		
+		if(!commentList.get(position).isInArrayList(appState.getUserModel().getWantToReadComments())){
+			holder.wantToReadButton.setImageResource(R.drawable.ic_action_bookmark);
+		}
+		else{
+			holder.wantToReadButton.setImageResource(R.drawable.ic_action_bookmark_red);
+		}
+		// Sets the image attached to the comment
 		// Sets the image attached to the comment
 		if(commentList.get(position).getPhotoPath() != null){
+			
+//			// Gets the filepath for the image
+//			String imagePath = headCommentList.get(position).getPhotoPath();
+//
+//			// Get the dimensions of the bitmap
+//			BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+//			bmOptions.inJustDecodeBounds = true;
+//			BitmapFactory.decodeFile(imagePath, bmOptions);
+//			int photoW = bmOptions.outWidth;
+//			int photoH = bmOptions.outHeight;
+//
+//			// Determine how much to scale down the image
+//			int scaleFactor = Math.min(photoW/50, photoH/50);
+//
+//			// Decode the image file into a Bitmap sized to fill the View
+//			bmOptions.inJustDecodeBounds = false;
+//			bmOptions.inSampleSize = scaleFactor;
+//			bmOptions.inPurgeable = true;
 
-				String imagePath = commentList.get(position).getPhotoPath();
-			    // Get the dimensions of the View
-			    //int targetW = holder.imageView.getWidth();
-			    //int targetH = holder.imageView.getHeight();
-
-			    // Get the dimensions of the bitmap
-			    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-			    bmOptions.inJustDecodeBounds = true;
-			    BitmapFactory.decodeFile(imagePath, bmOptions);
-			    int photoW = bmOptions.outWidth;
-			    int photoH = bmOptions.outHeight;
-			    
-			    // Determine how much to scale down the image
-			    int scaleFactor = Math.min(photoW/75, photoH/75);
-
-			    // Decode the image file into a Bitmap sized to fill the View
-			    bmOptions.inJustDecodeBounds = false;
-			    bmOptions.inSampleSize = scaleFactor;
-			    bmOptions.inPurgeable = true;
-				
-
-			    Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
-			    holder.imageView.setImageBitmap(bitmap);
+			//Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
+			Bitmap bitmap = commentList.get(position).getPhoto();
+			holder.imageView.setImageBitmap(bitmap);
 			   
+		}
+		else{
+			holder.imageView.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_action_camera));
 		}
 	
 		
