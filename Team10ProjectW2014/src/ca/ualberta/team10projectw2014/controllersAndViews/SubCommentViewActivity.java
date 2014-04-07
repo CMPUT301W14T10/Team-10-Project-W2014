@@ -81,13 +81,7 @@ public class SubCommentViewActivity extends Activity {
 		// Disable the Home Icon on the Actionbar
 		actionbar = getActionBar();
 		actionbar.setDisplayShowHomeEnabled(false);
-		resources = getResources();
-		
-		
-		
-	
-		
-		
+		resources = getResources();		
 	}
 	
 	@Override
@@ -106,24 +100,28 @@ public class SubCommentViewActivity extends Activity {
 	
 		//if user has network connection, the app will try to pull comments from server
 		if(appState.isNetworkAvailable(this)){
-			ElasticSearchOperations.searchForReplies(this, appState.getSubCommentViewHead().getUniqueID());
+			ElasticSearchOperations.searchForReplies(this, appState,appState.getSubCommentViewHead().getUniqueID());
+			appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
+					R.layout.subcommentview_sub_item, appState.getReplyList(), appState
+							.getUserModel()));
+
 			
-			commentList = appState.getReplyList();
-			Log.e("ee",commentList.toString());
 		} else{
 			appState.loadComments();
 			commentList = appState.getSubCommentViewHead().getSubComments();
+		
+			// Gets all the SubComments and all its subComments and put them in a
+			// list
+			sortedList = new ArrayList<CommentModel>();
+			addCommentToList(commentList);
+
+			// Add the list of comments to the adapter to be displayed to list view
+			appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
+					R.layout.subcommentview_sub_item, sortedList, appState
+							.getUserModel()));
+
 		}
 
-		// Gets all the SubComments and all its subComments and put them in a
-		// list
-		sortedList = new ArrayList<CommentModel>();
-		addCommentToList(commentList);
-
-		// Add the list of comments to the adapter to be displayed to list view
-		appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
-				R.layout.subcommentview_sub_item, sortedList, appState
-						.getUserModel()));
 
 		subListView.setAdapter(appState.getSCVAdapter());
 		
@@ -223,6 +221,8 @@ public class SubCommentViewActivity extends Activity {
 		case R.id.action_sort:
 			// Bring up the dialog box for the user to sort comments by
 			sortComments();
+			return true;
+		case R.id.refresh_comments_sub:
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
