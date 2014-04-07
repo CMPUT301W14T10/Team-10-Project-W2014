@@ -88,7 +88,7 @@ public class ElasticSearchLocationOperations {
 	 * 
 	 * @author zjullion; adapted by dvyee
 	 */
-	public static void getLocationList(final CreateCommentActivity activity) {
+	public static void getLocationList(final Activity activity) {
 		final ArrayList<LocationModel> locationList = new ArrayList<LocationModel>();
 		if (GSON == null)
 			constructGson();
