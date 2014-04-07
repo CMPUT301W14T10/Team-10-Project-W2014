@@ -52,7 +52,7 @@ public class SubCommentViewActivityTests extends
 	 */
 	
 	public void testSortByProximity() throws Exception{
-		
+		fail();
 	}
 
 
@@ -76,6 +76,7 @@ public class SubCommentViewActivityTests extends
 
 	public void testShowHeadComment() throws Exception {
 	
+		fail();
 		CommentModel headComment = new CommentModel();
 		headComment.setAuthor("test author");
 		headComment.setTitle("test title");
@@ -174,6 +175,7 @@ public class SubCommentViewActivityTests extends
 
 	public void testShowSubComment() throws Exception {
 
+		fail();
 		CommentModel headComment = new CommentModel();
 		headComment.setAuthor("test author");
 		headComment.setTitle("test title");
@@ -232,7 +234,7 @@ public class SubCommentViewActivityTests extends
 	 */
 
 	public void testSubCommentText() throws Exception {
-
+		fail();
 		CommentModel headComment = new CommentModel();
 		headComment.setAuthor("test author");
 		headComment.setTitle("test title");
