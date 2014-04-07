@@ -190,6 +190,8 @@ public class SubCommentViewActivity extends Activity {
 								appState.getSubCommentViewHead()
 										.getNumFavourites() + 1);
 				addFavourite(appState.getSubCommentViewHead());
+				ElasticSearchOperations.delCommentModel(appState.getSubCommentViewHead().getUniqueID());
+				ElasticSearchOperations.pushComment(appState.getSubCommentViewHead(), "head");
 				appState.saveUser();
 				appState.saveComments();
 				appState.loadComments();
@@ -202,6 +204,8 @@ public class SubCommentViewActivity extends Activity {
 						.setNumFavourites(
 								appState.getSubCommentViewHead()
 										.getNumFavourites() - 1);
+				ElasticSearchOperations.delCommentModel(appState.getSubCommentViewHead().getUniqueID());
+				ElasticSearchOperations.pushComment(appState.getSubCommentViewHead(), "head");
 				appState.getSubCommentViewHead().removeFromArrayList(
 						appState.getUserModel().getFavourites());
 				appState.saveUser();

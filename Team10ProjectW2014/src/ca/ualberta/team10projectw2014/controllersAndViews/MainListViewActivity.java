@@ -158,9 +158,13 @@ public class MainListViewActivity extends Activity{
 				appState.pictureSort(this.appState.getCommentList(), ApplicationStateModel.dateCompare);
 			}
 			//Sort by location and picture:
-			else if(this.appState.getUserModel().isSortByLoc() == true) {
+			else if(this.appState.getUserModel().isSortByUserLoc() == true) {
 				appState.setCmpLocation(locationListener.getLastBestLocation());
 				appState.pictureSort(this.appState.getCommentList(), ApplicationStateModel.locCompare);
+			}
+			else if(this.appState.getUserModel().isSortByLoc()){
+				appState.setCmpLocation(appState.getUserModel().getSortLoc());
+				Collections.sort(this.appState.getCommentList(), ApplicationStateModel.locCompare);
 			}
 			//Sort by popularity(i.e. number of times favourited) and picture:
 			else if(this.appState.getUserModel().isSortByPopularity()){
@@ -177,8 +181,12 @@ public class MainListViewActivity extends Activity{
 				Collections.sort(this.appState.getCommentList(), ApplicationStateModel.dateCompare);
 			}
 			//Sort by location:
-			else if(this.appState.getUserModel().isSortByLoc() == true) {
+			else if(this.appState.getUserModel().isSortByUserLoc() == true) {
 				appState.setCmpLocation(locationListener.getLastBestLocation());
+				Collections.sort(this.appState.getCommentList(), ApplicationStateModel.locCompare);
+			}
+			else if(this.appState.getUserModel().isSortByLoc()){
+				appState.setCmpLocation(appState.getUserModel().getSortLoc());
 				Collections.sort(this.appState.getCommentList(), ApplicationStateModel.locCompare);
 			}
 			//Sort by popularity(i.e. number of times favourited):
@@ -186,9 +194,7 @@ public class MainListViewActivity extends Activity{
 				Collections.sort(this.appState.getCommentList(), ApplicationStateModel.popularityCompare);
 			}
 		}
-		
-//		this.appState.setMLVAdapter(new MainListViewAdapter(this, appState.getCommentList()));
-//		this.commentView.setAdapter(appState.getMLVAdapter());
+
 		this.appState.updateMainAdapter();
 		
 	}
