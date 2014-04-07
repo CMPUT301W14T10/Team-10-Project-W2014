@@ -33,7 +33,7 @@ public class MapsViewActivityTests extends ActivityInstrumentationTestCase2<Maps
 	}
 	
 	public void testMapThread() throws Throwable{
-		//fail();
+		fail();
 		
 		CommentModel headComment = new CommentModel();
 		headComment.setAuthor("test author");
@@ -61,9 +61,6 @@ public class MapsViewActivityTests extends ActivityInstrumentationTestCase2<Maps
 		
 		assertTrue(activity.getFlattenedList().contains(subComment));
 		
-		//Create subCommentViewHead in appState
-		//Run MapsViewActivity
-		//Assert that the sucCommentViewHead's location is in the poiLocs list
 	}
 	
 	

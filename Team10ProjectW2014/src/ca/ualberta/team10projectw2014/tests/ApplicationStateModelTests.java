@@ -74,6 +74,7 @@ public class ApplicationStateModelTests extends ActivityInstrumentationTestCase2
 			closerLoc.setLongitude(closerComment.getLocation().getLongitude());
 			fartherLoc.setLatitude(fartherComment.getLocation().getLatitude());
 			fartherLoc.setLongitude(fartherComment.getLocation().getLongitude());
+			fail();
 			assertTrue("Comment with smaller index should be closer to user location.", (closerLoc.distanceTo(userLocation) <= fartherLoc.distanceTo(userLocation)));
 		}
 		activity.finish();
@@ -119,6 +120,7 @@ public class ApplicationStateModelTests extends ActivityInstrumentationTestCase2
 			closerLoc.setLongitude(closerComment.getLocation().getLongitude());
 			fartherLoc.setLatitude(fartherComment.getLocation().getLatitude());
 			fartherLoc.setLongitude(fartherComment.getLocation().getLongitude());
+			fail();
 			assertTrue("Comment with smaller index should be closer to user location.", (closerLoc.distanceTo(userLocation) > fartherLoc.distanceTo(userLocation)));
 		}
 		activity.finish();
