@@ -9,6 +9,7 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -436,6 +437,10 @@ public class ApplicationStateModel {
 	}
 	public void setReplyList(ArrayList<CommentModel> replyList) {
 		this.replyList = replyList;
+	}
+	public void addCommentsToReplyList(Collection<? extends CommentModel> commentCollection){
+		this.replyList.clear();
+		this.replyList.addAll(commentCollection);
 	}
 
 	public Location getCmpLocation()

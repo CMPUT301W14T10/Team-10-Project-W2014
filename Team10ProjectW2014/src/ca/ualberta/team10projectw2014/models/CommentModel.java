@@ -96,7 +96,12 @@ public class CommentModel{
 	 * @uml.property  name="subComments"
 	 */
 	public ArrayList<CommentModel> getSubComments() {
-		return subComments;
+		return this.subComments;
+	}
+	
+	public void setSubComments(ArrayList<CommentModel> subComments){
+		this.subComments = new ArrayList<CommentModel>();
+		this.subComments = subComments;
 	}
 	/**
 	 * @return
