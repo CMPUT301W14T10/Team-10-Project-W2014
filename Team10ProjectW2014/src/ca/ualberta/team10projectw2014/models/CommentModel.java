@@ -20,10 +20,7 @@ public class CommentModel{
 	private String title;
 	private String content;
 	private String author;
-	/**
-	 * @uml.property  name="location"
-	 * @uml.associationEnd  
-	 */
+
 	private LocationModel location;
 	private Bitmap photo;
 	private Calendar timestamp;
@@ -38,8 +35,7 @@ public class CommentModel{
 	private String parentTitle = "";
 	
 	/**
-	 * @return
-	 * @uml.property  name="uniqueID"
+	 * @return string uniqueID
 	 */
 	public String getUniqueID() {
         return uniqueID;
@@ -47,7 +43,6 @@ public class CommentModel{
 
     /**
 	 * @param uniqueID
-	 * @uml.property  name="uniqueID"
 	 */
     public void setUniqueID(String uniqueID) {
         this.uniqueID = uniqueID;
@@ -57,132 +52,117 @@ public class CommentModel{
 	 * A method that adds the provided SubCommentModel to the
 	 * CommentModel's list of SubCommentModels.
 	 * @param  model - the SubCommentModel to add.
-	 * @return      void, no return value.
 	 */
 	public void addSubComment(CommentModel model){
 		subComments.add(model);
 	}
 	
 	/**
-	 * @return
-	 * @uml.property  name="imageUri"
+	 * @return Uri imageuri
 	 */
 	public Uri getImageUri() {
 		return imageUri;
 	}
 	/**
 	 * @param imageUri
-	 * @uml.property  name="imageUri"
 	 */
 	public void setImageUri(Uri imageUri) {
 		this.imageUri = imageUri;
 	}
 	/**
-	 * @return
-	 * @uml.property  name="photoPath"
+	 * @return string photopath
 	 */
 	public String getPhotoPath() {
 		return photoPath;
 	}
 	/**
 	 * @param photoPath
-	 * @uml.property  name="photoPath"
 	 */
 	public void setPhotoPath(String photoPath) {
 		this.photoPath = photoPath;
 	}
 	/**
-	 * @return
-	 * @uml.property  name="subComments"
+	 * @return list of commentmodels
 	 */
 	public ArrayList<CommentModel> getSubComments() {
 		return this.subComments;
 	}
 	
+	/**
+	 * @param subComments
+	 */
 	public void setSubComments(ArrayList<CommentModel> subComments){
 		this.subComments = new ArrayList<CommentModel>();
 		this.subComments = subComments;
 	}
 	/**
-	 * @return
-	 * @uml.property  name="title"
+	 * @return string title
 	 */
 	public String getTitle() {
 		return title;
 	}
 	/**
 	 * @param title
-	 * @uml.property  name="title"
 	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 	/**
-	 * @return
-	 * @uml.property  name="content"
+	 * @return string content
 	 */
 	public String getContent() {
 		return content;
 	}
 	/**
 	 * @param content
-	 * @uml.property  name="content"
 	 */
 	public void setContent(String content) {
 		this.content = content;
 	}
 	/**
-	 * @return
-	 * @uml.property  name="author"
+	 * @return string author
 	 */
 	public String getAuthor() {
 		return author;
 	}
 	/**
 	 * @param author
-	 * @uml.property  name="author"
 	 */
 	public void setAuthor(String author) {
 		this.author = author;
 	}
 	/**
-	 * @return
-	 * @uml.property  name="location"
+	 * @return location
 	 */
 	public LocationModel getLocation() {
 		return location;
 	}
 	/**
 	 * @param location
-	 * @uml.property  name="location"
 	 */
 	public void setLocation(LocationModel location) {
 		this.location = location;
 	}
 	/**
-	 * @return
-	 * @uml.property  name="photo"
+	 * @return bitmap photo
 	 */
 	public Bitmap getPhoto() {
 		return photo;
 	}
 	/**
 	 * @param photo
-	 * @uml.property  name="photo"
 	 */
 	public void setPhoto(Bitmap photo) {
 		this.photo = photo;
 	}
 	/**
-	 * @return
-	 * @uml.property  name="timestamp"
+	 * @return calendar timestamp
 	 */
 	public Calendar getTimestamp() {
 		return timestamp;
 	}
 	/**
 	 * @param timestamp
-	 * @uml.property  name="timestamp"
 	 */
 	public void setTimestamp(Calendar timestamp) {
 		this.timestamp = timestamp;
@@ -203,58 +183,67 @@ public class CommentModel{
     }
 	
 	/**
-	 * @return
-	 * @uml.property  name="timestamp_str"
+	 * @return string timestamp
 	 */
 	public String getTimestamp_str() {
 	    return timestamp_str;
 	}
 	/**
-	 * @return
-	 * @uml.property  name="numFavourites"
+	 * @return int number of favourites
 	 */
 	public int getNumFavourites() {
 		return numFavourites;
 	}
 	/**
 	 * @param numFavourites
-	 * @uml.property  name="numFavourites"
 	 */
 	public void setNumFavourites(int numFavourites) {
 		this.numFavourites = numFavourites;
 	}
 	/**
 	 * @param parentID
-	 * @uml.property  name="parentID"
 	 */
 	public void setParentID(String parentID) {
 		this.parentID = parentID;
 		
 	}
+	/**
+	 * @return string partentID
+	 */
 	public String getParentID(){
 		return this.parentID;
 	}
 	/**
-	 * @return
-	 * @uml.property  name="authorAndroidID"
+	 * @return string androidID
 	 */
 	public String getAuthorAndroidID() {
 		return authorAndroidID;
 	}
 	/**
 	 * @param authorAndroidID
-	 * @uml.property  name="authorAndroidID"
 	 */
 	public void setAuthorAndroidID(String authorAndroidID) {
 		this.authorAndroidID = authorAndroidID;
 	}
 	
+	/**
+	 * @param parentTitle
+	 */
 	public void setParentTitle(String parentTitle){
 		this.parentTitle = parentTitle;
 	}
+	/**
+	 * @return string parent title
+	 */
 	public String getParentTitle(){
 		return this.parentTitle;
 	}
+	/**
+	 * Compares comments in terms of ID
+	 * 
+	 * @param otherComment
+	 * @return boolean value
+	 */
 	public boolean compareComments(CommentModel otherComment){
 		if((this.getAuthorAndroidID().equals(otherComment.getAuthorAndroidID())) &&
 				(this.getTimestamp().equals(otherComment.getTimestamp())))
@@ -262,6 +251,12 @@ public class CommentModel{
 		else
 			return false;
 	}
+	/**
+	 * Checks if comment is in array list
+	 * 
+	 * @param commentList
+	 * @return boolean value
+	 */
 	public boolean isInArrayList(ArrayList<CommentModel> commentList){
 		for(CommentModel comment : commentList){
 			if(this.compareComments(comment))
@@ -270,6 +265,11 @@ public class CommentModel{
 		return false;	
 	}
 
+	/**
+	 * Removes comments from comment list
+	 * 
+	 * @param commentList
+	 */
 	public void removeFromArrayList(ArrayList<CommentModel> commentList)
 	{
 		CommentModel comment;
@@ -283,6 +283,12 @@ public class CommentModel{
 		}
 	}
 	
+	/**
+	 * Looks for a comment in a comment list
+	 * 
+	 * @param commentList
+	 * @return comment
+	 */
 	public CommentModel findInArrayList(ArrayList<? extends CommentModel> commentList){
 		CommentModel subCommentMatch;
 		for (CommentModel arrayListComment : commentList){
@@ -297,6 +303,12 @@ public class CommentModel{
 		return null;
 	}
 	
+	/**
+	 * Gets index in a comment list
+	 * 
+	 * @param commentList
+	 * @return index
+	 */
 	public int getIndex(ArrayList<? extends CommentModel> commentList){
 		CommentModel listComment;
 		for(int i = 0; i < commentList.size(); i++){
@@ -308,6 +320,11 @@ public class CommentModel{
 		return -1;
 	}
 
+	/**
+	 * Updates comment in comment list
+	 * 
+	 * @param commentList
+	 */
 	public void updateInArrayList(ArrayList<CommentModel> commentList){
 		for(int i = 0; i < commentList.size(); i++){
 			if(commentList.get(i).compareComments(this)){
@@ -316,6 +333,12 @@ public class CommentModel{
 		}
 	}
 	
+	/**
+	 * Updates comments
+	 * 
+	 * @param source
+	 * @param destination
+	 */
 	public static void updateComments(ArrayList<CommentModel> source, ArrayList<CommentModel> destination){
 		 for(CommentModel sourceComment : source){
 			 sourceComment.updateInArrayList(destination);

@@ -29,6 +29,8 @@ public class LocationListenerModel implements LocationListener {
  	
  	/**
  	 * Checks to see if either network or GPS are enabled, and asks user to turn GPS on if it is disabled.
+ 	 * 
+ 	 * @param context
  	 */
 	public LocationListenerModel(Context context) {
 		locationListenerModelErrorHandler.setContext(context);
@@ -69,6 +71,7 @@ public class LocationListenerModel implements LocationListener {
 	
 	/**
 	 * Returns the best location between GPS and network, then returns the result.
+	 * 
 	 * @return the current location, null if networks are not on
  	 */
 	public Location getLastBestLocation() {
@@ -110,6 +113,8 @@ public class LocationListenerModel implements LocationListener {
 	/**
 	 * Checks to see if the current location is a better one than what is known, and sets the known location to it
 	 * if this is true.
+	 * 
+	 * @param location
  	 */
 	private void makeUseOfNewLocation(Location location){
 		if ( isBetterLocation(location, currentBestLocation) ) {
@@ -122,8 +127,9 @@ public class LocationListenerModel implements LocationListener {
 	}
 	
 	/**
-	 * @return
-	 * @uml.property  name="currentBestLocation"
+	 * Gets the current location of the user
+	 * 
+	 * @return location
 	 */
 	public Location getCurrentBestLocation(){
 		return currentBestLocation;
