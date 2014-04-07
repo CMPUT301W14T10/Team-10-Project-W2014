@@ -109,12 +109,6 @@ public class SubCommentViewActivity extends Activity {
 					appState.getReplyList());
 			
 
-			for(CommentModel comment : appState.getSubCommentViewHead()
-					.getSubComments()) {
-				ElasticSearchOperations.searchForReplies(this, appState, comment.getUniqueID());
-				comment.setSubComments(appState.getReplyList());			
-			}
-
 		} else {
 			appState.loadComments();
 		}
@@ -617,20 +611,6 @@ public class SubCommentViewActivity extends Activity {
 		}
 	}
 
-	private void pullSubComments(CommentModel comment) {
-		ElasticSearchOperations.searchForReplies(this, appState,
-				comment.getUniqueID());
-		if(appState.getReplyList().size() == 0){
-			return;
-		}else{
-			comment.setSubComments(appState.getReplyList());
-			for (CommentModel model : comment.getSubComments()) {
-				pullSubComments(model);
-			}
-		}
-	
-
-	}
 
 	/*
 	 * if (appState.getUserModel().isSortByPic() == true) { // Sort by picture
