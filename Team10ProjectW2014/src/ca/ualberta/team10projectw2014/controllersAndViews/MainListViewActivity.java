@@ -373,7 +373,6 @@ public class MainListViewActivity extends Activity{
 		RadioGroup buttonGroup = (RadioGroup) buttonPressed.getParent();
 	    // Is the button now checked?
 	    boolean checked = ((RadioButton) view).isChecked();
-	    buttonGroup.clearCheck();
 	    //Check which radio button was clicked and set the
 	    //preferences and checked radio button as appropriate:
 	    switch(view.getId()) {
@@ -388,82 +387,118 @@ public class MainListViewActivity extends Activity{
 	            break;
 	            
 	        case R.id.location:
-	            if (checked){
-	            	appState.loadLocations();
-	        		int i;
+	        	if (checked){
+	        		ElasticSearchLocationOperations.getLocationList(this);
+	        		appState.saveLocations();
+	        		appState.loadLocations();
+	        		if(appState.getLocationList().isEmpty()){
+	        			Toast.makeText(getBaseContext(),
+	        					"No other locations available.",
+	        					Toast.LENGTH_LONG).show();
+						RadioButton button;
+						//if/else statements that set the correct radio button
+						//and check the sort by picture box if appropriate:
+						if(this.appState.getUserModel().isSortByDate()){
+							//Set the date radio button:
+							button = (RadioButton) buttonGroup.getChildAt(0);
+							button.toggle();
+						}
+						else if(this.appState.getUserModel().isSortByLoc()){
+							//Set the location radio button:
+							button = (RadioButton) buttonGroup.getChildAt(1);
+							button.setText("Location: " + appState.getUserModel().getSortLoc().getName());
+							button.toggle();
+						}
+						else if(this.appState.getUserModel().isSortByUserLoc()){
+							//Set the Popularity radio button:
+							button = (RadioButton) buttonGroup.getChildAt(2);
+							button.toggle();
+						}
+						else if(this.appState.getUserModel().isSortByPopularity()){
+							//Set the Popularity radio button:
+							button = (RadioButton) buttonGroup.getChildAt(3);
+							button.toggle();
+						}
+						else{
+							buttonGroup.clearCheck();
+						}
+	        		}
+	        		else{
+	        			int i;
 
-	        		// Sets/resets spinner set flag
-	        		MainListViewActivity.this.spinnerFlag = 0;
+	        			// Sets/resets spinner set flag
+	        			MainListViewActivity.this.spinnerFlag = 0;
 
-	        		// Gets the xml custom dialog layout
-	        		LayoutInflater li = LayoutInflater.from(this);
-	        		View locationDialogView = li.inflate(R.layout.dialog_location, null);
+	        			// Gets the xml custom dialog layout
+	        			LayoutInflater li = LayoutInflater.from(this);
+	        			View locationDialogView = li.inflate(R.layout.dialog_location, null);
 
-	        		// Builds alert dialog
-	        		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-	        		alertDialogBuilder.setView(locationDialogView);
-	        		
-	        		//get location list from app state fixes spinner lag
-	        		MainListViewActivity.this.locationList = appState.getLocationList();
-	        		
-	                // Gets best known location
-	                //stopListeningLocation();
-	                
-	                // Create tempt list to sort
-	                MainListViewActivity.this.tempLocationList = MainListViewActivity.
-	        				this.locationList;
-	                if(MainListViewActivity.this.tempLocationList == null)
-	                	Log.e("the null value is:", "tempLocationList");
-	        		// Sort list by proximity
-	        		Collections.sort(MainListViewActivity.this.tempLocationList, ApplicationStateModel.locationModelCompare);
-	        		// Loads up spinner with location names
-	        		final Spinner spinner = (Spinner) locationDialogView
-	        				.findViewById(R.id.location_dialog_spinner);
-	        		// Creates and populates a list of the location names for displaying
-	        		// in the spinner
-	        		ArrayList<String> locationNameList = new ArrayList<String>();
-	        		if (MainListViewActivity.this.tempLocationList.size() != 0) {
-	        			for (i = 0; i < MainListViewActivity.this.tempLocationList.size(); i++)
-	        				locationNameList.add(MainListViewActivity.this.
-	        						tempLocationList.get(i).getName());
-	        		} else
-	        			locationNameList.add("No Locations");
+	        			// Builds alert dialog
+	        			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+	        			alertDialogBuilder.setView(locationDialogView);
 
-	        		// Shows spinner
-	        		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-	        				android.R.layout.simple_spinner_item, locationNameList);
-	        		spinner.setAdapter(adapter);
+	        			//get location list from app state fixes spinner lag
+	        			MainListViewActivity.this.locationList = appState.getLocationList();
 
-	        		// Location dialog title
-	        		alertDialogBuilder.setTitle("Set Location");
+	        			// Gets best known location
+	        			//stopListeningLocation();
 
-	        		// Location dialog set button functionality
-	        		alertDialogBuilder.setPositiveButton("Set",
-	        				new DialogInterface.OnClickListener() {
+	        			// Create tempt list to sort
+	        			MainListViewActivity.this.tempLocationList = MainListViewActivity.
+	        					this.locationList;
+	        			if(MainListViewActivity.this.tempLocationList == null)
+	        				Log.e("the null value is:", "tempLocationList");
+	        			// Sort list by proximity
+	        			Collections.sort(MainListViewActivity.this.tempLocationList, ApplicationStateModel.locationModelCompare);
+	        			// Loads up spinner with location names
+	        			final Spinner spinner = (Spinner) locationDialogView
+	        					.findViewById(R.id.location_dialog_spinner);
+	        			// Creates and populates a list of the location names for displaying
+	        			// in the spinner
+	        			ArrayList<String> locationNameList = new ArrayList<String>();
+	        			if (MainListViewActivity.this.tempLocationList.size() != 0) {
+	        				for (i = 0; i < MainListViewActivity.this.tempLocationList.size(); i++)
+	        					locationNameList.add(MainListViewActivity.this.
+	        							tempLocationList.get(i).getName());
+	        			} else
+	        				locationNameList.add("No Locations");
 
-	        					@Override
-	        					public void onClick(DialogInterface dialog, int which) {
-	        						// Checks if no locations have been created and the user
-	        						// is trying to set a location
-	        						if (spinner.getSelectedItem().toString()
-	        								.matches("No Locations"))
-	        							Toast.makeText(getBaseContext(),
-	        									"No other locations available.",
-	        									Toast.LENGTH_LONG).show();
-	        						else {
-	        							appState.setCmpLocation(MainListViewActivity.
-	        									this.tempLocationList.get(spinner.getSelectedItemPosition()).generateLocation(), 
-	        									MainListViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()).getName());
-	        							MainListViewActivity.this.spinnerFlag = 1;
-	        			            	appState.getUserModel().setSortByLoc(true);
-	        			            	appState.getUserModel().setSortLoc(MainListViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()));
-	        			            	buttonPressed.setText("Location: "+appState.getUserModel().getSortLoc().getName());
-	        			            	buttonPressed.toggle();
-	        						}
+	        			// Shows spinner
+	        			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+	        					android.R.layout.simple_spinner_item, locationNameList);
+	        			spinner.setAdapter(adapter);
+
+	        			// Location dialog title
+	        			alertDialogBuilder.setTitle("Set Location");
+
+	        			// Location dialog set button functionality
+	        			alertDialogBuilder.setPositiveButton("Set",
+	        					new DialogInterface.OnClickListener() {
+
+	        				@Override
+	        				public void onClick(DialogInterface dialog, int which) {
+	        					// Checks if no locations have been created and the user
+	        					// is trying to set a location
+	        					if (spinner.getSelectedItem().toString()
+	        							.matches("No Locations"))
+	        						Toast.makeText(getBaseContext(),
+	        								"No other locations available.",
+	        								Toast.LENGTH_LONG).show();
+	        					else {
+	        						appState.setCmpLocation(MainListViewActivity.
+	        								this.tempLocationList.get(spinner.getSelectedItemPosition()).generateLocation(), 
+	        								MainListViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()).getName());
+	        						MainListViewActivity.this.spinnerFlag = 1;
+	        						appState.getUserModel().setSortByLoc(true);
+	        						appState.getUserModel().setSortLoc(MainListViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()));
+	        						buttonPressed.setText("Location: "+appState.getUserModel().getSortLoc().getName());
+	        						buttonPressed.toggle();
 	        					}
-	        				});
-	        		alertDialogBuilder.show();
-	            }
+	        				}
+	        			});
+	        			alertDialogBuilder.show();
+	        		}
+	        	}
 	            else{
 	            	this.appState.getUserModel().setSortByLoc(false);
 	            }
