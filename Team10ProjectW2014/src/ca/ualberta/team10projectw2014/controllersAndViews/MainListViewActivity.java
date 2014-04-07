@@ -49,6 +49,7 @@ import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationListenerModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
+import ca.ualberta.team10projectw2014.models.QueueModel;
 import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 
 /**
@@ -239,7 +240,16 @@ public class MainListViewActivity extends Activity{
 	 */
 	protected void onResume(){
 		super.onResume();
-		ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
+		if(this.appState.isNetworkAvailable(this)){
+		    while(true){
+		        QueueModel result = this.appState.pushList();
+		        if(result==null) break;
+		    }
+		    ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
+		}
+		else{
+		    appState.loadComments();
+		}
 		sortMainList();
 	}	
 	

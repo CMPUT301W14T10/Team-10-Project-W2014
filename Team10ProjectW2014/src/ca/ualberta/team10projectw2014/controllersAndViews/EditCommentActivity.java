@@ -677,10 +677,8 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 			appState.saveComments();
 			appState.loadComments();
 			
-			ElasticSearchOperations.delCommentModel(
-			        appState.getCommentToEdit().getUniqueID());
-			ElasticSearchOperations.pushComment(appState.getCommentToEdit(), 
-			        "HeadComment");
+			appState.queueDelete(appState.getCommentToEdit());
+			appState.queueAdd(appState.getCommentToEdit());
 			
 			//Destroy this activity so that we return to the previous one.
 			goBack();

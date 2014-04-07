@@ -53,7 +53,7 @@ public class ElasticSearchOperations {
 	 * @param model
 	 *            a CommentModel
 	 */
-	public static void pushComment(final CommentModel comment, final String type) {
+	public static void pushComment(final CommentModel comment) {
 		if (GSON == null)
 			constructGson();
 
@@ -63,10 +63,10 @@ public class ElasticSearchOperations {
 			public void run() {
 				HttpClient client = new DefaultHttpClient();
 				HttpPost request = null;
-				if (type.contains("SubComment")) {
-					request = new HttpPost(SERVER_URL_SUBCOMMENTS);
+				if (comment.getParentTitle().isEmpty()) {
+				    request = new HttpPost(SERVER_URL);
 				} else {
-					request = new HttpPost(SERVER_URL);
+				    request = new HttpPost(SERVER_URL_SUBCOMMENTS);
 				}
 
 				try {
@@ -97,13 +97,19 @@ public class ElasticSearchOperations {
 	 * 
 	 * @param uniqueID
 	 */
-	public static void delCommentModel(final String uniqueID) {
+	public static void delCommentModel(final CommentModel comment) {
 		Thread thread = new Thread() {
 			@Override
 			public void run() {
 				HttpClient client = new DefaultHttpClient();
-				HttpDelete delete = new HttpDelete(SERVER_URL + "_query"
-						+ "?q=uniqueID:" + uniqueID);
+				String url = null;
+				if(comment.getParentTitle().isEmpty())
+    				url = SERVER_URL;
+				else
+				    url = SERVER_URL_SUBCOMMENTS;
+				
+				HttpDelete delete = new HttpDelete(url + "_query"
+                        + "?q=uniqueID:" + comment.getUniqueID());
 
 				try {
 					HttpResponse response = client.execute(delete);

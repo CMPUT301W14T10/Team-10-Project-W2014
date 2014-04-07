@@ -715,7 +715,7 @@ public class CreateCommentActivity extends Activity implements
 				// Adds the newly created model to its referrent's list of
 				// subcomments
 				appState.getCreateCommentParent().addSubComment(model);
-				ElasticSearchOperations.pushComment(model,"SubComment");
+				appState.queueAdd(model);
 				appState.updateSubAdapter();
 			} else {
 				if (checkStringIsAllWhiteSpace(this.postUsername)) {
@@ -745,9 +745,12 @@ public class CreateCommentActivity extends Activity implements
 				model.setUniqueID(uniqueID);
 
 				appState.getCommentList().add(model);
-				ElasticSearchOperations.pushComment(model, "HeadComment");
+				appState.queueAdd(model);
+				
 			}
 
+			Log.i("Queue","From CCA, appState.queueList has " + appState.getQueue().toString());
+			
 			model.setLocation(this.postLocation);
 
 			appState.saveComments();
