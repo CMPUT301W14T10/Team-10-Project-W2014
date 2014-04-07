@@ -804,7 +804,7 @@ public class ApplicationStateModel {
 		 ArrayList<CommentModel> picArray = new ArrayList<CommentModel>();
 		 for (CommentModel comment : commentList) {
 			 // If comment does not have a photo
-			 if (comment.getPhotoPath() == null) {
+			 if (comment.getPhoto() == null) {
 				 // Add it to the array containing comments without pictures
 				 noPicArray.add(comment);
 			 }
