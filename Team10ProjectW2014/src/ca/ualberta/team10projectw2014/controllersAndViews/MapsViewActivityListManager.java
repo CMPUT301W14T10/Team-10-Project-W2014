@@ -9,6 +9,11 @@ import com.mapquest.android.maps.GeoPoint;
 import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import com.mapquest.android.maps.MapView;
 
+/**
+ * Deals with the lists in MapViewActivity
+ * @author  bpoulett
+ * @version 1
+ */
 public class MapsViewActivityListManager {
 	private ArrayList<CommentModel> flattenedList = new ArrayList<CommentModel>();
 
@@ -20,6 +25,7 @@ public class MapsViewActivityListManager {
 		this.flattenedList = flattenedList;
 	}
 
+	//Taken from SCVA
 	public void addCommentToList(
 			ArrayList<? extends CommentModel> subCommentList) {
 		if (subCommentList.size() == 0) {
@@ -34,6 +40,12 @@ public class MapsViewActivityListManager {
 		}
 	}
 
+	 /**
+     * Generates the coordinates form a list of locations to be used in
+     * {@link #onResume()}
+     * 
+     * @return locationlist the list of location coordinates
+     */
 	public List<OverlayItem> generateCoords(ApplicationStateModel appState,
 			MapView map) {
 		CommentModel headComment = appState.getSubCommentViewHead();
