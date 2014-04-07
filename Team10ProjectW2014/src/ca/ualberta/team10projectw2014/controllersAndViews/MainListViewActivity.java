@@ -49,6 +49,7 @@ import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationListenerModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
+import ca.ualberta.team10projectw2014.network.ElasticSearchLocationOperations;
 import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 
 /**
@@ -94,7 +95,9 @@ public class MainListViewActivity extends Activity{
 		this.appState.setFileContext(this);
 		this.appState.loadUser();
 		//this.appState.loadComments();
-	
+		appState.setLocationList(new ArrayList<LocationModel>());
+		ElasticSearchLocationOperations.getLocationList(this);
+		appState.loadLocations();
 		//Log.e("Elastic Search MLVA", appState.getCommentList().get(0).getTitle().toString());
 		//Opens SubCommentViewActivity when a comment is selected:
 		this.commentView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -207,11 +210,11 @@ public class MainListViewActivity extends Activity{
 			} else {
 				if (this.appState.getUserModel().isSortByUserLoc() == true) {
 					appState.setCmpLocation(locationListener
-							.getLastBestLocation());
+							.getLastBestLocation(), "Current Location");
 				} else {
 					if (this.appState.getUserModel().isSortByLoc()) {
 						appState.setCmpLocation(appState.getUserModel()
-								.getSortLoc());
+								.getSortLoc().generateLocation(), appState.getUserModel().getSortLoc().getName());
 					}
 				}
 			}
@@ -220,11 +223,11 @@ public class MainListViewActivity extends Activity{
 			} else {
 				if (this.appState.getUserModel().isSortByUserLoc() == true) {
 					appState.setCmpLocation(locationListener
-							.getLastBestLocation());
+							.getLastBestLocation(), "Current Location");
 				} else {
 					if (this.appState.getUserModel().isSortByLoc()) {
 						appState.setCmpLocation(appState.getUserModel()
-								.getSortLoc());
+								.getSortLoc().generateLocation(), appState.getUserModel().getSortLoc().getName());
 					}
 				}
 			}
@@ -366,7 +369,7 @@ public class MainListViewActivity extends Activity{
 	 * @param view - the radio button that was clicked.
 	 */
 	public void onRadioButtonClicked(View view) {
-		RadioButton buttonPressed = (RadioButton) view;
+		final RadioButton buttonPressed = (RadioButton) view;
 		RadioGroup buttonGroup = (RadioGroup) buttonPressed.getParent();
 	    // Is the button now checked?
 	    boolean checked = ((RadioButton) view).isChecked();
@@ -445,18 +448,21 @@ public class MainListViewActivity extends Activity{
 	        						if (spinner.getSelectedItem().toString()
 	        								.matches("No Locations"))
 	        							Toast.makeText(getBaseContext(),
-	        									"Please create a new location",
+	        									"No other locations available.",
 	        									Toast.LENGTH_LONG).show();
 	        						else {
 	        							appState.setCmpLocation(MainListViewActivity.
-	        									this.tempLocationList.get(spinner.getSelectedItemPosition()).generateLocation());
+	        									this.tempLocationList.get(spinner.getSelectedItemPosition()).generateLocation(), 
+	        									MainListViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()).getName());
 	        							MainListViewActivity.this.spinnerFlag = 1;
+	        			            	appState.getUserModel().setSortByLoc(true);
+	        			            	appState.getUserModel().setSortLoc(MainListViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()));
+	        			            	buttonPressed.setText("Location: "+appState.getUserModel().getSortLoc().getName());
+	        			            	buttonPressed.toggle();
 	        						}
 	        					}
 	        				});
 	        		alertDialogBuilder.show();
-	            	this.appState.getUserModel().setSortByLoc(true);
-	            	buttonPressed.toggle();
 	            }
 	            else{
 	            	this.appState.getUserModel().setSortByLoc(false);
@@ -464,11 +470,12 @@ public class MainListViewActivity extends Activity{
 	            break;
 	        case R.id.userlocation:
 	        	if(checked){
-					appState.setCmpLocation(locationListener.getLastBestLocation());
-					this.appState.getUserModel().setSortLoc(appState.getCmpLocation());
+					appState.setCmpLocation(locationListener.getLastBestLocation(), "Current Location");
+					this.appState.getUserModel().setSortLoc(new LocationModel(appState.getCmpLocation(), "Current Location"));
 	        		this.appState.getUserModel().setSortByUserLoc(true);
 	        		buttonPressed.toggle();
 	        	}
+	        	break;
 	        case R.id.number_of_favourites:
 	            if (checked){
 	            	this.appState.getUserModel().setSortByPopularity(true);
@@ -512,13 +519,20 @@ public class MainListViewActivity extends Activity{
 		else if(this.appState.getUserModel().isSortByLoc()){
 			//Set the location radio button:
 			button = (RadioButton) sortRadioGroup.getChildAt(1);
+			button.setText("Location: " + appState.getUserModel().getSortLoc().getName());
 			button.toggle();
 		}
-		else if(this.appState.getUserModel().isSortByPopularity()){
+		else if(this.appState.getUserModel().isSortByUserLoc()){
 			//Set the Popularity radio button:
 			button = (RadioButton) sortRadioGroup.getChildAt(2);
 			button.toggle();
 		}
+		else if(this.appState.getUserModel().isSortByPopularity()){
+			//Set the Popularity radio button:
+			button = (RadioButton) sortRadioGroup.getChildAt(3);
+			button.toggle();
+		}
+
 
 		if(this.appState.getUserModel().isSortByPic()){
 			//Set the sort by picture check box:

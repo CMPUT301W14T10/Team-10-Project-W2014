@@ -17,6 +17,13 @@ public class LocationModel{
 		this.name = name;
 	}
 
+	public LocationModel(Location cmpLocation, String name)
+	{
+		this.latitude = cmpLocation.getLatitude();
+		this.longitude = cmpLocation.getLongitude();
+		this.name = name;
+	}
+
 	/**
 	 * @return
 	 * @uml.property  name="name"

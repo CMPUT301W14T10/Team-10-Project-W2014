@@ -195,10 +195,11 @@ public class ElasticSearchOperations {
 						// entire contents of the list
 						ApplicationStateModel appState = ApplicationStateModel
 								.getInstance();
-						//appState.setCommentList(model);
+						appState.setCommentList(model);
 						appState.saveComments();
-						//appState.loadComments();
+						appState.loadComments();
 						appState.updateMainAdapter();
+						activity.sortMainList();
 						// Log.e(LOG_TAG, appState.getCommentList().toString());
 						// // print out the entire contents of the list
 						// appState.getCommentList().addAll(returnedData.getSources());

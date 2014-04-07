@@ -161,7 +161,6 @@ public class ApplicationStateModel {
 	public static Comparator<CommentModel> locCompare = new Comparator<CommentModel>(){
 		
 		public int compare(CommentModel comment1, CommentModel comment2){
-			
 			//If the user's location is unavailable, simply set all of the comparisons to equal:
 			if(cmpLocation == null){
 				return 0;
@@ -174,9 +173,6 @@ public class ApplicationStateModel {
 			Location loc2 = new Location("provider");
 			loc2.setLatitude(comment2.getLocation().getLatitude());
 			loc2.setLongitude(comment2.getLocation().getLongitude());
-			Log.e("Location of "+comment1.getTitle(), comment1.getLocation().getName());
-			Log.e("Location of "+ comment1.getTitle(), comment1.getLocation().getName());
-			Log.e("Current location:", "");
 			//get the difference in their distance from the user:
 			double difference = (loc1.distanceTo(cmpLocation) - loc2.distanceTo(cmpLocation));
 			
@@ -443,12 +439,12 @@ public class ApplicationStateModel {
 	/**
 	 * @param cmpLocation
 	 */
-	public void setCmpLocation(Location cmpLocation)
+	public void setCmpLocation(Location cmpLocation, String name)
 	{
 	
 		this.cmpLocation = cmpLocation;
 		if(this.userModel != null){
-			this.userModel.setSortLoc(cmpLocation);
+			this.userModel.setSortLoc(new LocationModel(cmpLocation, name));
 		}
 		this.saveUser();
 	}
@@ -667,7 +663,7 @@ public class ApplicationStateModel {
 				loadedUser = new UserModel(USER_fileContext);
 			}
 			this.userModel = loadedUser;
-			cmpLocation = this.userModel.getSortLoc();
+			cmpLocation = this.userModel.getSortLoc().generateLocation();
 			//close the file:
 			isr.close();
 			fis.close();
