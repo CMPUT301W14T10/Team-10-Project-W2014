@@ -265,22 +265,21 @@ public class ElasticSearchOperations {
 				final ElasticSearchSearchResponse<CommentModel> returnedData = GSON
 						.fromJson(responseJson, elasticSearchSearchResponseType);
 
-				Runnable updateModel = new Runnable() {
-					@Override
-					public void run() {
-						
-						appState.getReplyList().clear();
-						appState.getReplyList().addAll(returnedData.getSources());
-						appState.setReplyList(replyCommentList);
-						Log.e("REPLY COMMENT PULL",replyCommentList.toString());
-						appState.getSCVAdapter().notifyDataSetChanged();
-					}
-				};
-				activity.runOnUiThread(updateModel);
+						replyCommentList.clear();
+						appState.addCommentsToReplyList(returnedData.getSources());
+						appState.getSubCommentViewHead().setSubComments(appState.getReplyList());
+
 			}
 		};
 
 		thread.start();
+		
+		try{
+			thread.join();
+		} catch (InterruptedException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	/**
