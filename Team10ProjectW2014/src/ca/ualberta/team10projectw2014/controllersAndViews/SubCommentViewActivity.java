@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -98,10 +99,10 @@ public class SubCommentViewActivity extends Activity {
 		actionbar = getActionBar();
 		actionbar.setDisplayShowHomeEnabled(false);
 		resources = getResources();
-		
+
 		// Set the Title in the Actionbar to the title of the head comment
 		actionbar.setTitle(appState.getSubCommentViewHead().getTitle());
-		
+
 	}
 
 	/**
@@ -130,13 +131,13 @@ public class SubCommentViewActivity extends Activity {
 			// Add the sub Comments to the head comment
 			appState.getSubCommentViewHead().setSubComments(
 					appState.getReplyList());
-			
+
 			//LOAD SUBCOMMENTS FROM ES
-			
+
 			//Save all comments to local copy after getting all sub comments
 			appState.saveComments();
-			
-			
+
+
 
 		} else {
 			appState.loadComments();
@@ -149,7 +150,7 @@ public class SubCommentViewActivity extends Activity {
 
 		appState.setSCVAdapter(new SubCommentViewActivityAdapter(this,
 				R.layout.subcommentview_sub_item, sortedList, appState
-						.getUserModel()));
+				.getUserModel()));
 
 		subListView.setAdapter(appState.getSCVAdapter());
 
@@ -202,63 +203,63 @@ public class SubCommentViewActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
 		switch (item.getItemId()) {
-		case R.id.action_reply:
-			openReply();
-			return true;
-		case R.id.action_favourite:
-			// Add the head comment to the users favourite list
-			if (!appState.getSubCommentViewHead().isInArrayList(
-					appState.getUserModel().getFavourites())) {
-				Toast.makeText(this, "Comment added to favourites",
-						Toast.LENGTH_SHORT).show();
-				appState.getSubCommentViewHead()
-						.setNumFavourites(
-								appState.getSubCommentViewHead()
-										.getNumFavourites() + 1);
-				addFavourite(appState.getSubCommentViewHead());
-				appState.queueDelete(appState.getSubCommentViewHead());
-                appState.queueAdd(appState.getSubCommentViewHead());
-				appState.saveUser();
-				appState.saveComments();
-				appState.loadComments();
-				item.setIcon(resources
-						.getDrawable(R.drawable.ic_action_star_yellow));
-			} else {
-				Toast.makeText(this, "Comment removed from favourites",
-						Toast.LENGTH_SHORT).show();
-				appState.getSubCommentViewHead()
-						.setNumFavourites(
-								appState.getSubCommentViewHead()
-										.getNumFavourites() - 1);
-				appState.queueDelete(appState.getSubCommentViewHead());
-				appState.queueAdd(appState.getSubCommentViewHead());
-				appState.getSubCommentViewHead().removeFromArrayList(
-						appState.getUserModel().getFavourites());
-				appState.saveUser();
-				appState.saveComments();
-				appState.loadComments();
-				item.setIcon(resources
-						.getDrawable(R.drawable.ic_action_favourite));
+			case R.id.action_reply:
+				openReply();
+				return true;
+			case R.id.action_favourite:
+				// Add the head comment to the users favourite list
+				if (!appState.getSubCommentViewHead().isInArrayList(
+						appState.getUserModel().getFavourites())) {
+					Toast.makeText(this, "Comment added to favourites",
+							Toast.LENGTH_SHORT).show();
+					appState.getSubCommentViewHead()
+					.setNumFavourites(
+							appState.getSubCommentViewHead()
+							.getNumFavourites() + 1);
+					addFavourite(appState.getSubCommentViewHead());
+					appState.queueDelete(appState.getSubCommentViewHead());
+					appState.queueAdd(appState.getSubCommentViewHead());
+					appState.saveUser();
+					appState.saveComments();
+					appState.loadComments();
+					item.setIcon(resources
+							.getDrawable(R.drawable.ic_action_star_yellow));
+				} else {
+					Toast.makeText(this, "Comment removed from favourites",
+							Toast.LENGTH_SHORT).show();
+					appState.getSubCommentViewHead()
+					.setNumFavourites(
+							appState.getSubCommentViewHead()
+							.getNumFavourites() - 1);
+					appState.queueDelete(appState.getSubCommentViewHead());
+					appState.queueAdd(appState.getSubCommentViewHead());
+					appState.getSubCommentViewHead().removeFromArrayList(
+							appState.getUserModel().getFavourites());
+					appState.saveUser();
+					appState.saveComments();
+					appState.loadComments();
+					item.setIcon(resources
+							.getDrawable(R.drawable.ic_action_favourite));
 
-			}
-			return true;
+				}
+				return true;
 
-		case R.id.action_map:
-			openMap();
-			return true;
-		case R.id.action_edit_username:
-			// Bring up dialog box for the user to edit username
-			editUserName();
-			return true;
-		case R.id.action_sort:
-			// Bring up the dialog box for the user to sort comments by
-			sortComments();
-			return true;
-		case R.id.refresh_comments_sub:
-			onResume();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
+			case R.id.action_map:
+				openMap();
+				return true;
+			case R.id.action_edit_username:
+				// Bring up dialog box for the user to edit username
+				editUserName();
+				return true;
+			case R.id.action_sort:
+				// Bring up the dialog box for the user to sort comments by
+				sortComments();
+				return true;
+			case R.id.refresh_comments_sub:
+				onResume();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 
 	}
@@ -336,9 +337,9 @@ public class SubCommentViewActivity extends Activity {
 		// dialog window:
 		alert.setNegativeButton("Cancel",
 				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-					}
-				});
+			public void onClick(DialogInterface dialog, int whichButton) {
+			}
+		});
 
 		alert.show();
 	}
@@ -371,7 +372,7 @@ public class SubCommentViewActivity extends Activity {
 		ImageButton editButton = (ImageButton) header.findViewById(R.id.head_edit_option);
 		ImageView imageView = (ImageView) header
 				.findViewById(R.id.head_comment_image);
-		
+
 		if(!headComment.getAuthorAndroidID().contains(appState.getUserModel().getAndroidID())){
 			editButton.setVisibility(View.GONE);
 		}
@@ -382,7 +383,7 @@ public class SubCommentViewActivity extends Activity {
 		textLocation.setText(headComment.getLocation().getName());
 		textTime.setText(timeToString(headComment.getTimestamp()));
 		textContent.setText(headComment.getContent());
-		
+
 
 		// Sets the image attached to the comment
 		if (headComment.getPhoto() != null) {
@@ -392,7 +393,7 @@ public class SubCommentViewActivity extends Activity {
 		else{
 			imageView.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_action_camera));
 		}
-		
+
 		wantToReadButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -477,14 +478,14 @@ public class SubCommentViewActivity extends Activity {
 		moreDialog.setNeutralButton("Add to Read Later",
 				new DialogInterface.OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-						appState.getUserModel().getFavourites()
-								.add(commentData);
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				appState.getUserModel().getFavourites()
+				.add(commentData);
 
-					}
-				});
+			}
+		});
 
 		final Context editCommentContext = this;
 		// User will only have the option if the
@@ -493,19 +494,19 @@ public class SubCommentViewActivity extends Activity {
 			moreDialog.setNeutralButton("Edit Comment",
 					new DialogInterface.OnClickListener() {
 
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// TODO Auto-generated method stub
-							// Open CreateComment Activity
-							appState.setCommentToEdit(commentData);
-							Intent editComment = new Intent(
-									getApplicationContext(),
-									EditCommentActivity.class);
-							// subCommentView.putExtra("comment", (Object)
-							// headComment);
-							editCommentContext.startActivity(editComment);
-						}
-					});
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					// Open CreateComment Activity
+					appState.setCommentToEdit(commentData);
+					Intent editComment = new Intent(
+							getApplicationContext(),
+							EditCommentActivity.class);
+					// subCommentView.putExtra("comment", (Object)
+					// headComment);
+					editCommentContext.startActivity(editComment);
+				}
+			});
 		}
 
 		moreDialog.setNegativeButton("Cancel", null);
@@ -528,14 +529,14 @@ public class SubCommentViewActivity extends Activity {
 
 		// Check which checkbox was clicked
 		switch (view.getId()) {
-		// Set user preferences according
-		// to whether the pictures checkbox is checked:
-		case R.id.pictures:
-			if (checked)
-				this.appState.getUserModel().setSortByPic(true);
-			else
-				this.appState.getUserModel().setSortByPic(false);
-			break;
+			// Set user preferences according
+			// to whether the pictures checkbox is checked:
+			case R.id.pictures:
+				if (checked)
+					this.appState.getUserModel().setSortByPic(true);
+				else
+					this.appState.getUserModel().setSortByPic(false);
+				break;
 		}
 	}
 
@@ -547,17 +548,17 @@ public class SubCommentViewActivity extends Activity {
 
 		//set the fields of the dialog:
 		alert.setTitle("Sort By:");
-	
+
 		//get the dialogue's layout from XML:
 		LinearLayout optionsView = (LinearLayout)layoutInflater.inflate(R.layout.dialog_sort_by, 
 				null);
-		
+
 		//get the group of radio buttons that determine sorting criteria:
 		ViewGroup sortRadioGroup = (ViewGroup) optionsView.getChildAt(0);
-		
+
 		RadioButton button;
 		CheckBox box;
-		
+
 		//if/else statements that set the correct radio button
 		//and check the sort by picture box if appropriate:
 		if(this.appState.getUserModel().isSortByDate()){
@@ -588,7 +589,7 @@ public class SubCommentViewActivity extends Activity {
 			box = (CheckBox) optionsView.getChildAt(2);
 			box.setChecked(true);
 		}
-		
+
 		alert.setView(optionsView);
 
 		//set the positive button with its text and set up an on click listener
@@ -631,8 +632,15 @@ public class SubCommentViewActivity extends Activity {
 		switch(view.getId()) {
 			case R.id.date:
 				if (checked){
-					this.appState.getUserModel().setSortByDate(true);
-					buttonPressed.toggle();
+					if(this.appState.getUserModel().isSortByDate()){
+						this.appState.getUserModel().setSortByDate(false);
+						((RadioGroup) buttonPressed.getParent()).clearCheck();
+						setUpRadioButtons();
+					}
+					else{
+						this.appState.getUserModel().setSortByDate(true);
+						buttonPressed.toggle();
+					}
 				}
 				else{
 					this.appState.getUserModel().setSortByDate(false);
@@ -641,113 +649,96 @@ public class SubCommentViewActivity extends Activity {
 
 			case R.id.location:
 				if (checked){
-					appState.loadLocations();
-					if(appState.getLocationList().isEmpty()){
-						Toast.makeText(getBaseContext(),
-								"No other locations available.",
-								Toast.LENGTH_LONG).show();
-						RadioButton button;
-						//if/else statements that set the correct radio button
-						//and check the sort by picture box if appropriate:
-						if(this.appState.getUserModel().isSortByDate()){
-							//Set the date radio button:
-							button = (RadioButton) buttonGroup.getChildAt(0);
-							button.toggle();
-						}
-						else if(this.appState.getUserModel().isSortByLoc()){
-							//Set the location radio button:
-							button = (RadioButton) buttonGroup.getChildAt(1);
-							button.setText("Location: " + appState.getUserModel().getSortLoc().getName());
-							button.toggle();
-						}
-						else if(this.appState.getUserModel().isSortByUserLoc()){
-							//Set the Popularity radio button:
-							button = (RadioButton) buttonGroup.getChildAt(2);
-							button.toggle();
-						}
-						else if(this.appState.getUserModel().isSortByPopularity()){
-							//Set the Popularity radio button:
-							button = (RadioButton) buttonGroup.getChildAt(3);
-							button.toggle();
-						}
-						else{
-							buttonGroup.clearCheck();
-						}
+					if(this.appState.getUserModel().isSortByLoc()){
+						this.appState.getUserModel().setSortByLoc(false);
+						((RadioGroup) buttonPressed.getParent()).clearCheck();
+						setUpRadioButtons();
 					}
 					else{
-						int i;
+						ElasticSearchLocationOperations.getLocationList(this);
+						appState.saveLocations();
+						appState.loadLocations();
+						if(appState.getLocationList().isEmpty()){
+							Toast.makeText(getBaseContext(),
+									"No other locations available.",
+									Toast.LENGTH_LONG).show();
+							setUpRadioButtons();
+						}
+						else{
+							int i;
 
-						// Sets/resets spinner set flag
-						SubCommentViewActivity.this.spinnerFlag = 0;
+							// Sets/resets spinner set flag
+							SubCommentViewActivity.this.spinnerFlag = 0;
 
-						// Gets the xml custom dialog layout
-						LayoutInflater li = LayoutInflater.from(this);
-						View locationDialogView = li.inflate(R.layout.dialog_location, null);
+							// Gets the xml custom dialog layout
+							LayoutInflater li = LayoutInflater.from(this);
+							View locationDialogView = li.inflate(R.layout.dialog_location, null);
 
-						// Builds alert dialog
-						AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-						alertDialogBuilder.setView(locationDialogView);
+							// Builds alert dialog
+							AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+							alertDialogBuilder.setView(locationDialogView);
 
-						//get location list from app state fixes spinner lag
-						SubCommentViewActivity.this.locationList = appState.getLocationList();
+							//get location list from app state fixes spinner lag
+							SubCommentViewActivity.this.locationList = appState.getLocationList();
 
-						// Gets best known location
-						//stopListeningLocation();
+							// Gets best known location
+							//stopListeningLocation();
 
-						// Create tempt list to sort
-						SubCommentViewActivity.this.tempLocationList = SubCommentViewActivity.
-								this.locationList;
-						if(SubCommentViewActivity.this.tempLocationList == null)
-							Log.e("the null value is:", "tempLocationList");
-						// Sort list by proximity
-						Collections.sort(SubCommentViewActivity.this.tempLocationList, ApplicationStateModel.locationModelCompare);
-						// Loads up spinner with location names
-						final Spinner spinner = (Spinner) locationDialogView
-								.findViewById(R.id.location_dialog_spinner);
-						// Creates and populates a list of the location names for displaying
-						// in the spinner
-						ArrayList<String> locationNameList = new ArrayList<String>();
-						if (SubCommentViewActivity.this.tempLocationList.size() != 0) {
-							for (i = 0; i < SubCommentViewActivity.this.tempLocationList.size(); i++)
-								locationNameList.add(SubCommentViewActivity.this.
-										tempLocationList.get(i).getName());
-						} else
-							locationNameList.add("No Locations");
+							// Create tempt list to sort
+							SubCommentViewActivity.this.tempLocationList = SubCommentViewActivity.
+									this.locationList;
+							if(SubCommentViewActivity.this.tempLocationList == null)
+								Log.e("the null value is:", "tempLocationList");
+							// Sort list by proximity
+							Collections.sort(SubCommentViewActivity.this.tempLocationList, ApplicationStateModel.locationModelCompare);
+							// Loads up spinner with location names
+							final Spinner spinner = (Spinner) locationDialogView
+									.findViewById(R.id.location_dialog_spinner);
+							// Creates and populates a list of the location names for displaying
+							// in the spinner
+							ArrayList<String> locationNameList = new ArrayList<String>();
+							if (SubCommentViewActivity.this.tempLocationList.size() != 0) {
+								for (i = 0; i < SubCommentViewActivity.this.tempLocationList.size(); i++)
+									locationNameList.add(SubCommentViewActivity.this.
+											tempLocationList.get(i).getName());
+							} else
+								locationNameList.add("No Locations");
 
-						// Shows spinner
-						ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-								android.R.layout.simple_spinner_item, locationNameList);
-						spinner.setAdapter(adapter);
+							// Shows spinner
+							ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+									android.R.layout.simple_spinner_item, locationNameList);
+							spinner.setAdapter(adapter);
 
-						// Location dialog title
-						alertDialogBuilder.setTitle("Set Location");
+							// Location dialog title
+							alertDialogBuilder.setTitle("Set Location");
 
-						// Location dialog set button functionality
-						alertDialogBuilder.setPositiveButton("Set",
-								new DialogInterface.OnClickListener() {
+							// Location dialog set button functionality
+							alertDialogBuilder.setPositiveButton("Set",
+									new DialogInterface.OnClickListener() {
 
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								// Checks if no locations have been created and the user
-								// is trying to set a location
-								if (spinner.getSelectedItem().toString()
-										.matches("No Locations"))
-									Toast.makeText(getBaseContext(),
-											"No other locations available.",
-											Toast.LENGTH_LONG).show();
-								else {
-									appState.setCmpLocation(SubCommentViewActivity.
-											this.tempLocationList.get(spinner.getSelectedItemPosition()).generateLocation(), 
-											SubCommentViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()).getName());
-									SubCommentViewActivity.this.spinnerFlag = 1;
-									appState.getUserModel().setSortByLoc(true);
-									appState.getUserModel().setSortLoc(SubCommentViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()));
-									buttonPressed.setText("Location: "+appState.getUserModel().getSortLoc().getName());
-									buttonPressed.toggle();
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									// Checks if no locations have been created and the user
+									// is trying to set a location
+									if (spinner.getSelectedItem().toString()
+											.matches("No Locations"))
+										Toast.makeText(getBaseContext(),
+												"No other locations available.",
+												Toast.LENGTH_LONG).show();
+									else {
+										appState.setCmpLocation(SubCommentViewActivity.
+												this.tempLocationList.get(spinner.getSelectedItemPosition()).generateLocation(), 
+												SubCommentViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()).getName());
+										SubCommentViewActivity.this.spinnerFlag = 1;
+										appState.getUserModel().setSortByLoc(true);
+										appState.getUserModel().setSortLoc(SubCommentViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()));
+										buttonPressed.setText("Location: "+appState.getUserModel().getSortLoc().getName());
+										buttonPressed.toggle();
+									}
 								}
-							}
-						});
-						alertDialogBuilder.show();
+							});
+							alertDialogBuilder.show();
+						}
 					}
 				}
 				else{
@@ -756,22 +747,76 @@ public class SubCommentViewActivity extends Activity {
 				break;
 			case R.id.userlocation:
 				if(checked){
-					appState.setCmpLocation(locationListener.getLastBestLocation(), "Current Location");
-					this.appState.getUserModel().setSortLoc(new LocationModel(appState.getCmpLocation(), "Current Location"));
-					this.appState.getUserModel().setSortByUserLoc(true);
-					buttonPressed.toggle();
+					if(this.appState.getUserModel().isSortByUserLoc()){
+						this.appState.getUserModel().setSortByUserLoc(false);
+						((RadioGroup) buttonPressed.getParent()).clearCheck();
+						setUpRadioButtons();
+					}
+					else{
+						Location userLocation = locationListener.getLastBestLocation();
+						if(userLocation != null){
+							appState.setCmpLocation(locationListener.getLastBestLocation(), "Current Location");
+							this.appState.getUserModel().setSortLoc(new LocationModel(userLocation, "Current Location"));
+							this.appState.getUserModel().setSortByUserLoc(true);
+							buttonPressed.toggle();
+						}
+						setUpRadioButtons();
+					}
+				}
+				else{
+					this.appState.getUserModel().setSortByUserLoc(false);
 				}
 				break;
 			case R.id.number_of_favourites:
 				if (checked){
-					this.appState.getUserModel().setSortByPopularity(true);
-					buttonPressed.toggle();
+					if(this.appState.getUserModel().isSortByPopularity()){
+						this.appState.getUserModel().setSortByPopularity(false);
+						((RadioGroup) buttonPressed.getParent()).clearCheck();
+						setUpRadioButtons();
+					}
+					else{
+						this.appState.getUserModel().setSortByPopularity(true);
+						buttonPressed.toggle();
+					}
 				}
 				else{
 					this.appState.getUserModel().setSortByPopularity(false);
 				}
 				break;
 
+		}
+	}
+
+	public void setUpRadioButtons(){
+		LinearLayout optionsView = (LinearLayout)layoutInflater.inflate(R.layout.dialog_sort_by, 
+				null);
+		ViewGroup buttonGroup = (ViewGroup) optionsView.getChildAt(0);
+		RadioButton button;
+		//if/else statements that set the correct radio button
+		//and check the sort by picture box if appropriate:
+		if(this.appState.getUserModel().isSortByDate()){
+			//Set the date radio button:
+			button = (RadioButton) buttonGroup.getChildAt(0);
+			button.toggle();
+		}
+		else if(this.appState.getUserModel().isSortByLoc()){
+			//Set the location radio button:
+			button = (RadioButton) buttonGroup.getChildAt(1);
+			button.setText("Location: " + appState.getUserModel().getSortLoc().getName());
+			button.toggle();
+		}
+		else if(this.appState.getUserModel().isSortByUserLoc()){
+			//Set the Popularity radio button:
+			button = (RadioButton) buttonGroup.getChildAt(2);
+			button.toggle();
+		}
+		else if(this.appState.getUserModel().isSortByPopularity()){
+			//Set the Popularity radio button:
+			button = (RadioButton) buttonGroup.getChildAt(3);
+			button.toggle();
+		}
+		else{
+			((RadioGroup) buttonGroup).clearCheck();
 		}
 	}
 

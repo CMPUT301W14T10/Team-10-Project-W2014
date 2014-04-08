@@ -7,6 +7,7 @@
     android:orientation="vertical" >
 
     <RadioGroup 
+    android:id="@+id/radio_buttons"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">

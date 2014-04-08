@@ -24,6 +24,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
@@ -70,7 +71,7 @@ public class MainListViewActivity extends Activity{
 	private int spinnerFlag;
 	private ArrayList<LocationModel> locationList;
 	private ArrayList<LocationModel> tempLocationList;
-	
+
 	/**
 	 * In onCreate we will prepare the view to display the activity and set up 
 	 * the ApplicationStateModel, which is a singleton used throughout the 
@@ -86,8 +87,8 @@ public class MainListViewActivity extends Activity{
 		// http://stackoverflow.com/a/19232789/2557554
 		setOverlay = PreferenceManager.getDefaultSharedPreferences(this);
 		showOverlay = setOverlay.getBoolean("MainOverlayPref", true);
-		    if (showOverlay == true) showOverLay();
-		    
+		if (showOverlay == true) showOverLay();
+
 		setContentView(R.layout.activity_head_comment_view);
 		layoutInflater = LayoutInflater.from(this);
 		this.commentView = (ListView) findViewById(R.id.HeadCommentList);
@@ -129,30 +130,30 @@ public class MainListViewActivity extends Activity{
 	 * the below method is adapted from 
 	 * https://github.com/pranayairan/AndroidExamples/tree/master/AndroidHelpOverlay
 	 */
-    private void showOverLay(){
-        final Dialog dialog = new Dialog(MainListViewActivity.this, 
-                android.R.style.Theme_Translucent_NoTitleBar);
-        dialog.setContentView(R.layout.main_overlay_view);
-        LinearLayout layout = (LinearLayout) dialog.findViewById(R.id.overlayLayout);
-        layout.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                dialog.dismiss();
-                SharedPreferences.Editor editor = setOverlay.edit();
-                editor.putBoolean("MainOverlayPref", false);
-                editor.commit();
-            }
-        });
-        dialog.show();
-    }
-	
+	private void showOverLay(){
+		final Dialog dialog = new Dialog(MainListViewActivity.this, 
+				android.R.style.Theme_Translucent_NoTitleBar);
+		dialog.setContentView(R.layout.main_overlay_view);
+		LinearLayout layout = (LinearLayout) dialog.findViewById(R.id.overlayLayout);
+		layout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				dialog.dismiss();
+				SharedPreferences.Editor editor = setOverlay.edit();
+				editor.putBoolean("MainOverlayPref", false);
+				editor.commit();
+			}
+		});
+		dialog.show();
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu){
 		// Inflate the menu; this adds items to the action bar if present.
 		getMenuInflater().inflate(R.menu.head_comment_view, menu);
 		return true;
 	}
-	
+
 	/**
 	 * Determines which sorting algorithm should be used on the list of 
 	 * head comments, sorts the list, then updates the adapter to 
@@ -234,7 +235,7 @@ public class MainListViewActivity extends Activity{
 			}
 		}
 	}
-	
+
 
 	/**
 	 * In onResume the content view is set and the appState
@@ -244,18 +245,18 @@ public class MainListViewActivity extends Activity{
 	protected void onResume(){
 		super.onResume();
 		if(this.appState.isNetworkAvailable(this)){
-		    while(true){
-		        QueueModel result = this.appState.pushList();
-		        if(result==null) break;
-		    }
-		    ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
+			while(true){
+				QueueModel result = this.appState.pushList();
+				if(result==null) break;
+			}
+			ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
 		}
 		else{
-		    appState.loadComments();
+			appState.loadComments();
 		}
 		sortMainList();
 	}	
-	
+
 	/**
 	 * Sets functionality for buttons apparing on the actionbar
 	 * 
@@ -288,15 +289,15 @@ public class MainListViewActivity extends Activity{
 				onResume();
 				return true;
 
-			//Display the list of favourites specified in the user model
-			//when implemented:
+				//Display the list of favourites specified in the user model
+				//when implemented:
 			case R.id.action_favourites_main:
 				this.appState.setAssortList(appState.getUserModel().getFavourites());
 				assortList.putExtra("title", "Favourites");
 				this.startActivity(assortList);
 				return true;
-			//Display the list of want to read comments specified in the user model
-			//when implemented:
+				//Display the list of want to read comments specified in the user model
+				//when implemented:
 			case R.id.action_want_to_read_main:
 				this.appState.setAssortList(appState.getUserModel().getWantToReadComments());
 				assortList.putExtra("title", "Want to Read");
@@ -305,9 +306,9 @@ public class MainListViewActivity extends Activity{
 			default:
 				return super.onOptionsItemSelected(item);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Brings up a dialog box to prompt user for a new username:
 	 */
@@ -329,7 +330,7 @@ public class MainListViewActivity extends Activity{
 				//get the text from the editable:
 				Editable usernameEditable = usernameText.getText();
 				String usernameString = usernameEditable.toString();
-				
+
 				//Set the new username and save the UserModel:
 				appState.getUserModel().setUsername(usernameString);
 				appState.saveUser();
@@ -345,7 +346,7 @@ public class MainListViewActivity extends Activity{
 
 		alert.show();
 	}
-	
+
 
 	/**
 	 * Sets functionality of checkbox
@@ -356,22 +357,22 @@ public class MainListViewActivity extends Activity{
 	 * @param view of checkbox being clicked
 	 */
 	public void onCheckboxClicked(View view) {
-	    // Is the view now checked?
-	    boolean checked = ((CheckBox) view).isChecked();
-	    
-	    // Check which checkbox was clicked
-	    switch(view.getId()) {
-	    	//Set user preferences according
-	    	//to whether the pictures checkbox is checked:
-	        case R.id.pictures:
-	            if (checked)
-	            	this.appState.getUserModel().setSortByPic(true);
-	            else
-	            	this.appState.getUserModel().setSortByPic(false);
-	            break;
-	    }
+		// Is the view now checked?
+		boolean checked = ((CheckBox) view).isChecked();
+
+		// Check which checkbox was clicked
+		switch(view.getId()) {
+			//Set user preferences according
+			//to whether the pictures checkbox is checked:
+			case R.id.pictures:
+				if (checked)
+					this.appState.getUserModel().setSortByPic(true);
+				else
+					this.appState.getUserModel().setSortByPic(false);
+				break;
+		}
 	}
-	
+
 	/**
 	 * Responds to clicks on a radio button in the sort by alert
 	 * dialog. Adapted from the android developer website
@@ -381,160 +382,200 @@ public class MainListViewActivity extends Activity{
 	public void onRadioButtonClicked(View view) {
 		final RadioButton buttonPressed = (RadioButton) view;
 		RadioGroup buttonGroup = (RadioGroup) buttonPressed.getParent();
-	    // Is the button now checked?
-	    boolean checked = ((RadioButton) view).isChecked();
-	    //Check which radio button was clicked and set the
-	    //preferences and checked radio button as appropriate:
-	    switch(view.getId()) {
-	        case R.id.date:
-	            if (checked){
-	            	this.appState.getUserModel().setSortByDate(true);
-	            	buttonPressed.toggle();
-	            }
-	            else{
-	        		this.appState.getUserModel().setSortByDate(false);
-	            }
-	            break;
-	            
-	        case R.id.location:
-	        	if (checked){
-	        		ElasticSearchLocationOperations.getLocationList(this);
-	        		appState.saveLocations();
-	        		appState.loadLocations();
-	        		if(appState.getLocationList().isEmpty()){
-	        			Toast.makeText(getBaseContext(),
-	        					"No other locations available.",
-	        					Toast.LENGTH_LONG).show();
-						RadioButton button;
-						//if/else statements that set the correct radio button
-						//and check the sort by picture box if appropriate:
-						if(this.appState.getUserModel().isSortByDate()){
-							//Set the date radio button:
-							button = (RadioButton) buttonGroup.getChildAt(0);
-							button.toggle();
-						}
-						else if(this.appState.getUserModel().isSortByLoc()){
-							//Set the location radio button:
-							button = (RadioButton) buttonGroup.getChildAt(1);
-							button.setText("Location: " + appState.getUserModel().getSortLoc().getName());
-							button.toggle();
-						}
-						else if(this.appState.getUserModel().isSortByUserLoc()){
-							//Set the Popularity radio button:
-							button = (RadioButton) buttonGroup.getChildAt(2);
-							button.toggle();
-						}
-						else if(this.appState.getUserModel().isSortByPopularity()){
-							//Set the Popularity radio button:
-							button = (RadioButton) buttonGroup.getChildAt(3);
-							button.toggle();
+		// Is the button now checked?
+		boolean checked = ((RadioButton) view).isChecked();
+		//Check which radio button was clicked and set the
+		//preferences and checked radio button as appropriate:
+		switch(view.getId()) {
+			case R.id.date:
+				if (checked){
+					if(this.appState.getUserModel().isSortByDate()){
+						this.appState.getUserModel().setSortByDate(false);
+						((RadioGroup) buttonPressed.getParent()).clearCheck();
+						setUpRadioButtons();
+					}
+					else{
+						this.appState.getUserModel().setSortByDate(true);
+						buttonPressed.toggle();
+					}
+				}
+				else{
+					this.appState.getUserModel().setSortByDate(false);
+				}
+				break;
+
+			case R.id.location:
+				if (checked){
+					if(this.appState.getUserModel().isSortByLoc()){
+						this.appState.getUserModel().setSortByLoc(false);
+						((RadioGroup) buttonPressed.getParent()).clearCheck();
+						setUpRadioButtons();
+					}
+					else{
+						ElasticSearchLocationOperations.getLocationList(this);
+						appState.saveLocations();
+						appState.loadLocations();
+						if(appState.getLocationList().isEmpty()){
+							Toast.makeText(getBaseContext(),
+									"No other locations available.",
+									Toast.LENGTH_LONG).show();
+							setUpRadioButtons();
 						}
 						else{
-							buttonGroup.clearCheck();
+							int i;
+
+							// Sets/resets spinner set flag
+							MainListViewActivity.this.spinnerFlag = 0;
+
+							// Gets the xml custom dialog layout
+							LayoutInflater li = LayoutInflater.from(this);
+							View locationDialogView = li.inflate(R.layout.dialog_location, null);
+
+							// Builds alert dialog
+							AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+							alertDialogBuilder.setView(locationDialogView);
+
+							//get location list from app state fixes spinner lag
+							MainListViewActivity.this.locationList = appState.getLocationList();
+
+							// Gets best known location
+							//stopListeningLocation();
+
+							// Create tempt list to sort
+							MainListViewActivity.this.tempLocationList = MainListViewActivity.
+									this.locationList;
+							if(MainListViewActivity.this.tempLocationList == null)
+								Log.e("the null value is:", "tempLocationList");
+							// Sort list by proximity
+							Collections.sort(MainListViewActivity.this.tempLocationList, ApplicationStateModel.locationModelCompare);
+							// Loads up spinner with location names
+							final Spinner spinner = (Spinner) locationDialogView
+									.findViewById(R.id.location_dialog_spinner);
+							// Creates and populates a list of the location names for displaying
+							// in the spinner
+							ArrayList<String> locationNameList = new ArrayList<String>();
+							if (MainListViewActivity.this.tempLocationList.size() != 0) {
+								for (i = 0; i < MainListViewActivity.this.tempLocationList.size(); i++)
+									locationNameList.add(MainListViewActivity.this.
+											tempLocationList.get(i).getName());
+							} else
+								locationNameList.add("No Locations");
+
+							// Shows spinner
+							ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+									android.R.layout.simple_spinner_item, locationNameList);
+							spinner.setAdapter(adapter);
+
+							// Location dialog title
+							alertDialogBuilder.setTitle("Set Location");
+
+							// Location dialog set button functionality
+							alertDialogBuilder.setPositiveButton("Set",
+									new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									// Checks if no locations have been created and the user
+									// is trying to set a location
+									if (spinner.getSelectedItem().toString()
+											.matches("No Locations"))
+										Toast.makeText(getBaseContext(),
+												"No other locations available.",
+												Toast.LENGTH_LONG).show();
+									else {
+										appState.setCmpLocation(MainListViewActivity.
+												this.tempLocationList.get(spinner.getSelectedItemPosition()).generateLocation(), 
+												MainListViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()).getName());
+										MainListViewActivity.this.spinnerFlag = 1;
+										appState.getUserModel().setSortByLoc(true);
+										appState.getUserModel().setSortLoc(MainListViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()));
+										buttonPressed.setText("Location: "+appState.getUserModel().getSortLoc().getName());
+										buttonPressed.toggle();
+									}
+								}
+							});
+							alertDialogBuilder.show();
 						}
-	        		}
-	        		else{
-	        			int i;
+					}
+				}
+				else{
+					this.appState.getUserModel().setSortByLoc(false);
+				}
+				break;
+			case R.id.userlocation:
+				if(checked){
+					if(this.appState.getUserModel().isSortByUserLoc()){
+						this.appState.getUserModel().setSortByUserLoc(false);
+						((RadioGroup) buttonPressed.getParent()).clearCheck();
+						setUpRadioButtons();
+					}
+					else{
+						Location userLocation = locationListener.getLastBestLocation();
+						if(userLocation != null){
+							appState.setCmpLocation(locationListener.getLastBestLocation(), "Current Location");
+							this.appState.getUserModel().setSortLoc(new LocationModel(userLocation, "Current Location"));
+							this.appState.getUserModel().setSortByUserLoc(true);
+							buttonPressed.toggle();
+						}
+						setUpRadioButtons();
+					}
+				}
+				else{
+					this.appState.getUserModel().setSortByUserLoc(false);
+				}
+				break;
+			case R.id.number_of_favourites:
+				if (checked){
+					if(this.appState.getUserModel().isSortByPopularity()){
+						this.appState.getUserModel().setSortByPopularity(false);
+						((RadioGroup) buttonPressed.getParent()).clearCheck();
+						setUpRadioButtons();
+					}
+					else{
+						this.appState.getUserModel().setSortByPopularity(true);
+						buttonPressed.toggle();
+					}
+				}
+				else{
+					this.appState.getUserModel().setSortByPopularity(false);
+				}
+				break;
 
-	        			// Sets/resets spinner set flag
-	        			MainListViewActivity.this.spinnerFlag = 0;
-
-	        			// Gets the xml custom dialog layout
-	        			LayoutInflater li = LayoutInflater.from(this);
-	        			View locationDialogView = li.inflate(R.layout.dialog_location, null);
-
-	        			// Builds alert dialog
-	        			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-	        			alertDialogBuilder.setView(locationDialogView);
-
-	        			//get location list from app state fixes spinner lag
-	        			MainListViewActivity.this.locationList = appState.getLocationList();
-
-	        			// Gets best known location
-	        			//stopListeningLocation();
-
-	        			// Create tempt list to sort
-	        			MainListViewActivity.this.tempLocationList = MainListViewActivity.
-	        					this.locationList;
-	        			if(MainListViewActivity.this.tempLocationList == null)
-	        				Log.e("the null value is:", "tempLocationList");
-	        			// Sort list by proximity
-	        			Collections.sort(MainListViewActivity.this.tempLocationList, ApplicationStateModel.locationModelCompare);
-	        			// Loads up spinner with location names
-	        			final Spinner spinner = (Spinner) locationDialogView
-	        					.findViewById(R.id.location_dialog_spinner);
-	        			// Creates and populates a list of the location names for displaying
-	        			// in the spinner
-	        			ArrayList<String> locationNameList = new ArrayList<String>();
-	        			if (MainListViewActivity.this.tempLocationList.size() != 0) {
-	        				for (i = 0; i < MainListViewActivity.this.tempLocationList.size(); i++)
-	        					locationNameList.add(MainListViewActivity.this.
-	        							tempLocationList.get(i).getName());
-	        			} else
-	        				locationNameList.add("No Locations");
-
-	        			// Shows spinner
-	        			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-	        					android.R.layout.simple_spinner_item, locationNameList);
-	        			spinner.setAdapter(adapter);
-
-	        			// Location dialog title
-	        			alertDialogBuilder.setTitle("Set Location");
-
-	        			// Location dialog set button functionality
-	        			alertDialogBuilder.setPositiveButton("Set",
-	        					new DialogInterface.OnClickListener() {
-
-	        				@Override
-	        				public void onClick(DialogInterface dialog, int which) {
-	        					// Checks if no locations have been created and the user
-	        					// is trying to set a location
-	        					if (spinner.getSelectedItem().toString()
-	        							.matches("No Locations"))
-	        						Toast.makeText(getBaseContext(),
-	        								"No other locations available.",
-	        								Toast.LENGTH_LONG).show();
-	        					else {
-	        						appState.setCmpLocation(MainListViewActivity.
-	        								this.tempLocationList.get(spinner.getSelectedItemPosition()).generateLocation(), 
-	        								MainListViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()).getName());
-	        						MainListViewActivity.this.spinnerFlag = 1;
-	        						appState.getUserModel().setSortByLoc(true);
-	        						appState.getUserModel().setSortLoc(MainListViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()));
-	        						buttonPressed.setText("Location: "+appState.getUserModel().getSortLoc().getName());
-	        						buttonPressed.toggle();
-	        					}
-	        				}
-	        			});
-	        			alertDialogBuilder.show();
-	        		}
-	        	}
-	            else{
-	            	this.appState.getUserModel().setSortByLoc(false);
-	            }
-	            break;
-	        case R.id.userlocation:
-	        	if(checked){
-					appState.setCmpLocation(locationListener.getLastBestLocation(), "Current Location");
-					this.appState.getUserModel().setSortLoc(new LocationModel(appState.getCmpLocation(), "Current Location"));
-	        		this.appState.getUserModel().setSortByUserLoc(true);
-	        		buttonPressed.toggle();
-	        	}
-	        	break;
-	        case R.id.number_of_favourites:
-	            if (checked){
-	            	this.appState.getUserModel().setSortByPopularity(true);
-	            	buttonPressed.toggle();
-	            }
-	            else{
-	            	this.appState.getUserModel().setSortByPopularity(false);
-	            }
-	            break;
-	            
-	    }
+		}
 	}
-	
-	
+
+	public void setUpRadioButtons(){
+		LinearLayout optionsView = (LinearLayout)layoutInflater.inflate(R.layout.dialog_sort_by, 
+				null);
+		ViewGroup buttonGroup = (ViewGroup) optionsView.getChildAt(0);
+		RadioButton button;
+		//if/else statements that set the correct radio button
+		//and check the sort by picture box if appropriate:
+		if(this.appState.getUserModel().isSortByDate()){
+			//Set the date radio button:
+			button = (RadioButton) buttonGroup.getChildAt(0);
+			button.toggle();
+		}
+		else if(this.appState.getUserModel().isSortByLoc()){
+			//Set the location radio button:
+			button = (RadioButton) buttonGroup.getChildAt(1);
+			button.setText("Location: " + appState.getUserModel().getSortLoc().getName());
+			button.toggle();
+		}
+		else if(this.appState.getUserModel().isSortByUserLoc()){
+			//Set the Popularity radio button:
+			button = (RadioButton) buttonGroup.getChildAt(2);
+			button.toggle();
+		}
+		else if(this.appState.getUserModel().isSortByPopularity()){
+			//Set the Popularity radio button:
+			button = (RadioButton) buttonGroup.getChildAt(3);
+			button.toggle();
+		}
+		else{
+			((RadioGroup) buttonGroup).clearCheck();
+		}
+	}
 	/**
 	 * Brings up a dialog box to prompt user for sorting criteria:
 	 */
@@ -543,40 +584,14 @@ public class MainListViewActivity extends Activity{
 
 		//set the fields of the dialog:
 		alert.setTitle("Sort By:");
-	
+
 		//get the dialogue's layout from XML:
 		LinearLayout optionsView = (LinearLayout)layoutInflater.inflate(R.layout.dialog_sort_by, 
 				null);
-		
-		//get the group of radio buttons that determine sorting criteria:
-		ViewGroup sortRadioGroup = (ViewGroup) optionsView.getChildAt(0);
-		
-		RadioButton button;
+
 		CheckBox box;
-		
-		//if/else statements that set the correct radio button
-		//and check the sort by picture box if appropriate:
-		if(this.appState.getUserModel().isSortByDate()){
-			//Set the date radio button:
-			button = (RadioButton) sortRadioGroup.getChildAt(0);
-			button.toggle();
-		}
-		else if(this.appState.getUserModel().isSortByLoc()){
-			//Set the location radio button:
-			button = (RadioButton) sortRadioGroup.getChildAt(1);
-			button.setText("Location: " + appState.getUserModel().getSortLoc().getName());
-			button.toggle();
-		}
-		else if(this.appState.getUserModel().isSortByUserLoc()){
-			//Set the Popularity radio button:
-			button = (RadioButton) sortRadioGroup.getChildAt(2);
-			button.toggle();
-		}
-		else if(this.appState.getUserModel().isSortByPopularity()){
-			//Set the Popularity radio button:
-			button = (RadioButton) sortRadioGroup.getChildAt(3);
-			button.toggle();
-		}
+
+		setUpRadioButtons();
 
 
 		if(this.appState.getUserModel().isSortByPic()){
@@ -584,7 +599,7 @@ public class MainListViewActivity extends Activity{
 			box = (CheckBox) optionsView.getChildAt(2);
 			box.setChecked(true);
 		}
-		
+
 		alert.setView(optionsView);
 
 		//set the positive button with its text and set up an on click listener
@@ -607,5 +622,5 @@ public class MainListViewActivity extends Activity{
 
 		alert.show();
 	}
-	
+
 }	
