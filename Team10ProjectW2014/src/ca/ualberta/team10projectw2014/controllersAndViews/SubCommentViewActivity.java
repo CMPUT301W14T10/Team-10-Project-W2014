@@ -87,6 +87,7 @@ public class SubCommentViewActivity extends Activity {
 		appState = ApplicationStateModel.getInstance();
 		appState.setFileContext(this);
 		appState.loadUser();
+		appState.pushList();
 		// appState.loadComments();
 		appState.setLocationList(new ArrayList<LocationModel>());
 		ElasticSearchLocationOperations.getLocationList(this);

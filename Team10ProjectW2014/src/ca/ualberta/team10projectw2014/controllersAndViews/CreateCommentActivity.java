@@ -714,6 +714,7 @@ public class CreateCommentActivity extends Activity implements
 				// subcomments
 				appState.getCreateCommentParent().addSubComment(model);
 				appState.queueAdd(model);
+				appState.pushList();
 				appState.updateSubAdapter();
 			} else {
 				if (checkStringIsAllWhiteSpace(this.postUsername)) {
@@ -750,7 +751,7 @@ public class CreateCommentActivity extends Activity implements
 			Log.i("Queue","From CCA, appState.queueList has " + appState.getQueue().toString());
 			
 			model.setLocation(this.postLocation);
-
+			appState.pushList();
 			appState.saveComments();
 			appState.loadComments();
 			appState.updateMainAdapter();
