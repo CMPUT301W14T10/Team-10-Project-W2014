@@ -97,13 +97,9 @@ public class SubCommentViewActivityAdapter extends
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		ViewHolder holder = holder(convertView);
 		View view = convertView;
-		ViewHolder holder = null;
-
 		if (view == null) {
-			// If view is empty, create a new viewholder
-			holder = new ViewHolder();
-			
 			// Add sub_comment_view_sub_comment_item data to the view
 			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 			view = inflater.inflate(layoutResourceId, parent, false);
@@ -138,6 +134,24 @@ public class SubCommentViewActivityAdapter extends
 			
 			if(!commentList.get(pos).getAuthorAndroidID().contains(userData.getAndroidID())){
 				holder.editButton.setVisibility(View.GONE);
+			}else{
+				final Context editCommentContext = this.context;
+				holder.editButton.setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						// Open CreateComment Activity
+						appState.setCommentToEdit(commentList.get(pos));
+						Intent editComment = new Intent(
+								context.getApplicationContext(),
+								EditCommentActivity.class);
+						// subCommentView.putExtra("comment", (Object)
+						// headComment);
+						editCommentContext.startActivity(editComment);
+						
+					}
+				});
 			}
 			
 			holder.replyButton.setOnClickListener(new View.OnClickListener() {
@@ -206,8 +220,6 @@ public class SubCommentViewActivityAdapter extends
 			
 
 		} else {
-			// If View is not empty, set viewholder to this view via tag
-			holder = (ViewHolder) view.getTag();
 			// Add the textviews used in each list entry to the holder
 			holder.textReplyTitle.setText("");
 			holder.textSubTitle.setText("");
@@ -264,6 +276,21 @@ public class SubCommentViewActivityAdapter extends
 		
 
 		return view;
+	}
+
+	private ViewHolder holder(View convertView)
+	{
+
+		View view = convertView;
+		ViewHolder holder = null;
+		if (view == null)
+		{
+			holder = new ViewHolder();
+		} else
+		{
+			holder = (ViewHolder) view.getTag();
+		}
+		return holder;
 	}
 	
 	/**

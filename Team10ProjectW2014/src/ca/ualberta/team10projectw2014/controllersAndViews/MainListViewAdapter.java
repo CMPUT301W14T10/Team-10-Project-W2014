@@ -76,10 +76,8 @@ public class MainListViewAdapter extends BaseAdapter {
 	 * @return view to be displayed. 
 	 */
 	public View getView(int position, View convertView, ViewGroup parent) {
-		ViewHolder holder = null;
+		ViewHolder holder = holder(convertView);
 		if (convertView == null) {
-			// If view is empty, create a new viewholder
-			holder = new ViewHolder();
 			// Add head_comment_list_item data to the view
 			convertView = inflater.inflate(R.layout.headcommentview_head_item, 
 					null);
@@ -98,8 +96,6 @@ public class MainListViewAdapter extends BaseAdapter {
 			convertView.setTag(holder);
 		}
 		else {
-			// If View is not empty, set viewholder to this view via tag
-			holder = (ViewHolder) convertView.getTag();
 			holder.textLocation.setText("");
 			holder.textUsername.setText("");
 			holder.textLocation.setText("");
@@ -128,6 +124,20 @@ public class MainListViewAdapter extends BaseAdapter {
 		}
         holder.imageView.setVisibility(ImageView.VISIBLE);
 		return convertView;
+	}
+
+	private ViewHolder holder(View convertView)
+	{
+
+		ViewHolder holder = null;
+		if (convertView == null)
+		{
+			holder = new ViewHolder();
+		} else
+		{
+			holder = (ViewHolder) convertView.getTag();
+		}
+		return holder;
 	}
 	
 	/**
