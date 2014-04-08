@@ -511,6 +511,7 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
                 Toast.makeText(getApplicationContext(),
                         "User cancelled image capture", Toast.LENGTH_SHORT)
                         .show();
+                setPic();
             } else {
                 // failed to capture image
                 Toast.makeText(getApplicationContext(),
