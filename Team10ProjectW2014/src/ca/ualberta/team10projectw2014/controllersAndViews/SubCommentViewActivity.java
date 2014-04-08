@@ -68,6 +68,7 @@ public class SubCommentViewActivity extends Activity {
 	private LocationListenerModel locationListener;
 
 
+
 	/**
 	 * Initializes the appstate and the actionbar
 	 */
@@ -126,8 +127,9 @@ public class SubCommentViewActivity extends Activity {
 			// Add the sub Comments to the head comment
 			appState.getSubCommentViewHead().setSubComments(
 					appState.getReplyList());
-
+			
 			//LOAD SUBCOMMENTS FROM ES
+
 
 			//Save all comments to local copy after getting all sub comments
 			appState.saveComments();
