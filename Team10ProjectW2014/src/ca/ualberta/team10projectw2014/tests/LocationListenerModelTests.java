@@ -1,10 +1,10 @@
 package ca.ualberta.team10projectw2014.tests;
 
+import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
 import android.test.ActivityInstrumentationTestCase2;
 import ca.ualberta.team10projectw2014.controllersAndViews.MainListViewActivity;
-import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.LocationListenerModel;
 
 /**
@@ -26,9 +26,7 @@ public class LocationListenerModelTests extends ActivityInstrumentationTestCase2
 	 * @uml.property  name="appState"
 	 * @uml.associationEnd  
 	 */
-	private ApplicationStateModel appState;
 
-	private LocationListenerModel listener;
 
 	private MockLocationProvider mockLocationProvider = null;
 
@@ -37,13 +35,11 @@ public class LocationListenerModelTests extends ActivityInstrumentationTestCase2
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		appState = ApplicationStateModel.getInstance();
 	}
 
 	public void testGetLocation() throws Throwable{
 		activity = getActivity();
-		listener = new LocationListenerModel(activity);
-		locationManager = (LocationManager) activity.getSystemService(activity.LOCATION_SERVICE);
+		locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
 		if(!locationManager.isProviderEnabled(MockLocationProvider.MOCK_PROVIDER)){
 			if(locationManager.getProvider(MockLocationProvider.MOCK_PROVIDER) == null){
 				locationManager.addTestProvider(MockLocationProvider.MOCK_PROVIDER, false, false,
@@ -53,7 +49,7 @@ public class LocationListenerModelTests extends ActivityInstrumentationTestCase2
 		}
 		mockLocationProvider = new MockLocationProvider(activity, 3.0, 4.0);
 		mockLocationProvider.execute();
-		final LocationListenerModel locationListener = new LocationListenerModel(activity);
+		LocationListenerModel locationListener = new LocationListenerModel(activity);
 		Location userLocation = locationListener.getLastBestLocation();
 		assertEquals("The location should be 3,4 as set in the MockLocationProvider", 3.0, userLocation.getLatitude());
 		assertEquals("The location should be 3,4 as set in the MockLocationProvider", 4.0, userLocation.getLongitude());

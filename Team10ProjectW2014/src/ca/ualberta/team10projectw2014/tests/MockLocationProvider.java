@@ -5,9 +5,9 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.SystemClock;
-import android.util.Log;
 
 //Borrowed from MockLocationProvider from CMPUT 301 lab
+//https://github.com/baoliangwang/MockLocationProvider/blob/master/src/ualberta/cmput301/mocklocation/MockGpsProviderActivity.java
 /** Define a mock GPS provider as an asynchronous task of this Activity. */
 public class MockLocationProvider extends AsyncTask<String, Void, Void> {
 	public static final String MOCK_PROVIDER = "mockLocationProvider";

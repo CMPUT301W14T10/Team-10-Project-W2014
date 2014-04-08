@@ -7,7 +7,6 @@ import java.util.Collections;
 import android.app.Activity;
 import android.location.Location;
 import android.test.ActivityInstrumentationTestCase2;
-import android.util.Log;
 import ca.ualberta.team10projectw2014.controllersAndViews.MainListViewActivity;
 import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
