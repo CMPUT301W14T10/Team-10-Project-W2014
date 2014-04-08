@@ -63,7 +63,7 @@ public class MainListViewActivity extends Activity{
 	private ListView commentView;
 	private LocationListenerModel locationListener;
 	private static LayoutInflater layoutInflater;
-
+	private int size;
 	private ApplicationStateModel appState;
 
 	SharedPreferences setOverlay;
@@ -81,7 +81,8 @@ public class MainListViewActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_head_comment_view);
 		locationListener = new LocationListenerModel(this);
-
+		//the number of comments to pull from server;
+		this.size = 10;
 		// below sharedpref code adapted from
 		// http://stackoverflow.com/a/19232789/2557554
 		setOverlay = PreferenceManager.getDefaultSharedPreferences(this);
@@ -120,7 +121,7 @@ public class MainListViewActivity extends Activity{
 		//Set the commentView in this activity to reflect the corresponding 
 		//adapter in the ApplicationStateModel:
 		this.commentView.setAdapter(this.appState.getMLVAdapter());
-		ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
+		ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this,size);
 		sortMainList();
 	}
 
@@ -248,7 +249,7 @@ public class MainListViewActivity extends Activity{
 				QueueModel result = this.appState.pushList();
 				if(result==null) break;
 			}
-			ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this);
+			ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this,size);
 		}
 		else{
 			appState.loadComments();
@@ -285,6 +286,7 @@ public class MainListViewActivity extends Activity{
 				sortComments();
 				return true;
 			case R.id.refresh_comments:
+				this.size += 10;
 				onResume();
 				return true;
 

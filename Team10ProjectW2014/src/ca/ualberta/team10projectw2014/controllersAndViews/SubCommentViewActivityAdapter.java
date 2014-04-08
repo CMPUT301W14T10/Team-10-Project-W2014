@@ -140,7 +140,6 @@ public class SubCommentViewActivityAdapter extends
 					
 					@Override
 					public void onClick(View v) {
-						// TODO Auto-generated method stub
 						// Open CreateComment Activity
 						appState.setCommentToEdit(commentList.get(pos));
 						Intent editComment = new Intent(
@@ -158,7 +157,6 @@ public class SubCommentViewActivityAdapter extends
 				
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
 					//Open up Create comment activity
 					//will send the title of the comment the user wants to reply to. 
 					Intent createComment = new Intent(context.getApplicationContext(), CreateCommentActivity.class);
@@ -173,7 +171,6 @@ public class SubCommentViewActivityAdapter extends
 				
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
 					//Add a Comment the user's favourite list if comment is not
 					//already in the user's favourite
 					if(!commentList.get(pos).isInArrayList(appState.getUserModel().getFavourites())){

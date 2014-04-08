@@ -17,7 +17,9 @@ public class UserModel{
 	private ArrayList<CommentModel> wantToReadComments;
 	private String userName;
 	
-	//These boolean values dictate which criteria to sort comments by:
+	/**
+	 * These boolean values dictate which criteria to sort comments by:
+	 */
 	private boolean sortByPic = false;
 	private boolean sortByDate = false;
 	private boolean sortByLoc = false;

@@ -63,6 +63,7 @@ public class SubCommentViewActivity extends Activity {
 	private View headerView;
 	private LayoutInflater layoutInflater;
 	private Resources resources;
+	private int size;
 	private ArrayList<LocationModel> locationList;
 	private ArrayList<LocationModel> tempLocationList;
 	private LocationListenerModel locationListener;
@@ -76,12 +77,12 @@ public class SubCommentViewActivity extends Activity {
 		locationListener = new LocationListenerModel(this);
 		setContentView(R.layout.activity_sub_comment_view);
 		layoutInflater = LayoutInflater.from(this);
-
+		//the number of comments to pull from server
+		this.size = 10;
 		// Get an instance of the ApplicationStateModel singleton
 		appState = ApplicationStateModel.getInstance();
 		appState.setFileContext(this);
 		appState.loadUser();
-		// appState.loadComments();
 		appState.setLocationList(new ArrayList<LocationModel>());
 		ElasticSearchLocationOperations.getLocationList(this);
 		appState.loadLocations();
@@ -119,7 +120,7 @@ public class SubCommentViewActivity extends Activity {
 		if (appState.isNetworkAvailable(this)) {
 			// Get SubComments of the head comment from server
 			ElasticSearchOperations.searchForReplies(this, this.appState,
-					appState.getSubCommentViewHead().getUniqueID());
+					appState.getSubCommentViewHead().getUniqueID(),size);
 
 			// Add the sub Comments to the head comment
 			appState.getSubCommentViewHead().setSubComments(
@@ -174,7 +175,6 @@ public class SubCommentViewActivity extends Activity {
 	 * (commentList.get(i).getSubComments().size() > 0) {
 	 * addCommentToList(commentList.get(i).getSubComments()); } } } }
 	 */
-	
 	private void addSubCommentToList(final ArrayList<CommentModel> arrayList) {
 		Log.i("AddSubComment", "There are "+arrayList.size()+" subcomments");
 		for(int x=0; x<arrayList.size(); x++){
@@ -187,7 +187,7 @@ public class SubCommentViewActivity extends Activity {
 			Log.i("AddSubComment", "Searching for subcomments of "+arrayList.get(i).getTitle());
 			
 			ElasticSearchOperations.searchForReplies(this, this.appState,
-					arrayList.get(i).getUniqueID());
+					arrayList.get(i).getUniqueID(), 100);
 
 			if (appState.getReplyList().size() == 0) {
 				if(arrayList.size()>0){
@@ -345,6 +345,7 @@ public class SubCommentViewActivity extends Activity {
 			sortComments();
 			return true;
 		case R.id.refresh_comments_sub:
+			this.size += 10;
 			onResume();
 			return true;
 		default:

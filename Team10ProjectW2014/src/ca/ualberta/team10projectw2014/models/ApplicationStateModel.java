@@ -494,16 +494,14 @@ public class ApplicationStateModel {
 		try {
 			//open the file for writing:
 			FileOutputStream fos = ApplicationStateModel.COMMENT_fileContext.openFileOutput(COMMENT_FILE_NAME,
-					Context.MODE_PRIVATE); // TODO REMEMBER TO SET THE CONTEXT BEFORE YOU USE THIS
+					Context.MODE_PRIVATE);
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
-			
-			//Gson gson = new Gson();
 			
 			//A type token to pass GSON, indicating that we want to load
 			//a list of CommentModels:
 			Type fooType = new TypeToken<ArrayList<CommentModel>>() {}.getType();
 			
-			//Conver the list to a JSON string, saving it to file:
+			//Convert the list to a JSON string, saving it to file:
 			GSON.toJson(commentList, fooType, osw); 
 			
 			//close the file:
@@ -540,7 +538,6 @@ public class ApplicationStateModel {
 			fis = ApplicationStateModel.COMMENT_fileContext.openFileInput(COMMENT_FILE_NAME);
 			InputStreamReader isr = new InputStreamReader(fis);
 			
-			//Gson gson = new Gson();
 
 			//create a type token to tell GSON what type of object it is saving:
 			Type fooType = new TypeToken<ArrayList<CommentModel>>() {}.getType();
@@ -627,14 +624,6 @@ public class ApplicationStateModel {
 	public void loadUser(){
 	    if (GSON == null)
             constructGson();
-//		boolean assortIsFavList = false;
-//		boolean assortIsWantReadList = false;
-//		if((this.assortList != null) && (this.assortList == this.userModel.getFavourites())){
-//			assortIsFavList = true;
-//		}
-//		if((this.assortList != null) && (this.assortList == this.userModel.getWantToReadComments())){
-//			assortIsWantReadList = true;
-//		}
 		ArrayList<CommentModel> favsReference;
 		ArrayList<CommentModel> readLaterReference;
 		FileInputStream fis;
@@ -644,8 +633,6 @@ public class ApplicationStateModel {
 			fis = USER_fileContext.openFileInput(USER_FILE_NAME);
 			InputStreamReader isr = new InputStreamReader(fis);
 
-			//Create the GSON object and type token:
-			//Gson gson = new Gson();
 			Type fooType = new TypeToken<UserModel>() {}.getType();
 			
 			//Get the UserModel from the File using the GSON object
@@ -672,7 +659,6 @@ public class ApplicationStateModel {
 				loadedUser = new UserModel(USER_fileContext);
 			}
 			this.userModel = loadedUser;
-			//cmpLocation = this.userModel.getSortLoc().generateLocation();
 			//close the file:
 			isr.close();
 			fis.close();
@@ -747,8 +733,6 @@ public class ApplicationStateModel {
 			//Get the file for reading:
 			fis = ApplicationStateModel.LOCATION_fileContext.openFileInput(LOCATION_FILE_NAME);
 			InputStreamReader isr = new InputStreamReader(fis);
-			
-			//Gson gson = new Gson();
 
 			//create a type token to tell GSON what type of object it is saving:
 			Type fooType = new TypeToken<ArrayList<LocationModel>>() {}.getType();
