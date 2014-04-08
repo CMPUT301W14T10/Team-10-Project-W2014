@@ -77,7 +77,6 @@ public class ElasticSearchLocationOperations {
 			thread.join();
 		} catch (InterruptedException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -155,8 +154,8 @@ public class ElasticSearchLocationOperations {
 						appState.setLocationList(locationList);
 						appState.saveLocations();
 						
-						Log.e(LOG_TAG, locationList.toString()); // print out the
-						// entire contents of the list
+						// print out the entire contents of the list
+						Log.e(LOG_TAG, locationList.toString());
 					}
 				};
 
@@ -170,7 +169,6 @@ public class ElasticSearchLocationOperations {
 			thread.join();
 		} catch (InterruptedException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

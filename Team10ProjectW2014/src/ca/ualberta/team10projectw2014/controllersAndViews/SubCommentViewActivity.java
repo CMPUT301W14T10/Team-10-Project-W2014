@@ -83,7 +83,6 @@ public class SubCommentViewActivity extends Activity {
 		appState = ApplicationStateModel.getInstance();
 		appState.setFileContext(this);
 		appState.loadUser();
-		// appState.loadComments();
 		appState.setLocationList(new ArrayList<LocationModel>());
 		ElasticSearchLocationOperations.getLocationList(this);
 		appState.loadLocations();
@@ -127,10 +126,6 @@ public class SubCommentViewActivity extends Activity {
 			appState.getSubCommentViewHead().setSubComments(
 					appState.getReplyList());
 
-			// LOAD SUBCOMMENTS FROM ES
-			// for(int i=0; i<appState.getCommentList().size(); i++) {
-			// addSubCommentToList(appState.getCommentList().get(i));
-			// }
 			addSubCommentToList(appState.getSubCommentViewHead());
 
 			// Save all comments to local copy after getting all sub comments

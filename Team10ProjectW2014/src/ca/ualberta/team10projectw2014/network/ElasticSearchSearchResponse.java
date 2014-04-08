@@ -26,6 +26,14 @@ public class ElasticSearchSearchResponse<T> {
     public Collection<ElasticSearchResponse<T>> getHits() {
         return hits.getHits();        
     }
+    
+    /** 
+     * Gets the pulled hits from the server
+     * 
+	 * Edited by @author sgiang and dvyee
+     * 
+     * @return Collection<T>
+     */
     public Collection<T> getSources() {
         Collection<T> out = new ArrayList<T>();
         for (ElasticSearchResponse<T> essrt : getHits()) {
