@@ -67,6 +67,7 @@ public class SubCommentViewActivity extends Activity {
 	private ArrayList<LocationModel> locationList;
 	private ArrayList<LocationModel> tempLocationList;
 	private LocationListenerModel locationListener;
+	private ArrayList<CommentModel> subCommentList = new ArrayList<CommentModel>();
 
 	/**
 	 * Initializes the appstate and the actionbar
@@ -83,7 +84,6 @@ public class SubCommentViewActivity extends Activity {
 		appState = ApplicationStateModel.getInstance();
 		appState.setFileContext(this);
 		appState.loadUser();
-		// appState.loadComments();
 		appState.setLocationList(new ArrayList<LocationModel>());
 		ElasticSearchLocationOperations.getLocationList(this);
 		appState.loadLocations();
@@ -96,7 +96,7 @@ public class SubCommentViewActivity extends Activity {
 		resources = getResources();
 
 	}
-
+	
 	/**
 	 * Sets the views in the activity and attempts to retrieve the comment data
 	 */
@@ -123,15 +123,13 @@ public class SubCommentViewActivity extends Activity {
 			ElasticSearchOperations.searchForReplies(this, this.appState,
 					appState.getSubCommentViewHead().getUniqueID(),size);
 
-			// Add the sub Comments to the head comment
-			appState.getSubCommentViewHead().setSubComments(
-					appState.getReplyList());
-
 			// LOAD SUBCOMMENTS FROM ES
-			// for(int i=0; i<appState.getCommentList().size(); i++) {
-			// addSubCommentToList(appState.getCommentList().get(i));
-			// }
-			addSubCommentToList(appState.getSubCommentViewHead());
+			subCommentList.clear();
+			ArrayList<CommentModel> subComments = new ArrayList<CommentModel>();
+			subComments.addAll(appState.getReplyList());
+			addSubCommentToList(subComments);
+			
+			appState.getSubCommentViewHead().setSubComments(subCommentList);
 
 			// Save all comments to local copy after getting all sub comments
 			appState.saveComments();
@@ -162,45 +160,40 @@ public class SubCommentViewActivity extends Activity {
 	 *            - A list to be iterated through to add all its subComments to
 	 *            the list to be displayed on the ListView
 	 */
-	/*
-	 * private void addSubCommentToList( ArrayList<? extends CommentModel>
-	 * commentList) { if (commentList.size() == 0) { return; } else { for (int i
-	 * = 0; i < commentList.size(); i++) {
-	 * ElasticSearchOperations.searchForReplies(this, this.appState,
-	 * appState.getCommentList().get(i).getUniqueID());
-	 * sortedList.add(commentList.get(i)); if
-	 * (commentList.get(i).getSubComments().size() > 0) {
-	 * addCommentToList(commentList.get(i).getSubComments()); } } } }
-	 */
-	private void addSubCommentToList(CommentModel comment) {
-		ElasticSearchOperations.searchForReplies(this, this.appState,
-				comment.getUniqueID(),size);
+	private void addSubCommentToList(final ArrayList<CommentModel> arrayList) {
+		Log.i("AddSubComment", "There are "+arrayList.size()+" subcomments");
+		for(int x=0; x<arrayList.size(); x++){
+			Log.i("AddSubComment", "There is a subcomment with title: "+arrayList.get(x).getTitle());
+			
+		}
+		Log.i("AddSubComment", "");
+		
+		for (int i = 0; i < arrayList.size(); i++) {
+			Log.i("AddSubComment", "Searching for subcomments of "+arrayList.get(i).getTitle());
+			subCommentList.add(arrayList.get(i));
+			
+			ElasticSearchOperations.searchForReplies(this, this.appState,
+					arrayList.get(i).getUniqueID(), 100);
 
-		if (appState.getReplyList().size() == 0) { // done if there are no more
-													// subcomments
-			Log.i("AddSubComment", comment.getTitle()
-					+ " has no more subcomments.");
-			return;
-		} else { // there are subcomments to parse
-			Log.i("AddSubComment",
-					"CommentModel title is " + comment.getTitle());
-			for (int i = 0; i < comment.getSubComments().size(); i++) {
-				// ElasticSearchOperations.searchForReplies(this, this.appState,
-				// comment.getUniqueID());
-				// appState.setCommentList(appState.getReplyList());
-
-				comment.setSubComments(appState.getReplyList());
-				// appState.getSubCommentViewHead().setSubComments(
-				// appState.getReplyList());
-
-				// Log.i("AddSubComment","SubCommentViewHead title is "+appState.getSubCommentViewHead().getTitle());
-				for (int j = 0; j < appState.getReplyList().size(); j++)
+			if (appState.getReplyList().size() == 0) {
+				if(arrayList.size()>0){
+					Log.i("AddSubComment", arrayList.get(i).getTitle()
+							+ " has no more subcomments.");
+					//if(arrayList.size()==1)subCommentList.add(arrayList.get(0));
+				}
+				else {
+					Log.i("AddSubComment", "There is nothing in this list.");
+					
+				}
+				continue;
+			} else {
+				for (int j = 0; j < appState.getReplyList().size(); j++){
 					Log.i("AddSubComment", "ReplyList title " + j + ": "
 							+ appState.getReplyList().get(j).getTitle());
-				// if (comment.getSubComments().size() > 0) {
-				addSubCommentToList(comment.getSubComments().get(i));
-				// }
+				}
+				addSubCommentToList(appState.getReplyList());
 			}
+
 		}
 	}
 

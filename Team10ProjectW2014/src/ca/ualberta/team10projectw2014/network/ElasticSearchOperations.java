@@ -37,8 +37,6 @@ import com.google.gson.reflect.TypeToken;
  */
 public class ElasticSearchOperations {
 
-	// public static final String SERVER_URL =
-	// "http://cmput301.softwareprocess.es:8080/testing2/team10projectw2014/";
 	public static final String SERVER_URL = "http://cmput301.softwareprocess.es:8080/testing/team10projectw2014push/";
 	public static final String SERVER_URL_SUBCOMMENTS = "http://cmput301.softwareprocess.es:8080/testing/team10projectw2014sub/";
 	public static final String SERVER_URL_LOCATIONS = "http://cmput301.softwareprocess.es:8080/testing/team10projectw2014location/";
@@ -91,7 +89,6 @@ public class ElasticSearchOperations {
 		try {
 			thread.join();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -131,7 +128,6 @@ public class ElasticSearchOperations {
 		try {
 			thread.join();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -162,10 +158,8 @@ public class ElasticSearchOperations {
 			public void run() {
 				HttpClient client = new DefaultHttpClient();
 				HttpPost request = new HttpPost(SERVER_URL + "_search?size="
-						+ Integer.toString(size)); // ?size=100
-				// String query =
-				// "{\"query\": {\"query_string\": {\"default_field\": \"content\",\"query\": \"*"
-				// + searchTerm + "*\"}}}";
+						+ Integer.toString(size));
+				
 				String query = "{\"query\": {\"match_all\": {}}}";
 				String responseJson = "";
 
@@ -208,8 +202,6 @@ public class ElasticSearchOperations {
 					public void run() {
 						model.clear();
 						model.addAll(returnedData.getSources());
-						// Log.e(LOG_TAG, model.toString()); // print out the
-						// entire contents of the list
 						ApplicationStateModel appState = ApplicationStateModel
 								.getInstance();
 						appState.setCommentList(model);
@@ -217,13 +209,6 @@ public class ElasticSearchOperations {
 						appState.loadComments();
 						appState.updateMainAdapter();
 						activity.sortMainList();
-						// Log.e(LOG_TAG, appState.getCommentList().toString());
-						// // print out the entire contents of the list
-						// appState.getCommentList().addAll(returnedData.getSources());
-						// Log.e("Inside ESO appState CommentList",
-						// appState.getCommentList().toString()); // print out
-						// the entire contents of the list
-						// appState.getMLVAdapter().notifyDataSetChanged();
 					}
 				};
 
@@ -236,11 +221,8 @@ public class ElasticSearchOperations {
 		try {
 			thread.join();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// Log.e(LOG_TAG, model.toString()); // print out the entire contents of
-		// the list
 	}
 
 	/**
