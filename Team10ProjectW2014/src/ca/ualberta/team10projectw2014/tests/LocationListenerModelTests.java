@@ -45,8 +45,10 @@ public class LocationListenerModelTests extends ActivityInstrumentationTestCase2
 		listener = new LocationListenerModel(activity);
 		locationManager = (LocationManager) activity.getSystemService(activity.LOCATION_SERVICE);
 		if(!locationManager.isProviderEnabled(MockLocationProvider.MOCK_PROVIDER)){
-			locationManager.addTestProvider(MockLocationProvider.MOCK_PROVIDER, false, false,
-					false, false, true, false, false, 0, 5);
+			if(locationManager.getProvider(MockLocationProvider.MOCK_PROVIDER) == null){
+				locationManager.addTestProvider(MockLocationProvider.MOCK_PROVIDER, false, false,
+						false, false, true, false, false, 0, 5);
+			}
 			locationManager.setTestProviderEnabled(MockLocationProvider.MOCK_PROVIDER, true);
 		}
 		mockLocationProvider = new MockLocationProvider(activity, 3.0, 4.0);
