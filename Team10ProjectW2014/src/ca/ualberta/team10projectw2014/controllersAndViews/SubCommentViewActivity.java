@@ -129,6 +129,10 @@ public class SubCommentViewActivity extends Activity {
 					appState.getReplyList());
 			
 			//LOAD SUBCOMMENTS FROM ES
+			//for(int i=0; i<appState.getCommentList().size(); i++) {
+//				addSubCommentToList(appState.getCommentList().get(i));
+	//		}
+			addSubCommentToList(appState.getSubCommentViewHead());
 
 
 			//Save all comments to local copy after getting all sub comments
@@ -151,6 +155,59 @@ public class SubCommentViewActivity extends Activity {
 
 		subListView.setAdapter(appState.getSCVAdapter());
 
+	}
+	
+	/***
+	 * Takes in a subComment array list to be added to the adapter to be shown
+	 * in the listView. Uses recursion to get all the subComment's subcomments
+	 * 
+	 * @author sgiang92
+	 * @param commentList
+	 *            - A list to be iterated through to add all its subComments to
+	 *            the list to be displayed on the ListView
+	 */
+	/*
+	private void addSubCommentToList(
+			ArrayList<? extends CommentModel> commentList) {
+		if (commentList.size() == 0) {
+			return;
+		} else {
+			for (int i = 0; i < commentList.size(); i++) {
+				ElasticSearchOperations.searchForReplies(this, this.appState,
+					appState.getCommentList().get(i).getUniqueID());
+				sortedList.add(commentList.get(i));
+				if (commentList.get(i).getSubComments().size() > 0) {
+					addCommentToList(commentList.get(i).getSubComments());
+				}
+			}
+		}
+	}*/
+	private void addSubCommentToList(CommentModel comment) {
+		ElasticSearchOperations.searchForReplies(this, this.appState,
+				comment.getUniqueID());
+		
+		if (appState.getReplyList().size() == 0) { // done if there are no more subcomments
+			Log.i("AddSubComment",comment.getTitle()+ " has no more subcomments.");
+			return;
+		} else { // there are subcomments to parse
+			Log.i("AddSubComment","CommentModel title is "+comment.getTitle());
+			for (int i = 0; i < comment.getSubComments().size(); i++) {
+				//ElasticSearchOperations.searchForReplies(this, this.appState,
+//					comment.getUniqueID());
+				//appState.setCommentList(appState.getReplyList());
+				
+				comment.setSubComments(appState.getReplyList());
+				//appState.getSubCommentViewHead().setSubComments(
+						//appState.getReplyList());
+				
+				//Log.i("AddSubComment","SubCommentViewHead title is "+appState.getSubCommentViewHead().getTitle());
+				for(int j=0; j<appState.getReplyList().size();j++)
+					Log.i("AddSubComment","ReplyList title "+j + ": " +appState.getReplyList().get(j).getTitle());
+				//if (comment.getSubComments().size() > 0) {
+				addSubCommentToList(comment.getSubComments().get(i));
+				//}
+			}
+		}
 	}
 
 	/**
