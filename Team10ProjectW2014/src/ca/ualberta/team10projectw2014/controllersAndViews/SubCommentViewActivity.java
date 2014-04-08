@@ -10,9 +10,9 @@ import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationListenerModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
+import ca.ualberta.team10projectw2014.models.QueueModel;
 import ca.ualberta.team10projectw2014.network.ElasticSearchLocationOperations;
 import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -109,7 +109,6 @@ public class SubCommentViewActivity extends Activity {
 		subListView.removeHeaderView(headerView);
 		headerView = (View) setHeader(appState.getSubCommentViewHead());
 		subListView.addHeaderView(headerView);
-		appState.pushList();
 
 		// Set the Title in the Actionbar to the title of the head comment
 		actionbar.setTitle(appState.getSubCommentViewHead().getTitle());
@@ -119,6 +118,11 @@ public class SubCommentViewActivity extends Activity {
 		// if user has network connection, the app will try to pull comments
 		// from server
 		if (appState.isNetworkAvailable(this)) {
+			while(true){
+				QueueModel result = appState.pushList();
+				if(result==null) break;
+			}
+			
 			// Get SubComments of the head comment from server
 			ElasticSearchOperations.searchForReplies(this, this.appState,
 					appState.getSubCommentViewHead().getUniqueID(),size);
