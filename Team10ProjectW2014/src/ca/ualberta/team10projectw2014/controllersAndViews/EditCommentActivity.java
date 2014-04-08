@@ -591,7 +591,7 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 
 		// If current location is known and location list is not empty, look for
 		// closest location
-		if ((bestKnownLoc != null) && (this.locationList != null)) {
+		if ((bestKnownLoc != null) && (this.locationList.size() != 0)) {
 			if (this.spinnerFlag == 0) {
 				for (i = 0; i < this.locationList.size(); i++) {
 					// Determines if there is a nearby location from location
@@ -619,18 +619,18 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 			}
 		}
 		// Current location is known and location list is empty
-		else if ((bestKnownLoc != null) && (this.locationList == null))
+		else if ((bestKnownLoc != null) && (this.locationList.size() == 0))
 			Toast.makeText(
 					getBaseContext(),
 					"No nearby locations found. Please select or create a location.",
 					Toast.LENGTH_LONG).show();
 		// Current location is not known and location list is not empty and spinner wasn't set
-		else if ((bestKnownLoc == null) && (this.locationList != null) && (EditCommentActivity.this.spinnerFlag != 1))
+		else if ((bestKnownLoc == null) && (this.locationList.size() != 0) && (EditCommentActivity.this.spinnerFlag != 1))
 			Toast.makeText(getBaseContext(),
 					"Current location is unknown. Please select a location.",
 					Toast.LENGTH_LONG).show();
 		// Current location is not known and location list is not empty and spinner was set
-		else if ((bestKnownLoc == null) && (this.locationList != null) && (EditCommentActivity.this.spinnerFlag == 1))
+		else if ((bestKnownLoc == null) && (this.locationList.size() != 0) && (EditCommentActivity.this.spinnerFlag == 1))
 			; // Doesn't change anything, allows attemtCommentCreation to post the comment set in the spinner
 		// Current location is not known and location list is empty
 		else {
