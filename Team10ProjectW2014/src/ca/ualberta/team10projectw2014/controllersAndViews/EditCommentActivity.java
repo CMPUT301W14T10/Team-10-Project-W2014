@@ -565,9 +565,8 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 
                 options.inSampleSize = 8;
      
-                final Bitmap bitmap = BitmapFactory.decodeFile(appState.getCommentToEdit().getPhotoPath(),
-                        options);
-     
+                final Bitmap bitmap = BitmapFactory.decodeFile(appState.getCommentToEdit().getPhotoPath(),options);
+                this.postPhoto = bitmap;
                 imageView.setImageBitmap(bitmap);
             } catch (NullPointerException e) {
                 e.printStackTrace();
