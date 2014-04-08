@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import ca.ualberta.team10projectw2014.R;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.provider.Settings;
 
 /**
  * @author       Bradley Poulette <bpoulett@ualberta.ca>

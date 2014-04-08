@@ -10,18 +10,13 @@ import java.util.ArrayList;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.util.Log;
-import ca.ualberta.team10projectw2014.controllersAndViews.CreateCommentActivity;
-import ca.ualberta.team10projectw2014.controllersAndViews.MainListViewActivity;
 import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
-import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
 
 import com.google.gson.Gson;

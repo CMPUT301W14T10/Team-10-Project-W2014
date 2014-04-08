@@ -2,11 +2,8 @@ package ca.ualberta.team10projectw2014.controllersAndViews;
 
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import ca.ualberta.team10projectw2014.R;
@@ -17,11 +14,9 @@ import com.mapquest.android.maps.AnnotationView;
 import com.mapquest.android.maps.DefaultItemizedOverlay;
 import com.mapquest.android.maps.GeoPoint;
 import com.mapquest.android.maps.ItemizedOverlay;
-import com.mapquest.android.maps.LineOverlay;
 import com.mapquest.android.maps.MapActivity;
 import com.mapquest.android.maps.MapView;
 import com.mapquest.android.maps.OverlayItem;
-import com.mapquest.android.maps.PolygonOverlay;
 
 
 /**

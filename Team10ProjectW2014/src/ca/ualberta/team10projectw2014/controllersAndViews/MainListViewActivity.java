@@ -68,7 +68,6 @@ public class MainListViewActivity extends Activity{
 
 	SharedPreferences setOverlay;
 	boolean showOverlay;
-	private int spinnerFlag;
 	private ArrayList<LocationModel> locationList;
 	private ArrayList<LocationModel> tempLocationList;
 
@@ -381,7 +380,6 @@ public class MainListViewActivity extends Activity{
 	 */
 	public void onRadioButtonClicked(View view) {
 		final RadioButton buttonPressed = (RadioButton) view;
-		RadioGroup buttonGroup = (RadioGroup) buttonPressed.getParent();
 		// Is the button now checked?
 		boolean checked = ((RadioButton) view).isChecked();
 		//Check which radio button was clicked and set the
@@ -424,8 +422,6 @@ public class MainListViewActivity extends Activity{
 						else{
 							int i;
 
-							// Sets/resets spinner set flag
-							MainListViewActivity.this.spinnerFlag = 0;
 
 							// Gets the xml custom dialog layout
 							LayoutInflater li = LayoutInflater.from(this);
@@ -486,7 +482,6 @@ public class MainListViewActivity extends Activity{
 										appState.setCmpLocation(MainListViewActivity.
 												this.tempLocationList.get(spinner.getSelectedItemPosition()).generateLocation(), 
 												MainListViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()).getName());
-										MainListViewActivity.this.spinnerFlag = 1;
 										appState.getUserModel().setSortByLoc(true);
 										appState.getUserModel().setSortLoc(MainListViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()));
 										buttonPressed.setText("Location: "+appState.getUserModel().getSortLoc().getName());

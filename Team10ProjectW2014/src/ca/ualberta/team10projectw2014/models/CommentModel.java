@@ -3,12 +3,9 @@ package ca.ualberta.team10projectw2014.models;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
-import android.location.Location;
 import android.net.Uri;
 
 /**

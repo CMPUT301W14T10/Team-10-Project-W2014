@@ -3,7 +3,6 @@ package ca.ualberta.team10projectw2014.models;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.location.Location;
 import android.provider.Settings.Secure;
 
 /**

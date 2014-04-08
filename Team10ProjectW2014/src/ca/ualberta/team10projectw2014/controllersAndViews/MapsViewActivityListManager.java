@@ -49,7 +49,6 @@ public class MapsViewActivityListManager {
 	public List<OverlayItem> generateCoords(ApplicationStateModel appState,
 			MapView map) {
 		CommentModel headComment = appState.getSubCommentViewHead();
-		List<CommentModel> commentList = headComment.getSubComments();
 		List<OverlayItem> locationsList = new ArrayList<OverlayItem>();
 		map.getController().setCenter(
 				new GeoPoint(headComment.getLocation().getLatitude(),

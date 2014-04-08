@@ -24,7 +24,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,7 +33,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -65,14 +63,10 @@ public class SubCommentViewActivity extends Activity {
 	private View headerView;
 	private LayoutInflater layoutInflater;
 	private Resources resources;
-	private ArrayList<CommentModel> tempReplyList;
-	private ArrayList<CommentModel> tempCommentList;
-	private CommentModel tempCommentModel;
 	private ArrayList<LocationModel> locationList;
 	private ArrayList<LocationModel> tempLocationList;
 	private LocationListenerModel locationListener;
 
-	private int spinnerFlag;
 
 	/**
 	 * Initializes the appstate and the actionbar
@@ -624,7 +618,6 @@ public class SubCommentViewActivity extends Activity {
 	 */
 	public void onRadioButtonClicked(View view) {
 		final RadioButton buttonPressed = (RadioButton) view;
-		RadioGroup buttonGroup = (RadioGroup) buttonPressed.getParent();
 		// Is the button now checked?
 		boolean checked = ((RadioButton) view).isChecked();
 		//Check which radio button was clicked and set the
@@ -666,9 +659,6 @@ public class SubCommentViewActivity extends Activity {
 						}
 						else{
 							int i;
-
-							// Sets/resets spinner set flag
-							SubCommentViewActivity.this.spinnerFlag = 0;
 
 							// Gets the xml custom dialog layout
 							LayoutInflater li = LayoutInflater.from(this);
@@ -729,7 +719,6 @@ public class SubCommentViewActivity extends Activity {
 										appState.setCmpLocation(SubCommentViewActivity.
 												this.tempLocationList.get(spinner.getSelectedItemPosition()).generateLocation(), 
 												SubCommentViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()).getName());
-										SubCommentViewActivity.this.spinnerFlag = 1;
 										appState.getUserModel().setSortByLoc(true);
 										appState.getUserModel().setSortLoc(SubCommentViewActivity.this.tempLocationList.get(spinner.getSelectedItemPosition()));
 										buttonPressed.setText("Location: "+appState.getUserModel().getSortLoc().getName());
