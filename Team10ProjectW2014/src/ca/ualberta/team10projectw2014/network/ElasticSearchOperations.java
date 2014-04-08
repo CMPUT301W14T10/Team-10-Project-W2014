@@ -39,9 +39,9 @@ public class ElasticSearchOperations {
 
 	// public static final String SERVER_URL =
 	// "http://cmput301.softwareprocess.es:8080/testing2/team10projectw2014/";
-	public static final String SERVER_URL = "http://cmput301.softwareprocess.es:8080/testing/team10projectw2014push/";
-	public static final String SERVER_URL_SUBCOMMENTS = "http://cmput301.softwareprocess.es:8080/testing/team10projectw2014sub/";
-	public static final String SERVER_URL_LOCATIONS = "http://cmput301.softwareprocess.es:8080/testing/team10projectw2014location/";
+	public static final String SERVER_URL = "http://cmput301.softwareprocess.es:8080/cmput301w14t10/heads";
+	public static final String SERVER_URL_SUBCOMMENTS = "http://cmput301.softwareprocess.es:8080/cmput301w14t10/subs";
+	public static final String SERVER_URL_LOCATIONS = "hhttp://cmput301.softwareprocess.es:8080/cmput301w14t10/location";
 	public static final String LOG_TAG = "ElasticSearch";
 	private static Gson GSON = null;
 
@@ -140,8 +140,6 @@ public class ElasticSearchOperations {
 	 * Searches the server for CommentModels with the given searchTerm in their
 	 * text.
 	 * 
-	 * @param searchTerm
-	 *            the single world term to search for
 	 * @param model
 	 *            the ArrayList of CommentModels to clear and then fill with the
 	 *            new data
@@ -150,8 +148,7 @@ public class ElasticSearchOperations {
 	 * 
 	 * @author zjullion; adapted by dvyee
 	 */
-	public static void searchForCommentModels(final String searchTerm,
-			final ArrayList<CommentModel> model,
+	public static void searchForCommentModels(final ArrayList<CommentModel> model,
 			final MainListViewActivity activity, final int size) {
 		if (GSON == null)
 			constructGson();
@@ -246,9 +243,12 @@ public class ElasticSearchOperations {
 	/**
 	 * Searches for replies in the server
 	 * 
+	 * 
+	 * @author sgiang92
 	 * @param activity
-	 * @param appState
-	 * @param parentID
+	 * @param appState 
+	 * @param parentID - the ID to match the subcomments to
+	 * @param size - number of comments to pull from the server
 	 */
 	public static void searchForReplies(final SubCommentViewActivity activity,
 			final ApplicationStateModel appState, final String parentID, final int size) {
