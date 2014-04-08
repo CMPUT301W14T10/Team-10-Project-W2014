@@ -39,8 +39,8 @@ public class ElasticSearchOperations {
 
 	// public static final String SERVER_URL =
 	// "http://cmput301.softwareprocess.es:8080/testing2/team10projectw2014/";
-	public static final String SERVER_URL = "http://cmput301.softwareprocess.es:8080/cmput301w14t10/heads";
-	public static final String SERVER_URL_SUBCOMMENTS = "http://cmput301.softwareprocess.es:8080/cmput301w14t10/subs";
+	public static final String SERVER_URL = "http://cmput301.softwareprocess.es:8080/cmput301w14t10/heads/";
+	public static final String SERVER_URL_SUBCOMMENTS = "http://cmput301.softwareprocess.es:8080/cmput301w14t10/subs/";
 	public static final String SERVER_URL_LOCATIONS = "hhttp://cmput301.softwareprocess.es:8080/cmput301w14t10/location";
 	public static final String LOG_TAG = "ElasticSearch";
 	private static Gson GSON = null;
