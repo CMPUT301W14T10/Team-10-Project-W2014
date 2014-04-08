@@ -14,7 +14,6 @@ import ca.ualberta.team10projectw2014.controllersAndViews.SubCommentViewActivity
 import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
-import ca.ualberta.team10projectw2014.models.SubCommentModel;
 
 /**
  * This class tests various aspects of the SubCommentViewActivity
@@ -185,7 +184,7 @@ public class SubCommentViewActivityTests extends
 		headComment.setLocation(new LocationModel("Test Location name", 10.4,
 				10.4));
 
-		SubCommentModel subComment = new SubCommentModel(headComment);
+		CommentModel subComment = new CommentModel();
 		subComment.setAuthor("test author");
 		subComment.setTitle("test sub title");
 		subComment.setTimestamp(Calendar.getInstance());
@@ -313,7 +312,7 @@ public class SubCommentViewActivityTests extends
 		headComment.setLocation(new LocationModel("Test Location name", 10.4,
 				10.4));
 		
-		SubCommentModel subComment = new SubCommentModel(headComment);
+		CommentModel subComment = new CommentModel();
 		subComment.setAuthor("test author");
 		subComment.setTitle("test sub title");
 		subComment.setTimestamp(Calendar.getInstance());
@@ -344,7 +343,7 @@ public class SubCommentViewActivityTests extends
 		headComment.setLocation(new LocationModel("Test Location name", 10.4,
 				10.4));
 		
-		SubCommentModel subComment = new SubCommentModel(headComment);
+		CommentModel subComment = new CommentModel();
 		subComment.setAuthor("test author");
 		subComment.setTitle("test sub title");
 		subComment.setTimestamp(Calendar.getInstance());
@@ -356,7 +355,7 @@ public class SubCommentViewActivityTests extends
 		
 		headComment.addSubComment(subComment);
 		
-		SubCommentModel subComment2 = new SubCommentModel(subComment);
+		CommentModel subComment2 = new CommentModel();
 		subComment2.setAuthor("test author");
 		subComment2.setTitle("test sub title");
 		subComment2.setTimestamp(Calendar.getInstance());
