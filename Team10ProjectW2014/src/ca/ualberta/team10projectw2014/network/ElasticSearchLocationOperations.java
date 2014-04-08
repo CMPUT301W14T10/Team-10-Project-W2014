@@ -30,7 +30,7 @@ import com.google.gson.reflect.TypeToken;
  * @version      1                (current version number of program)
  */
 public class ElasticSearchLocationOperations {
-	public static final String SERVER_URL = "http://cmput301.softwareprocess.es:8080/cmput301w14t10/location/";
+	public static final String SERVER_URL = "http://cmput301.softwareprocess.es:8080/testing/team10projectw2014location/";
 	public static final String LOG_TAG = "ElasticSearchLocation";
 	private static Gson GSON = null;
 

@@ -81,7 +81,7 @@ public class MainListViewActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_head_comment_view);
 		locationListener = new LocationListenerModel(this);
-		//the number of comments to pull from server
+		//the number of comments to pull from server;
 		this.size = 10;
 		// below sharedpref code adapted from
 		// http://stackoverflow.com/a/19232789/2557554
@@ -121,7 +121,7 @@ public class MainListViewActivity extends Activity{
 		//Set the commentView in this activity to reflect the corresponding 
 		//adapter in the ApplicationStateModel:
 		this.commentView.setAdapter(this.appState.getMLVAdapter());
-		ElasticSearchOperations.searchForCommentModels(this.appState.getCommentList(), this,size);
+		ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this,size);
 		sortMainList();
 	}
 
@@ -249,7 +249,7 @@ public class MainListViewActivity extends Activity{
 				QueueModel result = this.appState.pushList();
 				if(result==null) break;
 			}
-			ElasticSearchOperations.searchForCommentModels(this.appState.getCommentList(), this,size);
+			ElasticSearchOperations.searchForCommentModels("", this.appState.getCommentList(), this,size);
 		}
 		else{
 			appState.loadComments();
