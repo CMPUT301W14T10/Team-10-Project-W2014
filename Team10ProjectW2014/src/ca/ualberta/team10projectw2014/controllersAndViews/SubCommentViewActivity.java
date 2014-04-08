@@ -67,6 +67,7 @@ public class SubCommentViewActivity extends Activity {
 	private ArrayList<LocationModel> locationList;
 	private ArrayList<LocationModel> tempLocationList;
 	private LocationListenerModel locationListener;
+	private ArrayList<CommentModel> subCommentList = new ArrayList<CommentModel>();
 
 	/**
 	 * Initializes the appstate and the actionbar
@@ -95,7 +96,7 @@ public class SubCommentViewActivity extends Activity {
 		resources = getResources();
 
 	}
-	ArrayList<CommentModel> result = new ArrayList<CommentModel>();
+	
 	/**
 	 * Sets the views in the activity and attempts to retrieve the comment data
 	 */
@@ -122,19 +123,11 @@ public class SubCommentViewActivity extends Activity {
 			ElasticSearchOperations.searchForReplies(this, this.appState,
 					appState.getSubCommentViewHead().getUniqueID(),size);
 
-			// Add the sub Comments to the head comment
-			appState.getSubCommentViewHead().setSubComments(
-					appState.getReplyList());
-
 			// LOAD SUBCOMMENTS FROM ES
-			// for(int i=0; i<appState.getCommentList().size(); i++) {
-			// addSubCommentToList(appState.getCommentList().get(i));
-			// }
-			//appState.getSubCommentViewHead().setSubComments(addSubCommentToList(appState.getSubCommentViewHead().getSubComments()));
-			result.clear();
-			result.addAll(appState.getSubCommentViewHead().getSubComments());
-			addSubCommentToList(result);
-			appState.getSubCommentViewHead().setSubComments(result);
+			subCommentList.clear();
+			subCommentList.addAll(appState.getReplyList());
+			addSubCommentToList(subCommentList);
+			appState.getSubCommentViewHead().setSubComments(subCommentList);
 
 			// Save all comments to local copy after getting all sub comments
 			appState.saveComments();
@@ -165,16 +158,6 @@ public class SubCommentViewActivity extends Activity {
 	 *            - A list to be iterated through to add all its subComments to
 	 *            the list to be displayed on the ListView
 	 */
-	/*
-	 * private void addSubCommentToList( ArrayList<? extends CommentModel>
-	 * commentList) { if (commentList.size() == 0) { return; } else { for (int i
-	 * = 0; i < commentList.size(); i++) {
-	 * ElasticSearchOperations.searchForReplies(this, this.appState,
-	 * appState.getCommentList().get(i).getUniqueID());
-	 * sortedList.add(commentList.get(i)); if
-	 * (commentList.get(i).getSubComments().size() > 0) {
-	 * addCommentToList(commentList.get(i).getSubComments()); } } } }
-	 */
 	private void addSubCommentToList(final ArrayList<CommentModel> arrayList) {
 		Log.i("AddSubComment", "There are "+arrayList.size()+" subcomments");
 		for(int x=0; x<arrayList.size(); x++){
@@ -193,7 +176,7 @@ public class SubCommentViewActivity extends Activity {
 				if(arrayList.size()>0){
 					Log.i("AddSubComment", arrayList.get(i).getTitle()
 							+ " has no more subcomments.");
-					if(arrayList.size()==1)result.add(arrayList.get(0));
+					if(arrayList.size()==1)subCommentList.add(arrayList.get(0));
 				}
 				else {
 					Log.i("AddSubComment", "There is nothing in this list.");
@@ -204,46 +187,13 @@ public class SubCommentViewActivity extends Activity {
 				for (int j = 0; j < appState.getReplyList().size(); j++){
 					Log.i("AddSubComment", "ReplyList title " + j + ": "
 							+ appState.getReplyList().get(j).getTitle());
-					result.add(arrayList.get(j));
+					subCommentList.add(arrayList.get(j));
 				}
 				addSubCommentToList(appState.getReplyList());
 			}
 
 		}
 	}
-
-	/*
-	 * private void addSubCommentToList(ArrayList<CommentModel> comment) { for
-	 * (int i = 0; i < comment.size(); i++) {
-	 * ElasticSearchOperations.searchForReplies(this, this.appState,
-	 * comment.get(i).getUniqueID());
-	 * //comment.get(i).setSubComments(appState.getReplyList());
-	 * //appState.getSubCommentViewHead().setSubComments( //
-	 * appState.getReplyList());
-	 * 
-	 * if (appState.getReplyList().size() == 0) { // done if there are // no //
-	 * more subcomments //Log.i("AddSubComment", comment.get(i).getTitle() // +
-	 * " has no more subcomments."); Log.i("AddSubComment",
-	 * "There are no more subcomments"); continue; } else { // there are
-	 * subcomments to parse Log.i("AddSubComment", "CommentModel title is " +
-	 * comment.get(i).getTitle()); //for (int j = 0; i <
-	 * comment.get(i).getSubComments().size(); j++) { //
-	 * ElasticSearchOperations.searchForReplies(this, // this.appState, //
-	 * comment.getUniqueID()); //
-	 * appState.setCommentList(appState.getReplyList());
-	 * 
-	 * comment.get(i).setSubComments(appState.getReplyList()); //
-	 * appState.getSubCommentViewHead().setSubComments( //
-	 * appState.getReplyList());
-	 * 
-	 * // Log.i("AddSubComment","SubCommentViewHead title is "+appState.
-	 * getSubCommentViewHead().getTitle()); for (int k = 0; k <
-	 * appState.getReplyList().size(); k++) Log.i("AddSubComment",
-	 * "ReplyList title " + k + ": " +
-	 * appState.getReplyList().get(k).getTitle()); // if
-	 * (comment.getSubComments().size() > 0) {
-	 * addSubCommentToList(comment.get(i).getSubComments()); // } //} } } }
-	 */
 
 	/**
 	 * Inflate the menu.
