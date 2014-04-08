@@ -138,6 +138,24 @@ public class SubCommentViewActivityAdapter extends
 			
 			if(!commentList.get(pos).getAuthorAndroidID().contains(userData.getAndroidID())){
 				holder.editButton.setVisibility(View.GONE);
+			}else{
+				final Context editCommentContext = this.context;
+				holder.editButton.setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						// Open CreateComment Activity
+						appState.setCommentToEdit(commentList.get(pos));
+						Intent editComment = new Intent(
+								context.getApplicationContext(),
+								EditCommentActivity.class);
+						// subCommentView.putExtra("comment", (Object)
+						// headComment);
+						editCommentContext.startActivity(editComment);
+						
+					}
+				});
 			}
 			
 			holder.replyButton.setOnClickListener(new View.OnClickListener() {

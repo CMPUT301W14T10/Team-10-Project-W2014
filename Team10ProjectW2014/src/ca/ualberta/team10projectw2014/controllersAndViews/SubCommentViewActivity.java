@@ -83,7 +83,6 @@ public class SubCommentViewActivity extends Activity {
 		appState = ApplicationStateModel.getInstance();
 		appState.setFileContext(this);
 		appState.loadUser();
-		appState.pushList();
 		// appState.loadComments();
 		appState.setLocationList(new ArrayList<LocationModel>());
 		ElasticSearchLocationOperations.getLocationList(this);
@@ -96,8 +95,7 @@ public class SubCommentViewActivity extends Activity {
 		actionbar.setDisplayShowHomeEnabled(false);
 		resources = getResources();
 
-		// Set the Title in the Actionbar to the title of the head comment
-		actionbar.setTitle(appState.getSubCommentViewHead().getTitle());
+
 
 	}
 
@@ -113,6 +111,10 @@ public class SubCommentViewActivity extends Activity {
 		subListView.removeHeaderView(headerView);
 		headerView = (View) setHeader(appState.getSubCommentViewHead());
 		subListView.addHeaderView(headerView);
+		appState.pushList();
+		
+		// Set the Title in the Actionbar to the title of the head comment
+		actionbar.setTitle(appState.getSubCommentViewHead().getTitle());
 
 
 		commentList = new ArrayList<CommentModel>();
@@ -372,7 +374,26 @@ public class SubCommentViewActivity extends Activity {
 
 		if(!headComment.getAuthorAndroidID().contains(appState.getUserModel().getAndroidID())){
 			editButton.setVisibility(View.GONE);
+		}else{
+			final Context editCommentContext = this;
+			editButton.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					// Open CreateComment Activity
+					appState.setCommentToEdit(appState.getSubCommentViewHead());
+					Intent editComment = new Intent(
+							getApplicationContext(),
+							EditCommentActivity.class);
+					// subCommentView.putExtra("comment", (Object)
+					// headComment);
+					editCommentContext.startActivity(editComment);
+					
+				}
+			});
 		}
+			
 
 		// Set the items to the contents of the Head Comment
 		textTitle.setText(headComment.getTitle());
@@ -406,6 +427,7 @@ public class SubCommentViewActivity extends Activity {
 				}
 			}
 		});
+		
 
 		if (!appState.getSubCommentViewHead().isInArrayList(
 				appState.getUserModel().getWantToReadComments())) {
@@ -456,61 +478,6 @@ public class SubCommentViewActivity extends Activity {
 		}
 	}
 
-	/***
-	 * Open the More... dialog box for the user to add the comment to a read
-	 * later list, or if the user is the author of that comment, they can edit
-	 * the comment.
-	 * 
-	 * @param
-	 */
-	public void openMoreDialog(CommentModel comment) {
-
-		final CommentModel commentData = comment;
-		AlertDialog.Builder moreDialog = new AlertDialog.Builder(this);
-
-		// set dialog title
-		moreDialog.setTitle("More...");
-
-		// set Add to Read later
-		moreDialog.setNeutralButton("Add to Read Later",
-				new DialogInterface.OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				appState.getUserModel().getFavourites()
-				.add(commentData);
-
-			}
-		});
-
-		final Context editCommentContext = this;
-		// User will only have the option if the
-		if (appState.getUserModel().getAndroidID()
-				.equals(comment.getAuthorAndroidID())) {
-			moreDialog.setNeutralButton("Edit Comment",
-					new DialogInterface.OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
-					// Open CreateComment Activity
-					appState.setCommentToEdit(commentData);
-					Intent editComment = new Intent(
-							getApplicationContext(),
-							EditCommentActivity.class);
-					// subCommentView.putExtra("comment", (Object)
-					// headComment);
-					editCommentContext.startActivity(editComment);
-				}
-			});
-		}
-
-		moreDialog.setNegativeButton("Cancel", null);
-
-		moreDialog.show();
-
-	}
 
 	/**
 	 * Checkbox functionality

@@ -675,6 +675,7 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 			
 			appState.queueDelete(appState.getCommentToEdit());
 			appState.queueAdd(appState.getCommentToEdit());
+			appState.pushList();
 			
 			//Destroy this activity so that we return to the previous one.
 			goBack();
