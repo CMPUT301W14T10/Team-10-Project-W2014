@@ -452,7 +452,7 @@ public class ApplicationStateModel {
 	{
 	
 		this.cmpLocation = cmpLocation;
-		if(this.userModel != null){
+		if((this.userModel != null) && (cmpLocation != null)){
 			this.userModel.setSortLoc(new LocationModel(cmpLocation, name));
 		}
 		this.saveUser();
