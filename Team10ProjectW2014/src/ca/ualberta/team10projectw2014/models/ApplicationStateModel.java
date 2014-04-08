@@ -451,7 +451,7 @@ public class ApplicationStateModel {
 	public void setCmpLocation(Location cmpLocation, String name)
 	{
 	
-		this.cmpLocation = cmpLocation;
+		ApplicationStateModel.cmpLocation = cmpLocation;
 		if((this.userModel != null) && (cmpLocation != null)){
 			this.userModel.setSortLoc(new LocationModel(cmpLocation, name));
 		}

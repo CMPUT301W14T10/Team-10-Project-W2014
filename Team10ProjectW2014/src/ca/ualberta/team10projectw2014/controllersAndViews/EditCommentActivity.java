@@ -34,7 +34,6 @@ import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationListenerModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
 import ca.ualberta.team10projectw2014.network.ElasticSearchLocationOperations;
-import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 
 /**
  * This class deals with a comment which has already been created in the system, 
@@ -52,7 +51,6 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 	private String postUsername;
 	private String postContents;
 
-	@SuppressWarnings("unused")
 	private LocationModel postLocation;
 	private Bitmap postPhoto;
 	
@@ -151,7 +149,6 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 	/**
 	 * Creates a LocationListenerController to start keeping track of the user's location
 	 */
-	@SuppressWarnings("unused")
 	private void startListeningLocation(){
 		Toast.makeText(getBaseContext(), "Starting to listen for location...", Toast.LENGTH_LONG).show();
 		this.locationListener = new LocationListenerModel(this);
@@ -582,7 +579,6 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 	 * {@link #locationListener}
 	 * 
 	 */
-	@SuppressWarnings("unused")
 	private void setLocation() {
 		int i;
 		int closestLocationIndex = -1;
@@ -688,7 +684,6 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 	/**
 	 * Tells the locationListener to stop listening for the user's location
 	 */
-	@SuppressWarnings("unused")
 	private void stopListeningLocation(){
 		getLastBestLocation();
 		if (bestKnownLoc != null){

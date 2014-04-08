@@ -36,7 +36,6 @@ import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationListenerModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
 import ca.ualberta.team10projectw2014.network.ElasticSearchLocationOperations;
-import ca.ualberta.team10projectw2014.network.ElasticSearchOperations;
 
 /**
  * This class deals with creating comments by talking with the app's  singleton.  
