@@ -2,17 +2,13 @@ package ca.ualberta.team10projectw2014.tests;
 
 import java.util.Calendar;
 
-import com.mapquest.android.maps.GeoPoint;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.EditText;
-import ca.ualberta.team10projectw2014.controllersAndViews.CreateCommentActivity;
 import ca.ualberta.team10projectw2014.controllersAndViews.MapsViewActivity;
-import ca.ualberta.team10projectw2014.controllersAndViews.SubCommentViewActivity;
 import ca.ualberta.team10projectw2014.models.ApplicationStateModel;
 import ca.ualberta.team10projectw2014.models.CommentModel;
 import ca.ualberta.team10projectw2014.models.LocationModel;
-import junit.framework.TestCase;
 
 /**
  * @author       Bradley Poulette <bpoulett@ualberta.ca>
