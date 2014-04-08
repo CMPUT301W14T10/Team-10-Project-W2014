@@ -125,8 +125,10 @@ public class SubCommentViewActivity extends Activity {
 
 			// LOAD SUBCOMMENTS FROM ES
 			subCommentList.clear();
-			subCommentList.addAll(appState.getReplyList());
-			addSubCommentToList(subCommentList);
+			ArrayList<CommentModel> subComments = new ArrayList<CommentModel>();
+			subComments.addAll(appState.getReplyList());
+			addSubCommentToList(subComments);
+			
 			appState.getSubCommentViewHead().setSubComments(subCommentList);
 
 			// Save all comments to local copy after getting all sub comments
@@ -168,6 +170,7 @@ public class SubCommentViewActivity extends Activity {
 		
 		for (int i = 0; i < arrayList.size(); i++) {
 			Log.i("AddSubComment", "Searching for subcomments of "+arrayList.get(i).getTitle());
+			subCommentList.add(arrayList.get(i));
 			
 			ElasticSearchOperations.searchForReplies(this, this.appState,
 					arrayList.get(i).getUniqueID(), 100);
@@ -176,7 +179,7 @@ public class SubCommentViewActivity extends Activity {
 				if(arrayList.size()>0){
 					Log.i("AddSubComment", arrayList.get(i).getTitle()
 							+ " has no more subcomments.");
-					if(arrayList.size()==1)subCommentList.add(arrayList.get(0));
+					//if(arrayList.size()==1)subCommentList.add(arrayList.get(0));
 				}
 				else {
 					Log.i("AddSubComment", "There is nothing in this list.");
@@ -187,7 +190,6 @@ public class SubCommentViewActivity extends Activity {
 				for (int j = 0; j < appState.getReplyList().size(); j++){
 					Log.i("AddSubComment", "ReplyList title " + j + ": "
 							+ appState.getReplyList().get(j).getTitle());
-					subCommentList.add(arrayList.get(j));
 				}
 				addSubCommentToList(appState.getReplyList());
 			}
