@@ -63,6 +63,7 @@ public class SubCommentViewActivity extends Activity {
 	private View headerView;
 	private LayoutInflater layoutInflater;
 	private Resources resources;
+	private int size;
 	private ArrayList<LocationModel> locationList;
 	private ArrayList<LocationModel> tempLocationList;
 	private LocationListenerModel locationListener;
@@ -76,7 +77,8 @@ public class SubCommentViewActivity extends Activity {
 		locationListener = new LocationListenerModel(this);
 		setContentView(R.layout.activity_sub_comment_view);
 		layoutInflater = LayoutInflater.from(this);
-
+		//the number of comments to pull from server
+		this.size = 10;
 		// Get an instance of the ApplicationStateModel singleton
 		appState = ApplicationStateModel.getInstance();
 		appState.setFileContext(this);
@@ -119,7 +121,7 @@ public class SubCommentViewActivity extends Activity {
 		if (appState.isNetworkAvailable(this)) {
 			// Get SubComments of the head comment from server
 			ElasticSearchOperations.searchForReplies(this, this.appState,
-					appState.getSubCommentViewHead().getUniqueID());
+					appState.getSubCommentViewHead().getUniqueID(),size);
 
 			// Add the sub Comments to the head comment
 			appState.getSubCommentViewHead().setSubComments(
@@ -172,7 +174,7 @@ public class SubCommentViewActivity extends Activity {
 	 */
 	private void addSubCommentToList(CommentModel comment) {
 		ElasticSearchOperations.searchForReplies(this, this.appState,
-				comment.getUniqueID());
+				comment.getUniqueID(),size);
 
 		if (appState.getReplyList().size() == 0) { // done if there are no more
 													// subcomments
@@ -302,6 +304,7 @@ public class SubCommentViewActivity extends Activity {
 			sortComments();
 			return true;
 		case R.id.refresh_comments_sub:
+			this.size += 10;
 			onResume();
 			return true;
 		default:

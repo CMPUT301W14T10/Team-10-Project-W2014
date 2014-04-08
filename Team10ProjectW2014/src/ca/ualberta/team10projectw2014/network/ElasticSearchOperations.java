@@ -27,13 +27,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 /**
- * This class handles sending CommentModels to the server and executing searches on the
- * server. Most of the code in this class is based on:
+ * This class handles sending CommentModels to the server and executing searches
+ * on the server. Most of the code in this class is based on:
  * https://github.com/rayzhangcl/ESDemo and
  * https://github.com/zjullion/PicPosterComplete
  * 
  * @author zjullion. Edited by sgiang92
- * @version      1                (current version number of program)
+ * @version 1 (current version number of program)
  */
 public class ElasticSearchOperations {
 
@@ -45,7 +45,6 @@ public class ElasticSearchOperations {
 	public static final String LOG_TAG = "ElasticSearch";
 	private static Gson GSON = null;
 
-	
 	/**
 	 * Sends a Comment to the server. Does nothing if the request fails.
 	 * 
@@ -63,9 +62,9 @@ public class ElasticSearchOperations {
 				HttpClient client = new DefaultHttpClient();
 				HttpPost request = null;
 				if (comment.getParentTitle().isEmpty()) {
-				    request = new HttpPost(SERVER_URL);
+					request = new HttpPost(SERVER_URL);
 				} else {
-				    request = new HttpPost(SERVER_URL_SUBCOMMENTS);
+					request = new HttpPost(SERVER_URL_SUBCOMMENTS);
 				}
 
 				try {
@@ -89,11 +88,9 @@ public class ElasticSearchOperations {
 		};
 
 		thread.start();
-		try
-		{
+		try {
 			thread.join();
-		} catch (InterruptedException e)
-		{
+		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -110,13 +107,13 @@ public class ElasticSearchOperations {
 			public void run() {
 				HttpClient client = new DefaultHttpClient();
 				String url = null;
-				if(comment.getParentTitle().isEmpty())
-    				url = SERVER_URL;
+				if (comment.getParentTitle().isEmpty())
+					url = SERVER_URL;
 				else
-				    url = SERVER_URL_SUBCOMMENTS;
-				
+					url = SERVER_URL_SUBCOMMENTS;
+
 				HttpDelete delete = new HttpDelete(url + "_query"
-                        + "?q=uniqueID:" + comment.getUniqueID());
+						+ "?q=uniqueID:" + comment.getUniqueID());
 
 				try {
 					HttpResponse response = client.execute(delete);
@@ -131,11 +128,9 @@ public class ElasticSearchOperations {
 		};
 
 		thread.start();
-		try
-		{
+		try {
 			thread.join();
-		} catch (InterruptedException e)
-		{
+		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -157,7 +152,7 @@ public class ElasticSearchOperations {
 	 */
 	public static void searchForCommentModels(final String searchTerm,
 			final ArrayList<CommentModel> model,
-			final MainListViewActivity activity) {
+			final MainListViewActivity activity, final int size) {
 		if (GSON == null)
 			constructGson();
 
@@ -166,7 +161,8 @@ public class ElasticSearchOperations {
 			@Override
 			public void run() {
 				HttpClient client = new DefaultHttpClient();
-				HttpPost request = new HttpPost(SERVER_URL + "_search"); //?size=100
+				HttpPost request = new HttpPost(SERVER_URL + "_search?size="
+						+ Integer.toString(size)); // ?size=100
 				// String query =
 				// "{\"query\": {\"query_string\": {\"default_field\": \"content\",\"query\": \"*"
 				// + searchTerm + "*\"}}}";
@@ -237,20 +233,16 @@ public class ElasticSearchOperations {
 
 		thread.start();
 
-		try
-		{
+		try {
 			thread.join();
-		} catch (InterruptedException e)
-		{
+		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		// Log.e(LOG_TAG, model.toString()); // print out the entire contents of
 		// the list
 	}
-	
-	
-	
+
 	/**
 	 * Searches for replies in the server
 	 * 
@@ -258,9 +250,9 @@ public class ElasticSearchOperations {
 	 * @param appState
 	 * @param parentID
 	 */
-	public static void searchForReplies(final SubCommentViewActivity activity,final ApplicationStateModel appState, final String parentID) {
-		final ArrayList<CommentModel> replyCommentList = new ArrayList<CommentModel>();
-		
+	public static void searchForReplies(final SubCommentViewActivity activity,
+			final ApplicationStateModel appState, final String parentID, final int size) {
+
 		if (GSON == null)
 			constructGson();
 
@@ -269,8 +261,10 @@ public class ElasticSearchOperations {
 			@Override
 			public void run() {
 				HttpClient client = new DefaultHttpClient();
-				HttpPost request = new HttpPost(SERVER_URL_SUBCOMMENTS+"_search");
-				String query = "{\"query\": {\"match\": {\"parentID\" :\"*" + parentID + "*\"}}}";
+				HttpPost request = new HttpPost(SERVER_URL_SUBCOMMENTS
+						+ "_search?size=" + Integer.toString(size));
+				String query = "{\"query\": {\"match\": {\"parentID\" :\"*"
+						+ parentID + "*\"}}}";
 				String responseJson = "";
 
 				try {
@@ -307,19 +301,17 @@ public class ElasticSearchOperations {
 				final ElasticSearchSearchResponse<CommentModel> returnedData = GSON
 						.fromJson(responseJson, elasticSearchSearchResponseType);
 
-						replyCommentList.clear();
-						appState.addCommentsToReplyList(returnedData.getSources());
-						Log.e("COMMENTS PULLED",returnedData.getSources().toString());
+				appState.addCommentsToReplyList(returnedData.getSources());
+				Log.e("COMMENTS PULLED", returnedData.getSources().toString());
 
 			}
 		};
 
 		thread.start();
-		
-		try{
+
+		try {
 			thread.join();
-		} catch (InterruptedException e)
-		{
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
