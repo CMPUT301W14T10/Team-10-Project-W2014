@@ -579,27 +579,11 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 	 * 
 	 */
 	private void setLocation() {
-		int i;
-		int closestLocationIndex = -1;
-		double distance = 1000; // Set to 1 km
-		double distFrom;
-
+		int closestLocationIndex = closestLocationIndex();
 		// If current location is known and location list is not empty, look for
 		// closest location
 		if ((bestKnownLoc != null) && (this.locationList.size() != 0)) {
 			if (this.spinnerFlag == 0) {
-				for (i = 0; i < this.locationList.size(); i++) {
-					// Determines if there is a nearby location from location
-					// list
-					distFrom = distFrom(bestKnownLoc.getLatitude(),
-							bestKnownLoc.getLongitude(),
-							this.locationList.get(i).getLatitude(),
-							this.locationList.get(i).getLongitude());
-					if (distFrom < distance) {
-						distance = distFrom;
-						closestLocationIndex = i;
-					}
-				}
 				// No nearby locations found
 				if (closestLocationIndex == -1)
 					Toast.makeText(
@@ -631,6 +615,34 @@ public class EditCommentActivity extends Activity implements CommentContentEditi
 		else {
 			this.postLocation = new LocationModel("Unknown Location", 0, 0);
 		}
+	}
+
+	private int closestLocationIndex()
+	{
+
+		int i;
+		int closestLocationIndex = -1;
+		double distance = 1000;
+		double distFrom;
+		if ((bestKnownLoc != null) && (this.locationList.size() != 0))
+		{
+			if (this.spinnerFlag == 0)
+			{
+				for (i = 0; i < this.locationList.size(); i++)
+				{
+					distFrom = distFrom(bestKnownLoc.getLatitude(),
+							bestKnownLoc.getLongitude(),
+							this.locationList.get(i).getLatitude(),
+							this.locationList.get(i).getLongitude());
+					if (distFrom < distance)
+					{
+						distance = distFrom;
+						closestLocationIndex = i;
+					}
+				}
+			}
+		}
+		return closestLocationIndex;
 	}
 	
 	/**
